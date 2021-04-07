@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "220487366056",
+    "project_id": "droidsoftthird-2cc9b",
+    "storage_bucket": "droidsoftthird-2cc9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220487366056:android:8ac36547dcfc0f46ef999d",
+        "android_client_info": {
+          "package_name": "com.example.droidsoftthird"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220487366056-p4e9eeultm5t89jnje6ulc6dc42sa1ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2E5XhaOUwQxYCDCN15ggkzQszBgGB8M8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220487366056-p4e9eeultm5t89jnje6ulc6dc42sa1ph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

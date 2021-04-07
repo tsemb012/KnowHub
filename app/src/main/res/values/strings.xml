@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">DroidSoftThird</string>
+    <string name="Logout">Logout</string>
+    <string name="profile_page">プロフィール画面</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="tab_1st">オススメ</string>
+    <string name="tab_2nd">スケジュール</string>
+    <string name="tab_3rd">マップ</string>
+    <string name="group_name">グループ名</string>
+    <string name="group_introduction">グループ紹介</string>
+    <string name="group_detail">詳細情報</string>
+    <string name="group_type">グループタイプ</string>
+    <string name="no_set">未設定</string>
+    <string name="activity_area">活動地域</string>
+    <string name="facility_environment">利用施設/環境</string>
+    <string name="learning_frequency">学習頻度</string>
+    <string name="age_range">年齢幅</string>
+    <string name="number_persons">人数制限</string>
+    <string name="gender_restriction">同性のみ</string>
+    <string name="seminar">セミナー</string>
+    <string name="workshop">ワークショップ</string>
+    <string name="mokumoku">もくもく会</string>
+    <string name="other">その他</string>
+    <string name="Next">次へ</string>
+    <string name="done">完了</string>
+    <string name="cancel">キャンセル</string>
+    <string name="library">図書館</string>
+    <string name="rental_space">レンタルスペース</string>
+    <string name="cafe_restaurant">カフェ・ファミレス</string>
+    <string name="study_place">有料自習室</string>
+    <string name="online">オンライン</string>
+    <string name="park">公園</string>
+    <string name="everyday">毎日</string>
+    <string name="week">週</string>
+    <string name="month">月</string>
+    <string name="on">On</string>
+    <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
+    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>
+    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>
+    <string name="meessage_no_network">No network connection.</string>
+    <string name="message_unknown">Unknown error.</string>
+    <string name="title_sign_in_error">Sign In Error</string>
+    <string name="option_retry">Retry</string>
+    <string name="option_exit">Exit</string>
+    <string name="progress_uploading">Uploading..</string>
+    <string name="upload_success">アップロード完了</string>
+    <string name="upload_fail">アップロード失敗</string>
+    <string name="group_add">グループを追加しました。</string>
+    <string name="nickname">ニックネーム</string>
+    <string name="gender">性別</string>
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="gender_private">非公開</string>
+    <string name="age">年齢</string>
+    <string name="residentialArea">居住地域</string>
+    <string name="editComment">コメントを入力してください。</string>
+    <string name="profile_add">プロフィールを追加しました。</string>
+    <string name="editProfile">プロフィールを編集</string>
+    <string name="recommendation">おすすめ</string>
+    <string name="schedule">スケジュール</string>
+    <string name="map">マップ</string>
+</resources>
