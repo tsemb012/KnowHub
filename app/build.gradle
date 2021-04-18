@@ -106,7 +106,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
 
     //-----Room
-    implementation "androidx.room:room-ktx:$room_version"
+    //implementation "androidx.room:room-ktx:$room_version"
 
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
 }

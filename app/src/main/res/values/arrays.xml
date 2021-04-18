@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="frequently_basis">
+        <item name = "daily_basis">デイリー：毎日</item>
+        <item name = "weekly_basis">ウィークリー：週ごと</item>
+        <item name = "monthly_basis">マンスリー：月ごと</item>
+    </string-array>
+    <string-array name="initial_slider_values_d006">
+        <item>2</item>
+        <item>10</item>
+    </string-array>
+    <array name="initial_slider_values">
+        <item>10</item>
+        <item>50</item>
+    </array>
+
+</resources>
