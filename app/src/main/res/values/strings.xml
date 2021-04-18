@@ -67,4 +67,9 @@
     <string name="recommendation">おすすめ</string>
     <string name="schedule">スケジュール</string>
     <string name="map">マップ</string>
+    <string name="please_input_group_name">グループ名を記入してください。</string>
+    <string name="please_input_group_introduction">グループの紹介文を記入してください。</string>
+    <string name="register">登録</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
