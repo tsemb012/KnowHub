@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.droidsoftthird.databinding.FragmentPagerRecommendBinding
+import com.google.android.material.snackbar.Snackbar
 
 class RecommendPagerFragment:Fragment() {
 
@@ -20,22 +22,20 @@ class RecommendPagerFragment:Fragment() {
     ): View? {
         val binding: FragmentPagerRecommendBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_pager_recommend, container, false)
-
-
-
         val repository = GroupRepository()
         val viewModelFactory = RecommendPagerViewModelFactory(repository)
         val recommendPagerViewModel = ViewModelProvider(
                 this, viewModelFactory).get(RecommendPagerViewModel::class.java)
 
-
+        binding.recommendPagerViewModel = recommendPagerViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val adapter = GroupAdapter(GroupListener{ groupId ->
             recommendPagerViewModel.onGroupClicked(groupId)
         })//GridItemがクリックされた瞬間に、MutableLiveDataにIDを渡す。
-
-
         binding.groupList.adapter = adapter
+
+        recommendPagerViewModel.getAllGroups()
 
         recommendPagerViewModel.groups.observe(viewLifecycleOwner, Observer {
             it?.let{
@@ -47,23 +47,17 @@ class RecommendPagerFragment:Fragment() {
             groupId?.let {
                 this.findNavController().navigate(
                     RecommendPagerFragmentDirections.actionRecommendPagerFragmentToGroupDetailFragment(groupId)
-                )//MutableLiveDataにIDが渡された瞬間に、画面遷移を実行する。
+                )
                 recommendPagerViewModel.onGroupDetailNavigated()
             }
         })
 
 
 
+        val manager = GridLayoutManager(activity,2, GridLayoutManager.VERTICAL,false)
 
+        binding.groupList.layoutManager = manager
 
-
-
-
-
-
-
-
-        //return super.onCreateView(inflater, container, savedInstanceState)
         return binding.root
     }
 

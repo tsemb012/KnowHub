@@ -4,11 +4,11 @@ import android.net.Uri
 import com.example.droidsoftthird.model.Group
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -22,22 +22,26 @@ class GroupRepository {
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("groups")
-                    .orderBy("timestamp", Query.Direction.DESCENDING)
                     .limit(LIMIT)
                     .get()
                     .addOnSuccessListener {
                         try {
-                            continuation.resume(Result.Success(it.toObjects()))
+                            continuation.resume(Result.Success(it.toObjects(Group::class.java)))
+                            Timber.tag("check_result2").d(it.toObjects(Group::class.java).toString())
                         } catch (e: Exception) {
                             continuation.resume(Result.Error(e))
+                            Timber.tag("check_result3").d(e.toString())
                         }
+
                     }
                     .addOnFailureListener {
                         continuation.resume(Result.Error(it))
+                        Timber.tag("check_result4").d(it.toString())
                     }
             }
 
         }
+    //.orderBy("timestamp", Query.Direction.DESCENDING)
 
     suspend fun uploadPhoto(uri: Uri):Result<StorageReference> {
         val photoRef = fireStorageRef.child("images/${UUID.randomUUID().toString()}")
@@ -58,6 +62,26 @@ class GroupRepository {
                 }
             }
         }
+
+    suspend fun uploadGroup(group: Group):Result<Int> {
+        return withContext(Dispatchers.IO){
+            suspendCoroutine { continuation ->
+                fireStore.collection("groups")
+                    .document()
+                    .set(group)
+                    .addOnSuccessListener {
+                        try {
+                            continuation.resume(Result.Success(R.string.upload_success))
+                        } catch (e: Exception) {
+                            continuation.resume(Result.Error(e))
+                        }
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(Result.Error(it))
+                    }
+            }
+        }
+    }
 
 
     companion object {

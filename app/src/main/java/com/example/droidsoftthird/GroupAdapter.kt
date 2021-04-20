@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemGroupBinding
 import com.example.droidsoftthird.model.Group
+import timber.log.Timber
 
 
 class GroupAdapter(val clickListener: GroupListener): ListAdapter<Group, GroupAdapter.ViewHolder>(GroupDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!,clickListener)
+        Timber.tag("getItem(position)").d(getItem(position).toString())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {//This function takes two parameters and returns a ViewHolder.

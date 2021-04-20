@@ -12,7 +12,7 @@ import com.example.droidsoftthird.R
 class LeaningFrequencyDialogFragment:DialogFragment() {
 
     private var selected = 0
-    private val viewModel: AddGroupViewModel by viewModels()
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -32,9 +32,9 @@ class LeaningFrequencyDialogFragment:DialogFragment() {
                             val args = Bundle()
                             args.putInt("learning_frequency", selected)
                             dialogNext.arguments = args
-                            dialogNext.show(requireActivity().supportFragmentManager, "activity_area_next")
+                            dialogNext.show(parentFragmentManager, "activity_area_next")
                         } else {
-                            viewModel.postFrequency(R.string.everyday.toString())
+                            viewModel.postFrequency(getString(R.string.everyday))
                         }
                     })
                 .setNeutralButton(R.string.cancel, DialogInterface.OnClickListener { dialog, which -> Unit}

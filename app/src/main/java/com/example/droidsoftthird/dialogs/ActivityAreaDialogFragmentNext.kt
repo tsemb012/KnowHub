@@ -2,6 +2,7 @@ package com.example.droidsoftthird.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -10,16 +11,16 @@ import com.example.droidsoftthird.R
 
 class ActivityAreaDialogFragmentNext:DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels()
-    private val prefectureList: Array<String> =
-        resources.getStringArray(R.array.online_and_prefectures)
+    //TODO 宣言部分を整理する。
+    //
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
     private var selected = 0
-    private val args = arguments
-    private val previousSelected = args?.getInt("prefecture")
+    private var previousSelected:Int? = 0
     private lateinit var items: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        previousSelected = arguments?.getInt("prefecture")
         when (previousSelected) {
             0 -> { }
             1 -> items = resources.getStringArray(R.array.Hokkaido)
@@ -74,6 +75,7 @@ class ActivityAreaDialogFragmentNext:DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val prefectureList: Array<String> = resources.getStringArray(R.array.online_and_prefectures)
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -81,13 +83,15 @@ class ActivityAreaDialogFragmentNext:DialogFragment() {
             .setTitle(R.string.activity_area)
             .setIcon(R.drawable.ic_baseline_location_on_24)
             .setSingleChoiceItems(items, selected) { dialog, which -> selected = which }
-            .setPositiveButton(R.string.done) { dialog, which ->{
+            .setPositiveButton(R.string.done, DialogInterface.OnClickListener { dialog, which ->
                 viewModel.postPrefecture(prefectureList[previousSelected!!])
-                viewModel.postCity(items[which]) }
-            }
+                viewModel.postCity(items[selected]) })
             .setNeutralButton(R.string.cancel) { dialog, which -> Unit}
-            .create()
+            builder.create()
         }?: throw IllegalStateException("Activity cannot be null")
     }
+    /*                    DialogInterface.OnClickListener { dialog, which ->
+                         viewModel.postFacilityEnvironment(items[selected])
+                    })*/
 
 }
