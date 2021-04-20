@@ -21,16 +21,9 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class AddGroupFragment:Fragment(),View.OnClickListener {
 
-    private lateinit var manager :FragmentManager
     private lateinit var binding: FragmentGroupAddBinding
-    private val viewModel: AddGroupViewModel by viewModels()
+    private lateinit var viewModel: AddGroupViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        manager = requireActivity().supportFragmentManager
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +37,10 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         )
         val repository = GroupRepository()
         val viewModelFactory = AddGroupViewModelFactory(repository)
-        val addGroupViewModel = ViewModelProvider(this, viewModelFactory).get(AddGroupViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(AddGroupViewModel::class.java)
 
-        binding.addGroupViewModel = addGroupViewModel
+        binding.addGroupViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner//lifecycleOwnerのつけ忘れに注意。LiveDataをViewに反映するために必要。
 
         binding.btnGroupImage.setOnClickListener(this)
         binding.btnToGroupDetailBarGroupType.setOnClickListener(this)
@@ -65,27 +59,27 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
             R.id.btn_group_image -> launchUploader()
             R.id.btn_to_groupDetailBar_group_type -> {
                 val dialog = GroupTypeDialogFragment()
-                manager?.let { dialog.show(it, "group_type") }
+                childFragmentManager?.let { dialog.show(it, "group_type") }
             }
             R.id.btn_to_groupDetailBar_activity_area -> {
                 val dialog = ActivityAreaDialogFragment()
-                manager?.let { dialog.show(it, "activity_area") }
+                childFragmentManager?.let { dialog.show(it, "activity_area") }
             }
             R.id.btn_to_groupDetailBar_facility_environment -> {
                 val dialog = FacilityEnvironmentDialogFragment()
-                manager?.let { dialog.show(it, "facility_environment") }
+                childFragmentManager?.let { dialog.show(it, "facility_environment") }
             }
             R.id.btn_to_groupDetailBar_learning_frequency -> {
                 val dialog = LeaningFrequencyDialogFragment()
-                manager?.let { dialog.show(it, "learning_frequency") }
+                childFragmentManager?.let { dialog.show(it, "learning_frequency") }
             }
             R.id.btn_to_groupDetailBar_age_range -> {
                 val dialog = AgeRangeDialogFragment()
-                manager?.let { dialog.show(it, "age_range") }
+                childFragmentManager?.let { dialog.show(it, "age_range") }
             }
             R.id.btn_to_groupDetailBar_number_persons -> {
                 val dialog = NumberPersonsDialogFragment()
-                manager?.let { dialog.show(it, "number_persons") }
+                childFragmentManager?.let { dialog.show(it, "number_persons") }
             }
             R.id.btn_to_groupDetailBar_gender_restriction -> {
                 val sm: SwitchMaterial = binding.genderRestrictionSwitch

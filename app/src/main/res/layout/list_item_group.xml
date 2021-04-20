@@ -31,6 +31,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:imageFireStorage="@{group.storageRef}"
                 />
 
             <TextView
@@ -42,7 +43,8 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/group_image" />
+                app:layout_constraintTop_toBottomOf="@id/group_image"
+                android:text="@{group.groupName}"/>
 
             <TextView
                 android:id="@+id/group_member_number"
@@ -53,7 +55,11 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/group_name" />
+                app:layout_constraintTop_toBottomOf="@+id/group_name"
+                app:minNumberPerson="@{group.minNumberPerson}"
+                app:maxNumberPerson="@{group.maxNumberPerson}"/>
+            <!--TODO UIを考慮に入れ、現在の人数と最大人数のみ記述する。
+                     それに伴い、AddGroupの入力についても最小人数を消し、最大人数のみにする。-->
 
             <TextView
                 android:id="@+id/group_schedule"
@@ -64,6 +70,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_member_number" />
+            <!--TODO 後日、最新の日程を反映する機能を実装する。-->
 
             <TextView
                 android:id="@+id/group_location"
@@ -73,7 +80,9 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/group_schedule" />
+                app:layout_constraintTop_toBottomOf="@+id/group_schedule"
+                app:prefecture="@{group.prefecture}"
+                app:city="@{group.city}"/>
 
             <TextView
                 android:id="@+id/group_comment"
@@ -84,103 +93,10 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/group_location" />
-
-
+                app:layout_constraintTop_toBottomOf="@+id/group_location"
+                android:text="@{group.groupIntroduction}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
 
-
-
-<!--TODO 下記Secondで使用したリストアイテム-->
-<!--
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.cardview.widget.CardView
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/card_side_margin"
-        android:layout_marginEnd="@dimen/card_side_margin"
-        android:layout_marginBottom="@dimen/card_bottom_margin"
-        app:cardElevation="@dimen/card_elevation"
-        app:cardPreventCornerOverlap="false"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Sunflower.Card"
-
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#90ED99">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/group_item_image_height"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            &lt;!&ndash;viewModel.imageUrlの仕組みは？Storageに切り替えたい&ndash;&gt;
-
-            <TextView
-                android:id="@+id/group_name_i001"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageView" />
-
-            <TextView
-                android:id="@+id/communityPersonNum"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:drawableLeft="@drawable/ic_baseline_group_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/group_name_i001" />
-
-            <TextView
-                android:id="@+id/communitySchedule"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/communityPersonNum" />
-
-            <TextView
-                android:id="@+id/communityLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_location_on_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/communitySchedule" />
-
-            <TextView
-                android:id="@+id/communityComment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:drawableLeft="@drawable/ic_baseline_comment_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/communityLocation" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-</layout>-->

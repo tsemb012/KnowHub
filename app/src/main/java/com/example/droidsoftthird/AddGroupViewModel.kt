@@ -7,6 +7,7 @@ import com.example.droidsoftthird.model.Group
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class AddGroupViewModel(val repository: GroupRepository): ViewModel() {
@@ -81,10 +82,12 @@ class AddGroupViewModel(val repository: GroupRepository): ViewModel() {
 
     fun postGroupType(s: String) {
         _groupType.postValue(s)
+        Timber.tag("check_postGroupType").d(s.toString())
     }
 
     fun postPrefecture(s: String) {
         _prefecture.postValue(s)
+        Timber.tag("check_postPrefecture").d(s.toString())
     }
 
     fun postCity(s: String) {
@@ -131,14 +134,14 @@ class AddGroupViewModel(val repository: GroupRepository): ViewModel() {
 
 
     fun createGroup() {
-        //TODO 画像がNullだった場合の対処法も考える。
+        //DONE DroidSecondのuploadFromUriを用いて、Repository経由でアップロード処理を行う。
 
         viewModelScope.launch {
             if(imageUri.value != null) {
                 val result: Result<StorageReference> = repository.uploadPhoto(imageUri.value!!).also {
                     when(it){
                         is Result.Success -> {
-                            val storageRef = it.data.toString()
+                            val storageRef = it.data.path
                             val group = Group(
                                 FirebaseAuth.getInstance().uid,
                                 storageRef,
@@ -156,44 +159,25 @@ class AddGroupViewModel(val repository: GroupRepository): ViewModel() {
                                 maxNumberPerson.value!!,
                                 isChecked.value!!
                             )
+                            val result:Result<Int> = repository.uploadGroup(group)
+                            /*when(result){
+                              is Result.Success ->  //TODO アップロード成功時の処理を記述する。
+                              else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                            }*/
+
                         }
-                    //else ->
+                    //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
                     }
                 }
-                    /*              is Result.Success -> _groups.postValue(result.data)
-                else //TODO SnackBarを出現させる処理を記入する。*/
-
-
+            }else{//TODO 画像がNullだった場合の対処法も考える。
             }
         }
     }
 
 }
 
-    //TODO DroidSecondのuploadFromUriを用いて、Repository経由でアップロード処理を行う。
 
-/*    private void uploadFromUri(Uri fileUri) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
-        showProgressBar(getString(R.string.progress_uploading));
-        mFileUri = fileUri;//ファイルパス保存
-        photoRef = mStorageRef.child("photos").child(fileUri.getLastPathSegment());
-        photoRef.putFile(fileUri).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getActivity(), R.string.upload_fail, Toast.LENGTH_SHORT).show();
-                hideProgressBar();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                Toast.makeText(getActivity(), R.string.upload_success, Toast.LENGTH_SHORT).show();
-                downloadFromPath();
-                hideProgressBar();
-            }
-
-        });
-    }*/
 
 
 

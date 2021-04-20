@@ -14,19 +14,15 @@ import com.example.droidsoftthird.R
 
 class LeaningFrequencyDialogFragmentNext:DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels()
-
-    private var basis: String? = null
-    private var frequency = 0
-    private val args = arguments
-    private val selected = 0
-    private var previousSelected = args?.getInt("learning_frequency")
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
+    private var previousSelected:Int? = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = requireActivity().layoutInflater
         val view: View = inflater.inflate(R.layout.dialog_learning_frequency, null, false)
         val np = view.findViewById<View>(R.id.numberPicker) as NumberPicker
         val tv = view.findViewById<TextView>(R.id.basis)
+        previousSelected = arguments?.getInt("learning_frequency")
         when (previousSelected) {
             1 -> {
                 tv.setText(R.string.week)

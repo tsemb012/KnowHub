@@ -18,7 +18,7 @@ import com.google.android.material.slider.RangeSlider
 //TODO Better to Modify to ViewBinding from FindViewBy
 class AgeRangeDialogFragment: DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels()
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 

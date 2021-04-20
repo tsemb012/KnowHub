@@ -6,8 +6,26 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.net.URI
 
+
+//TODO GlideでStorageのデータを表示する。
+//FirebaseStorage.getInstance().getReference(group.getPhotoRefPath())
+
+@BindingAdapter("imageFireStorage")
+fun ImageView.imageFireStorage(ref: String) {
+    Glide.with(this)
+        .load(FirebaseStorage.getInstance().getReference(ref))
+        .apply(
+            RequestOptions()
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_broken_image)
+        )
+        .into(this)
+}
 
 
 @BindingAdapter("imageURL")
@@ -25,21 +43,20 @@ fun ImageView.imageURI(uri: URI) {
 @BindingAdapter("prefecture","city")//TODO 引数が複数の場合のBindingAdapterの記述が上記であっているか検証を行う。
 fun TextView.bindArea(prefecture: String, city: String){
     text =
-        if (prefecture != resources.getString(R.string.no_set) && city != resources.getString(R.string.no_set)) {
-        String.format("%s、%s", prefecture, city)
-        }else{
-            resources.getString(R.string.no_set)
+        if(prefecture == resources.getStringArray(R.array.online_and_prefectures)[0].toString()) { prefecture }
+        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(R.string.no_set)) { String.format("%s、%s", prefecture, city) }
+        else{ resources.getString(R.string.no_set)
     }
 }
 
 @BindingAdapter("basis","frequency")
 fun TextView.bindBasisFrequency(basis: String, frequency: String){
-    text = if (basis != resources.getString(R.string.no_set) && frequency != resources.getString(R.string.no_set) && frequency != resources.getString(R.string.everyday)) {
-        String.format("%s%s回", basis, frequency)
-    } else if(frequency == R.string.everyday.toString()) {
-        resources.getString(R.string.everyday)
-    } else{
+    text = if (basis == resources.getString(R.string.no_set) && frequency == resources.getString(R.string.no_set)) {
         resources.getString(R.string.no_set)
+    }else if(frequency == resources.getString(R.string.everyday)) {
+        resources.getString(R.string.everyday)
+    }else {
+        String.format("%s%s回", basis, frequency)
     }
 }
 

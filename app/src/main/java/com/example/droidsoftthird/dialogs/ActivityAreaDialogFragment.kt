@@ -13,13 +13,13 @@ import com.example.droidsoftthird.R
 
 class ActivityAreaDialogFragment:DialogFragment() {
 
-    private val prefectureList: Array<String> =
-        resources.getStringArray(R.array.online_and_prefectures)
+
     private var selected = 0
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
 
-
-    private val viewModel: AddGroupViewModel by viewModels()
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        val prefectureList: Array<String> = resources.getStringArray(R.array.online_and_prefectures)
 
 
 
@@ -40,7 +40,7 @@ class ActivityAreaDialogFragment:DialogFragment() {
                             args.putInt("prefecture", selected)
                             dialog_next.arguments = args
                             dialog_next.show(
-                                requireActivity().supportFragmentManager,
+                                parentFragmentManager,
                                 "activity_area_next"
                             );
                         } else {

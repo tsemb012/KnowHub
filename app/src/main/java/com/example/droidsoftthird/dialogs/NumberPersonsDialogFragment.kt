@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
@@ -16,12 +17,14 @@ import com.google.android.material.slider.RangeSlider
 
 
 class NumberPersonsDialogFragment:DialogFragment() {
-    private val viewModel: AddGroupViewModel by viewModels()
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val binding = DialogNumberPersonsBinding.inflate(LayoutInflater.from(context));
-        val rs = binding.rangeSlider
+        val inflater = requireActivity().layoutInflater
+        val view: View = inflater.inflate(R.layout.dialog_number_persons, null, false)
+        val rs:RangeSlider = view.findViewById(R.id.rangeSlider_person)
+
         rs.stepSize = 1f
         rs.thumbTintList = AppCompatResources.getColorStateList(requireContext(), R.color.range_slider
         )
@@ -29,9 +32,10 @@ class NumberPersonsDialogFragment:DialogFragment() {
         var minNumberPerson = Math.round(rs.getValues()[0])
         var maxNumberPerson = Math.round(rs.getValues()[1])
         rs.addOnChangeListener(RangeSlider.OnChangeListener { _, _, _ ->
-            binding.tvRangeSlider.text = String.format("%s~%s人", minNumberPerson, maxNumberPerson)
-            minNumberPerson = Math.round(rs.getValues()[0])
-            maxNumberPerson = Math.round(rs.getValues()[1])
+            var tv = view.findViewById<TextView>(R.id.tv_range_slider)
+            tv.text = String.format("%s~%s人", Math.round(rs.values[0]), Math.round(rs.values[1]))
+            minNumberPerson = Math.round(rs.values[0])
+            maxNumberPerson = Math.round(rs.values[1])
         })
         //TODO SliderのOnChangeListenerとBindingAdapterが競合しないか確認する。
 

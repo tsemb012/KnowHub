@@ -166,7 +166,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintVertical_bias="0.0"
-                                    app:text= "@{addGroupViewModel.groupType}"/>
+                                    app:text = "@{addGroupViewModel.groupType}"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>

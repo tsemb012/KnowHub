@@ -6,22 +6,23 @@ import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
 
-data class Group (
-    var hostUserId: String?,
-    var storageRef: String,
-    var groupName: String,
-    var groupIntroduction: String,
-    var groupType: String,
-    var prefecture: String,
-    var city: String,
-    var facilityEnvironment: String,
-    var basis: String,
-    var frequency:String,
-    var minAge:Int,
-    var maxAge:Int,
-    var minNumberPerson:Int,
-    var maxNumberPerson :Int,
-    var isChecked:Boolean,
+data class Group (//FireStoreで使用する場合は、Nullableかつ初期値にNullを入れる必要がある。
+    val hostUserId: String? = null,
+    val storageRef: String? = null,
+    var groupName: String? = null,
+    var groupIntroduction: String? = null,
+    var groupType: String? = null,
+    var prefecture: String? = null,
+    var city: String? = null,
+    var facilityEnvironment: String? = null,
+    var basis: String? = null,
+    var frequency:String? = null,
+    var minAge:Int? = null,
+    var maxAge:Int? = null,
+    var minNumberPerson:Int? = null,
+    var maxNumberPerson :Int? = null,
+    @field:JvmField
+    var isChecked:Boolean? = null,
     @ServerTimestamp
-    val timeStamp: Date? = null //TODO TimeStampで不具合が発生しないか検証する。
+    val timeStamp: Date? = null
 )

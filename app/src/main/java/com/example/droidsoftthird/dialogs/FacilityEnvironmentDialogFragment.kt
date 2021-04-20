@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 
 class FacilityEnvironmentDialogFragment : DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels()
+    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
     private var selected = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

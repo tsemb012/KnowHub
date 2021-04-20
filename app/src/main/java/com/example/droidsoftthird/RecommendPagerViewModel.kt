@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.lang.Exception
 
 class RecommendPagerViewModel(private val repository: GroupRepository):ViewModel() {
@@ -15,11 +16,13 @@ class RecommendPagerViewModel(private val repository: GroupRepository):ViewModel
     val groups: LiveData<List<Group>>
         get() = _groups
 
+
+/*
     init {
         getAllGroups()
-    }
+    }*/
 
-    private fun getAllGroups() {
+    fun getAllGroups() {
         viewModelScope.launch {
             val result = try{
                 repository.getAllGroups()
@@ -30,6 +33,7 @@ class RecommendPagerViewModel(private val repository: GroupRepository):ViewModel
                 is Result.Success -> _groups.postValue(result.data)
                 //else //TODO SnackBarを出現させる処理を記入する。
             }
+            Timber.tag("check_result1").d(result.toString())
         }
     }
 
