@@ -36,6 +36,7 @@ class RecommendPagerFragment:Fragment() {
         binding.groupList.adapter = adapter
 
         recommendPagerViewModel.getAllGroups()
+        //TODO 上記、初期化メソッドの適切な位置を検討する。
 
         recommendPagerViewModel.groups.observe(viewLifecycleOwner, Observer {
             it?.let{
@@ -46,7 +47,7 @@ class RecommendPagerFragment:Fragment() {
         recommendPagerViewModel.navigateToGroupDetail.observe(viewLifecycleOwner, Observer { groupId ->
             groupId?.let {
                 this.findNavController().navigate(
-                    RecommendPagerFragmentDirections.actionRecommendPagerFragmentToGroupDetailFragment(groupId)
+                    HomeFragmentDirections.actionHomeFragmentToGroupDetailFragment(groupId)
                 )
                 recommendPagerViewModel.onGroupDetailNavigated()
             }

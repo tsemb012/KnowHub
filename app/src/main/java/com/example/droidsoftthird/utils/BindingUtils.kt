@@ -16,15 +16,21 @@ import java.net.URI
 //FirebaseStorage.getInstance().getReference(group.getPhotoRefPath())
 
 @BindingAdapter("imageFireStorage")
-fun ImageView.imageFireStorage(ref: String) {
-    Glide.with(this)
-        .load(FirebaseStorage.getInstance().getReference(ref))
-        .apply(
-            RequestOptions()
-                .placeholder(R.drawable.loading_animation)
-                .error(R.drawable.ic_broken_image)
-        )
-        .into(this)
+fun ImageView.imageFireStorage(ref: String?) {
+    if (ref != null){
+        Glide.with(this)
+            .load(FirebaseStorage.getInstance().getReference(ref))
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.ic_broken_image)
+            )
+            .into(this)
+    }else{
+        Glide.with(this)
+            .load(R.drawable.loading_animation)
+            .into(this)
+    }
 }
 
 
