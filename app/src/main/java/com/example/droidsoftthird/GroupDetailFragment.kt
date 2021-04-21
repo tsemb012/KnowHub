@@ -13,10 +13,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentGroupDetailBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import timber.log.Timber
 
 
 class GroupDetailFragment : Fragment() {
 
+    //TODO UIを洗練させる
+    //TODO 同フラグメント専用にBindingUtilのコードを作る。
+    //TODO ツールバータイトルの良い表示方法を検討する。
+    //TODO getGroup()の記述位置があっているか確認する。
+    //TODO FloatingFabのOnClickロジック及び設計を考える。
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +37,7 @@ class GroupDetailFragment : Fragment() {
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.collapsingToolbarLayout
         val toolbar: Toolbar = binding.materialToolbar
-        toolbar.title = " "//TODO ツールバータイトルの良い表示方法を検討する。
+        toolbar.title = " "
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
@@ -48,6 +54,7 @@ class GroupDetailFragment : Fragment() {
 
         val repository = GroupRepository()
         val arguments = GroupDetailFragmentArgs.fromBundle(requireArguments())
+        Timber.tag(TAG).d(arguments.toString())
         val viewModelFactory = GroupDetailViewModelFactory(arguments.groupId, repository)
         val viewModel = ViewModelProvider(
             this, viewModelFactory
@@ -59,9 +66,16 @@ class GroupDetailFragment : Fragment() {
         binding.groupDetailViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        //TODO FloatingFabのOnClickロジックはこちらに記載する。
+        viewModel.getGroup()
+
+
+
+
 
         return binding.root
     }
 
+    companion object {
+        private val TAG: String? = GroupDetailFragment::class.simpleName
+    }
 }
