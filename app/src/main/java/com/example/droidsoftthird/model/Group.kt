@@ -2,6 +2,7 @@ package com.example.droidsoftthird.model
 
 import android.text.TextUtils
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
@@ -23,6 +24,8 @@ data class Group (//FireStoreで使用する場合は、Nullableかつ初期値�
     var maxNumberPerson :Int? = null,
     @field:JvmField
     var isChecked:Boolean? = null,
+    @DocumentId
+    val documentId: String? = null,
     @ServerTimestamp
     val timeStamp: Date? = null
 )
