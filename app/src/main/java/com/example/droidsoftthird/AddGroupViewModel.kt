@@ -138,7 +138,7 @@ class AddGroupViewModel(val repository: GroupRepository): ViewModel() {
 
         viewModelScope.launch {
             if(imageUri.value != null) {
-                val result: Result<StorageReference> = repository.uploadPhoto(imageUri.value!!).also {
+                val result = repository.uploadPhoto(imageUri.value!!).also {
                     when(it){
                         is Result.Success -> {
                             val storageRef = it.data.path
