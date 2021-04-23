@@ -3,7 +3,7 @@ package com.example.droidsoftthird
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class GroupDetailViewModelFactory (private val groupId:String, private val repository: GroupRepository): ViewModelProvider.Factory {
+class GroupDetailViewModelFactory (private val groupId:String, private val repository: UserGroupRepository): ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GroupDetailViewModel::class.java)) {

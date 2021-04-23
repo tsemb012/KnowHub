@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.droidsoftthird.databinding.FragmentPagerRecommendBinding
-import com.google.android.material.snackbar.Snackbar
 
 class RecommendPagerFragment:Fragment() {
 
@@ -22,7 +21,7 @@ class RecommendPagerFragment:Fragment() {
     ): View? {
         val binding: FragmentPagerRecommendBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_pager_recommend, container, false)
-        val repository = GroupRepository()
+        val repository = UserGroupRepository()
         val viewModelFactory = RecommendPagerViewModelFactory(repository)
         val recommendPagerViewModel = ViewModelProvider(
                 this, viewModelFactory).get(RecommendPagerViewModel::class.java)

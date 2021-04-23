@@ -5,12 +5,11 @@ import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-class AddGroupViewModel(val repository: GroupRepository): ViewModel() {
+class AddGroupViewModel(val repository: UserGroupRepository): ViewModel() {
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     //TODO より良いUIを検討する。

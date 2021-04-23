@@ -13,14 +13,12 @@ import com.google.firebase.storage.StorageReference
 import java.net.URI
 
 
-//TODO GlideでStorageのデータを表示する。
-//FirebaseStorage.getInstance().getReference(group.getPhotoRefPath())
-
+//DONE GlideでStorageのデータを表示する。
 @BindingAdapter("imageFireStorage")
 fun ImageView.imageFireStorage(ref: String?) {
     if (ref != null){
         Glide.with(this)
-            .load(FirebaseStorage.getInstance().getReference(ref))
+            .load(FirebaseStorage.getInstance().getReference(ref))//TODO Transformationで画像の加工処理を行う。
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//Changed from AUTOMATIC to RESOURCE
             .apply(
                 RequestOptions()

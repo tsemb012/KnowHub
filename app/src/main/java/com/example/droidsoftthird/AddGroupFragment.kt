@@ -12,8 +12,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
@@ -35,7 +33,7 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_group_add, container, false
         )
-        val repository = GroupRepository()
+        val repository = UserGroupRepository()
         val viewModelFactory = AddGroupViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AddGroupViewModel::class.java)
 

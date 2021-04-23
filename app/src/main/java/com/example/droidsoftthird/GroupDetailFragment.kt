@@ -52,7 +52,7 @@ class GroupDetailFragment : Fragment() {
             appBarConfiguration
         )
 
-        val repository = GroupRepository()
+        val repository = UserGroupRepository()
         val arguments = GroupDetailFragmentArgs.fromBundle(requireArguments())
         Timber.tag(TAG).d(arguments.toString())
         val viewModelFactory = GroupDetailViewModelFactory(arguments.groupId, repository)

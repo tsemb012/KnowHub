@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class GroupDetailViewModel(private val groupId:String , private val repository: GroupRepository):ViewModel() {
+class GroupDetailViewModel(private val groupId:String , private val repository: UserGroupRepository):ViewModel() {
 
     private val _group = MutableLiveData<Group>()
     val group: LiveData<Group>

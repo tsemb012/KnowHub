@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class RecommendPagerViewModel(private val repository: GroupRepository):ViewModel() {
+class RecommendPagerViewModel(private val repository: UserGroupRepository):ViewModel() {
 
 
     private val _groups = MutableLiveData<List<Group>>()
