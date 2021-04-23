@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GroupRepository {
+class UserGroupRepository {
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
 
