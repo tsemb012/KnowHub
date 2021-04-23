@@ -21,6 +21,7 @@ fun ImageView.imageFireStorage(ref: String?) {
     if (ref != null){
         Glide.with(this)
             .load(FirebaseStorage.getInstance().getReference(ref))
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//Changed from AUTOMATIC to RESOURCE
             .apply(
                 RequestOptions()
                     .placeholder(R.drawable.loading_animation)
