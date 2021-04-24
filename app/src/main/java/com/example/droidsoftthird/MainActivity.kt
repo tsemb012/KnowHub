@@ -18,7 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint//NOTE ベースになっているActivityにはHiltの@AndroidEntryPointアノテーションを付与する。
+@AndroidEntryPoint//has to be on MainActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

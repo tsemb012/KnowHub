@@ -2,6 +2,8 @@ package com.example.droidsoftthird
 
 
 import android.net.Uri
+import androidx.fragment.app.viewModels
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
 import com.google.firebase.auth.FirebaseAuth
@@ -9,10 +11,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-class AddGroupViewModel(val repository: UserGroupRepository): ViewModel() {
+class AddGroupViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     //TODO より良いUIを検討する。
+
 
 
     private val _imageUri = MutableLiveData<Uri>(null)
