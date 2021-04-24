@@ -110,8 +110,8 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     //-----Hilt
-    //implementation "com.google.dagger:hilt-android:$hilt_version"
-    //kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    //implementation "com.google.dagger:hilt-android:$hilt_version"//最新のHiltはAssistedInjection非対応
+    //kapt "com.google.dagger:hilt-android-compiler:$hilt_version"//パラメーターの渡し方が確立されるまでDagger2.31を使用。
     implementation 'com.google.dagger:hilt-android:2.31-alpha'
     kapt 'com.google.dagger:hilt-android-compiler:2.31-alpha'
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
