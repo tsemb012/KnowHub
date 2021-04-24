@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,8 +9,9 @@ import com.example.droidsoftthird.model.Group
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class RecommendPagerViewModel(private val repository: UserGroupRepository):ViewModel() {
+class RecommendPagerViewModel @ViewModelInject constructor(private val repository: UserGroupRepository):ViewModel() {
 
 
     private val _groups = MutableLiveData<List<Group>>()

@@ -12,16 +12,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
 import com.google.android.material.switchmaterial.SwitchMaterial
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddGroupFragment:Fragment(),View.OnClickListener {
 
     private lateinit var binding: FragmentGroupAddBinding
-    private lateinit var viewModel: AddGroupViewModel
-
+    private val viewModel:AddGroupViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,9 +35,6 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_group_add, container, false
         )
-        val repository = UserGroupRepository()
-        val viewModelFactory = AddGroupViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(AddGroupViewModel::class.java)
 
         binding.addGroupViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner//lifecycleOwnerのつけ忘れに注意。LiveDataをViewに反映するために必要。

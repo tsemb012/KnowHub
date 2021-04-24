@@ -7,15 +7,20 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentGroupDetailBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.security.acl.Group
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class GroupDetailFragment : Fragment() {
 
     //TODO UIを洗練させる
@@ -23,6 +28,7 @@ class GroupDetailFragment : Fragment() {
     //TODO ツールバータイトルの良い表示方法を検討する。
     //TODO getGroup()の記述位置があっているか確認する。
     //TODO FloatingFabのOnClickロジック及び設計を考える。
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,13 +58,15 @@ class GroupDetailFragment : Fragment() {
             appBarConfiguration
         )
 
-        val repository = UserGroupRepository()
+       val repository = UserGroupRepository()
         val arguments = GroupDetailFragmentArgs.fromBundle(requireArguments())
         Timber.tag(TAG).d(arguments.toString())
-        val viewModelFactory = GroupDetailViewModelFactory(arguments.groupId, repository)
+        val viewModelFactory = GroupDetailViewModelFactory(repository, arguments.groupId)
         val viewModel = ViewModelProvider(
             this, viewModelFactory
         ).get(GroupDetailViewModel::class.java)
+
+
 
         //DONE GroupDetailViewModelのコーディング
         //DONE GroupDetailViewModelFactoryのコーディング

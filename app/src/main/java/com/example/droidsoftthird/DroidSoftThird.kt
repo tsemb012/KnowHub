@@ -3,10 +3,11 @@ package com.example.droidsoftthird
 
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
+@HiltAndroidApp//Trigger generating Code of Hilt
 class DroidSoftThird: Application() {
     override fun onCreate() {
         super.onCreate()
