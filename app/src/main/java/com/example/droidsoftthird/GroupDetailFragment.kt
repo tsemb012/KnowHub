@@ -8,7 +8,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.lifecycle.ViewModelFactoryModules_ActivityModule_ProvideFactoryFactory.provideFactory
+import androidx.hilt.lifecycle.ViewModelFactoryModules_FragmentModule_ProvideFactoryFactory.provideFactory
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavArgs
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
@@ -28,7 +31,11 @@ class GroupDetailFragment : Fragment() {
     //TODO ツールバータイトルの良い表示方法を検討する。
     //TODO getGroup()の記述位置があっているか確認する。
     //TODO FloatingFabのOnClickロジック及び設計を考える。
+    //TODO NavArgを使用した値の受け渡しに切り替える。
 
+
+    @Inject
+    lateinit var groupDetailViewModelAssistedFactory: GroupDetailViewModel.Factory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,14 +65,8 @@ class GroupDetailFragment : Fragment() {
             appBarConfiguration
         )
 
-       val repository = UserGroupRepository()
         val arguments = GroupDetailFragmentArgs.fromBundle(requireArguments())
-        Timber.tag(TAG).d(arguments.toString())
-        val viewModelFactory = GroupDetailViewModelFactory(repository, arguments.groupId)
-        val viewModel = ViewModelProvider(
-            this, viewModelFactory
-        ).get(GroupDetailViewModel::class.java)
-
+        val viewModel = groupDetailViewModelAssistedFactory.create(arguments.groupId)
 
 
         //DONE GroupDetailViewModelのコーディング
