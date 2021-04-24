@@ -2,18 +2,16 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-/*class GroupDetailViewModel @AssistedInject constructor(
+class GroupDetailViewModel @AssistedInject constructor(
     private val repository: UserGroupRepository,
     @Assisted private val groupId:String,
-    ):ViewModel() {*/
-
-class GroupDetailViewModel(
-    private val repository: UserGroupRepository,
-    private val groupId: String,
     ):ViewModel() {
 
     private val _group = MutableLiveData<Group>()
@@ -37,9 +35,9 @@ class GroupDetailViewModel(
 
     //TODO onClick時のロジック処理を受け持つ。
 
-/*    @AssistedFactory
+    @AssistedFactory
     interface Factory{
         fun create(groupId: String): GroupDetailViewModel
-    }*/
+    }
 
 }
