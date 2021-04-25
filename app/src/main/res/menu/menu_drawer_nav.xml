@@ -10,8 +10,8 @@
             android:title="@string/profile_page" />
 
         <item
-            android:id="@+id/Sample"
-            android:icon="@drawable/ic_baseline_account_box_24"
-            android:title="Sample" />
+            android:id="@+id/log_out"
+            android:icon="@drawable/ic_baseline_logout"
+            android:title="@string/Log_out" />
     </group>
 </menu>

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
@@ -27,13 +29,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeBinding;
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
+    private val viewModel:HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +84,7 @@ class HomeFragment: Fragment() {
 
         //-----MenuGenerate for AppBar
         binding.include.toolbar.inflateMenu(R.menu.menu_main)
+        /*TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.sign_out) {
                 context?.let { AuthUI.getInstance().signOut(it) }
@@ -89,6 +95,14 @@ class HomeFragment: Fragment() {
             return@setOnMenuItemClickListener NavigationUI.onNavDestinationSelected(item,
                 navController)
                     || super.onOptionsItemSelected(item)
+        }*/
+        binding.navView.setNavigationItemSelectedListener{
+            if (it.itemId == R.id.log_out){
+                context?.let { AuthUI.getInstance().signOut(it) }
+        } else {
+            //TODO WRITE CODE FOR MENU EXCEPT FOR SIGN_OUT
+        }
+            return@setNavigationItemSelectedListener true
         }
 
         //-----ViewPager Objects
@@ -112,21 +126,43 @@ class HomeFragment: Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
             Navigation.findNavController(v).navigate(action)
         })
+
+        //TODO ロジックを記述していく
+        observeAuthenticationState()
     }
 
-    override fun onStart() {
-        super.onStart()
-        updateUI(auth.currentUser)
+    private fun observeAuthenticationState() {
+
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when (authenticationState) {
+                HomeViewModel.AuthenticationState.AUTHENTICATED -> {
+                    //TODO ログインが成功した後の処理を記入
+                    //observeUserProfileRegistration()
+
+/*                    binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
+
+                    binding.authButton.text = getString(R.string.logout_button_text)
+                    binding.authButton.setOnClickListener {
+                        */
+                }
+                else -> {
+                    startSignIn()
+                }
+            }
+        })
     }
 
-    private fun updateUI(user: FirebaseUser?){
-        if (user != null){
-            //TODO ログイン済みのユーザーに対する処理があればこちらで処理する。
+ /*   private fun observeUserProfileRegistration() {
+
+        viewModel.hasProfile.observe(viewLifecycleOwner, Observer { hasProfile ->
+            when (hasProfile) {
+                true ->
+
+            }else{
+
         }
-        else{
-            startSignIn()
         }
-    }
+    }*/
 
 
     private fun startSignIn() {
@@ -167,6 +203,7 @@ class HomeFragment: Fragment() {
             }
         }
     }
+
 
 
     companion object {

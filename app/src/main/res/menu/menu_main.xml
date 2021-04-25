@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+<!--TODO フィルター使用時に再利用する。
+        <item
         android:id="@+id/sign_out"
         android:title="@string/Logout"
         app:showAsAction="never"
-        />
+        />-->
 
 </menu>
