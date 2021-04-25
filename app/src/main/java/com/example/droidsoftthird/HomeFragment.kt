@@ -24,12 +24,16 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeBinding;
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +41,8 @@ class HomeFragment: Fragment() {
         //-----Enable Menu
         setHasOptionsMenu(true);
 
-        //-----ViewModel
-        //TODO ViewModelを生成する。
+        //-----FirebaseAuth
+        auth = Firebase.auth
     }
 
     override fun onCreateView(
@@ -110,6 +114,21 @@ class HomeFragment: Fragment() {
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        updateUI(auth.currentUser)
+    }
+
+    private fun updateUI(user: FirebaseUser?){
+        if (user != null){
+            //TODO ログイン済みのユーザーに対する処理があればこちらで処理する。
+        }
+        else{
+            startSignIn()
+        }
+    }
+
+
     private fun startSignIn() {
         // Choose authentication providers
         val providers = arrayListOf(
@@ -129,6 +148,8 @@ class HomeFragment: Fragment() {
             RC_RESIGN_IN)
     }
 
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -146,7 +167,6 @@ class HomeFragment: Fragment() {
             }
         }
     }
-
 
 
     companion object {
