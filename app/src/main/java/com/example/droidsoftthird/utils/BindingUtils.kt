@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.utils
 
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -34,13 +35,25 @@ fun ImageView.imageFireStorage(ref: String?) {
 }
 
 
-@BindingAdapter("imageURL")
+@BindingAdapter("imageURI")
 fun ImageView.imageURI(uri: URI) {
     Glide.with(this)
         .load(uri)
         .apply(
             RequestOptions()
                 .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_broken_image)
+        )
+        .into(this)
+}
+
+@BindingAdapter("imageUserURI")
+fun ImageView.imageUserURI(uri: URI) {
+    Glide.with(this)
+        .load(uri)
+        .apply(
+            RequestOptions()
+                .placeholder(R.drawable.ic_baseline_account_box_24)
                 .error(R.drawable.ic_broken_image)
         )
         .into(this)

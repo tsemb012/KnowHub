@@ -1,7 +1,11 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.repository
 
 import android.net.Uri
+import com.example.droidsoftthird.R
+import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.model.UserProfile
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -20,7 +24,7 @@ class UserGroupRepository @Inject constructor() {
     private val fireStorageRef = FirebaseStorage.getInstance().reference
 
 
-    suspend fun getAllGroups():Result<List<Group>> =
+    suspend fun getAllGroups(): Result<List<Group>> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("groups")
@@ -45,7 +49,7 @@ class UserGroupRepository @Inject constructor() {
 
         }
 
-    suspend fun getGroup(groupId: String):Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
+    suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){
         suspendCoroutine { continuation ->
             fireStore.collection("groups")
@@ -69,7 +73,7 @@ class UserGroupRepository @Inject constructor() {
     }
 
 
-    suspend fun uploadPhoto(uri: Uri):Result<StorageReference> {
+    suspend fun uploadPhoto(uri: Uri): Result<StorageReference> {
         val photoRef = fireStorageRef.child("images/${UUID.randomUUID().toString()}")
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
@@ -89,7 +93,10 @@ class UserGroupRepository @Inject constructor() {
             }
         }
 
-    suspend fun uploadGroup(group: Group):Result<Int> {
+
+
+
+    suspend fun uploadGroup(group: Group): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("groups")
@@ -109,7 +116,50 @@ class UserGroupRepository @Inject constructor() {
         }
     }
 
+    suspend fun getUserProfile(): Result<UserProfile?> =
+        withContext(Dispatchers.IO){
+            suspendCoroutine { continuation ->
+                fireStore.collection("users")
+                    .document(FirebaseAuth.getInstance().currentUser.uid)
+                    .get()
+                    .addOnSuccessListener {
+                        try {
+                            if (it != null){
+                            continuation.resume(Result.Success(it.toObject()))
+                            }else{
+                            continuation.resume(Result.Success(null))
+                            }
+                        } catch (e: Exception) {
+                            continuation.resume(Result.Error(e))
+                            Timber.tag("check_result3").d(e.toString())
+                        }
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(Result.Error(it))
+                        Timber.tag("check_result4").d(it.toString())
+                    }
+            }
+        }
 
+    suspend fun uploadUser(userProfile: UserProfile): Result<Int> {
+        return withContext(Dispatchers.IO){
+            suspendCoroutine { continuation ->
+                fireStore.collection("users")
+                    .document(FirebaseAuth.getInstance().currentUser.uid)
+                    .set(userProfile)
+                    .addOnSuccessListener {
+                        try {
+                            continuation.resume(Result.Success(R.string.upload_success))
+                        } catch (e: Exception) {
+                            continuation.resume(Result.Error(e))
+                        }
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(Result.Error(it))
+                    }
+            }
+        }
+    }
 
 
     companion object {

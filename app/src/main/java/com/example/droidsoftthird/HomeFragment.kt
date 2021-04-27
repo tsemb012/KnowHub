@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentHomeBinding
+import com.example.droidsoftthird.databinding.NavHeaderBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -31,10 +33,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class HomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeBinding;
+    private lateinit var binding_header: NavHeaderBinding;
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
@@ -56,6 +60,8 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding_header = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
+        binding.navView.addHeaderView(binding_header.root)
         return binding.root
     }
 
@@ -127,23 +133,28 @@ class HomeFragment: Fragment() {
             Navigation.findNavController(v).navigate(action)
         })
 
-        //TODO ロジックを記述していく
         observeAuthenticationState()
     }
 
     private fun observeAuthenticationState() {
 
+        //DONE CreateProfileFragmentを作成する。
+        //DONE UserProfileModelを作成する。
+        //DONE HomeFragmentLayout内の処理を完成させる。
+        //TODO　is Result.Error -> 取得失敗時のエラー記入
+
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
                 HomeViewModel.AuthenticationState.AUTHENTICATED -> {
-                    //TODO ログインが成功した後の処理を記入
-                    //observeUserProfileRegistration()
-
-/*                    binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
-
-                    binding.authButton.text = getString(R.string.logout_button_text)
-                    binding.authButton.setOnClickListener {
-                        */
+                    viewModel.getUserProfile()//画面への反映および画面遷移ついては、ViewModel主導で行う。
+                    viewModel.userProfile.observe(viewLifecycleOwner, Observer { userProfile ->
+                        if (userProfile != null) {
+                            binding_header.viewModel = viewModel
+                        } else {
+                            navController.navigate(R.id.createProfileFragment)
+                            //DONE CreateProfileFragmentを作成する。
+                        }
+                    })
                 }
                 else -> {
                     startSignIn()
@@ -152,17 +163,7 @@ class HomeFragment: Fragment() {
         })
     }
 
- /*   private fun observeUserProfileRegistration() {
 
-        viewModel.hasProfile.observe(viewLifecycleOwner, Observer { hasProfile ->
-            when (hasProfile) {
-                true ->
-
-            }else{
-
-        }
-        }
-    }*/
 
 
     private fun startSignIn() {

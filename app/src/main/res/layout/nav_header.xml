@@ -2,6 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.droidsoftthird.HomeViewModel" />
+    </data>
+<!--TODO キレイに表示されるよう調整する。-->
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height">
@@ -10,7 +18,9 @@
             android:id="@+id/nav_header_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/side_nav_bar"/>
+            android:background="@drawable/side_nav_bar"
+            app:imageFireStorage="@{viewModel.userProfile.backgroundImageRef}"
+            />
 
         <LinearLayout
             android:id="@+id/nav_header"
@@ -31,15 +41,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
-                app:srcCompat="@mipmap/ic_launcher_round" />
+                app:srcCompat="@mipmap/ic_launcher_round"
+                app:imageFireStorage="@{viewModel.userProfile.userImageRef}"/>
+
+
 
             <TextView
                 android:id="@+id/nav_header_userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:text="User name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="@{viewModel.userProfile.userName}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
         </LinearLayout>
     </FrameLayout>
 </layout>

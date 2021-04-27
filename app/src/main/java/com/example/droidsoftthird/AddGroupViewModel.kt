@@ -2,11 +2,12 @@ package com.example.droidsoftthird
 
 
 import android.net.Uri
-import androidx.fragment.app.viewModels
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.repository.UserGroupRepository
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -140,10 +141,10 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
 
         viewModelScope.launch {
             if(imageUri.value != null) {
-                val result = repository.uploadPhoto(imageUri.value!!).also {
+                async{repository.uploadPhoto(imageUri.value!!)}.await().also {
                     when(it){
                         is Result.Success -> {
-                            val storageRef = it.data.path
+                            val storageRef = it.data.path.plus(IMAGE_SIZE)//FirebaseExtinctionで画像加工及びファイル名を変更ししているため、ファイル名を修正する。
                             val group = Group(
                                 FirebaseAuth.getInstance().uid,
                                 storageRef,
@@ -175,6 +176,11 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
             }
         }
     }
+
+    companion object {
+        private const val IMAGE_SIZE = "_200x200"
+    }
+
 
 }
 
