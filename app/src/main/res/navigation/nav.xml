@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createProfileFragment"
+            app:destination="@id/createProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
@@ -41,6 +44,11 @@
             android:id="@+id/action_recommendPagerFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createProfileFragment"
+        android:name="com.example.droidsoftthird.CreateProfileFragment"
+        android:label="fragment_create_profile"
+        tools:layout="@layout/fragment_create_profile" />
 
 
 </navigation>

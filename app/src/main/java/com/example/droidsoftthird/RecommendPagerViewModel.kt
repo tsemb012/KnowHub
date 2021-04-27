@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.repository.UserGroupRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
-import javax.inject.Inject
 
 class RecommendPagerViewModel @ViewModelInject constructor(private val repository: UserGroupRepository):ViewModel() {
 

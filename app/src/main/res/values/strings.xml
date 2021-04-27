@@ -60,7 +60,7 @@
     <string name="female">女性</string>
     <string name="gender_private">非公開</string>
     <string name="age">年齢</string>
-    <string name="residentialArea">居住地域</string>
+    <string name="residential_area">居住地域</string>
     <string name="editComment">コメントを入力してください。</string>
     <string name="profile_add">プロフィールを追加しました。</string>
     <string name="editProfile">プロフィールを編集</string>
@@ -73,4 +73,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Log_out">ログアウト</string>
+    <string name="please_input_name">名前を入力してください。</string>
+    <string name="register_profile">プロフィールを登録</string>
 </resources>
