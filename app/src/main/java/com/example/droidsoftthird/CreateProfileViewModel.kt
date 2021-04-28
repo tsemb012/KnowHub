@@ -6,10 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.UserProfile
 import com.example.droidsoftthird.repository.UserGroupRepository
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -79,7 +77,7 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                                 prefecture_r.value.toString(),
                                 city_r.value.toString(),
                             )
-                            val result:Result<Int> = repository.uploadUser(userProfile)
+                            val result:Result<Int> = repository.createUserProfile(userProfile)
                             /*when(result){
                               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
                               else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。

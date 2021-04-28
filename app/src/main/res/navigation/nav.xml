@@ -35,6 +35,9 @@
         <argument
             android:name="groupId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_groupDetailFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/recommendPagerFragment"
@@ -49,6 +52,10 @@
         android:name="com.example.droidsoftthird.CreateProfileFragment"
         android:label="fragment_create_profile"
         tools:layout="@layout/fragment_create_profile" />
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.example.droidsoftthird.MyPageFragment"
+        android:label="MyPageFragment" />
 
 
 </navigation>
