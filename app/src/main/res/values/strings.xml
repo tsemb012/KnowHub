@@ -75,4 +75,7 @@
     <string name="Log_out">ログアウト</string>
     <string name="please_input_name">名前を入力してください。</string>
     <string name="register_profile">プロフィールを登録</string>
+    <string name="search">検索</string>
+    <string name="my_page">マイページ</string>
+    <string name="video">ビデオ</string>
 </resources>

@@ -60,8 +60,6 @@ class GroupDetailViewModel @AssistedInject constructor(
         _navigateToMyPage.value = null
     }
 
-
-
     //TODO onClick時のロジック処理を受け持つ。
 
     @AssistedFactory
