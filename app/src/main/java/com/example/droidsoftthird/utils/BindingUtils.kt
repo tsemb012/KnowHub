@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.utils
 
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -97,4 +98,29 @@ fun TextView.bindNumberPerson(minNumberPerson: Int, maxNumberPerson:Int){
         String.format("%d〜%d人", minNumberPerson, maxNumberPerson)
     }
 }
+
+
+/** NetworkingStatus表現時に下記のコードを再利用。現状、Glideでも同じような表現はできている。
+ * This binding adapter displays the [MarsApiStatus] of the network request in an image view.  When
+ * the request is loading, it displays a loading_animation.  If the request has an error, it
+ * displays a broken image to reflect the connection error.  When the request is finished, it
+ * hides the image view.
+ *
+
+@BindingAdapter("marsApiStatus")
+fun bindStatus(statusImageView: ImageView, status: MarsApiStatus?) {
+    when (status) {
+        MarsApiStatus.LOADING -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.loading_animation)
+        }
+        MarsApiStatus.ERROR -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.ic_connection_error)
+        }
+        MarsApiStatus.DONE -> {
+            statusImageView.visibility = View.GONE
+        }
+    }
+}*/
 

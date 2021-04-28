@@ -41,7 +41,6 @@ class HomeFragment: Fragment() {
     private lateinit var binding_header: NavHeaderBinding;
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private lateinit var auth: FirebaseAuth
     private val viewModel:HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +48,6 @@ class HomeFragment: Fragment() {
 
         //-----Enable Menu
         setHasOptionsMenu(true);
-
-        //-----FirebaseAuth
-        auth = Firebase.auth
     }
 
     override fun onCreateView(
@@ -78,8 +74,8 @@ class HomeFragment: Fragment() {
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration.Builder(navController.graph).setOpenableLayout(
-            drawer).build()
+        appBarConfiguration = AppBarConfiguration.Builder(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment)).setOpenableLayout(
+            drawer).build()//TODO TopLevelDestinationが増えるごとに追加していく。
 
 
         //-----Setup for NavigationUI
@@ -90,7 +86,7 @@ class HomeFragment: Fragment() {
 
         //-----MenuGenerate for AppBar
         binding.include.toolbar.inflateMenu(R.menu.menu_main)
-        /*TODO FilterをMenuに付与する際に再利用するコード
+        /**TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.sign_out) {
                 context?.let { AuthUI.getInstance().signOut(it) }
@@ -205,6 +201,30 @@ class HomeFragment: Fragment() {
         }
     }
 
+
+
+    /**TODO Filter製作時に再利用する。
+     *
+     * Inflates the overflow menu that contains filtering options.
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.overflow_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+     * Updates the filter in the [OverviewViewModel] when the menu items are selected from the
+     * overflow menu.
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.updateFilter(
+            when (item.itemId) {
+                R.id.show_rent_menu -> MarsApiFilter.SHOW_RENT
+                R.id.show_buy_menu -> MarsApiFilter.SHOW_BUY
+                else -> MarsApiFilter.SHOW_ALL
+            }
+        )
+        return true
+    }*/
 
 
     companion object {

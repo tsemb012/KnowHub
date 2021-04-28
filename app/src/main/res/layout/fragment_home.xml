@@ -30,7 +30,8 @@
 
                 <include
                     android:id="@+id/include"
-                    layout="@layout/include_appbar" />
+                    layout="@layout/include_appbar"
+                    />
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
@@ -88,5 +89,6 @@
                 android:fitsSystemWindows="true"
                 app:menu="@menu/menu_drawer_nav"/>
         </androidx.drawerlayout.widget.DrawerLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

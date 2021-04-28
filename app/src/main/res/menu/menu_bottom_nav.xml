@@ -2,24 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bnf001_SearchBtmNavFragment"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_search_24"
-        android:title="A" />
+        android:title="@string/search" />
 
     <item
-        android:id="@+id/bnf002_OwnpageBtmNavFragment"
+        android:id="@+id/myPageFragment"
         android:icon="@drawable/ic_baseline_group_24"
-        android:title="B" />
+        android:title="@string/my_page" />
 
     <item
-        android:id="@+id/schedule_bottomNav"
+        android:id="@+id/scheduleFragment"
         android:icon="@drawable/ic_baseline_event_note_24"
-        android:title="C"/>
+        android:title="@string/schedule"/>
 
     <item
-        android:id="@+id/Video_bottomNav"
+        android:id="@+id/videoFragment"
         android:icon="@drawable/ic_baseline_videocam_24"
-        android:title="D"/>
+        android:title="@string/video"/>
     <!--TODO アクティビティを呼び出すと下記のBottomNavigationが呼び出されないことが判明。
                 →Navigationで対処？　あるいは　次のアクティビティでボトムナビゲーションを保持させる方法？
                 →いずれにしても将来的に解決する事項。-->
