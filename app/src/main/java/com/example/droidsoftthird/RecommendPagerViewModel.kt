@@ -27,7 +27,7 @@ class RecommendPagerViewModel @ViewModelInject constructor(private val repositor
     fun getAllGroups() {
         viewModelScope.launch {
             val result = try{
-                repository.getAllGroups()
+                repository.getGroups(QueryType.ALL.value)
             } catch(e:Exception){
                 Result.Error(Exception("Network request failed"))
             }
