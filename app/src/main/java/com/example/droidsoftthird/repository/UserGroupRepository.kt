@@ -22,6 +22,7 @@ import kotlin.coroutines.suspendCoroutine
 class UserGroupRepository @Inject constructor() {
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
+    private val firebaseUid = FirebaseAuth.getInstance().currentUser.uid
 
 
     suspend fun getAllGroups(): Result<List<Group>> =
@@ -96,7 +97,7 @@ class UserGroupRepository @Inject constructor() {
 
 
 
-    suspend fun uploadGroup(group: Group): Result<Int> {
+    suspend fun createGroup(group: Group): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("groups")
@@ -120,7 +121,7 @@ class UserGroupRepository @Inject constructor() {
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
-                    .document(FirebaseAuth.getInstance().currentUser.uid)
+                    .document(firebaseUid)
                     .get()
                     .addOnSuccessListener {
                         try {
@@ -141,11 +142,11 @@ class UserGroupRepository @Inject constructor() {
             }
         }
 
-    suspend fun uploadUser(userProfile: UserProfile): Result<Int> {
+    suspend fun createUserProfile(userProfile: UserProfile): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
-                    .document(FirebaseAuth.getInstance().currentUser.uid)
+                    .document(firebaseUid)
                     .set(userProfile)
                     .addOnSuccessListener {
                         try {
@@ -154,6 +155,30 @@ class UserGroupRepository @Inject constructor() {
                             continuation.resume(Result.Error(e))
                         }
                     }
+                    .addOnFailureListener {
+                        continuation.resume(Result.Error(it))
+                    }
+            }
+        }
+    }
+
+    suspend fun userJoinGroup(groupId: String): Result<Int> {
+
+        val subUserRef = fireStore.collection("groups").document(groupId).collection("users").document(firebaseUid)
+        val subGroupRef = fireStore.collection("users").document(firebaseUid).collection("groups").document(groupId)
+
+        return withContext(Dispatchers.IO) {
+            suspendCoroutine { continuation ->
+                fireStore.runBatch {batch ->
+                    batch.set(subUserRef,hashMapOf("userId" to firebaseUid))
+                    batch.set(subGroupRef,hashMapOf("groupId" to groupId))
+                }.addOnSuccessListener {
+                    try {
+                        continuation.resume(Result.Success(R.string.upload_success))
+                    } catch (e: Exception) {
+                        continuation.resume(Result.Error(e))
+                    }
+                }
                     .addOnFailureListener {
                         continuation.resume(Result.Error(it))
                     }

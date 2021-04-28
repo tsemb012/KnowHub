@@ -162,7 +162,7 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
                                 maxNumberPerson.value!!,
                                 isChecked.value!!
                             )
-                            val result:Result<Int> = repository.uploadGroup(group)
+                            val result:Result<Int> = repository.createGroup(group)
                             /*when(result){
                               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
                               else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。

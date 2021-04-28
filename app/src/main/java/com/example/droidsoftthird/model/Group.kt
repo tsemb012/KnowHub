@@ -25,7 +25,7 @@ data class Group (//FireStoreで使用する場合は、Nullableかつ初期値�
     @field:JvmField
     var isChecked:Boolean? = null,
     @DocumentId
-    val documentId: String? = null,
+    val groupId: String? = null,
     @ServerTimestamp
     val timeStamp: Date? = null
 )

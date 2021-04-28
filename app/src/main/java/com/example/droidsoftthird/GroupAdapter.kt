@@ -58,7 +58,7 @@ class GroupDiffCallback : DiffUtil.ItemCallback<Group>() {
 
 
 class GroupListener(val clickListener:(groupId:String) -> Unit){
-    fun onClick(group: Group) = clickListener(group.documentId.toString())//TODO オンクリックの実引数を修正
+    fun onClick(group: Group) = clickListener(group.groupId.toString())//TODO オンクリックの実引数を修正
 }
 
 

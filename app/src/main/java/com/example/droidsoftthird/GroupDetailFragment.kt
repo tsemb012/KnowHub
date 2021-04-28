@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.hilt.lifecycle.ViewModelFactoryModules_ActivityModule_ProvideFactoryFactory.provideFactory
 import androidx.hilt.lifecycle.ViewModelFactoryModules_FragmentModule_ProvideFactoryFactory.provideFactory
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavArgs
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -65,21 +67,26 @@ class GroupDetailFragment : Fragment() {
             appBarConfiguration
         )
 
-        val arguments = GroupDetailFragmentArgs.fromBundle(requireArguments())
-        val viewModel = groupDetailViewModelAssistedFactory.create(arguments.groupId)
+        val groupId = GroupDetailFragmentArgs.fromBundle(requireArguments()).groupId
+        val viewModel = groupDetailViewModelAssistedFactory.create(groupId)
 
 
         //DONE GroupDetailViewModelのコーディング
         //DONE GroupDetailViewModelFactoryのコーディング
 
-        binding.groupDetailViewModel = viewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.getGroup()
+        viewModel.navigateToMyPage.observe(viewLifecycleOwner, Observer { groupId ->
+            groupId?.let {
+                this.findNavController().navigate(
+                    GroupDetailFragmentDirections.actionGroupDetailFragmentToMyPageFragment()
+                )
+                viewModel.onMyPageNavigated()
+            }
+        })
 
-
-
-
+        viewModel.getGroup()//TODO initで呼び出すように変更する。
 
         return binding.root
     }
