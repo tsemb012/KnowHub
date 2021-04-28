@@ -45,7 +45,7 @@ class MyPageFragment: Fragment() {
         })
         binding.groupList.adapter = adapter
 
-        viewModel.getAllGroups()
+        viewModel.getMyGroups()
 
 
         viewModel.groups.observe(viewLifecycleOwner, androidx.lifecycle.Observer {

@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.repository
 
 import android.net.Uri
+import com.example.droidsoftthird.QueryType
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.Group
@@ -25,12 +26,10 @@ class UserGroupRepository @Inject constructor() {
     private val firebaseUid = FirebaseAuth.getInstance().currentUser.uid
 
 
-    suspend fun getAllGroups(): Result<List<Group>> =
+    suspend fun getGroups(query: String): Result<List<Group>> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
-                fireStore.collection("groups")
-                    .orderBy("timeStamp",Query.Direction.DESCENDING)
-                    .limit(LIMIT)
+                    getQuery(query)
                     .get()
                     .addOnSuccessListener {
                         try {
@@ -49,6 +48,25 @@ class UserGroupRepository @Inject constructor() {
             }
 
         }
+
+    private fun getQuery(query: String): Query {
+        return when(query){
+            QueryType.ALL.value ->
+                fireStore
+                    .collection("groups")
+                    .orderBy("timeStamp",Query.Direction.DESCENDING)
+                    .limit(LIMIT)
+            QueryType.MY_PAGE.value ->
+                fireStore
+                    .collection("groups")
+                    .orderBy("timeStamp",Query.Direction.DESCENDING)
+                    .whereEqualTo("users",firebaseUid)
+                    .limit(LIMIT)
+            else ->
+                fireStore
+                    .collection("groups")
+        }
+    }
 
     suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){

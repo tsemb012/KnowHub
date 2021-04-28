@@ -17,10 +17,10 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: UserG
     val groups: LiveData<List<Group>?>
         get() = _groups
 
-    fun getAllGroups(){
+    fun getMyGroups(){
         viewModelScope.launch {
             val result = try{
-                repository.getAllGroups()
+                repository.getGroups(QueryType.MY_PAGE.value)
             } catch(e: Exception){
                 Result.Error(Exception("Network request failed"))
             }
