@@ -7,6 +7,7 @@ import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -34,7 +35,7 @@ class UserGroupRepository @Inject constructor() {
                     .addOnSuccessListener {
                         try {
                             continuation.resume(Result.Success(it.toObjects(Group::class.java)))
-                            Timber.tag("check_result2").d(it.toObjects(Group::class.java).toString())
+                            Timber.tag("check_result1-2").d(it.toObjects(Group::class.java).toString())
                         } catch (e: Exception) {
                             continuation.resume(Result.Error(e))
                             Timber.tag("check_result3").d(e.toString())
@@ -59,8 +60,8 @@ class UserGroupRepository @Inject constructor() {
             QueryType.MY_PAGE.value ->
                 fireStore
                     .collection("groups")
+                    .whereArrayContains("members",firebaseUid )
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
-                    .whereEqualTo("users",firebaseUid)
                     .limit(LIMIT)
             else ->
                 fireStore
@@ -180,16 +181,20 @@ class UserGroupRepository @Inject constructor() {
         }
     }
 
+
     suspend fun userJoinGroup(groupId: String): Result<Int> {
 
-        val subUserRef = fireStore.collection("groups").document(groupId).collection("users").document(firebaseUid)
-        val subGroupRef = fireStore.collection("users").document(firebaseUid).collection("groups").document(groupId)
-
+        val groupRef = fireStore.collection("groups").document(groupId)
         return withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 fireStore.runBatch {batch ->
-                    batch.set(subUserRef,hashMapOf("userId" to firebaseUid))
-                    batch.set(subGroupRef,hashMapOf("groupId" to groupId))
+
+                    batch.update(groupRef,"members",FieldValue.arrayUnion(firebaseUid))
+                    /*TODO
+                    *   1. UserIdArrayをGroupのFieldに追加し、UIDを入れる。
+                    *   2. CloudFunctionを用いて、userProfile内にGroupのフィールド情報を同期できるように設定する。
+                    *   3. CloudFunctionを用いて、group内にUserProfileのuserImageのフィールド情報を同期できるように設定する。
+                    *   */
                 }.addOnSuccessListener {
                     try {
                         continuation.resume(Result.Success(R.string.upload_success))
@@ -209,3 +214,28 @@ class UserGroupRepository @Inject constructor() {
         private const val  LIMIT = 50L
     }
 }
+
+//TODO Batch処理を行う際の参考資料。
+/*suspend fun createFavoriteGroup(groupId: String): Result<Int> {
+
+    val subUserRef = fireStore.collection("groups").document(groupId).collection("users").document(firebaseUid)
+    val subGroupRef = fireStore.collection("users").document(firebaseUid).collection("groups").document(groupId)
+
+    return withContext(Dispatchers.IO) {
+        suspendCoroutine { continuation ->
+            fireStore.runBatch {batch ->
+                batch.set(subUserRef,hashMapOf("userId" to firebaseUid))
+                batch.set(subGroupRef,hashMapOf("groupId" to groupId))
+            }.addOnSuccessListener {
+                try {
+                    continuation.resume(Result.Success(R.string.upload_success))
+                } catch (e: Exception) {
+                    continuation.resume(Result.Error(e))
+                }
+            }
+                .addOnFailureListener {
+                    continuation.resume(Result.Error(it))
+                }
+        }
+    }
+}*/

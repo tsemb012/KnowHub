@@ -47,11 +47,9 @@ class MyPageFragment: Fragment() {
 
         viewModel.getMyGroups()
 
-
         viewModel.groups.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.let { adapter.submitList(it) }
         })
-
 
         viewModel.navigateToGroupDetail.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupId ->
             groupId.let {
