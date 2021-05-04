@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import androidx.compose.ui.text.createTextLayoutResult
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,9 +22,11 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: UserG
         viewModelScope.launch {
             val result = try{
                 repository.getGroups(QueryType.MY_PAGE.value)
+
             } catch(e: Exception){
                 Result.Error(Exception("Network request failed"))
             }
+            Timber.tag("check_result1-3").d(result.toString())
             when (result) {
                 is Result.Success -> _groups.postValue(result.data)
                 //else //TODO SnackBarを出現させる処理を記入する。
