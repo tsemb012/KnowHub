@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.UserProfile
 import com.example.droidsoftthird.repository.UserGroupRepository
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -66,8 +67,10 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                 val result2 = async{repository.uploadPhoto(userImageUri.value!!)}.await()
                     when{
                         result1 is Result.Success && result2 is Result.Success -> {
+
                             val userImageRef = result1.data.path.plus(IMAGE_SIZE)
                             val userBackgroundRef = result2.data.path.plus(IMAGE_SIZE)
+
                             val userProfile = UserProfile(
                                 userImageRef,
                                 userBackgroundRef,
@@ -77,7 +80,17 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                                 prefecture_r.value.toString(),
                                 city_r.value.toString(),
                             )
-                            val result:Result<Int> = repository.createUserProfile(userProfile)
+
+                            val authProfileUpdates = userProfileChangeRequest {
+                                displayName = userName.value.toString()
+                                photoUri = userImageUri.value
+                            }
+
+                            val result3:Result<Int> = repository.createUserProfile(userProfile)
+                            val result4:Result<Int> = repository.updateAuthProfile(authProfileUpdates)
+                            //TODO AuthにアップロードしたUriは内部のUriだが、読み込み時に問題がないか確認を行う。
+
+
                             /*when(result){
                               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
                               else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。

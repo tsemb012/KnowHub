@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.droidsoftthird.databinding.FragmentPagerRecommendBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.concurrent.timer
 
 @AndroidEntryPoint//Enable this class to receive dependency from Hilt
 class RecommendPagerFragment:Fragment() {

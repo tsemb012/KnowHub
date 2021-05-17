@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_createProfileFragment"
             app:destination="@id/createProfileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
@@ -57,18 +60,45 @@
         android:name="com.example.droidsoftthird.MyPageFragment"
         android:label="MyPageFragment" >
         <action
-            android:id="@+id/action_myPageFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            android:id="@+id/action_myPageFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
     </fragment>
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.example.droidsoftthird.ChatFragment"
-        android:label="chat_fragment"
-        tools:layout="@layout/chat_fragment" >
+        android:id="@+id/scheduleFragment"
+        android:name="com.example.droidsoftthird.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" >
         <argument
             android:name="groupId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.droidsoftthird.VideoFragment"
+        android:label="VideoFragment" >
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatRoomFragment"
+        android:name="com.example.droidsoftthird.ChatRoomFragment"
+        android:label="ChatRoomFragment" >
+        <action
+            android:id="@+id/action_chatRoomFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_chatRoomFragment_to_scheduleFragment"
+            app:destination="@id/scheduleFragment" />
+        <action
+            android:id="@+id/action_chatRoomFragment_to_groupDetailFragment"
+            app:destination="@id/groupDetailFragment" />
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_chatRoomFragment" app:destination="@id/chatRoomFragment" />
 
 
 </navigation>

@@ -7,10 +7,13 @@ import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -167,6 +170,25 @@ class UserGroupRepository @Inject constructor() {
                 fireStore.collection("users")
                     .document(firebaseUid)
                     .set(userProfile)
+                    .addOnSuccessListener {
+                        try {
+                            continuation.resume(Result.Success(R.string.upload_success))
+                        } catch (e: Exception) {
+                            continuation.resume(Result.Error(e))
+                        }
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(Result.Error(it))
+                    }
+            }
+        }
+    }
+
+    suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
+        return withContext(Dispatchers.IO){
+            suspendCoroutine { continuation ->
+                Firebase.auth.currentUser
+                    .updateProfile(authProfileUpdates)
                     .addOnSuccessListener {
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))

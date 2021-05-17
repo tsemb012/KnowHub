@@ -123,6 +123,7 @@ class HomeFragment: Fragment() {
         requireNotNull(tabLayout.getTabAt(2)).setText(R.string.map)
 
         //-----Navigation to AddGroupFragment by FloatingActionButton
+        //TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
         binding.floatingActionButton.setOnClickListener(View.OnClickListener { v ->
             val action: NavDirections =
                 HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()

@@ -84,14 +84,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-storage-ktx'
-    implementation platform('com.google.firebase:firebase-bom:26.6.0')
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-
 
     //-----Viewpager2の依存関係
     implementation "androidx.viewpager2:viewpager2:1.0.0"
@@ -118,7 +116,6 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
     kaptAndroidTest 'com.squareup.inject:assisted-inject-processor-dagger2:0.6.0'
 
-
     //-----Room
     //implementation "androidx.room:room-ktx:$room_version"
 
@@ -128,13 +125,16 @@ dependencies {
     //-----SeekBar
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
 
+    //-----CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //-----PermissionDispatcher
+    implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.8.0"
+    kapt "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.8.0"
 
+    //-----Dexter
+    implementation 'com.karumi:dexter:6.2.2'
 
-
-
-
-
-
-
+    //-----EventBus of GreenRobot
+    implementation 'org.greenrobot:eventbus:3.2.0'
 }

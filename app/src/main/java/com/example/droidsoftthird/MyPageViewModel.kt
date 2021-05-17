@@ -35,15 +35,15 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: UserG
         }
     }
 
-    private val _navigateToGroupDetail = MutableLiveData<String>()
-    val navigateToGroupDetail
-        get()=_navigateToGroupDetail
+    private val _navigateToChatRoom = MutableLiveData<String?>()
+    val navigateToChatRoom
+        get()=_navigateToChatRoom
 
     fun onGroupClicked(id:String){
-        _navigateToGroupDetail.value = id
+        _navigateToChatRoom.value = id
     }
 
-    fun onGroupDetailNavigated(){
-        _navigateToGroupDetail.value = " "
+    fun onChatRoomNavigated(){
+        _navigateToChatRoom.value = null//ここの部分は繊維を発生させないよう。必ずNullにする。
     }
 }
