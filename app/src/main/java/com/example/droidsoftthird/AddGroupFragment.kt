@@ -51,7 +51,7 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         return binding.root
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View?) {//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
         when(v!!.id){
             R.id.btn_group_image -> launchUploader()
             R.id.btn_to_groupDetailBar_group_type -> {
@@ -111,6 +111,8 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
             viewModel.postImageUri(fullPhotoUri)
             }
         }
+
+
 
     companion object {
         private const val REQUEST_IMAGE_OPEN = 101

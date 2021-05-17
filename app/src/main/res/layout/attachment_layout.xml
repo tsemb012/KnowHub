@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.droidsoftthird.ChatRoomViewModel" />
+    </data>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/circular_border_solid"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/hide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/ic_baseline_close_24"
+        android:onClick="@{() -> viewModel.hideBottomSheet()}"/>
+
+    <Button
+        android:id="@+id/sendPictureButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/background_button"
+        android:text="@string/send_picture"
+        android:backgroundTint="@color/percian_blue"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:onClick="@{() -> viewModel.attachImage()}"/>
+
+    <Button
+        android:id="@+id/sendFileButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/background_button"
+        android:text="@string/send_file"
+        android:backgroundTint="@color/percian_blue"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:onClick="@{() -> viewModel.attachFile()}"/>
+</LinearLayout>
+</layout>

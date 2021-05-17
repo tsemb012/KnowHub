@@ -6,6 +6,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.compose.navigate
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,11 +18,12 @@ import com.example.droidsoftthird.databinding.FragmentMyPageBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MyPageFragment: Fragment() {
 
-    private lateinit var binding: FragmentMyPageBinding;
+    private lateinit var binding: FragmentMyPageBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel:MyPageViewModel by viewModels()
@@ -39,36 +43,6 @@ class MyPageFragment: Fragment() {
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        val adapter = GroupAdapter(GroupListener{ groupId ->
-            viewModel.onGroupClicked(groupId)
-        })
-        binding.groupList.adapter = adapter
-
-        viewModel.getMyGroups()
-
-        viewModel.groups.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            it.let { adapter.submitList(it) }
-        })
-
-        viewModel.navigateToGroupDetail.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupId ->
-            groupId.let {
-                this.findNavController().navigate(
-                    MyPageFragmentDirections.actionMyPageFragmentToChatFragment(groupId)
-                )
-                viewModel.onGroupDetailNavigated()
-            }
-        })//TODO ViewModel内を整える。
-
-        val manager = GridLayoutManager(activity,2, GridLayoutManager.VERTICAL,false)
-
-        binding.groupList.layoutManager = manager
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.include.collapsingToolbarLayout
@@ -98,6 +72,40 @@ class MyPageFragment: Fragment() {
                 navController)
                     || super.onOptionsItemSelected(item)
         }*/
+
+        val adapter = GroupAdapter(GroupListener{ groupId ->
+            viewModel.onGroupClicked(groupId)
+        })
+        binding.groupList.adapter = adapter
+
+        viewModel.getMyGroups()
+
+        viewModel.groups.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.let {
+                adapter.submitList(it) }
+        })
+
+
+        viewModel.navigateToChatRoom.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupId ->
+            groupId?.let {
+                val action =
+                    MyPageFragmentDirections.actionMyPageFragmentToChatRoomFragment(it)
+                Timber.tag("groupId").d(groupId)
+                navController.navigate(action)
+                viewModel.onChatRoomNavigated()
+            }
+        })//DONE Navigationを設定し、上記にコードを書き換える。
+
+        val manager = GridLayoutManager(activity,2, GridLayoutManager.VERTICAL,false)
+
+        binding.groupList.layoutManager = manager
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     /*//TODO Filter製作時に再利用する。

@@ -1,7 +1,7 @@
 package com.example.droidsoftthird.utils
 
 import android.net.Uri
-import android.view.View
+import android.text.format.DateUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -9,10 +9,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import java.net.URI
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 //DONE GlideでStorageのデータを表示する。
@@ -34,7 +35,6 @@ fun ImageView.imageFireStorage(ref: String?) {
             .into(this)
     }
 }
-
 
 @BindingAdapter("imageURI")
 fun ImageView.imageURI(uri: URI) {
@@ -60,16 +60,31 @@ fun ImageView.imageUserURI(uri: URI) {
         .into(this)
 }
 
-@BindingAdapter("prefecture","city")//TODO 引数が複数の場合のBindingAdapterの記述が上記であっているか検証を行う。
+@BindingAdapter("imageUserUrlString")
+fun ImageView.imageUserUrlString(url: String) {
+    val uri = Uri.parse(url)
+    Glide.with(this)
+        .load(uri)
+        .apply(
+            RequestOptions()
+                .placeholder(R.drawable.ic_baseline_account_box_24)
+                .error(R.drawable.ic_broken_image)
+        )
+        .into(this)
+}
+
+@BindingAdapter("prefecture", "city")//TODO 引数が複数の場合のBindingAdapterの記述が上記であっているか検証を行う。
 fun TextView.bindArea(prefecture: String, city: String){
     text =
         if(prefecture == resources.getStringArray(R.array.online_and_prefectures)[0].toString()) { prefecture }
-        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(R.string.no_set)) { String.format("%s、%s", prefecture, city) }
+        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(
+                R.string.no_set
+            )) { String.format("%s、%s", prefecture, city) }
         else{ resources.getString(R.string.no_set)
     }
 }
 
-@BindingAdapter("basis","frequency")
+@BindingAdapter("basis", "frequency")
 fun TextView.bindBasisFrequency(basis: String, frequency: String){
     text = if (basis == resources.getString(R.string.no_set) && frequency == resources.getString(R.string.no_set)) {
         resources.getString(R.string.no_set)
@@ -80,8 +95,8 @@ fun TextView.bindBasisFrequency(basis: String, frequency: String){
     }
 }
 
-@BindingAdapter("minAge","maxAge")
-fun TextView.bindAgeRange(minAge: Int, maxAge:Int){
+@BindingAdapter("minAge", "maxAge")
+fun TextView.bindAgeRange(minAge: Int, maxAge: Int){
     text = if (minAge == -1  && maxAge == -1) {
         resources.getString(R.string.no_set)
     } else{
@@ -90,13 +105,41 @@ fun TextView.bindAgeRange(minAge: Int, maxAge:Int){
     }
 }
 
-@BindingAdapter("minNumberPerson","maxNumberPerson")
-fun TextView.bindNumberPerson(minNumberPerson: Int, maxNumberPerson:Int){
+@BindingAdapter("minNumberPerson", "maxNumberPerson")
+fun TextView.bindNumberPerson(minNumberPerson: Int, maxNumberPerson: Int){
     text = if (minNumberPerson == -1  && maxNumberPerson == -1) {
         resources.getString(R.string.no_set)
     } else{
         String.format("%d〜%d人", minNumberPerson, maxNumberPerson)
     }
+}
+
+@BindingAdapter("formatDateToHHMM")
+fun formatDateToHHMM(textView: TextView, timestamp: Date?) {
+
+    val sdf = SimpleDateFormat("hh:mm")
+    textView.text = sdf.format(timestamp)
+
+}
+
+@BindingAdapter("setDuration")
+fun setDuration(textView: TextView, timeinmillis: String?) {
+
+    if (timeinmillis == null) return
+
+    val h = (timeinmillis.toInt().div(3600000))
+    val m = (timeinmillis.toInt().div(60000).rem(60))
+    val s = (timeinmillis.toInt().div(1000).rem(60))
+
+    val sp = when (h) {
+        0 -> {
+            StringBuilder().append(m).append(":").append(s)
+        }
+        else -> {
+            StringBuilder().append(h).append(":").append(m).append(":").append(s)
+        }
+    }
+    textView.text = sp
 }
 
 

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.droidsoftthird.ChatRoomViewModel" />
+
+        <variable
+            name="groupId"
+            type="String" />
+    </data>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+android:id="@+id/coordinator"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/pin_bar"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="2dp">
+
+        <TextView
+            android:id="@+id/chat_room_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Pinned Message"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/group_detail_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="@string/group_info"
+            app:layout_constraintEnd_toStartOf="@+id/schedule_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chat_room_title"
+            android:onClick="@{() -> viewModel.onGroupDetailClicked()}"/>
+        <!--DONE　IDはどうやって渡す？-->
+
+        <Button
+            android:id="@+id/schedule_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="@string/schedule"
+            app:layout_constraintEnd_toStartOf="@+id/video_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/group_detail_button"
+            app:layout_constraintTop_toBottomOf="@id/chat_room_title"
+            android:onClick="@{() -> viewModel.onScheduleClicked()}"/>
+
+        <Button
+            android:id="@+id/video_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="@string/video"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/schedule_button"
+            app:layout_constraintTop_toBottomOf="@id/chat_room_title"
+            android:onClick="@{() -> viewModel.onVideoClicked()}"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--DONE AppBarLayoutの箇所を修正し、画面遷移に利用する。-->
+
+</com.google.android.material.appbar.AppBarLayout>
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/chat_background"
+        tools:context=".ChatRoomFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_recycler"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/message_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <!--TODO tools:listitem="@layout/sent_message_item" が含まれていたが、
+                実際はAdapterからItemを挿入するためここで入れる必要はないのではないだろうか？
+                サンプルとして入れていただけなのだろうか？抜いても問題ないんじゃないだろうか。
+                もし問題が発生した場合は、中身を検証する。-->
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/record_voice_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_baseline_mic_none_24"
+            app:backgroundTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{() -> viewModel.recordVoice()}"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/message_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/circular_border_solid"
+            app:layout_constraintBottom_toBottomOf="@+id/record_voice_fab"
+            app:layout_constraintEnd_toStartOf="@+id/record_voice_fab"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/send_message"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="4dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_baseline_send_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:enabled="@{viewModel.enableState}"
+                android:onClick="@{() -> viewModel.createTextMessage()}"
+                />
+            <!--配置を変えて送信ボタンを設置。-->
+
+
+            <ImageView
+                android:id="@+id/attachment_image"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="0dp"
+                android:contentDescription="attachments"
+                android:padding="6dp"
+                android:src="@drawable/ic_baseline_attach_file_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/send_message"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{() -> viewModel.showBottomSheet()}"/>
+
+            <EditText
+                android:id="@+id/message_edit_text"
+                android:layout_width="267dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/circular_border_solid"
+                android:hint="@string/type_a_message"
+                android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+                android:paddingStart="16sp"
+                android:textSize="16sp"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/attachment_image"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@={viewModel.editMessage}"
+                />
+            <!--TODO inputTypeのFLAGを確認し、UI/UXを向上させる。-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/fullSizeImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:visibility="gone" />
+    <!--FrameLayout上、かつ、こちらのviewが上に存在しているので、Visibilityを変更すれば、
+    　　 画面上にこちらが現れる。-->
+
+</FrameLayout>
+
+
+<!--persistent bottom navigation-->
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <!--DONE BottomSheetBehaviorの情報をまとめる。-->
+
+
+    <!--place_info_card-->
+    <include
+        android:id="@+id/attachment_layout"
+        layout="@layout/attachment_layout"
+        app:viewModel = "@{viewModel}"/>
+
+
+</androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
+
+

@@ -2,6 +2,6 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.ViewModel
 
-class ChatViewModel : ViewModel() {
+class ScheduleViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

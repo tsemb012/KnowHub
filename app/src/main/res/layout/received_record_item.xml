@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="message"
+            type="com.example.droidsoftthird.model.RecordMessage" />
+
+        <variable
+            name="clickListener"
+            type="com.example.droidsoftthird.MessageClickListener" />
+
+        <variable
+            name="position"
+            type="Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:lineSpacingExtra="2dp"
+                android:paddingStart="20dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="@{message.userName}"
+                android:textSize="12sp"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toEndOf="@id/user_image_view"
+                app:layout_constraintTop_toTopOf="@id/user_image_view"
+                tools:text="Name" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_image_view"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_baseline_account_box_24"
+                app:layout_constraintEnd_toStartOf="@id/record_message"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:imageUserUrlString="@{message.userImageUrl}"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/record_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/date_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/user_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/user_name"
+                android:layout_marginEnd="16dp"
+                android:gravity="start"
+                android:maxWidth="250dp"
+                android:background="@drawable/friend_bubble_shape">
+
+                <ImageView
+                    android:id="@+id/play_pause_image"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintVertical_bias="0.15"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_play_arrow_black_24dp"                    app:layout_constraintEnd_toStartOf="@+id/progress_bar"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@+id/record_message"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> clickListener.onMessageClicked(position,message)}"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="start"
+                    android:minWidth="150dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="10dp"
+                    android:progressTint="@color/blue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/duration_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:setDuration="@{message.duration}"
+                    app:layout_constraintTop_toBottomOf="@+id/play_pause_image"
+                    app:layout_constraintStart_toStartOf="@id/progress_bar"
+                    tools:text="2:21" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="end"
+                app:formatDateToHHMM="@{message.timestamp}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_message_received"
+                tools:text="14:16" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toStartOf="@+id/date_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/date_text_view" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -37,7 +37,7 @@ class CreateProfileFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View?) {//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
         when (v!!.id) {
             R.id.edit_profile_image -> launchUploader(REQUEST_IMAGE_OPEN_USER)
             R.id.edit_background_image -> launchUploader(REQUEST_IMAGE_OPEN_BACKGROUND)

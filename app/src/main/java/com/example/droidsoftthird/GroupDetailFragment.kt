@@ -34,6 +34,8 @@ class GroupDetailFragment : Fragment() {
     //TODO getGroup()の記述位置があっているか確認する。
     //TODO FloatingFabのOnClickロジック及び設計を考える。
     //TODO NavArgを使用した値の受け渡しに切り替える。
+    //TODO userIcon一覧を表示する。
+    //TODO Chatからアクセスした場合、参加ボタンを非表示にする。
 
 
     @Inject
