@@ -27,7 +27,6 @@ import kotlin.coroutines.suspendCoroutine
 class UserGroupRepository @Inject constructor() {
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-    private val firebaseUid = FirebaseAuth.getInstance().currentUser.uid
 
 
     suspend fun getGroups(query: String): Result<List<Group>> =
@@ -63,7 +62,7 @@ class UserGroupRepository @Inject constructor() {
             QueryType.MY_PAGE.value ->
                 fireStore
                     .collection("groups")
-                    .whereArrayContains("members",firebaseUid )
+                    .whereArrayContains("members",FirebaseAuth.getInstance().currentUser.uid )
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
             else ->
@@ -143,7 +142,7 @@ class UserGroupRepository @Inject constructor() {
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
-                    .document(firebaseUid)
+                    .document(FirebaseAuth.getInstance().currentUser.uid)
                     .get()
                     .addOnSuccessListener {
                         try {
@@ -168,7 +167,7 @@ class UserGroupRepository @Inject constructor() {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
-                    .document(firebaseUid)
+                    .document(FirebaseAuth.getInstance().currentUser.uid)
                     .set(userProfile)
                     .addOnSuccessListener {
                         try {
@@ -211,7 +210,7 @@ class UserGroupRepository @Inject constructor() {
             suspendCoroutine { continuation ->
                 fireStore.runBatch {batch ->
 
-                    batch.update(groupRef,"members",FieldValue.arrayUnion(firebaseUid))
+                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))
                     /*TODO
                     *   1. UserIdArrayをGroupのFieldに追加し、UIDを入れる。
                     *   2. CloudFunctionを用いて、userProfile内にGroupのフィールド情報を同期できるように設定する。
