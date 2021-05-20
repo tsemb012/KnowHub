@@ -5,7 +5,6 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
-    id 'com.google.secrets_gradle_plugin' version '0.5'
 }
 
 android {
@@ -30,9 +29,6 @@ android {
         }
     }
     compileOptions {
-        // Flag to enable support for the new language APIs
-        coreLibraryDesugaringEnabled true
-        // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -145,18 +141,4 @@ dependencies {
 
     //-----Stfalcon ImageViewer
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.0'
-
-    //-----Maps SDK for Android
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-
-    //-----Maps Utils for Android
-    implementation 'com.google.maps.android:android-maps-utils:1.1.0'
-
-    //-----CalendarView Library
-    implementation 'com.github.kizitonwose:CalendarView:1.0.4'
-
-    //-----CalendarView Library
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
-
 }
