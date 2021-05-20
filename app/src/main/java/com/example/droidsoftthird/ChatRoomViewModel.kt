@@ -17,6 +17,8 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChatRoomViewModel @AssistedInject constructor(
     private val repository: MessageRepository,
@@ -110,7 +112,8 @@ class ChatRoomViewModel @AssistedInject constructor(
                 authUser.displayName,
                 authUser.photoUrl.toString(),
                 0.0,
-                editMessage.value) as Message
+                editMessage.value,
+                Date()) as Message
         editMessage.postValue("")
         viewModelScope.launch {
             val result:Result<Int> = repository.createMessage(message,groupId)
@@ -133,7 +136,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                                     authUser.displayName,
                                     authUser.photoUrl.toString(),
                                     1.0,
-                                    storageImageRef) as Message
+                                    storageImageRef,
+                                    Date()
+                                ) as Message
                             val result:Result<Int> = repository.createMessage(message,groupId)
                             /*when(result){
                               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
@@ -160,7 +165,8 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 authUser.photoUrl.toString(),
                                 2.0,
                                 fileUri.lastPathSegment.toString(),
-                                fileDownloadUrl) as Message
+                                fileDownloadUrl,
+                                Date()) as Message
                         val result:Result<Int> = repository.createMessage(message,groupId)
                         /*when(result){
                           is Result.Success ->  //TODO アップロード成功時の処理を記述する。
@@ -189,8 +195,8 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 recordDownloadUrl,
                                 duration,
                                 null,
-                                null
-                                ) as Message
+                                null,
+                                Date()) as Message
                         val result:Result<Int> = repository.createMessage(message,groupId)
                         /*when(result){
                           is Result.Success ->  //TODO アップロード成功時の処理を記述する。

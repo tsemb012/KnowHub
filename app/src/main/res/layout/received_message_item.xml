@@ -22,7 +22,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
         >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,6 +54,7 @@
             android:id="@+id/user_image_view"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_marginStart="8dp"
             android:src="@drawable/ic_baseline_account_box_24"
             app:layout_constraintEnd_toStartOf="@id/text_message_received"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
         <TextView
             android:id="@+id/text_message_received"
             android:layout_width="wrap_content"
-            android:maxWidth="250dp"
+            android:maxWidth="230dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:lineSpacingExtra="2dp"

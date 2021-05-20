@@ -27,20 +27,23 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.databinding.ChatRoomFragmentBinding
-import com.example.droidsoftthird.model.FileMessage
-import com.example.droidsoftthird.model.Message
-import com.example.droidsoftthird.model.RecordMessage
+import com.example.droidsoftthird.model.*
 import com.example.droidsoftthird.utils.UpdateRecycleItemEvent
 import com.example.droidsoftthird.utils.showSnackbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.PermissionListener
+import com.stfalcon.imageviewer.StfalconImageViewer
+import com.stfalcon.imageviewer.loader.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -61,20 +64,25 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChatRoomFragment : Fragment() {
 
-    /*TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。*/
-    //TODO messageListがviewModelのリストと重複しないか確認する。
-    //TODO Adapterに渡すクリックリスナーの実装処理を行う。
+    //DONE messageListがviewModelのリストと重複しないか確認する。
+    //DONE Adapterに渡すクリックリスナーの実装処理を行う。
+    //DONE Adapterの構造を把握し、適切に組み立てる。
+    //DONE VoiceRecorderのプレースホルダーを代入する際に、リストごと代入しても良いのか？
+    //DONE PlaceHolderの意義を観察する。
+    //DONE PlaceHolderを代入する以上、使用するListはViewModelのリストを繋がっているはずだが繋がっていない。LetsChatから関連性を確認する。
+
     //TODO Permission(requestWritePermissionLauncher)に対して、引数を渡す方法を検討する。
-    //TODO Adapterの構造を把握し、適切に組み立てる。
-    //TODO PermissionやMediaを使用した際のMVVMを真剣に検討する。
-    //TODO VoiceRecorderのプレースホルダーを代入する際に、リストごと代入しても良いのか？
-    //TODO PlaceHolderの意義を観察する。
-    //TODO PlaceHolderを代入する以上、使用するListはViewModelのリストを繋がっているはずだが繋がっていない。LetsChatから関連性を確認する。
-        //TODO リンクしているようだが、必要性をあまり感じられない。//実際に実行する際に確認を行いう。
-    //TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
-    //TODO ファイルパスとかファイル名と買ってなんなの？てかどこに載ってる情報なの？
-    //TODO スナックバーに表示される文字をWRITE_EXTERNAL_STORAGEに書き替え
+    //TODO PermissionやMediaを使用した際のMVVMを検討する。
     //TODO VoiceのしようとDownLoadの使用によりPermission関連の記述が多くなっている。コードをキレイにする方法はないだろうか。
+
+    //TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。
+    //TODO Audio再生中にプログレスバーが更新されない不具合を確認する。
+
+    //TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
+
+    //TODO Permissionの文言を日本語に書き換える。
+    //TODO DexterでのPermissionを置き換える。
+
 
     private lateinit var binding: ChatRoomFragmentBinding
     private lateinit var layout: View
@@ -153,6 +161,7 @@ class ChatRoomFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        //requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         adapter = ChatAdapter(context, object: MessageClickListener{
             override fun onMessageClicked(position: Int, message: Message) {
@@ -160,13 +169,24 @@ class ChatRoomFragment : Fragment() {
 
                 1.0 -> {
                     binding.fullSizeImageView.visibility = View.VISIBLE
+                    StfalconImageViewer.Builder<MyImage>(
+                        requireActivity(),
+                        listOf(MyImage((message as ImageMessage).imageRef!!)),
+                        ImageLoader<MyImage> { imageView, myImage ->
+                            Glide.with(requireActivity())
+                                .load(FirebaseStorage.getInstance().getReference(myImage.url))
+                                .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
+                                .into(imageView)
+                        })
+                        .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
+                        .show()
                 }
                 2.0 -> {
                     val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
-                    dialogBuilder?.setMessage("Do you want to download clicked file?")
-                        ?.setPositiveButton("yes") { _, _ ->
+                    dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
+                        ?.setPositiveButton(R.string.yes) { _, _ ->
                             downloadFile(message)
-                        }?.setNegativeButton("cancel", null)?.show()
+                        }?.setNegativeButton(R.string.no, null)?.show()
                 }
                 3.0 -> {
                     adapter.notifyDataSetChanged()
@@ -177,12 +197,14 @@ class ChatRoomFragment : Fragment() {
 
         binding.messageRecycler.adapter = adapter
 
+
+
         viewModel.messages.observe(viewLifecycleOwner, Observer{
             messageList = it as MutableList<Message>
             ChatAdapter.messageList = messageList
             it.let{adapter.submitList(it)}
-            //TODO 下記コードがどのような動きをするか追う
-            binding.messageRecycler.scrollToPosition(it.size - 1)
+
+            binding.messageRecycler.scrollToPosition(adapter.itemCount-1)
         })
 
         viewModel.navigationToGroupDetail.observe(viewLifecycleOwner,EventObserver{
@@ -356,7 +378,9 @@ class ChatRoomFragment : Fragment() {
                 null,
                 null,
                 null,
-                null
+                null,
+                Date(),
+                null,
             )
         )
         adapter.submitList(messageList)
