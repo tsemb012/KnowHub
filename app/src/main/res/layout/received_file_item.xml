@@ -22,7 +22,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,6 +52,7 @@
                 android:id="@+id/user_image_view"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:layout_marginStart="8dp"
                 android:src="@drawable/ic_baseline_account_box_24"
                 app:layout_constraintEnd_toStartOf="@id/record_message"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +100,7 @@
                     android:textColor="@color/purple_500"
                     app:text="@{message.fileRef}"
                     android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/play_pause_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="@string/test_aaa" />

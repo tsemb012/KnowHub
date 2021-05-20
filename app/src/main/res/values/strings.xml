@@ -89,4 +89,7 @@
     <string name="audio_permission_available">Audio permission is available. Start recording.</string>
     <string name="permisson_is_denied">permission is denied.</string>
     <string name="test_aaa">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</string>
+    <string name="download_clicked_file_or_not">クリックしたファイルをダウンロードしますか。</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
 </resources>

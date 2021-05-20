@@ -20,7 +20,6 @@ data class TextMessage(
     override val userImageUrl: String? = null,
     override val messageType: Double? = null,
     val text: String? = null,
-    @ServerTimestamp
     override val timestamp: Date? = null,
     @DocumentId
     override val messageId: String? = null,
@@ -34,7 +33,6 @@ data class ImageMessage(
     override val userImageUrl: String? = null,
     override val messageType: Double? = null,
     val imageRef: String? = null,
-    @ServerTimestamp
     override val timestamp: Date? = null,
     @DocumentId
     override val messageId: String? = null,
@@ -48,7 +46,6 @@ data class FileMessage(
     override val messageType: Double? = null,
     val fileName:String? = null,
     val fileRef:String? = null,
-    @ServerTimestamp
     override val timestamp: Date? = null,
     @DocumentId
     override val messageId: String? = null,
@@ -65,7 +62,6 @@ data class RecordMessage(
     var duration:String? = null,
     var currentProgress: String? = null,
     var isPlaying:Boolean? = null,
-    @ServerTimestamp
     override val timestamp: Date? = null,
     @DocumentId
     override val messageId: String? = null,

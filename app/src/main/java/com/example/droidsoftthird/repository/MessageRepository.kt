@@ -6,10 +6,7 @@ import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.Message
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +27,7 @@ class MessageRepository  @Inject constructor(){
 
     suspend fun uploadPhoto(uri: Uri): Result<StorageReference> {
 
-        val photoRef = fireStorageRef.child("chat_images/${UUID.randomUUID().toString()}")
+        val photoRef = fireStorageRef.child("chat_images/${firebaseUid}/${UUID.randomUUID().toString()}")
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 photoRef
@@ -51,7 +48,7 @@ class MessageRepository  @Inject constructor(){
 
     suspend fun uploadFile(uri: Uri): Result<Uri> {
 
-        val fileRef = fireStorageRef.child("chat_files/${UUID.randomUUID().toString()}")
+        val fileRef = fireStorageRef.child("chat_files/${firebaseUid}/${UUID.randomUUID().toString()}")
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 val uploadTask = fileRef.putFile(uri)
@@ -78,7 +75,7 @@ class MessageRepository  @Inject constructor(){
 
     suspend fun uploadRecord(filePath: String) : Result<Uri> {
 
-        val recordRef = fireStorageRef.child("records/" + Date().time)
+        val recordRef = fireStorageRef.child("chat_records/${firebaseUid}/${Date().time.toString()}")
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 val uploadTask = recordRef.putFile(Uri.fromFile(File(filePath)))
@@ -134,11 +131,13 @@ class MessageRepository  @Inject constructor(){
             messagesCollection = fireStore
                 .collection("groups").document(groupId)
                 .collection("messages")
+
         }catch(e:Throwable){
             close(e)
         }
 
-        val subscription = messagesCollection?.addSnapshotListener{snapshot,_->
+        val subscription =
+            messagesCollection?.orderBy("timestamp",Query.Direction.ASCENDING)?.addSnapshotListener{ snapshot, _->
             if (snapshot == null){return@addSnapshotListener}
             try {
                 offer(snapshot)
