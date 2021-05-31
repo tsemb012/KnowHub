@@ -24,7 +24,7 @@ class GroupDetailViewModel @AssistedInject constructor(
         get()=_navigateToMyPage
 
 
-    fun getGroup() {
+    init {
         viewModelScope.launch {
             val result = try{
                 repository.getGroup(groupId)
