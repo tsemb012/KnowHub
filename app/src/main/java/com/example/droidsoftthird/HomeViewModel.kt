@@ -30,7 +30,7 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
         get() = _userProfile
 
 
-    fun getUserProfile(){
+    fun getUser(){
         viewModelScope.launch {
             val result = try{
                 repository.getUserProfile()

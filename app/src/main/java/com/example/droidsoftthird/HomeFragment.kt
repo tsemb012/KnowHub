@@ -143,7 +143,7 @@ class HomeFragment: Fragment() {
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
                 HomeViewModel.AuthenticationState.AUTHENTICATED -> {
-                    viewModel.getUserProfile()//画面への反映および画面遷移ついては、ViewModel主導で行う。
+                    viewModel.getUser()//画面への反映および画面遷移ついては、ViewModel主導で行う。
                     viewModel.userProfile.observe(viewLifecycleOwner, Observer { userProfile ->
                         if (userProfile != null) {
                             binding_header.viewModel = viewModel
