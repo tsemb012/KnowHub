@@ -11,13 +11,11 @@ import java.lang.Exception
 
 class HomeViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
 
-    private val _userProfile = MutableLiveData<UserProfile?>()
-    val userProfile: LiveData<UserProfile?>
-        get() = _userProfile
 
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
+
 
     val authenticationState = FirebaseUserLiveData().map { user ->
         if (user != null) {
@@ -26,6 +24,11 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
             AuthenticationState.UNAUTHENTICATED
         }
     }
+
+    private val _userProfile = MutableLiveData<UserProfile?>()
+    val userProfile: LiveData<UserProfile?>
+        get() = _userProfile
+
 
     fun getUser(){
         viewModelScope.launch {
@@ -43,10 +46,8 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
                         _userProfile.postValue(null)
                     }
                 }
-                is Result.Error -> Timber.d("error at ${this@HomeViewModel}")
+                //TODO　is Result.Error -> 取得失敗時のエラー記入
             }
         }
     }
-
-
 }
