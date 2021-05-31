@@ -88,7 +88,7 @@ class GroupDetailFragment : Fragment() {
             }
         })
 
-        viewModel.getGroup()//TODO initで呼び出すように変更する。
+        //TODO initで呼び出すように変更する。
 
         return binding.root
     }
