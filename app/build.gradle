@@ -43,6 +43,10 @@ android {
     dataBinding {
         enabled true//NOTE DataBindingの有効化
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {

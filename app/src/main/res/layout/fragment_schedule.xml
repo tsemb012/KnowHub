@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ScheduleFragment">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.droidsoftthird.HomeViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".ui.search.bnf001_SearchBtmNavFragment">
 
-</FrameLayout>
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:openDrawer="start">
+            <!--DrawerLayoutはRootViewとして設定-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/include_appbar"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent" />
+                <!--TODO　記述することが増えれば、ここを増築し、記述。-->
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/include"
+                    app:tabIndicatorColor="@color/colorAccent" />
+                <!--
+                    app:layout_collapseMode="parallax"
+                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabMode="scrollable"-->
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+                    app:layout_constraintTop_toBottomOf="@+id/tab_layout"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floating_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/pager"
+                    app:layout_constraintEnd_toEndOf="@+id/pager"
+                    app:srcCompat="@drawable/ic_baseline_add_circle_24" />
+
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nav"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?android:attr/windowBackground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:menu="@menu/menu_bottom_nav" >
+
+                </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

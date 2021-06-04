@@ -92,4 +92,6 @@
     <string name="download_clicked_file_or_not">クリックしたファイルをダウンロードしますか。</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
+    <string name="approved">参加予定</string>
+    <string name="pending">保留中</string>
 </resources>
