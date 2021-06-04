@@ -22,7 +22,6 @@ class GroupAdapter(val clickListener: GroupListener): ListAdapter<Group, GroupAd
     }
 
 
-
     class ViewHolder private constructor(val binding: ListItemGroupBinding): RecyclerView.ViewHolder(binding.root){
 
         //TODO ListItem for Groupを完成させる。 デザイン設計　→　データ設計　
@@ -39,9 +38,7 @@ class GroupAdapter(val clickListener: GroupListener): ListAdapter<Group, GroupAd
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-
-                val binding =
-                    ListItemGroupBinding.inflate(layoutInflater, parent, false)
+                val binding = ListItemGroupBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
