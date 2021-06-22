@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
 
-data class Group(//FireStoreで使用する場合は、Nullableかつ初期値にNullを入れる必要がある。
+data class Group(
     val hostUserId: String? = null,
     val storageRef: String? = null,
     var groupName: String? = null,
@@ -29,4 +29,4 @@ data class Group(//FireStoreで使用する場合は、Nullableかつ初期値�
     val groupId: String? = null,
     @ServerTimestamp
     val timeStamp: Date? = null
-)
+)//FireStoreで使用する場合は、Nullableかつ初期値にNullを入れる必要がある。

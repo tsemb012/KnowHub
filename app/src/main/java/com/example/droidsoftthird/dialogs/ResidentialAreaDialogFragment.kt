@@ -6,14 +6,14 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.CreateProfileViewModel
+import com.example.droidsoftthird.ui.createProfile.CreateProfileViewModel
 import com.example.droidsoftthird.R
 
 class ResidentialAreaDialogFragment : DialogFragment() {
 
 
     private var selected = 0
-    private val viewModel:CreateProfileViewModel by viewModels({requireParentFragment()})
+    private val viewModel: CreateProfileViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 

@@ -6,7 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.ui.addGroup.AddGroupViewModel
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.model.Place
 import java.io.BufferedReader

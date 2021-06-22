@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-tools:context=".CreateProfileFragment">
+tools:context=".ui.createProfile.CreateProfileFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.CreateProfileViewModel" />
+            type="com.example.droidsoftthird.ui.createProfile.CreateProfileViewModel" />
     </data>
 <!--TODO　キレイに表示されるよう調整する。-->
 <androidx.constraintlayout.widget.ConstraintLayout

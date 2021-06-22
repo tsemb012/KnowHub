@@ -7,7 +7,7 @@ import android.text.format.DateFormat
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.CreateScheduleViewModel
+import com.example.droidsoftthird.ui.createSchedule.CreateScheduleViewModel
 import com.example.droidsoftthird.R
 import java.util.*
 

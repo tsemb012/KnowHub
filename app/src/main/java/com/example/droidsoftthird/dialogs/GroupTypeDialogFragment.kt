@@ -2,13 +2,10 @@ package com.example.droidsoftthird.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log.d
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.ui.addGroup.AddGroupViewModel
 import com.example.droidsoftthird.R
 import timber.log.Timber
 
