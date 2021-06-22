@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.HomeViewModel" />
+            type="com.example.droidsoftthird.ui.home.HomeViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

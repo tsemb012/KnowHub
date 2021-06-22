@@ -2,16 +2,13 @@ package com.example.droidsoftthird.dialogs
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.CreateProfileViewModel
-import com.example.droidsoftthird.CreateScheduleViewModel
+import com.example.droidsoftthird.ui.createSchedule.CreateScheduleViewModel
 import com.example.droidsoftthird.R
-import java.text.DateFormat
 import java.util.*
 
 class TimePickerStartFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {

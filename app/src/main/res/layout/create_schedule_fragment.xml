@@ -7,14 +7,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.CreateScheduleViewModel" />
+            type="com.example.droidsoftthird.ui.createSchedule.CreateScheduleViewModel" />
 
     </data>
 
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateScheduleFragment">
+    tools:context=".ui.createSchedule.CreateScheduleFragment">
 
     <ScrollView
         android:layout_width="match_parent"

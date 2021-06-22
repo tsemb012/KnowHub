@@ -20,8 +20,6 @@ import java.time.temporal.ChronoField
 import java.util.*
 
 
-
-//DONE GlideでStorageのデータを表示する。
 @BindingAdapter("imageFireStorage")
 fun ImageView.imageFireStorage(ref: String?) {
     if (ref != null){

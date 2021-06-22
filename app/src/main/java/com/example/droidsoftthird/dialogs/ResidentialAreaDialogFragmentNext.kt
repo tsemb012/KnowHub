@@ -6,8 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.AddGroupViewModel
-import com.example.droidsoftthird.CreateProfileViewModel
+import com.example.droidsoftthird.ui.createProfile.CreateProfileViewModel
 import com.example.droidsoftthird.R
 
 class ResidentialAreaDialogFragmentNext : DialogFragment() {
@@ -92,9 +91,5 @@ class ResidentialAreaDialogFragmentNext : DialogFragment() {
             builder.create()
         }?: throw IllegalStateException("Activity cannot be null")
     }
-    /*                    DialogInterface.OnClickListener { dialog, which ->
-                         viewModel.postFacilityEnvironment(items[selected])
-                    })*/
-
 }
 

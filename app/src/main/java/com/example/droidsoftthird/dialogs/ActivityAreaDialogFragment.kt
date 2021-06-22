@@ -6,9 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.ui.addGroup.AddGroupViewModel
 import com.example.droidsoftthird.R
 
 class ActivityAreaDialogFragment:DialogFragment() {

@@ -12,7 +12,7 @@
 
         <variable
             name="clickListener"
-            type="com.example.droidsoftthird.MessageClickListener" />
+            type="com.example.droidsoftthird.ui.chat.MessageClickListener" />
 
         <variable
             name="position"

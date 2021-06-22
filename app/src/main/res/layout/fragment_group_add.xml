@@ -7,13 +7,13 @@
         <data>
             <variable
                 name="addGroupViewModel"
-                type="com.example.droidsoftthird.AddGroupViewModel" />
+                type="com.example.droidsoftthird.ui.addGroup.AddGroupViewModel" />
         </data>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".AddGroupFragment">
+            tools:context=".ui.addGroup.AddGroupFragment">
 
             <ScrollView
                 android:layout_width="match_parent"

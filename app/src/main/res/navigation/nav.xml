@@ -11,7 +11,7 @@
         android:label="MainActivity" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.droidsoftthird.HomeFragment"
+        android:name="com.example.droidsoftthird.ui.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_addGroupFragment"
@@ -28,11 +28,11 @@
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
-        android:name="com.example.droidsoftthird.AddGroupFragment"
+        android:name="com.example.droidsoftthird.ui.addGroup.AddGroupFragment"
         android:label="AddGroupFragment" />
     <fragment
         android:id="@+id/groupDetailFragment"
-        android:name="com.example.droidsoftthird.GroupDetailFragment"
+        android:name="com.example.droidsoftthird.ui.groupDetail.GroupDetailFragment"
         android:label="fragment_group_detail"
         tools:layout="@layout/fragment_group_detail" >
         <argument
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/recommendPagerFragment"
-        android:name="com.example.droidsoftthird.RecommendPagerFragment"
+        android:name="com.example.droidsoftthird.ui.reccomendPager.RecommendPagerFragment"
         android:label="RecommendPagerFragment" >
         <action
             android:id="@+id/action_recommendPagerFragment_to_groupDetailFragment"
@@ -52,12 +52,12 @@
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
-        android:name="com.example.droidsoftthird.CreateProfileFragment"
+        android:name="com.example.droidsoftthird.ui.createProfile.CreateProfileFragment"
         android:label="fragment_create_profile"
         tools:layout="@layout/fragment_create_profile" />
     <fragment
         android:id="@+id/myPageFragment"
-        android:name="com.example.droidsoftthird.MyPageFragment"
+        android:name="com.example.droidsoftthird.ui.myPage.MyPageFragment"
         android:label="MyPageFragment" >
         <action
             android:id="@+id/action_myPageFragment_to_chatRoomFragment"
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.example.droidsoftthird.ApprovedScheduleFragment"
+        android:name="com.example.droidsoftthird.ui.schedule.ApprovedScheduleFragment"
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule_approved" >
         <argument
@@ -78,7 +78,7 @@
 
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.example.droidsoftthird.VideoFragment"
+        android:name="com.example.droidsoftthird.ui.video.VideoFragment"
         android:label="VideoFragment" >
         <argument
             android:name="groupId"
@@ -86,7 +86,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatRoomFragment"
-        android:name="com.example.droidsoftthird.ChatRoomFragment"
+        android:name="com.example.droidsoftthird.ui.chat.ChatRoomFragment"
         android:label="ChatRoomFragment" >
         <action
             android:id="@+id/action_chatRoomFragment_to_videoFragment"
@@ -104,7 +104,7 @@
     <action android:id="@+id/action_global_chatRoomFragment" app:destination="@id/chatRoomFragment" />
     <fragment
         android:id="@+id/scheduleDetailFragment"
-        android:name="com.example.droidsoftthird.ScheduleDetailFragment"
+        android:name="com.example.droidsoftthird.ui.scheduleDetail.ScheduleDetailFragment"
         android:label="schedule_detail_fragment"
         tools:layout="@layout/schedule_detail_fragment" >
         <argument

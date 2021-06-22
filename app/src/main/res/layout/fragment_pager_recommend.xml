@@ -7,13 +7,13 @@
 
         <variable
             name="recommendPagerViewModel"
-            type="com.example.droidsoftthird.RecommendPagerViewModel" />
+            type="com.example.droidsoftthird.ui.reccomendPager.RecommendPagerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.droidsoftthird.RecommendPagerFragment">
+        tools:context="com.example.droidsoftthird.ui.reccomendPager.RecommendPagerFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_list"

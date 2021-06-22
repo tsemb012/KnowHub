@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.ChatRoomViewModel" />
+            type="com.example.droidsoftthird.ui.chat.ChatRoomViewModel" />
 
         <variable
             name="groupId"
@@ -107,7 +107,7 @@ android:layout_height="match_parent">
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/chat_background"
-        tools:context=".ChatRoomFragment">
+        tools:context=".ui.chat.ChatRoomFragment">
 
         <!--TODO tools:listitem="@layout/sent_message_item" が含まれていたが、
                 実際はAdapterからItemを挿入するためここで入れる必要はないのではないだろうか？

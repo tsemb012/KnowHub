@@ -9,7 +9,7 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.ui.addGroup.AddGroupViewModel
 import com.example.droidsoftthird.R
 
 class LeaningFrequencyDialogFragmentNext:DialogFragment() {
@@ -48,7 +48,7 @@ class LeaningFrequencyDialogFragmentNext:DialogFragment() {
                     }).setNeutralButton(R.string.cancel,
                     DialogInterface.OnClickListener { _, _ -> Unit})
                 .setView(view)
-                .create() //変数の数と変数名だけで匿名クラスを省略し、ラムダ式に変換できるよということ？
+                .create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }

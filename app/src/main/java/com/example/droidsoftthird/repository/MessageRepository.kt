@@ -122,9 +122,7 @@ class MessageRepository  @Inject constructor(){
         }
     }
 
-    //TODO なるほど、そもそも成り立ちから違う。こちらはSubCollectionに入れているが、一方であちらはフィールドに入れている。
-    //TODO つまり独自の手段を探し出す必要があるということ。
-    //TODO メッセージの一個でかい枠を作っちゃえば良いんじゃないの？
+    //TODO Serializationを用いて、データを圧縮する。
     fun getChatEvents(groupId: String): Flow<QuerySnapshot> = callbackFlow {
         var messagesCollection:CollectionReference? = null
         try{
