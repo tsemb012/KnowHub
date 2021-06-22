@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.databinding.FragmentCreateProfileBinding
 import com.example.droidsoftthird.dialogs.*
+import com.example.droidsoftthird.model.Group
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -77,3 +78,4 @@ class CreateProfileFragment : Fragment(), View.OnClickListener {
         private const val REQUEST_IMAGE_OPEN_BACKGROUND = 103
     }
 }
+

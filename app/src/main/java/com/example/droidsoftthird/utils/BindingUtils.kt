@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.utils
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.format.DateUtils
 import android.widget.ImageView
@@ -13,7 +14,11 @@ import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
 import java.net.URI
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.temporal.ChronoField
 import java.util.*
+
 
 
 //DONE GlideでStorageのデータを表示する。
@@ -140,6 +145,19 @@ fun setDuration(textView: TextView, timeinmillis: String?) {
         }
     }
     textView.text = sp
+}
+
+@BindingAdapter("startTime", "endTime")
+fun TextView.bindTime(startTime: LocalDateTime, endTime: LocalDateTime){
+    text = startTime.get(ChronoField.HOUR_OF_DAY).toString() + "時"+
+            startTime.get(ChronoField.MINUTE_OF_HOUR) + "分" + " ~ " +
+            endTime.get(ChronoField.HOUR_OF_DAY).toString() + "時" +
+            endTime.get(ChronoField.MINUTE_OF_HOUR) + "分"
+        }
+
+@BindingAdapter("imageResource")
+fun setImageResource(imageView: ImageView, drawable: Drawable) {
+    imageView.setImageDrawable(drawable)
 }
 
 

@@ -3,27 +3,22 @@ package com.example.droidsoftthird.model
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 data class Schedule(
 
-    val scheduleId: String? = null,
-    var scheduleName: String? = null,
-    var groupIntroduction: String? = null,
-    var groupType: String? = null,
-    var prefecture: String? = null,
-    var city: String? = null,
-    var facilityEnvironment: String? = null,
-    var basis: String? = null,
-    var frequency:String? = null,
-    var minAge:Int? = null,
-    var maxAge:Int? = null,
-    var minNumberPerson:Int? = null,
-    var maxNumberPerson :Int? = null,
+    val title: String? = null,
+    var date: LocalDate? = null,
+    var startTime: LocalDateTime? = null,
+    var endTime: LocalDateTime?  = null,
+    var place: String? = null, //TODO GEO パートで書き直す
+    var groupId: String? = null,
+    var members: Map<String, String>? = null,
     @field:JvmField
-    var isChecked:Boolean? = null,
+    var repeat: Boolean? = null,
     @DocumentId
-    val groupId: String? = null,
+    val scheduleId: String? = null,
     @ServerTimestamp
     val timeStamp: Date? = null
 
