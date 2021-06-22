@@ -52,5 +52,5 @@ class ScheduleDiffCallback : DiffUtil.ItemCallback<Schedule>() {
 }
 
 class ScheduleListener(val clickListener:(scheduleId:String) -> Unit){
-    fun onClick(scheduleId:String) = clickListener(schedule.scheduleId)
+    fun onClick(schedule:Schedule) { clickListener(schedule.scheduleId.toString())}
 }

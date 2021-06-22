@@ -106,7 +106,11 @@
         android:id="@+id/scheduleDetailFragment"
         android:name="com.example.droidsoftthird.ScheduleDetailFragment"
         android:label="schedule_detail_fragment"
-        tools:layout="@layout/schedule_detail_fragment" />
+        tools:layout="@layout/schedule_detail_fragment" >
+        <argument
+            android:name="scheduleId"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

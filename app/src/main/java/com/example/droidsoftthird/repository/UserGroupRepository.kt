@@ -5,6 +5,7 @@ import com.example.droidsoftthird.QueryType
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.model.Place
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -29,6 +30,8 @@ class UserGroupRepository @Inject constructor() {
     private val fireStorageRef = FirebaseStorage.getInstance().reference
 
 
+
+
     suspend fun getGroups(query: String): Result<List<Group>> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
@@ -42,14 +45,12 @@ class UserGroupRepository @Inject constructor() {
                             continuation.resume(Result.Error(e))
                             Timber.tag("check_result3").d(e.toString())
                         }
-
                     }
                     .addOnFailureListener {
                         continuation.resume(Result.Error(it))
                         Timber.tag("check_result4").d(it.toString())
                     }
             }
-
         }
 
     private fun getQuery(query: String): Query {
@@ -91,7 +92,6 @@ class UserGroupRepository @Inject constructor() {
                     Timber.tag("check_result4").d(it.toString())
                 }
         }
-
     }
 
 
@@ -121,7 +121,8 @@ class UserGroupRepository @Inject constructor() {
     suspend fun createGroup(group: Group): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
-                fireStore.collection("groups")
+                fireStore
+                    .collection("groups")
                     .document()
                     .set(group)
                     .addOnSuccessListener {
@@ -203,19 +204,23 @@ class UserGroupRepository @Inject constructor() {
     }
 
 
-    suspend fun userJoinGroup(groupId: String): Result<Int> {
+    suspend fun userJoinGroup(groupId: String,groupName:String): Result<Int> {
 
         val groupRef = fireStore.collection("groups").document(groupId)
+        val userProfileRef = fireStore.collection("users").document(FirebaseAuth.getInstance().currentUser.uid)
         return withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 fireStore.runBatch {batch ->
 
                     batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))
+                    batch.update(userProfileRef,"groups",FieldValue.arrayUnion(groupId))
+
                     /*TODO
                     *   1. UserIdArrayをGroupのFieldに追加し、UIDを入れる。
                     *   2. CloudFunctionを用いて、userProfile内にGroupのフィールド情報を同期できるように設定する。
                     *   3. CloudFunctionを用いて、group内にUserProfileのuserImageのフィールド情報を同期できるように設定する。
                     *   */
+
                 }.addOnSuccessListener {
                     try {
                         continuation.resume(Result.Success(R.string.upload_success))

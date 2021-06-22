@@ -29,7 +29,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="曜日"
+                android:hint="曜日"
+                android:text="@{schedule.component2().dayOfWeek.toString()}"
                 />
 
             <TextView
@@ -38,7 +39,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/dayOfWeek"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="日にち"/>
+                android:hint="日にち"
+                android:text="@{schedule.component2().toString()}"/>
 
             <TextView
                 android:id="@+id/title"
@@ -47,7 +49,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginLeft="120dp"
-                android:text="タイトル"/>
+                android:hint="タイトル"
+                android:text="@{schedule.component1()}"/>
 
             <TextView
                 android:id="@+id/duration"
@@ -56,18 +59,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginLeft="120dp"
-                android:text="20:00~21:00"/>
+                android:hint="20:00~21:00"
+                app:startTime = "@{schedule.component4()}"
+                app:endTime = "@{schedule.component4()}"
+                />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="50dp"
-                android:text="ロケーション"
+                android:hint="ロケーション"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--TODO Location情報については後で入力する。-->
     </androidx.cardview.widget.CardView>
 </layout>

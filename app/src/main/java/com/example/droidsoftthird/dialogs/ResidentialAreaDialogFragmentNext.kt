@@ -87,6 +87,7 @@ class ResidentialAreaDialogFragmentNext : DialogFragment() {
                 .setPositiveButton(R.string.done, DialogInterface.OnClickListener { dialog, which ->
                     viewModel.postPrefecture(prefectureList[previousSelected!!])
                     viewModel.postCity(items[selected]) })
+
                 .setNeutralButton(R.string.cancel) { dialog, which -> Unit}
             builder.create()
         }?: throw IllegalStateException("Activity cannot be null")

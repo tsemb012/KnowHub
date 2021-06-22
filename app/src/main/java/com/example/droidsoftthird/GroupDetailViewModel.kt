@@ -43,7 +43,7 @@ class GroupDetailViewModel @AssistedInject constructor(
         viewModelScope.launch {
             _navigateToMyPage.value = " "
             val result = try {
-                repository.userJoinGroup(groupId)
+                repository.userJoinGroup(groupId,group.value.groupName)
             } catch (e: Exception) {
                 Result.Error(Exception("Network request failed"))
             }

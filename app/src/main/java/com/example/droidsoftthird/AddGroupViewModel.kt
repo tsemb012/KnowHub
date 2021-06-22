@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.model.Place
 import com.example.droidsoftthird.repository.UserGroupRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.async
@@ -18,7 +19,6 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
     //TODO より良いUIを検討する。
 
 
-
     private val _imageUri = MutableLiveData<Uri>(null)
     val imageUri: LiveData<Uri>
         get() = _imageUri
@@ -30,17 +30,30 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
         MutableLiveData<String>("グループの紹介文を記入してください。")
     //R.string.please_input_group_introduction.toString()
 
-    private val _groupType = MutableLiveData<String>("未設定")//R.string.no_set.toString()
+    private val _groupType = MutableLiveData<String>("未設定")
     val groupType: LiveData<String>
         get() = _groupType
 
-    private val _prefecture = MutableLiveData<String>("未設定")//R.string.no_set.toString()
+    private val _prefecture = MutableLiveData<String>("未設定")
     val prefecture: LiveData<String>
         get() = _prefecture
 
-    private val _city = MutableLiveData<String>("未設定")//R.string.no_set.toString()
+    private val _city = MutableLiveData<String>("未設定")
     val city: LiveData<String>
         get() = _city
+
+    private val _prefectureAndCity = MutableLiveData<String>("未設定")
+    val prefectureAndCity: LiveData<String>
+        get() = _prefectureAndCity
+
+    private val _latitude = MutableLiveData<Double>(-1.0)
+    val latitude: LiveData<Double>
+        get() = _latitude
+
+    private val _longitude= MutableLiveData<Double>(-1.0)
+    val longitude: LiveData<Double>
+        get() = _longitude
+
 
     private val _facilityEnvironment = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val facilityEnvironment: LiveData<String>
@@ -74,10 +87,13 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
     val isChecked: LiveData<Boolean>
         get() = _isChecked
 
+    private val _place = MutableLiveData<Place>()//R.string.no_set.toString()
+    val place: LiveData<Place>
+        get() = _place
+
     val enableState = MediatorLiveData<Boolean>().also { result ->
         result.addSource(groupName) { result.value = isValid() }
     }
-
 
     fun postImageUri(uri: Uri) {
         _imageUri.postValue(uri)
@@ -153,15 +169,19 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
                                 groupType.value.toString(),
                                 prefecture.value.toString(),
                                 city.value.toString(),
+                                prefectureAndCity.value.toString(),
+                                latitude.value,
+                                longitude.value,
                                 facilityEnvironment.value.toString(),
                                 basis.value.toString(),
                                 frequency.value.toString(),
-                                minAge.value!!,
-                                maxAge.value!!,
+                                minAge.value,
+                                maxAge.value,
                                 minNumberPerson.value!!,
                                 maxNumberPerson.value!!,
                                 isChecked.value!!
                             )
+
                             val result:Result<Int> = repository.createGroup(group)
                             /*when(result){
                               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
@@ -175,6 +195,13 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
             }else{//TODO 画像がNullだった場合の対処法も考える。
             }
         }
+    }
+
+    fun postPlace(place: Place) {
+        _prefecture.postValue(place.prefecture)
+        _city.postValue(place.city)
+        _prefectureAndCity.postValue(place.prefectureAndCity)
+        _place.postValue(place)
     }
 
     companion object {
