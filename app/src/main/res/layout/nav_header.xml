@@ -36,14 +36,23 @@
             android:clickable="true"
             >
 
-            <ImageView
+<!--            <ImageView
                 android:id="@+id/nav_header_profilePhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 app:srcCompat="@mipmap/ic_launcher_round"
-                app:imageFireStorage="@{viewModel.userProfile.userImageRef}"/>
+                app:imageFireStorage="@{viewModel.userProfile.userImageRef}"/>-->
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/nav_header_profilePhoto"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_baseline_account_box_24"
+                app:layout_constraintEnd_toStartOf="@id/record_message"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:imageFireStorage="@{viewModel.userProfile.userImageRef}"
+                />
 
 
             <TextView
