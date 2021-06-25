@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#B1DFD9</color>
+    <color name="primary_dark">#009AA3</color>
+    <color name="primary_accent_purple">#CB4FB5</color>
+    <color name="primary_accent_yellow">#F8B500</color>
+    <color name="primary_accent_red">#FF0000</color>
+    <color name="primary_base_yellow">#FFFBEE</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

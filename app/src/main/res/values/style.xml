@@ -2,9 +2,9 @@
 <resources>
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#B1DFD9</item>
+        <item name="colorPrimaryDark">#009AA3</item>
+        <item name="colorAccent">#CB4FB5</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
