@@ -64,7 +64,7 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
         viewModelScope.launch {
             if(userImageUri.value != null && backgroundImageUri.value != null)  {
                 val result1 = async{repository.uploadPhoto(userImageUri.value!!)}.await()
-                val result2 = async{repository.uploadPhoto(userImageUri.value!!)}.await()
+                val result2 = async{repository.uploadPhoto(backgroundImageUri.value!!)}.await()
                     when{
                         result1 is Result.Success && result2 is Result.Success -> {
 
