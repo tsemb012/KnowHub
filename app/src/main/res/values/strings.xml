@@ -92,4 +92,7 @@
     <string name="download_clicked_file_or_not">クリックしたファイルをダウンロードしますか。</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
+    <string name="name">名前</string>
+    <string name="self_introduction">自己紹介</string>
+    <string name="please_attach_background_image">背景画像を添付しましょう</string>
 </resources>
