@@ -10,6 +10,7 @@ data class UserProfile (
     val userName: String? = null,
     val userIntroduction: String? = null,
     val gender: Int? = null,
+    val age: Int? = null,
     val prefecture: String? = null,
     val city: String? = null,
     @DocumentId

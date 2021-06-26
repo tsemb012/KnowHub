@@ -23,10 +23,10 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
     val backgroundImageUri: LiveData<Uri>
         get() = _backgroundImageUri
 
-    val userName = MutableLiveData<String>()
-    val userIntroduction = MutableLiveData<String>()
-    val gender = MutableLiveData<Int>()
-    val age = MutableLiveData<Int>()
+    var userName = MutableLiveData<String>()
+    var userIntroduction = MutableLiveData<String>()
+    var gender = MutableLiveData<Int>()
+    var age = MutableLiveData<Float>(20.0f)
 
     private val _prefecture_r = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val prefecture_r: LiveData<String>
@@ -60,7 +60,10 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                 && !_city_r.value.isNullOrBlank()
     }
 
+
+
     fun createUserProfile() {
+        activateProgressBar()
         viewModelScope.launch {
             if(userImageUri.value != null && backgroundImageUri.value != null)  {
                 val result1 = async{repository.uploadPhoto(userImageUri.value!!)}.await()
@@ -77,6 +80,7 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                                 userName.value.toString(),
                                 userIntroduction.value.toString(),
                                 gender.value,
+                                age.value?.toInt(),
                                 prefecture_r.value.toString(),
                                 city_r.value.toString(),
                             )
@@ -88,13 +92,14 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
 
                             val result3:Result<Int> = repository.createUserProfile(userProfile)
                             val result4:Result<Int> = repository.updateAuthProfile(authProfileUpdates)
-                            //TODO AuthにアップロードしたUriは内部のUriだが、読み込み時に問題がないか確認を行う。
 
 
-                            /*when(result){
-                              is Result.Success ->  //TODO アップロード成功時の処理を記述する。
-                              else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
-                            }*/
+                            when{
+                              result3 is Result.Success && result4 is Result.Success -> {
+                                  onHomeClicked()
+                              } //TODO アップロード成功時の処理を記述する。
+//TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                            }
 
                         }
                         //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
@@ -102,9 +107,25 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                 }
             } //TODO 画像がNullだった場合の対処法も考える。
         }
+
+    val activateProgressBar = MutableLiveData<Event<String>>()
+    fun activateProgressBar(){
+        activateProgressBar.value = Event("activateProgressBar")
+    }
+
+    val navigationToHome = MutableLiveData<Event<String>>()
+    fun onHomeClicked(){
+        navigationToHome.value = Event("navigation")
+    }
+
+
+
+
     companion object {
         private const val IMAGE_SIZE = "_200x200"
     }
+
+
 
 }
 

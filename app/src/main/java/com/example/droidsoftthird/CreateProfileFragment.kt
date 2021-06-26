@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentCreateProfileBinding
 import com.example.droidsoftthird.dialogs.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +34,15 @@ class CreateProfileFragment : Fragment(), View.OnClickListener {
         binding.editProfileImage.setOnClickListener(this)
         binding.editBackgroundImage.setOnClickListener(this)
         binding.btnResidentialArea.setOnClickListener(this)
+
+        viewModel.navigationToHome.observe(viewLifecycleOwner,EventObserver{
+            findNavController().navigate(
+                CreateProfileFragmentDirections.actionCreateProfileFragmentToHomeFragment())
+        })
+
+        viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{
+            binding.progressBar.visibility = View.VISIBLE
+        })
 
         return binding.root
     }

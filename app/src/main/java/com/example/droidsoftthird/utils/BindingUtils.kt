@@ -5,10 +5,13 @@ import android.text.format.DateUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
+import com.google.android.material.slider.Slider
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
 import java.net.URI
@@ -140,6 +143,22 @@ fun setDuration(textView: TextView, timeinmillis: String?) {
         }
     }
     textView.text = sp
+}
+
+@InverseBindingAdapter(attribute = "android:value")
+fun getSliderValue(slider: Slider) = slider.value
+
+@BindingAdapter( "android:valueAttrChanged")
+fun setSliderListeners(slider: Slider, attrChange: InverseBindingListener) {
+    slider.addOnChangeListener { _, _, _ ->
+        attrChange.onChange()
+    }
+}
+
+
+@BindingAdapter("floatToIntString")
+fun TextView.floatToIntString(float: Float) {
+    text = float.toInt().toString()
 }
 
 
