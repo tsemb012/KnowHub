@@ -119,8 +119,7 @@ class HomeFragment: Fragment() {
 
         //-----SettingTab *After Linking Tab&ViewPager*
         requireNotNull(tabLayout.getTabAt(0)).setText(R.string.recommendation)
-        requireNotNull(tabLayout.getTabAt(1)).setText(R.string.schedule)
-        requireNotNull(tabLayout.getTabAt(2)).setText(R.string.map)
+        requireNotNull(tabLayout.getTabAt(1)).setText(R.string.map)
 
         //-----Navigation to AddGroupFragment by FloatingActionButton
         //TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。

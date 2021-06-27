@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -47,6 +48,15 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         binding.btnToGroupDetailBarAgeRange.setOnClickListener(this)
         binding.btnToGroupDetailBarNumberPersons.setOnClickListener(this)
         binding.btnToGroupDetailBarGenderRestriction.setOnClickListener(this)
+
+        viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{
+            binding.progressBar.visibility = View.VISIBLE
+        })
+
+        viewModel.navigationToHome.observe(viewLifecycleOwner,EventObserver{
+            findNavController().navigate(
+                AddGroupFragmentDirections.actionAddGroupFragmentToHomeFragment())
+        })
 
         return binding.root
     }
