@@ -23,11 +23,11 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
     val imageUri: LiveData<Uri>
         get() = _imageUri
 
-    val groupName = MutableLiveData<String>()
+    var groupName = MutableLiveData<String>()
     //R.string.please_input_group_name
 
     val groupIntroduction =
-        MutableLiveData<String>("グループの紹介文を記入してください。")
+        MutableLiveData<String>()
     //R.string.please_input_group_introduction.toString()
 
     private val _groupType = MutableLiveData<String>("未設定")//R.string.no_set.toString()
@@ -74,8 +74,13 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
     val isChecked: LiveData<Boolean>
         get() = _isChecked
 
+    private fun isValid(): Boolean {
+        return !groupName.value.isNullOrBlank() && !groupIntroduction.value.isNullOrBlank()
+    }
+
     val enableState = MediatorLiveData<Boolean>().also { result ->
         result.addSource(groupName) { result.value = isValid() }
+        result.addSource(groupIntroduction) { result.value = isValid() }
     }
 
 
@@ -130,15 +135,12 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
         _isChecked.postValue(boolean)
     }
 
-    private fun isValid(): Boolean {
-        return !groupName.value.isNullOrBlank() && !groupIntroduction.value.isNullOrBlank()
-        //TODO UIを研究し、Userにとってより使いやすい手法を探る。
-    }
+
 
 
     fun createGroup() {
         //DONE DroidSecondのuploadFromUriを用いて、Repository経由でアップロード処理を行う。
-
+        activateProgressBar()
         viewModelScope.launch {
             if(imageUri.value != null) {
                 async{repository.uploadPhoto(imageUri.value!!)}.await().also {
@@ -163,10 +165,10 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
                                 isChecked.value!!
                             )
                             val result:Result<Int> = repository.createGroup(group)
-                            /*when(result){
-                              is Result.Success ->  //TODO アップロード成功時の処理を記述する。
-                              else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
-                            }*/
+                            when(result){
+                              is Result.Success ->  {onHomeClicked()}//TODO アップロード成功時の処理を記述する。
+                              //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                            }
 
                         }
                     //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
@@ -175,6 +177,16 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
             }else{//TODO 画像がNullだった場合の対処法も考える。
             }
         }
+    }
+
+    val activateProgressBar = MutableLiveData<Event<String>>()
+    fun activateProgressBar(){
+        activateProgressBar.value = Event("activateProgressBar")
+    }
+
+    val navigationToHome = MutableLiveData<Event<String>>()
+    fun onHomeClicked(){
+        navigationToHome.value = Event("navigation")
     }
 
     companion object {

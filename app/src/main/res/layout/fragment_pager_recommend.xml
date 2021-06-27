@@ -19,8 +19,9 @@
             android:id="@+id/group_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:background="@color/primary_base_yellow"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

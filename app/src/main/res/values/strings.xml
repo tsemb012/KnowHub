@@ -14,7 +14,7 @@
     <string name="tab_2nd">スケジュール</string>
     <string name="tab_3rd">マップ</string>
     <string name="group_name">グループ名</string>
-    <string name="group_introduction">グループ紹介</string>
+    <string name="group_introduction">グループ概要(やること、目標など)</string>
     <string name="group_detail">詳細情報</string>
     <string name="group_type">グループタイプ</string>
     <string name="no_set">未設定</string>
@@ -95,4 +95,5 @@
     <string name="name">名前</string>
     <string name="self_introduction">自己紹介</string>
     <string name="please_attach_background_image">背景画像を添付しましょう</string>
+    <string name="group_register">グループを登録</string>
 </resources>
