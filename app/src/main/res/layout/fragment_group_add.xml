@@ -10,41 +10,37 @@
                 type="com.example.droidsoftthird.AddGroupViewModel" />
         </data>
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".AddGroupFragment">
+            tools:context=".AddGroupFragment"
+            android:background="@color/primary_light">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:indeterminate="true"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/caption"
+                android:layout_width="398dp"
+                android:layout_height="6dp"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                />
+
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:indeterminate="true"
-                        android:visibility="invisible"
-                        app:layout_constraintEnd_toEndOf="@+id/caption"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/caption"
-                        android:layout_width="398dp"
-                        android:layout_height="6dp"
-                        android:gravity="center_horizontal"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorAccent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/progress_bar"
-                        />
 
 
                     <ImageView
@@ -65,63 +61,61 @@
 
                         />
 
-                    <TextView
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/group_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/group_name"
-                        android:textSize="24sp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_group_image" />
+                        app:layout_constraintTop_toBottomOf="@+id/btn_group_image"
+                        android:hint="@string/group_name"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <EditText
-                        android:id="@+id/edit_group_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="@={addGroupViewModel.groupName}"
-                        app:layout_constraintBottom_toBottomOf="@+id/group_name"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/group_name"
-                        app:layout_constraintTop_toTopOf="@+id/group_name" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_group_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={addGroupViewModel.groupName}"
+                            android:inputType="textPersonName"
+                            />
 
-                    <TextView
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/group_intro"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/group_introduction"
-                        android:textSize="24sp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:hint="@string/group_introduction"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/group_name" />
+                        app:layout_constraintTop_toBottomOf="@+id/group_name"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <EditText
-                        android:id="@+id/edit_group_intro"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="start|top"
-                        android:inputType="textMultiLine"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/group_intro"
-                        android:text="@={addGroupViewModel.groupIntroduction}"/>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_group_intro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={addGroupViewModel.groupIntroduction}"
+                            android:inputType="textMultiLine"
+                            />
 
-                    <TextView
-                        android:id="@+id/group_detail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/group_detail"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/edit_group_intro" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
 
                     <View
                         android:id="@+id/divider_intro"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
                         android:background="?android:attr/listDivider"
-                        app:layout_constraintTop_toBottomOf="@+id/edit_group_intro" />
+                        app:layout_constraintTop_toBottomOf="@+id/group_intro" />
 
                     <LinearLayout
                         android:id="@+id/linearLayout1"
@@ -131,8 +125,8 @@
                         android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/group_detail"
-                        android:background="@color/colorPrimary">
+                        app:layout_constraintTop_toBottomOf="@+id/divider_intro"
+                        android:background="@color/primary_light">
 
                         <LinearLayout
                             android:id="@+id/btn_to_groupDetailBar_group_type"
@@ -441,16 +435,17 @@
                         android:id="@+id/btn_to_groupPOJO"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/register"
+                        android:text="@string/group_register"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
                         android:enabled="@{addGroupViewModel.enableState}"
                         android:onClick="@{() -> addGroupViewModel.createGroup()}"
+                        android:backgroundTint="@color/primary_dark"
                         />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
-        </FrameLayout>
+        </RelativeLayout>
     </layout>

@@ -19,4 +19,6 @@
     <color name="blue">#FF3700B3</color>
     <color name="background">#EDEDF1</color>
     <color name="percian_blue">#0C2F3E</color>
+    <color name="primary_white">#F6FFFE</color>
+    <color name="primary_light">#F1F8F7</color>
 </resources>

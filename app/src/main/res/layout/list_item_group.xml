@@ -14,10 +14,13 @@
     </data>
 
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(group)}">
+        android:onClick="@{() -> clickListener.onClick(group)}"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/primary_light"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -38,9 +41,8 @@
                 android:id="@+id/group_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/group_image"
@@ -50,9 +52,9 @@
                 android:id="@+id/group_member_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:drawableLeft="@drawable/ic_baseline_group_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/ic_baseline_group_24"
+                android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_name"
@@ -65,8 +67,9 @@
                 android:id="@+id/group_schedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/ic_baseline_calendar_today_24"
+                android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_member_number" />
@@ -76,8 +79,9 @@
                 android:id="@+id/group_location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_location_on_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/ic_baseline_location_on_24"
+                android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_schedule"
@@ -88,15 +92,16 @@
                 android:id="@+id/group_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="@dimen/margin_normal"
-                android:drawableLeft="@drawable/ic_baseline_comment_24"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:drawableStart="@drawable/ic_baseline_comment_24"
+                android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_location"
                 android:text="@{group.groupIntroduction}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
 
