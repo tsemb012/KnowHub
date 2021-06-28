@@ -96,4 +96,7 @@
     <string name="self_introduction">自己紹介</string>
     <string name="please_attach_background_image">背景画像を添付しましょう</string>
     <string name="group_register">グループを登録</string>
+    <string name="JoinIn">参加</string>
+    <string name="confrimation">確認</string>
+    <string name="confrimation_join_group">このグループに参加しますか？</string>
 </resources>

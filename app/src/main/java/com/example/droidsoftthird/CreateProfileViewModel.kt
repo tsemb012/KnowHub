@@ -98,7 +98,7 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                               result3 is Result.Success && result4 is Result.Success -> {
                                   onHomeClicked()
                               } //TODO アップロード成功時の処理を記述する。
-//TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                                //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
                             }
 
                         }

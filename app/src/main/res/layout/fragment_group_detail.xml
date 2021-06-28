@@ -2,7 +2,8 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -26,7 +27,10 @@
                 android:layout_height="match_parent"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed"
-                app:toolbarId="@+id/toolbar">
+                app:toolbarId="@+id/toolbar"
+                app:title="@{viewModel.group.groupName}"
+                app:expandedTitleTextAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded2"
+                >
 
                 <ImageView
                     android:id="@+id/group_image"
@@ -49,14 +53,7 @@
                     app:titleTextColor="?attr/colorOnSurface"
                     app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
 
-                <TextView
-                    android:id="@+id/group_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/design_default_color_background"
-                    android:text="@{viewModel.group.groupName}" />
+
 
                 <!--androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerProfiles"
@@ -73,360 +70,102 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!--layout_behaviorがないと、AppBarLayoutにRecyclerViewが重なって表示されてしまう。-->
-
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/fab_bottom_padding"
+            android:paddingBottom="0dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+
+            <LinearLayout
+                android:id="@+id/linearLayout_group_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp">
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                android:background="@color/primary_light"
+                style="@style/AppTheme">
 
                 <TextView
-                    android:id="@+id/textView_groupIntro"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="@{viewModel.group.groupIntroduction}"/>
-
-                <View
-                    android:id="@+id/divider_intro"
-                    android:layout_width="200dp"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView_groupIntro"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <!--1-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_groupType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider_intro">
+                    android:layout_marginTop="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:padding="15dp"
+                    android:text="@{viewModel.group.groupIntroduction}"
+                    android:background="@drawable/radius_rectangular_prime_base_yellow"
+                    />
 
-                    <ImageView
-                        android:id="@+id/imageIcon_groupType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_group_24" />
+                <include
+                    android:id="@+id/include_group_type"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/group_type}"
+                    bind:drawable="@{@drawable/ic_baseline_group_24}"
+                    bind:text="@{viewModel.group.groupType}"
+                    />
 
-                    <TextView
-                        android:id="@+id/textView_groupType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/group_type"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_groupType"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <include
+                    android:id="@+id/include_activity_area"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/activity_area}"
+                    bind:drawable="@{@drawable/ic_baseline_location_on_24}"
+                    bind:text="@{viewModel.prefectureAndCity}"
+                    />
+                <include
+                    android:id="@+id/include_facility_environment"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/facility_environment}"
+                    bind:drawable="@{@drawable/ic_baseline_location_city_24}"
+                    bind:text="@{viewModel.group.facilityEnvironment}"
+                    />
+                <include
+                    android:id="@+id/include_learning_frequency"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/learning_frequency}"
+                    bind:drawable="@{@drawable/ic_baseline_date_range_24}"
+                    bind:text="@{viewModel.basisFrequency}"
+                    />
+                <include
+                    android:id="@+id/include_age_range"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/age_range}"
+                    bind:drawable="@{@drawable/ic_baseline_elevator_24}"
+                    bind:text="@{viewModel.ageRange}"
+                    />
+                <include
+                    android:id="@+id/include_number_person"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/number_persons}"
+                    bind:drawable="@{@drawable/ic_baseline_groups_24}"
+                    bind:text="@{viewModel.numberPerson}"
+                    />
+                <include
+                    android:id="@+id/include_gender_restriction"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/gender_restriction}"
+                    bind:drawable="@{@drawable/ic_baseline_wc_24}"
+                    bind:text="@{viewModel.group.groupType}"
+                    />
 
-                    <TextView
-                        android:id="@+id/textView2_groupType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_groupType"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="@{viewModel.group.groupType}"/>
-
-                    <View
-                        android:id="@+id/divider_groupType"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2_groupType" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--2-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_activityArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout_groupType">
-
-                    <ImageView
-                        android:id="@+id/imageIcon_activityArea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-                    <TextView
-                        android:id="@+id/textView_activityArea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/activity_area"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_activityArea"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2_activityArea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_activityArea"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-                    <!--TODO Nullableに対応したBindingになっていないので、個別にBindingUtilを設定するか、Non-Nullにする。
-                        app:prefecture="@{groupDetailViewModel.group.prefecture}"
-                        app:city="@{groupDetailViewModel.group.city}"-->
-
-                    <View
-                        android:id="@+id/divider_activityArea"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--3-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_facilityEnvironment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout_activityArea">
-
-
-                    <ImageView
-                        android:id="@+id/imageIcon_facilityEnvironment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_location_city_24" />
-
-                    <TextView
-                        android:id="@+id/textView_facilityEnvironment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/facility_environment"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_facilityEnvironment"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2_facilityEnvironment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_facilityEnvironment"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="@{viewModel.group.facilityEnvironment}"/>
-
-                    <View
-                        android:id="@+id/divider_facilityEnvironment"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView2_facilityEnvironment"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--4-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_learningFrequency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout_facilityEnvironment">
-
-                    <ImageView
-                        android:id="@+id/imageIcon_learningFrequency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_date_range_24" />
-
-                    <TextView
-                        android:id="@+id/textView_learningFrequency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/learning_frequency"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_learningFrequency"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2_learningFrequency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_learningFrequency"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-                    <!--TODO Nullableに対応したBindingになっていないので、個別にBindingUtilを設定するか、Non-Nullにする。
-                        app:basis="@{groupDetailViewModel.group.basis}"
-                        app:frequency="@{groupDetailViewModel.group.frequency}"-->
-
-                    <View
-                        android:id="@+id/divider_learningFrequency"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView2_learningFrequency"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--5-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_ageRange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout_learningFrequency">
-
-                    <ImageView
-                        android:id="@+id/imageIcon_ageRange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_elevator_24" />
-
-                    <TextView
-                        android:id="@+id/textView_ageRange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/age_range"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_ageRange"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2_ageRange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_ageRange"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-                    <!--TODO Nullableに対応したBindingになっていないので、個別にBindingUtilを設定するか、Non-Nullにする。
-                        app:minAge="@{groupDetailViewModel.group.minAge}"
-                        app:maxAge="@{groupDetailViewModel.group.maxAge}"
-                        -->
-
-
-                    <View
-                        android:id="@+id/divider_ageRange"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView2_ageRange"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--6-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_numberPersons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout_ageRange">
-
-                    <ImageView
-                        android:id="@+id/imageIcon_numberPersons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_groups_24" />
-
-                    <TextView
-                        android:id="@+id/textView_numberPersons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/number_persons"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_numberPersons"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2_numberPersons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_numberPersons"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:minNumberPerson="@{viewModel.group.minNumberPerson}"
-                        app:maxNumberPerson="@{viewModel.group.maxNumberPerson}"/>
-
-                    <View
-                        android:id="@+id/divider_numberPersons"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView2_numberPersons"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--7-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout_genderRestriction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout_numberPersons">
-
-                    <ImageView
-                        android:id="@+id/imageIcon_genderRestriction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_wc_24" />
-
-                    <TextView
-                        android:id="@+id/textView_genderRestriction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/gender_restriction"
-                        app:layout_constraintStart_toEndOf="@+id/imageIcon_genderRestriction"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2_genderRestriction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView_genderRestriction"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="@{viewModel.group.isChecked.toString()}"
-                        />
-                    <!--TODO 人数制限の部分や同性設定などよりUIを洗練させる。-->
-
-                    <View
-                        android:id="@+id/divider_genderRestriction"
-                        android:layout_width="200dp"
-                        android:layout_height="2dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView2_genderRestriction"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floating_btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_baseline_add_circle_24"
+            app:icon="@drawable/ic_baseline_add_circle_24"
+            android:text="@string/JoinIn"
+            android:textAlignment="center"
             app:layout_anchor="@id/appbar"
             app:layout_anchorGravity="bottom|right"
-            android:onClick="@{() -> viewModel.userJoinGroup()}"/>
+            android:onClick="@{() -> viewModel.confirmJoin()}"/>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

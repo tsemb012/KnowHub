@@ -30,4 +30,17 @@
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center_horizontal|center_vertical|end</item>
     </style>
+
+    <style name="collapsingToolbar_expanded" >
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="TextAppearance.Design.CollapsingToolbar.Expanded2"
+        parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">25sp</item>
+
+    </style>
+
 </resources>
