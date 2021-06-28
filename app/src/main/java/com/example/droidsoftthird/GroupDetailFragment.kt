@@ -1,9 +1,11 @@
 package com.example.droidsoftthird
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
@@ -79,6 +81,18 @@ class GroupDetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        viewModel.confirmJoin.observe(viewLifecycleOwner,EventObserver{
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.confrimation)
+                .setMessage(R.string.confrimation_join_group)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    viewModel.userJoinGroup()
+                }
+                .setNeutralButton(R.string.cancel) { _, _ ->
+                }
+                .show()
+        })
+
         viewModel.navigateToMyPage.observe(viewLifecycleOwner, Observer { groupId ->
             groupId?.let {
                 this.findNavController().navigate(
@@ -88,7 +102,7 @@ class GroupDetailFragment : Fragment() {
             }
         })
 
-        //TODO initで呼び出すように変更する。
+
 
         return binding.root
     }
