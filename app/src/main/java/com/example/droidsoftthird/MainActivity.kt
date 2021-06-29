@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
         navController.addOnDestinationChangedListener{ _, navDestination, _ ->
             title = when (navDestination.id) {
                 R.id.homeFragment -> getString(R.string.search)
