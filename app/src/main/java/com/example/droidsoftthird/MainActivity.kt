@@ -79,6 +79,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        navController.addOnDestinationChangedListener{ _, navDestination, _ ->
+            title = when (navDestination.id) {
+                R.id.homeFragment -> getString(R.string.search)
+                R.id.myPageFragment -> getString(R.string.my_page)
+                R.id.scheduleFragment -> getString(R.string.schedule)
+                R.id.videoFragment -> getString(R.string.video)
+                else -> " "
+            }
+        }
+
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         NavigationUI.setupWithNavController(bottomNav, navController)
