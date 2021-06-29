@@ -49,6 +49,8 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         binding.btnToGroupDetailBarNumberPersons.setOnClickListener(this)
         binding.btnToGroupDetailBarGenderRestriction.setOnClickListener(this)
 
+
+
         viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{
             binding.progressBar.visibility = View.VISIBLE
         })
