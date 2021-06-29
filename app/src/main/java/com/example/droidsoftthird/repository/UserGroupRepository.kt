@@ -115,16 +115,42 @@ class UserGroupRepository @Inject constructor() {
             }
         }
 
+/*    suspend fun userJoinGroup(groupId: String): Result<Int> {
 
+        val groupRef = fireStore.collection("groups").document(groupId)
+        return withContext(Dispatchers.IO) {
+            suspendCoroutine { continuation ->
+                fireStore.runBatch {batch ->
+
+                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))
+                    /*TODO
+                    *   1. UserIdArrayをGroupのFieldに追加し、UIDを入れる。
+                    *   2. CloudFunctionを用いて、userProfile内にGroupのフィールド情報を同期できるように設定する。
+                    *   3. CloudFunctionを用いて、group内にUserProfileのuserImageのフィールド情報を同期できるように設定する。
+                    *   */
+                }.addOnSuccessListener {
+                    try {
+                        continuation.resume(Result.Success(R.string.upload_success))
+                    } catch (e: Exception) {
+                        continuation.resume(Result.Error(e))
+                    }
+                }
+                    .addOnFailureListener {
+                        continuation.resume(Result.Error(it))
+                    }
+            }
+        }
+    }*/
 
 
     suspend fun createGroup(group: Group): Result<Int> {
+        val groupRef = fireStore.collection("groups").document()
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
-                fireStore.collection("groups")
-                    .document()
-                    .set(group)
-                    .addOnSuccessListener {
+                fireStore.runBatch { batch ->
+                    batch.set(groupRef,group)
+                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))
+                }.addOnSuccessListener {
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
                         } catch (e: Exception) {
@@ -137,6 +163,7 @@ class UserGroupRepository @Inject constructor() {
             }
         }
     }
+
 
     suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
