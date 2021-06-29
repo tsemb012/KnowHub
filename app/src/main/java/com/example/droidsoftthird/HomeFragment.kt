@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -61,6 +62,7 @@ class HomeFragment: Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,7 +71,7 @@ class HomeFragment: Fragment() {
         val toolbar: Toolbar = binding.include.toolbar
         val drawer: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        toolbar.setTitle(R.string.search)
+
 
 
         //-----NavUI Objects
@@ -87,6 +89,9 @@ class HomeFragment: Fragment() {
 
         //-----MenuGenerate for AppBar
         binding.include.toolbar.inflateMenu(R.menu.menu_main)
+        binding.include.toolbar.setTitle(R.string.search)
+        binding.include.toolbar.setTitleTextColor(R.color.primary_dark)
+
         /**TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.sign_out) {

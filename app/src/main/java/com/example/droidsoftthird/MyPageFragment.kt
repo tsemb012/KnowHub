@@ -1,11 +1,13 @@
 package com.example.droidsoftthird
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.compose.navigate
 import androidx.navigation.findNavController
@@ -32,8 +34,11 @@ class MyPageFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true);
+
+
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,9 +50,10 @@ class MyPageFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //-----ViewObjects for Navigation
-        val layout: CollapsingToolbarLayout = binding.include.collapsingToolbarLayout
-        val toolbar: Toolbar = binding.include.toolbar
+        val toolbar: Toolbar = binding.toolbar
         toolbar.setTitle(R.string.my_page)
+
+        requireActivity().actionBar?.title = getString(R.string.my_page)
 
 
         //-----NavUI Objects
@@ -56,10 +62,11 @@ class MyPageFragment: Fragment() {
         appBarConfiguration = AppBarConfiguration.Builder(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment)).build()
 
         //-----Setup for NavigationUI
-        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
 
         //-----MenuGenerate for AppBar
-        binding.include.toolbar.inflateMenu(R.menu.menu_main)
+        toolbar.inflateMenu(R.menu.menu_main)
+
         /*TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.sign_out) {
