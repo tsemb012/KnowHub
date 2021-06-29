@@ -82,6 +82,7 @@ class HomeFragment: Fragment() {
         NavigationUI.setupWithNavController(navView, navController)
 
 
+
         //-----MenuGenerate for AppBar
         binding.include.toolbar.inflateMenu(R.menu.menu_main)
         /**TODO FilterをMenuに付与する際に再利用するコード
