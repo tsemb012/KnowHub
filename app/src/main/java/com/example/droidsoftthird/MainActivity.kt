@@ -12,6 +12,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -33,10 +34,15 @@ class MainActivity : AppCompatActivity() {
             this, R.layout.activity_main)
         setContentView(binding.root)
 
+        val bottomNav: BottomNavigationView = binding.bottomNav
+
+
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        NavigationUI.setupWithNavController(bottomNav, navController)
 
     }
 

@@ -69,7 +69,6 @@ class HomeFragment: Fragment() {
         val toolbar: Toolbar = binding.include.toolbar
         val drawer: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val bottomNav: BottomNavigationView = binding.bottomNav
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -81,7 +80,6 @@ class HomeFragment: Fragment() {
         //-----Setup for NavigationUI
         NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(navView, navController)
-        NavigationUI.setupWithNavController(bottomNav, navController)
 
 
         //-----MenuGenerate for AppBar
