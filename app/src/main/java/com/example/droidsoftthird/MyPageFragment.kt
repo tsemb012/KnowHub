@@ -47,7 +47,6 @@ class MyPageFragment: Fragment() {
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.include.collapsingToolbarLayout
         val toolbar: Toolbar = binding.include.toolbar
-        val bottomNav: BottomNavigationView = binding.bottomNav
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -56,7 +55,6 @@ class MyPageFragment: Fragment() {
 
         //-----Setup for NavigationUI
         NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration)
-        NavigationUI.setupWithNavController(bottomNav, navController)
 
         //-----MenuGenerate for AppBar
         binding.include.toolbar.inflateMenu(R.menu.menu_main)
