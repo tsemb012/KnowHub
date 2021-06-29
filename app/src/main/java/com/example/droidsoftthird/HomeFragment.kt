@@ -69,6 +69,8 @@ class HomeFragment: Fragment() {
         val toolbar: Toolbar = binding.include.toolbar
         val drawer: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+        toolbar.setTitle(R.string.search)
+
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

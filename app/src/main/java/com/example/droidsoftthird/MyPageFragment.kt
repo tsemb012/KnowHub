@@ -47,6 +47,8 @@ class MyPageFragment: Fragment() {
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.include.collapsingToolbarLayout
         val toolbar: Toolbar = binding.include.toolbar
+        toolbar.setTitle(R.string.my_page)
+
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
