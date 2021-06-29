@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import androidx.hilt.lifecycle.ViewModelFactoryModules_ActivityModule_ProvideFac
 import androidx.hilt.lifecycle.ViewModelFactoryModules_FragmentModule_ProvideFactoryFactory.provideFactory
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavArgs
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentGroupDetailBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.security.acl.Group
@@ -56,7 +59,6 @@ class GroupDetailFragment : Fragment() {
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.collapsingToolbarLayout
         val toolbar: Toolbar = binding.materialToolbar
-        toolbar.title = " "
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
@@ -80,6 +82,12 @@ class GroupDetailFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.group.observe(viewLifecycleOwner, Observer {
+            if(it?.members?.contains(FirebaseAuth.getInstance().uid) == true){
+                binding.floatingBtnAdd.visibility = View.GONE
+            }
+        })
 
         viewModel.confirmJoin.observe(viewLifecycleOwner,EventObserver{
             AlertDialog.Builder(requireContext())
@@ -106,6 +114,7 @@ class GroupDetailFragment : Fragment() {
 
         return binding.root
     }
+
 
     companion object {
         private val TAG: String? = GroupDetailFragment::class.simpleName
