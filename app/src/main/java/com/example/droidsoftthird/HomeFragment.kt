@@ -66,6 +66,7 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.include.collapsingToolbarLayout
         val toolbar: Toolbar = binding.include.toolbar
@@ -84,7 +85,7 @@ class HomeFragment: Fragment() {
         //-----Setup for NavigationUI
         NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(navView, navController)
-
+        */
 
 
         //-----MenuGenerate for AppBar

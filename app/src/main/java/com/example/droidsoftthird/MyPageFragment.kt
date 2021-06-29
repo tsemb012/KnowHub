@@ -34,8 +34,6 @@ class MyPageFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true);
-
-
     }
 
     @SuppressLint("ResourceAsColor")
@@ -55,17 +53,16 @@ class MyPageFragment: Fragment() {
 
         requireActivity().actionBar?.title = getString(R.string.my_page)
 
-
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration.Builder(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment)).build()
+        /*appBarConfiguration = AppBarConfiguration.Builder(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment)).build()
 
         //-----Setup for NavigationUI
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
 
         //-----MenuGenerate for AppBar
-        toolbar.inflateMenu(R.menu.menu_main)
+        toolbar.inflateMenu(R.menu.menu_main)*/
 
         /*TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
