@@ -18,7 +18,6 @@ class MainViewModel @ViewModelInject constructor(private val repository: UserGro
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
-
     val authenticationState = FirebaseUserLiveData().map { user ->
         if (user != null) {
             AuthenticationState.AUTHENTICATED
@@ -47,11 +46,8 @@ class MainViewModel @ViewModelInject constructor(private val repository: UserGro
                         _userProfile.postValue(null)
                     }
                 }
-                //TODO　is Result.Error -> 取得失敗時のエラー記入
+                is Result.Error -> Timber.d("error at ${this@MainViewModel}")
             }
         }
     }
-
-
-
 }
