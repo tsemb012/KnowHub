@@ -29,16 +29,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeBinding;
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel:HomeViewModel by viewModels()
-    private lateinit var binding_header: NavHeaderBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         //-----Enable Menu
         setHasOptionsMenu(true);
@@ -50,7 +45,6 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        //binding_header = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
         return binding.root
     }
 
@@ -60,41 +54,6 @@ class HomeFragment: Fragment() {
 
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
-        /*
-        //-----ViewObjects for Navigation
-
-
-        //-----NavUI Objects
-        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration.Builder(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment)).setOpenableLayout(
-            drawer).build()//TODO TopLevelDestinationが増えるごとに追加していく。
-
-
-        //-----Setup for NavigationUI
-        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration)
-        NavigationUI.setupWithNavController(navView, navController)
-        */
-
-        //-----MenuGenerate for AppBar
-        /*binding.include.toolbar.inflateMenu(R.menu.menu_main)
-        binding.include.toolbar.setTitle(R.string.search)
-        binding.include.toolbar.setTitleTextColor(R.color.primary_dark)*/
-
-        /**TODO FilterをMenuに付与する際に再利用するコード
-        binding.include.toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.sign_out) {
-                context?.let { AuthUI.getInstance().signOut(it) }
-                startSignIn()
-            } else {
-                //TODO WRITE CODE FOR MENU EXCEPT FOR SIGN_OUT
-            }
-            return@setOnMenuItemClickListener NavigationUI.onNavDestinationSelected(item,
-                navController)
-                    || super.onOptionsItemSelected(item)
-        }*/
-
 
         //-----ViewPager Objects
         val homeViewPagerAdapter = HomeViewPagerAdapter(this)
@@ -111,33 +70,25 @@ class HomeFragment: Fragment() {
         requireNotNull(tabLayout.getTabAt(1)).setText(R.string.map)
 
         //-----Navigation to AddGroupFragment by FloatingActionButton
-        //TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
+
         binding.floatingActionButton.setOnClickListener(View.OnClickListener { v ->
             val action: NavDirections =
                 HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
             Navigation.findNavController(v).navigate(action)
-        })
+        })//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
 
         observeAuthenticationState()
     }
 
     private fun observeAuthenticationState() {
 
-        //DONE CreateProfileFragmentを作成する。
-        //DONE UserProfileModelを作成する。
-        //DONE HomeFragmentLayout内の処理を完成させる。
-        //TODO　is Result.Error -> 取得失敗時のエラー記入
-
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
                 HomeViewModel.AuthenticationState.AUTHENTICATED -> {
-                    viewModel.getUser()//画面への反映および画面遷移ついては、ViewModel主導で行う。
+                    viewModel.getUser()
                     viewModel.userProfile.observe(viewLifecycleOwner, Observer { userProfile ->
-                        if (userProfile != null) {
-                            //requireActivity().binding_header.viewModel = viewModel
-                        } else {
+                        if (userProfile == null) {
                             navController.navigate(R.id.createProfileFragment)
-                            //DONE CreateProfileFragmentを作成する。
                         }
                     })
                 }
@@ -147,8 +98,6 @@ class HomeFragment: Fragment() {
             }
         })
     }
-
-
 
     private fun startSignIn() {
         // Choose authentication providers
@@ -177,6 +126,7 @@ class HomeFragment: Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
+
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -186,30 +136,6 @@ class HomeFragment: Fragment() {
             }
         }
     }
-
-    /**TODO Filter製作時に再利用する。
-     *
-     * Inflates the overflow menu that contains filtering options.
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overflow_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-     * Updates the filter in the [OverviewViewModel] when the menu items are selected from the
-     * overflow menu.
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.updateFilter(
-            when (item.itemId) {
-                R.id.show_rent_menu -> MarsApiFilter.SHOW_RENT
-                R.id.show_buy_menu -> MarsApiFilter.SHOW_BUY
-                else -> MarsApiFilter.SHOW_ALL
-            }
-        )
-        return true
-    }*/
-
 
     companion object {
         const val RC_RESIGN_IN = 9002
