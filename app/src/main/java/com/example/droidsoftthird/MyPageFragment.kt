@@ -48,8 +48,8 @@ class MyPageFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //-----ViewObjects for Navigation
-        val toolbar: Toolbar = binding.toolbar
-        toolbar.setTitle(R.string.my_page)
+        /*val toolbar: Toolbar = binding.toolbar
+        toolbar.setTitle(R.string.my_page)*/
 
         requireActivity().actionBar?.title = getString(R.string.my_page)
 

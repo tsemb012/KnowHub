@@ -10,28 +10,13 @@
             type="com.example.droidsoftthird.HomeViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.search.bnf001_SearchBtmNavFragment">
-
-        <androidx.drawerlayout.widget.DrawerLayout
-            android:id="@+id/drawer_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            tools:openDrawer="start">
-            <!--DrawerLayoutはRootViewとして設定-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
 
-                <include
-                    android:id="@+id/include"
-                    layout="@layout/include_appbar"
-                    />
+
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
@@ -39,7 +24,7 @@
                     android:layout_height="50dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/include"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:background="@color/primary_base_yellow"
                     app:tabSelectedTextColor="@color/primary_dark"
                     app:tabIndicator="@drawable/indicator"
@@ -80,14 +65,5 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.navigation.NavigationView
-                android:id="@+id/nav_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:fitsSystemWindows="true"
-                app:menu="@menu/menu_drawer_nav"/>
-        </androidx.drawerlayout.widget.DrawerLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
