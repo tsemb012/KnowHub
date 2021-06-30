@@ -53,7 +53,8 @@
     <string name="progress_uploading">Uploading..</string>
     <string name="upload_success">アップロード完了</string>
     <string name="upload_fail">アップロード失敗</string>
-    <string name="group_add">グループを追加しました。</string>
+    <string name="group_add">グループの追加</string>
+    <string name="group_added">グループを追加しました。</string>
     <string name="nickname">ニックネーム</string>
     <string name="gender">性別</string>
     <string name="male">男性</string>
@@ -99,4 +100,5 @@
     <string name="JoinIn">参加</string>
     <string name="confrimation">確認</string>
     <string name="confrimation_join_group">このグループに参加しますか？</string>
+    <string name="input_profile">プロフィール入力</string>
 </resources>

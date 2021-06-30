@@ -56,7 +56,6 @@ class GroupDetailFragment : Fragment() {
             inflater, R.layout.fragment_group_detail, container, false
         )
 
-        /*
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.collapsingToolbarLayout
         val toolbar: Toolbar = binding.materialToolbar
@@ -73,7 +72,6 @@ class GroupDetailFragment : Fragment() {
             navController,
             appBarConfiguration
         )
-        */
 
         val groupId = GroupDetailFragmentArgs.fromBundle(requireArguments()).groupId
         val viewModel = groupDetailViewModelAssistedFactory.create(groupId)
