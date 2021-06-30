@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
-import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,20 +15,13 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentHomeBinding
 import com.example.droidsoftthird.databinding.NavHeaderBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -39,13 +29,16 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeBinding;
-    private lateinit var binding_header: NavHeaderBinding;
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel:HomeViewModel by viewModels()
+    private lateinit var binding_header: NavHeaderBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         //-----Enable Menu
         setHasOptionsMenu(true);
@@ -57,8 +50,7 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding_header = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
-        binding.navView.addHeaderView(binding_header.root)
+        //binding_header = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
         return binding.root
     }
 
@@ -66,13 +58,11 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
         /*
         //-----ViewObjects for Navigation
-        val layout: CollapsingToolbarLayout = binding.include.collapsingToolbarLayout
-        val toolbar: Toolbar = binding.include.toolbar
-        val drawer: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-
 
 
         //-----NavUI Objects
@@ -87,11 +77,10 @@ class HomeFragment: Fragment() {
         NavigationUI.setupWithNavController(navView, navController)
         */
 
-
         //-----MenuGenerate for AppBar
-        binding.include.toolbar.inflateMenu(R.menu.menu_main)
+        /*binding.include.toolbar.inflateMenu(R.menu.menu_main)
         binding.include.toolbar.setTitle(R.string.search)
-        binding.include.toolbar.setTitleTextColor(R.color.primary_dark)
+        binding.include.toolbar.setTitleTextColor(R.color.primary_dark)*/
 
         /**TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
@@ -105,14 +94,7 @@ class HomeFragment: Fragment() {
                 navController)
                     || super.onOptionsItemSelected(item)
         }*/
-        binding.navView.setNavigationItemSelectedListener{
-            if (it.itemId == R.id.log_out){
-                context?.let { AuthUI.getInstance().signOut(it) }
-        } else {
-            //TODO WRITE CODE FOR MENU EXCEPT FOR SIGN_OUT
-        }
-            return@setNavigationItemSelectedListener true
-        }
+
 
         //-----ViewPager Objects
         val homeViewPagerAdapter = HomeViewPagerAdapter(this)
@@ -152,7 +134,7 @@ class HomeFragment: Fragment() {
                     viewModel.getUser()//画面への反映および画面遷移ついては、ViewModel主導で行う。
                     viewModel.userProfile.observe(viewLifecycleOwner, Observer { userProfile ->
                         if (userProfile != null) {
-                            binding_header.viewModel = viewModel
+                            //requireActivity().binding_header.viewModel = viewModel
                         } else {
                             navController.navigate(R.id.createProfileFragment)
                             //DONE CreateProfileFragmentを作成する。
@@ -165,7 +147,6 @@ class HomeFragment: Fragment() {
             }
         })
     }
-
 
 
 
@@ -185,15 +166,13 @@ class HomeFragment: Fragment() {
                 //.setLogo(R.drawable.ic_baseline_school_24)
                 .setAvailableProviders(providers)
                 .build(),
-            RC_RESIGN_IN)
+            RC_RESIGN_IN )
     }
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_RESIGN_IN) {
+        if (requestCode ==  RC_RESIGN_IN ) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
@@ -207,8 +186,6 @@ class HomeFragment: Fragment() {
             }
         }
     }
-
-
 
     /**TODO Filter製作時に再利用する。
      *

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.HomeViewModel" />
+            type="com.example.droidsoftthird.MainViewModel" />
     </data>
 <!--TODO キレイに表示されるよう調整する。-->
 

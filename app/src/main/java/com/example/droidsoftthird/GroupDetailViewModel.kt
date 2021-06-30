@@ -60,10 +60,6 @@ class GroupDetailViewModel @AssistedInject constructor(
         get()=_navigateToMyPage
 
 
-
-    //TODO ここでデータを加工して渡す。
-
-
     init {
         viewModelScope.launch {
             val result = try{
