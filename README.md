@@ -18,8 +18,11 @@ Mockup Screen is designed by Figma. please check below URL.
 Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-App
 
 ## Screen under development/開発中画面
-
-    ここにGif画像を載せる。  
+1.ログインからグループ作成まで<br>
+![1.ログインからグループ作成まで](https://github.com/tsemb012/DroidSoftThird/blob/master/app/src/main/res/drawable/_0210702_184057.gif)<br>
+<br>
+２.グループ参加からチャットまで<br>
+![２.グループ参加からチャットまで](https://github.com/tsemb012/DroidSoftThird/blob/master/app/src/main/res/drawable/_0210702_184351.gif)
     
 ## Features/機能
 
