@@ -77,8 +77,8 @@ class MyPageFragment: Fragment() {
                     || super.onOptionsItemSelected(item)
         }*/
 
-        val adapter = GroupAdapter(GroupListener{ groupId ->
-            viewModel.onGroupClicked(groupId)
+        val adapter = GroupAdapter(GroupListener{ groupId, groupName ->
+            viewModel.onGroupClicked(groupId, groupName)
         })
         binding.groupList.adapter = adapter
 
@@ -90,11 +90,11 @@ class MyPageFragment: Fragment() {
         })
 
 
-        viewModel.navigateToChatRoom.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupId ->
-            groupId?.let {
+        viewModel.navigateToChatRoom.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupInfo ->
+            groupInfo?.let {
+
                 val action =
-                    MyPageFragmentDirections.actionMyPageFragmentToChatRoomFragment(it)
-                Timber.tag("groupId").d(groupId)
+                    MyPageFragmentDirections.actionMyPageFragmentToChatRoomFragment(it.first,it.second)
                 navController.navigate(action)
                 viewModel.onChatRoomNavigated()
             }

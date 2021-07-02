@@ -33,14 +33,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GroupDetailFragment : Fragment() {
 
-    //TODO UIを洗練させる
-    //TODO 同フラグメント専用にBindingUtilのコードを作る。
-    //TODO ツールバータイトルの良い表示方法を検討する。
-    //TODO getGroup()の記述位置があっているか確認する。
-    //TODO FloatingFabのOnClickロジック及び設計を考える。
-    //TODO NavArgを使用した値の受け渡しに切り替える。
+    //DONE UIを洗練させる
+    //DONE ツールバータイトルの良い表示方法を検討する。
+    //DONE getGroup()の記述位置があっているか確認する。
+    //DONE FloatingFabのOnClickロジック及び設計を考える。
     //TODO userIcon一覧を表示する。
-    //TODO Chatからアクセスした場合、参加ボタンを非表示にする。
+    //DONE Chatからアクセスした場合、参加ボタンを非表示にする。
 
 
     @Inject

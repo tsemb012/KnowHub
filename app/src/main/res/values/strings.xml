@@ -83,11 +83,11 @@
     <string name="send_picture">画像を送信</string>
     <string name="send_file">ファイルを送信</string>
     <string name="group_info">グループ情報</string>
-    <string name="audio_permission_not_available">Audio access is required to display the audio</string>
-    <string name="permisson_is_required">Permission is needed for this feature to work</string>
-    <string name="audio_permission_granted">Permission has been granted. Start recording.</string>
-    <string name="audio_permission_denied">Audio permission request was denied.</string>
-    <string name="audio_permission_available">Audio permission is available. Start recording.</string>
+    <string name="audio_permission_not_available">録音機能を使用するため、アクセス権限が求められています。</string>
+    <string name="permisson_is_required">ファイルへのアクセス権限が求められています。</string>
+    <string name="audio_permission_granted">オーディオへのアクセスが許可されました。録音を開始します。</string>
+    <string name="audio_permission_denied">オーディオへのアクセスが拒否されました。</string>
+    <string name="audio_permission_available">オーディオへのアクセスが許可されています。録音を開始します。</string>
     <string name="permisson_is_denied">permission is denied.</string>
     <string name="test_aaa">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</string>
     <string name="download_clicked_file_or_not">クリックしたファイルをダウンロードしますか。</string>
@@ -101,4 +101,7 @@
     <string name="confrimation">確認</string>
     <string name="confrimation_join_group">このグループに参加しますか？</string>
     <string name="input_profile">プロフィール入力</string>
+    <string name="group">グループ</string>
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
 </resources>
