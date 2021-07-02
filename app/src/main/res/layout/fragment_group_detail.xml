@@ -76,7 +76,8 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="0dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:background="@color/primary_light">
 
 
             <LinearLayout
@@ -145,13 +146,15 @@
                     bind:drawable="@{@drawable/ic_baseline_groups_24}"
                     bind:text="@{viewModel.numberPerson}"
                     />
-                <include
+                    <!--
+                    <include
                     android:id="@+id/include_gender_restriction"
                     layout="@layout/include_item_group_detail"
                     bind:title="@{@string/gender_restriction}"
                     bind:drawable="@{@drawable/ic_baseline_wc_24}"
                     bind:text="@{viewModel.group.groupType}"
                     />
+                    -->
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
