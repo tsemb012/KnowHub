@@ -2,7 +2,7 @@
 
 Android Application built in kotlin by following Official recommended architecture: MVVM+Repository+ViewModel+Livedata+databinding + CoroutineFlow. This app is supposed to help to create community for studying, having user chat and make schedule with the community. The mockup image and the under-development-screen gif are shown together since it is on progress. Initially, App was created by Java (see Repository: DroidSoftSecond), but I changed it to Kotlin in order to proceed development more efficiently.  
 
-このアプリは、勉強をするためのコミュニティ作りを助けることを目的としており、チャット・スケジューリング機能などの提供を予定しています。
+このアプリは勉強をするためのコミュニティ作りを助けることを目的としており、チャット・スケジューリング機能などの提供を予定しています。
 公式が推奨するMVVMアーキテクチャを参考にし、比較的新しいライブラリ(Coroutine/Flow, LiveData, ViewModel..等)を使い作成を行なっています。
 完成途中のため、モックアップ画像(完成予想図)と開発中の画面を併記してあります。
 当初はJavaで作成していましたが、効率的な開発を行うため、同レポジトリーではKotlinに言語を変更し開発をしております。
