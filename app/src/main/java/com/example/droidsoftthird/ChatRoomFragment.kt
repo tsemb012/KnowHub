@@ -22,11 +22,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.databinding.ChatRoomFragmentBinding
@@ -52,117 +56,54 @@ import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
-//DONE AppBarにボタンを３つ追加する。
-//DONE LayoutからDataBindingを用いて、ViewModelのメソッドにアクセス。
-//DONE ViewModelのメソッドから、Fragmentにて処理を実行。
-//DONE フラグメントにて処理後、再度ViewModelでアップロード処理を行う。
-//DONE layout内にRecyclerviewを取り入れ、Adapterを入れる。
-//DONE　上記3種のDirectionを書き替え、ViewModel側にもメソッドを配置する。
-//DONE RepositoryをChat専用に変更する。
-//DONE Eventを使用した処理に切り替える。
-
 @AndroidEntryPoint
 class ChatRoomFragment : Fragment() {
 
-    //DONE messageListがviewModelのリストと重複しないか確認する。
-    //DONE Adapterに渡すクリックリスナーの実装処理を行う。
-    //DONE Adapterの構造を把握し、適切に組み立てる。
-    //DONE VoiceRecorderのプレースホルダーを代入する際に、リストごと代入しても良いのか？
-    //DONE PlaceHolderの意義を観察する。
-    //DONE PlaceHolderを代入する以上、使用するListはViewModelのリストを繋がっているはずだが繋がっていない。LetsChatから関連性を確認する。
-
-    //TODO Permission(requestWritePermissionLauncher)に対して、引数を渡す方法を検討する。
-    //TODO PermissionやMediaを使用した際のMVVMを検討する。
-    //TODO VoiceのしようとDownLoadの使用によりPermission関連の記述が多くなっている。コードをキレイにする方法はないだろうか。
-
-    //TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。
-    //TODO Audio再生中にプログレスバーが更新されない不具合を確認する。
-
-    //TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
-
-    //TODO Permissionの文言を日本語に書き換える。
-    //TODO DexterでのPermissionを置き換える。
-
-
-    private lateinit var binding: ChatRoomFragmentBinding
-    private lateinit var layout: View
-
-    private val navArgs by navArgs<ChatRoomFragmentArgs>()
 
     @Inject
     lateinit var chatRoomViewModelAssistedFactory: ChatRoomViewModel.Factory
+    private lateinit var binding: ChatRoomFragmentBinding
+    private lateinit var layout: View
     private lateinit var viewModel: ChatRoomViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
-
-
     private lateinit var adapter: ChatAdapter
     private var messageList = mutableListOf<Message>()
-
+    private var isRecording = false
     private var recorder: MediaRecorder? = null
-    var isRecording = false
     private var recordStart = 0L
     private var recordDuration = 0L
+    private val navArgs by navArgs<ChatRoomFragmentArgs>()
 
-    private val requestAudioPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                // Permission has been granted. Start camera preview Activity.
-                layout.showSnackbar(
-                    R.string.audio_permission_granted,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    startRecording()
-                }
-            } else {
-                // Permission request was denied.
-                layout.showSnackbar(
-                    R.string.audio_permission_denied,
-                    Snackbar.LENGTH_SHORT,
-                    R.string.ok)
-            }
-        }
-
-/*    private val requestWritePermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                // Permission has been granted. Start camera preview Activity.
-                layout.showSnackbar(
-                    R.string.audio_permission_granted,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    startRecording()
-                }
-            } else {
-                // Permission request was denied.
-                layout.showSnackbar(
-                    R.string.audio_permission_denied,
-                    Snackbar.LENGTH_SHORT,
-                    R.string.ok)
-            }
-        }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val groupId = ChatRoomFragmentArgs.fromBundle(requireArguments()).groupId
+        val groupName = ChatRoomFragmentArgs.fromBundle(requireArguments()).groupName
+
         binding = ChatRoomFragmentBinding.inflate(inflater, container, false)
         layout = binding.root
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-
-        val groupId = ChatRoomFragmentArgs.fromBundle(requireArguments()).groupId
         viewModel = chatRoomViewModelAssistedFactory.create(groupId)
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        //requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        //-----NavUI Objects
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        val navController = navHostFragment!!.navController
+        val appBarConfiguration = AppBarConfiguration.Builder(navController.getGraph()).build()
 
+        //-----Setup for NavigationUI
+        NavigationUI.setupWithNavController(
+            binding.chatTitleToolbar,
+            navController,
+            appBarConfiguration
+        )
+        binding.chatTitleToolbar.title = groupName
+
+        //-----Setup Adapter
         adapter = ChatAdapter(context, object: MessageClickListener{
             override fun onMessageClicked(position: Int, message: Message) {
             when(message.messageType) {
@@ -194,11 +135,10 @@ class ChatRoomFragment : Fragment() {
             }
             }
         })
-
         binding.messageRecycler.adapter = adapter
 
 
-
+        //-----Observe messages from Flow
         viewModel.messages.observe(viewLifecycleOwner, Observer{
             messageList = it as MutableList<Message>
             ChatAdapter.messageList = messageList
@@ -207,46 +147,44 @@ class ChatRoomFragment : Fragment() {
             binding.messageRecycler.scrollToPosition(adapter.itemCount-1)
         })
 
+
+        //------Observe user's actions
         viewModel.navigationToGroupDetail.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
                 ChatRoomFragmentDirections.actionChatRoomFragmentToGroupDetailFragment(groupId))
         })
-
         viewModel.navigationToSchedule.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
                 ChatRoomFragmentDirections.actionChatRoomFragmentToScheduleFragment(groupId))
         })
-
         viewModel.navigationToVideo.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
                 ChatRoomFragmentDirections.actionChatRoomFragmentToVideoFragment(groupId))
         })
-
         viewModel.showBottomSheet.observe(viewLifecycleOwner,EventObserver{
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })
-
         viewModel.hideBottomSheet.observe(viewLifecycleOwner,EventObserver{
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
-
         viewModel.attachmentOfImage.observe(viewLifecycleOwner,EventObserver{
             launchUploader(REQUEST_IMAGE_OPEN)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
-
         viewModel.attachmentOfFile.observe(viewLifecycleOwner,EventObserver{
             launchUploader(REQUEST_FILE_OPEN)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
-
         viewModel.recordingVoice.observe(viewLifecycleOwner,EventObserver{
             handleRecord()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
 
+
         return binding.root
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -259,11 +197,15 @@ class ChatRoomFragment : Fragment() {
     }
 
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRecycleItemEvent(event: UpdateRecycleItemEvent) {
         adapter.notifyItemChanged(event.adapterPosition)
-    }//TODO Coroutine Flowに置き換える
+    }//Coroutine Flowに置き換える
 
+
+
+    //-----ConditionalOption when touched record button
     private fun handleRecord() {
 
         if (isRecording) {
@@ -274,18 +216,17 @@ class ChatRoomFragment : Fragment() {
                 "${requireActivity().externalCacheDir?.absolutePath}/audiorecord.3gp",
                 recordDuration.toString(),
                 )
-            Toast.makeText(context, "Finished recording", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "録音が完了しました。", Toast.LENGTH_SHORT).show()
             isRecording = !isRecording
 
         } else {
             when {
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO,)
-                        == PackageManager.PERMISSION_GRANTED -> {
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO,) == PackageManager.PERMISSION_GRANTED -> {
 
                     layout.showSnackbar(
                         R.string.audio_permission_available,
                         Snackbar.LENGTH_INDEFINITE,
-                        R.string.ok
+                        R.string.yes
                     ) {
                         startRecording()
                     }
@@ -296,7 +237,7 @@ class ChatRoomFragment : Fragment() {
                     layout.showSnackbar(
                         R.string.permisson_is_required,
                         Snackbar.LENGTH_INDEFINITE,
-                        R.string.ok
+                        R.string.yes
                     ) {
                         requestAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
                     }
@@ -307,18 +248,30 @@ class ChatRoomFragment : Fragment() {
                     layout.showSnackbar(
                         R.string.audio_permission_not_available,
                         Snackbar.LENGTH_LONG,
-                        R.string.ok
-                    ){requestAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)}
+                        R.string.yes
+                    ){
+                        requestAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                    }
                 }
             }
         }
     }
 
 
+    private val requestAudioPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                layout.showSnackbar(R.string.audio_permission_granted, Snackbar.LENGTH_INDEFINITE, R.string.yes) {//パーミッションが許可されたとき。
+                    startRecording()
+                }
+            } else {
+                layout.showSnackbar(R.string.audio_permission_denied, Snackbar.LENGTH_SHORT, R.string.yes) //Permissionが拒否されたとき。
+            }
+        }
 
+    //-----StartRecording
     private fun startRecording(){
 
-        //change size & color or button to notify when to start
+        //-----Animate RecordButton
         val increaser = AnimatorInflater.loadAnimator(
             context,
             R.animator.increase_size
@@ -329,7 +282,7 @@ class ChatRoomFragment : Fragment() {
             ColorStateList.valueOf(Color.parseColor("#EE4B4B"))
 
 
-        //StartRecording
+        //-----Start Record
         val fileName = "${requireActivity().externalCacheDir?.absolutePath}/audiorecord.3gp"//name of the file where record will be stored
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -349,7 +302,7 @@ class ChatRoomFragment : Fragment() {
 
     private fun stopRecording(){
 
-        //change size & color or button to notify when it is finished.
+        //-----Animate RecordButton
         val regainer = AnimatorInflater.loadAnimator(
             context,
             R.animator.regain_size
@@ -359,7 +312,7 @@ class ChatRoomFragment : Fragment() {
         binding.recordVoiceFab.backgroundTintList =
             ColorStateList.valueOf(Color.parseColor("#b39ddb"))
 
-        //stopRecording
+        //-----stop Record
         recorder?.apply {
             stop()
             release()
@@ -384,7 +337,6 @@ class ChatRoomFragment : Fragment() {
             )
         )
         adapter.submitList(messageList)
-        //TODO ListAdapterを使用しているので下記コードは不要ではないか？検証する。
         adapter.notifyItemInserted(messageList.size - 1)
         binding.messageRecycler.scrollToPosition(messageList.size - 1)
     }
@@ -460,7 +412,7 @@ class ChatRoomFragment : Fragment() {
                         layout.showSnackbar(
                             R.string.permisson_is_required,
                             Snackbar.LENGTH_INDEFINITE,
-                            R.string.ok
+                            R.string.yes
                         )
                     }
 
@@ -469,45 +421,10 @@ class ChatRoomFragment : Fragment() {
                         layout.showSnackbar(
                             R.string.permisson_is_denied,
                             Snackbar.LENGTH_INDEFINITE,
-                            R.string.ok
+                            R.string.yes
                         )
                 }
             }).check()
-
-
-       /* when {
-            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED -> {
-
-                layout.showSnackbar(
-                    R.string.audio_permission_available,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    download(message)
-                }
-            }
-
-            shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
-
-                layout.showSnackbar(
-                    R.string.permisson_is_required,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    requestWritePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }
-
-            else -> {
-
-                layout.showSnackbar(
-                    R.string.audio_permission_not_available,
-                    Snackbar.LENGTH_LONG,
-                    R.string.ok
-                ){requestWritePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)}
-            }
-        }*/
     }
 
 

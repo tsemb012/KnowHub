@@ -105,6 +105,9 @@
         <argument
             android:name="groupId"
             app:argType="string" />
+        <argument
+            android:name="groupName"
+            app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_chatRoomFragment" app:destination="@id/chatRoomFragment" />
 

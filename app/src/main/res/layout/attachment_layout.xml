@@ -13,7 +13,9 @@
     android:layout_height="wrap_content"
     android:background="@drawable/circular_border_solid"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:backgroundTint="@color/primary_dark"
+    >
 
     <ImageView
         android:id="@+id/hide"
@@ -22,7 +24,7 @@
         android:layout_gravity="right"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="8dp"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/ic_baseline_close_24_white"
         android:onClick="@{() -> viewModel.hideBottomSheet()}"/>
 
     <Button
@@ -30,9 +32,9 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/background_button"
         android:text="@string/send_picture"
-        android:backgroundTint="@color/percian_blue"
+        android:backgroundTint="@color/primary_blue"
+        android:padding="10dp"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="18dp"
@@ -44,10 +46,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="4dp"
-        android:background="@drawable/background_button"
         android:text="@string/send_file"
-        android:backgroundTint="@color/percian_blue"
+        android:backgroundTint="@color/primary_blue"
         android:textAllCaps="true"
+        android:padding="10dp"
         android:textColor="@color/white"
         android:textSize="18dp"
         android:onClick="@{() -> viewModel.attachFile()}"/>

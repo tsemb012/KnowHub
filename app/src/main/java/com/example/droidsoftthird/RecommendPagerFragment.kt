@@ -34,7 +34,7 @@ class RecommendPagerFragment:Fragment() {
         binding.recommendPagerViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val adapter = GroupAdapter(GroupListener{ groupId ->
+        val adapter = GroupAdapter(GroupListener{ groupId,_ ->
             viewModel.onGroupClicked(groupId)
         })//GridItemがクリックされた瞬間に、MutableLiveDataにIDを渡す。
         binding.groupList.adapter = adapter

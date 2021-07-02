@@ -1,8 +1,12 @@
 package com.example.droidsoftthird
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -29,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHeaderBinding: NavHeaderBinding;
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,10 +42,14 @@ class MainActivity : AppCompatActivity() {
         val drawer: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
 
+
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,navView,false)
         navView.addHeaderView(navHeaderBinding.root)
+  /*      ActionBarDrawerToggle(this,drawer,binding.toolbar,R.string.open_drawer, R.string.close_drawer)
+            .drawerArrowDrawable.color = resources.getColor(R.color.primary_white)*/
+
 
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
