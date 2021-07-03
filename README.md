@@ -146,8 +146,8 @@ Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-
         Android Developer's Document
             https://developer.android.com/docs
         
-            Also, each libraries official web site and blogs are reffered.
-            その他、ライブラリの公式レファレンスやブログを参照。 
+            Also, each libraries official website, blogs and Youtube are reffered.
+            その他、ライブラリの公式レファレンスやブログ、Youtubeを参照。 
 
 ## Future Plan/今後の課題
 
