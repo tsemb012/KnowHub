@@ -76,27 +76,32 @@ Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-
     
     USING/使用中
 
-        Kotlin
-        Dialogs
-        RecyclerView
-        MVVM
-        LiveData
-        ViewModel
-        Android Databinding
-        Coroutine
-        Android-Flow
-        Navigation
-        Hilt/Dagger
+        Language
+            Kotlin
+        Architecture
+            MVVM(LiveData + ViewModel + Databinding)
+        UI
+            Dialogs
+            RecyclerView
+            ViewPager2
+            Navigation
+            CoordinatorLayout
+            CircleImageView
+        Async Task
+            Coroutine
+            Android-Flow
+        Dependency Injection
+            Hilt/Dagger
         Firebase
             Authentication
             Cloud FireStore
             Cloud Storage
-        Glide
-        ViewPager2
-        MediaPlayer
-        Dexter
-        CoordinatorLayout
-        CircleImageView
+        Media
+            Glide
+            MediaPlayer
+        Permission
+            Dexter
+        
     
     PLAN TO USE/使用予定　 at feature/0.1.7-Calendar
 
@@ -153,4 +158,4 @@ Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-
 
       Implementing videoChat./ビデオチャット機能の実装。
       Testing this app./同アプリケーションのテスト実施。
-      Applying MaterialDesign./マテリアルデザインの適用。
+      Applying MaterialDesign and WCAG 2.0./マテリアルデザイン及びWCAG 2.0の適用。
