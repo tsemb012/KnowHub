@@ -21,6 +21,7 @@
         android:layout_margin="5dp"
         app:cardBackgroundColor="@color/primary_light"
         >
+        <!--onClickされたら渡されたクラスの中のクリックメソッドを呼び出すという仕組み。中にはlayout内にあるgroup変数を入れる。-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

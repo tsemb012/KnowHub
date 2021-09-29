@@ -48,8 +48,7 @@ var positionDelegate: Int by Delegates.observable(-1){prop,old,new ->
         org.greenrobot.eventbus.EventBus.getDefault().post(UpdateRecycleItemEvent(old))//TODO CoroutineFlowに置き換える。
 }
 
-class ChatAdapter(private val context: Context?, private val clickListener: MessageClickListener):
-    ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback()) {
+class ChatAdapter(private val context: Context?, private val clickListener: MessageClickListener): ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
 
@@ -160,6 +159,8 @@ class ChatAdapter(private val context: Context?, private val clickListener: Mess
         private const val TYPE_RECEIVED_RECORD = 7
         private const val TYPE_SENT_RECORD_PLACEHOLDER = 8
         lateinit var messageList: MutableList<Message>
+            //なぜコンパニオンオブジェクトに入っているのか？→Adapterが死んでも生きているのか？
+            //試しにコンパニオンオブジェクト以外に入れて実験してみたい。
     }
 
 
@@ -285,7 +286,7 @@ class ReceivedFileMessageViewHolder private constructor(val binding: ReceivedFil
 }
 
 //TYPE_SENT_RECORD = 6
-class SentRecordMessageViewHolder private constructor(val binding: SentRecordItemBinding):
+class SentRecordMessageViewHolder private constructor(val binding: SentRecordItemBinding)://Firebaseで更新されて戻ってきた情報。
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(clickListener: MessageClickListener, item: RecordMessage) {
@@ -300,7 +301,7 @@ class SentRecordMessageViewHolder private constructor(val binding: SentRecordIte
         binding.playPauseImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
         binding.progressBar.max = 0
         binding.durationTextView.text = ""
-        binding.playPauseImage.setOnClickListener {
+        binding.playPauseImage.setOnClickListener {//ここでセットオンクリックリスナーの切り替えを実施。
             startPlaying(
                 item.voiceRef!!,
                 adapterPosition,
@@ -357,8 +358,8 @@ class ReceivedRecordMessageViewHolder private constructor(val binding: ReceivedR
 }
 
 //8
-class SentRecordPlaceHolderViewHolder private constructor(val binding: SentRecordPlaceholderItemBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class SentRecordPlaceHolderViewHolder private constructor(val binding: SentRecordPlaceholderItemBinding) ://レコードストップが押された時に、8のデータが発生し、Notifyされるので、ここのViewHolderが出ていく。
+    RecyclerView.ViewHolder(binding.root) {//その後Flowで追加された録音されたデータと置き換えられるという仕組み。
 
 
     fun bind(clickListener: MessageClickListener, item: Message) {
@@ -381,7 +382,7 @@ class SentRecordPlaceHolderViewHolder private constructor(val binding: SentRecor
 private var player = MediaPlayer()
 private lateinit var countDownTimer: CountDownTimer
 
-private fun startPlaying(
+private fun startPlaying(//フラグメントでは、録音開始・停止ボタンを司っている一方で、Adapterではすでに録音されたデータの開始・停止を行っている。
     audioUri: String,
     adapterPosition: Int,
     recordMessage: RecordMessage,

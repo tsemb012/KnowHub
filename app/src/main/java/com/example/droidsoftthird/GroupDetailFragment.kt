@@ -54,6 +54,7 @@ class GroupDetailFragment : Fragment() {
             inflater, R.layout.fragment_group_detail, container, false
         )
 
+        //カスタムActionBarなので、Activityが司るactionBarを非表示にして、ここで実装している。
         //-----ViewObjects for Navigation
         val layout: CollapsingToolbarLayout = binding.collapsingToolbarLayout
         val toolbar: Toolbar = binding.materialToolbar
@@ -72,18 +73,14 @@ class GroupDetailFragment : Fragment() {
         )
 
         val groupId = GroupDetailFragmentArgs.fromBundle(requireArguments()).groupId
-        val viewModel = groupDetailViewModelAssistedFactory.create(groupId)
-
-
-        //DONE GroupDetailViewModelのコーディング
-        //DONE GroupDetailViewModelFactoryのコーディング
+        val viewModel = groupDetailViewModelAssistedFactory.create(groupId)//自動生成されたFactoryにIdを入れて、ViewModelを生成
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.group.observe(viewLifecycleOwner, Observer {
             if(it?.members?.contains(FirebaseAuth.getInstance().uid) == true){
-                binding.floatingBtnAdd.visibility = View.GONE
+                binding.floatingBtnAdd.visibility = View.GONE //TODO 　表示を消すだけではなく、機能も使えなくしときたい。
             }
         })
 
@@ -107,12 +104,8 @@ class GroupDetailFragment : Fragment() {
                 viewModel.onMyPageNavigated()
             }
         })
-
-
-
         return binding.root
     }
-
 
     companion object {
         private val TAG: String? = GroupDetailFragment::class.simpleName

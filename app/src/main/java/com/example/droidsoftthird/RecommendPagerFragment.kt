@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.concurrent.timer
 
-@AndroidEntryPoint//Enable this class to receive dependency from Hilt
+@AndroidEntryPoint//Enable this class to receive dependency from Hilt //MainActivityに依存するFragmentにもエントリーポイントを付与する必要がある。
 class RecommendPagerFragment:Fragment() {
 
     private val viewModel:RecommendPagerViewModel by viewModels()
@@ -30,12 +30,17 @@ class RecommendPagerFragment:Fragment() {
         val binding: FragmentPagerRecommendBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_pager_recommend, container, false)
 
+        binding.recommendPagerViewModel = viewModel//bindingにViewModelをぶち込んで、レイアウトにデータを表示させる。
+        binding.lifecycleOwner = viewLifecycleOwner//bindingにもライフサイクルを適用させて、LiveDataを有効にする。
 
-        binding.recommendPagerViewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        /*
+        * val groupListener = GroupListener{groupId,_ -> viewModel.onGroupClicked(groupId)}// GroupAdapter内のクラス設計図を使って、 インスタンス化。クラス内のメソッドは1つで受け取る引数は決まっている。
+        * val adapter = GroupAdapter(groupListener)　//こちら側で変更させるのは、onClickされた後の関数。//もっと可読性の高い方法があるんじゃないの？
+        * と分解した方がわかりやすい。
+        * */
 
-        val adapter = GroupAdapter(GroupListener{ groupId,_ ->
-            viewModel.onGroupClicked(groupId)
+        val adapter = GroupAdapter(GroupListener{ groupId,_ -> //将来的に、ここでインスタンス化するのではなく、Hiltにインスタンス化の処理を任せたい。
+            viewModel.onGroupClicked(groupId)//Layoutに画面遷移に至るまで過程を完全にレイアウトに委譲している。
         })//GridItemがクリックされた瞬間に、MutableLiveDataにIDを渡す。
         binding.groupList.adapter = adapter
 
@@ -57,13 +62,10 @@ class RecommendPagerFragment:Fragment() {
             }
         })
 
-
-
         val manager = GridLayoutManager(activity,2, GridLayoutManager.VERTICAL,false)
 
         binding.groupList.layoutManager = manager
 
         return binding.root
     }
-
 }

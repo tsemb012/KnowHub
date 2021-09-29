@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         val drawer: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
 
-
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,navView,false)
@@ -50,17 +49,19 @@ class MainActivity : AppCompatActivity() {
   /*      ActionBarDrawerToggle(this,drawer,binding.toolbar,R.string.open_drawer, R.string.close_drawer)
             .drawerArrowDrawable.color = resources.getColor(R.color.primary_white)*/
 
-
+        //Navigation関連
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment,R.id.createProfileFragment),drawer)
 
+        //下でNavControllerをより使いやすくするようにセットアップしている。セットアップしなければ、コントローラーを使っても動かない。
+        //アクションバーもアップボタンなどで使うので、しっかりセットアップする。
         NavigationUI.setupWithNavController(navView, navController)
         NavigationUI.setupWithNavController(bottomNav, navController)
         setupActionBarWithNavController(navController,appBarConfiguration)//特定のフラグメントのみUpアイコンを表示させない。
         navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
-            when(navDestination.id){
+            when(navDestination.id){//ここで全てのNavigationUIを管理している。
                 R.id.createProfileFragment -> {
                     binding.toolbar.title = getString(R.string.input_profile)
                     binding.bottomNav.visibility = View.GONE
@@ -72,14 +73,14 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.toolbar.visibility = View.VISIBLE
                     viewModel.authenticationState.removeObservers(this)
-                    viewModel.authenticationState.observe(this, Observer { authenticationState ->
+                    viewModel.authenticationState.observe(this, Observer { authenticationState ->//HomeFragmentにも同じロジックがあるが、役割が違う。
                         when (authenticationState) {
                             MainViewModel.AuthenticationState.AUTHENTICATED -> {
                                 Timber.d("check flow")
                                 viewModel.getUser()
                                 viewModel.userProfile.observe(this, Observer { userProfile ->
                                     if (userProfile != null) {
-                                        navHeaderBinding.viewModel = viewModel
+                                        navHeaderBinding.viewModel = viewModel//ユーザーログインチェック　→　ユーザー情報取得＆Observe　→　ViewModelにLiveDataを入れて、Layoutに分散。
                                     }
                                 })
                             }

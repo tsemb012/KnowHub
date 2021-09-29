@@ -22,7 +22,6 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: UserG
         viewModelScope.launch {
             val result = try{
                 repository.getGroups(QueryType.MY_PAGE.value)
-
             } catch(e: Exception){
                 Result.Error(Exception("Network request failed"))
             }

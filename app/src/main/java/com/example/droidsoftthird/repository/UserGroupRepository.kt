@@ -25,31 +25,28 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class UserGroupRepository @Inject constructor() {
-    private val fireStore = FirebaseFirestore.getInstance()
+    private val fireStore = FirebaseFirestore.getInstance()//HiltやDaggerの使い方を覚えたらここもDIできるのでは？
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-
 
     suspend fun getGroups(query: String): Result<List<Group>> =
         withContext(Dispatchers.IO){
-            suspendCoroutine { continuation ->
+            suspendCoroutine { continuation -> //ここの部分の具体的な使い方をまだ理解できてない。→　おそらく、戻り値がかえってくるまでCoroutineを止めておく処理と思われる。
                     getQuery(query)
                     .get()
                     .addOnSuccessListener {
                         try {
-                            continuation.resume(Result.Success(it.toObjects(Group::class.java)))
-                            Timber.tag("check_result1-2").d(it.toObjects(Group::class.java).toString())
+                            continuation.resume(Result.Success(it.toObjects(Group::class.java)))//ここで停止されていたCoroutineの続きの処理インスタンスを用いて処理を再開させている。
+                            Timber.tag("check_result1-2").d(it.toObjects(Group::class.java).toString())//再開と同時に値を返しているということ。
                         } catch (e: Exception) {
                             continuation.resume(Result.Error(e))
                             Timber.tag("check_result3").d(e.toString())
                         }
-
                     }
                     .addOnFailureListener {
                         continuation.resume(Result.Error(it))
                         Timber.tag("check_result4").d(it.toString())
                     }
             }
-
         }
 
     private fun getQuery(query: String): Query {
@@ -91,7 +88,6 @@ class UserGroupRepository @Inject constructor() {
                     Timber.tag("check_result4").d(it.toString())
                 }
         }
-
     }
 
 
@@ -148,8 +144,8 @@ class UserGroupRepository @Inject constructor() {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.runBatch { batch ->
-                    batch.set(groupRef,group)
-                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))
+                    batch.set(groupRef,group)//グループ作成時にグループを登録
+                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))//メンバーフィールドに登録者のIDを追加。
                 }.addOnSuccessListener {
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
@@ -188,13 +184,13 @@ class UserGroupRepository @Inject constructor() {
                         Timber.tag("check_result4").d(it.toString())
                     }
             }
-        }
+        }//CRUDの順に並べた方がわかりやすいよ。
 
     suspend fun createUserProfile(userProfile: UserProfile): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
-                    .document(FirebaseAuth.getInstance().currentUser.uid)
+                    .document(FirebaseAuth.getInstance().currentUser.uid)//自分のDocumentIDを元にPathを生成。
                     .set(userProfile)
                     .addOnSuccessListener {
                         try {
@@ -237,8 +233,9 @@ class UserGroupRepository @Inject constructor() {
             suspendCoroutine { continuation ->
                 fireStore.runBatch {batch ->
 
-                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))
-                    /*TODO
+                    batch.update(groupRef,"members",FieldValue.arrayUnion(FirebaseAuth.getInstance().currentUser.uid))//現在は必要最低限の機能ということ。
+
+                    /*TODO 今後、リファクターのたびに更新を行っていく。
                     *   1. UserIdArrayをGroupのFieldに追加し、UIDを入れる。
                     *   2. CloudFunctionを用いて、userProfile内にGroupのフィールド情報を同期できるように設定する。
                     *   3. CloudFunctionを用いて、group内にUserProfileのuserImageのフィールド情報を同期できるように設定する。
@@ -256,7 +253,6 @@ class UserGroupRepository @Inject constructor() {
             }
         }
     }
-
 
     companion object {
         private const val  LIMIT = 50L

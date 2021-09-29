@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,7 +28,6 @@ class CreateProfileFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         binding = FragmentCreateProfileBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner//lifecycleOwnerのつけ忘れに注意。LiveDataをViewに反映するために必要。
@@ -47,7 +47,7 @@ class CreateProfileFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
-    override fun onClick(v: View?) {//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
+    override fun onClick(v: View?) {//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する
         when (v!!.id) {
             R.id.edit_profile_image -> launchUploader(REQUEST_IMAGE_OPEN_USER)
             R.id.edit_background_image -> launchUploader(REQUEST_IMAGE_OPEN_BACKGROUND)

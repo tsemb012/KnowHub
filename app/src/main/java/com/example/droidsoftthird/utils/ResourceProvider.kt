@@ -1,5 +1,5 @@
 package com.example.droidsoftthird.utils
-
+//TODO 不要なら削除しましょう。
 /*
 import android.content.Context
 

@@ -13,11 +13,9 @@ import java.lang.Exception
 
 class RecommendPagerViewModel @ViewModelInject constructor(private val repository: UserGroupRepository):ViewModel() {
 
-
     private val _groups = MutableLiveData<List<Group>?>()
     val groups: LiveData<List<Group>?>
         get() = _groups
-
 
 /*
     init {
@@ -38,9 +36,6 @@ class RecommendPagerViewModel @ViewModelInject constructor(private val repositor
             Timber.tag("check_result1").d(result.toString())
         }
     }
-
-
-
 
     private val _navigateToGroupDetail = MutableLiveData<String?>()
     val navigateToGroupDetail

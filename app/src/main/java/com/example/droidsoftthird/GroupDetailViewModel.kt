@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class GroupDetailViewModel @AssistedInject constructor(
-    private val repository: UserGroupRepository,
-    @Assisted private val groupId:String,
+class GroupDetailViewModel @AssistedInject constructor(//Factoryによって生成されたViewModel
+    private val repository: UserGroupRepository,//Repositoryはアノテーションと型判定によってインジェクトされる。
+    @Assisted private val groupId:String,//Factoryによって注入されたId
     ):ViewModel() {
 
     private val _group = MutableLiveData<Group?>()
@@ -27,7 +27,6 @@ class GroupDetailViewModel @AssistedInject constructor(
             "未設定"
         }
     }
-
 
     val ageRange: LiveData<String> = Transformations.map(group) { group ->
 
@@ -58,7 +57,6 @@ class GroupDetailViewModel @AssistedInject constructor(
     private val _navigateToMyPage = MutableLiveData<String?>()
     val navigateToMyPage
         get()=_navigateToMyPage
-
 
     init {
         viewModelScope.launch {
@@ -104,7 +102,7 @@ class GroupDetailViewModel @AssistedInject constructor(
     //TODO onClick時のロジック処理を受け持つ。
 
     @AssistedFactory
-    interface Factory{
+    interface Factory{//Daggerに対して、任意を引数をとり、ViewModelを作成するViewModelを生成しろと指示している。
         fun create(groupId: String): GroupDetailViewModel
     }
 

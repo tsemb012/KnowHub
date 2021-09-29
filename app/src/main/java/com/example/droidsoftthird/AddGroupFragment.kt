@@ -49,8 +49,6 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
         binding.btnToGroupDetailBarNumberPersons.setOnClickListener(this)
         binding.btnToGroupDetailBarGenderRestriction.setOnClickListener(this)
 
-
-
         viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{
             binding.progressBar.visibility = View.VISIBLE
         })
@@ -123,8 +121,6 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
             viewModel.postImageUri(fullPhotoUri)
             }
         }
-
-
 
     companion object {
         private const val REQUEST_IMAGE_OPEN = 101

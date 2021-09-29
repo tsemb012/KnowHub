@@ -36,7 +36,6 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
     val city_r: LiveData<String>
         get() = _city_r
 
-
     fun postUserImageUri(uri: Uri) {
         _userImageUri.postValue(uri)
     }
@@ -59,8 +58,6 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                 && !_prefecture_r.value.isNullOrBlank()
                 && !_city_r.value.isNullOrBlank()
     }
-
-
 
     fun createUserProfile() {
         activateProgressBar()
@@ -100,7 +97,6 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
                               } //TODO アップロード成功時の処理を記述する。
                                 //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
                             }
-
                         }
                         //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
                     }
@@ -118,14 +114,8 @@ class CreateProfileViewModel @ViewModelInject constructor(private val repository
         navigationToHome.value = Event("navigation")
     }
 
-
-
-
     companion object {
         private const val IMAGE_SIZE = "_200x200"
     }
-
-
-
 }
 

@@ -61,7 +61,6 @@ class ChatRoomViewModel @AssistedInject constructor(
         }
     }
 
-
     //======Transition of Screen Methods
     val navigationToGroupDetail = MutableLiveData<Event<String>>()
     fun onGroupDetailClicked(){
@@ -109,7 +108,7 @@ class ChatRoomViewModel @AssistedInject constructor(
         val message =
             TextMessage(
                 FirebaseAuth.getInstance().uid,
-                authUser.displayName,
+                authUser.displayName,//これ本当はPreferenceから持ってきた方が良いのでは？
                 authUser.photoUrl.toString(),
                 0.0,
                 editMessage.value,
@@ -208,8 +207,6 @@ class ChatRoomViewModel @AssistedInject constructor(
             }
         }
     }
-
-
 
     @AssistedFactory
     interface Factory{

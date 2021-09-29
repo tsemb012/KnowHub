@@ -14,14 +14,15 @@ class GroupAdapter(val clickListener: GroupListener): ListAdapter<Group, GroupAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {//This function takes two parameters and returns a ViewHolder.
         return ViewHolder.from(parent)
+        //空っぽのViewHolderをCompanionObjectから引っ張ってくる。
+        //普通にコンストラクターに引数を渡してインスタンス化しても良いが、コードが綺麗じゃない気がする。
+        //fromから引っ張ってきた方がまとまりとして理解しやすい。
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!,clickListener)
+        holder.bind(getItem(position)!!,clickListener)//作ったViewHolderに値を入れて、bindする。
         Timber.tag("getItem(position)").d(getItem(position).toString())
     }
-
-
 
     class ViewHolder private constructor(val binding: ListItemGroupBinding): RecyclerView.ViewHolder(binding.root){
 
@@ -58,9 +59,10 @@ class GroupDiffCallback : DiffUtil.ItemCallback<Group>() {
     }
 }
 
-
 class GroupListener(val clickListener:(groupId:String, groupName:String) -> Unit){
-    fun onClick(group: Group) = clickListener(group.groupId.toString(), group.groupName.toString())
+    fun onClick(group: Group) {
+        clickListener(group.groupId.toString(), group.groupName.toString())
+    }
 }
 
 

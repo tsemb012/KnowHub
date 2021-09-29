@@ -59,7 +59,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChatRoomFragment : Fragment() {
 
-
     @Inject
     lateinit var chatRoomViewModelAssistedFactory: ChatRoomViewModel.Factory
     private lateinit var binding: ChatRoomFragmentBinding
@@ -73,7 +72,6 @@ class ChatRoomFragment : Fragment() {
     private var recordStart = 0L
     private var recordDuration = 0L
     private val navArgs by navArgs<ChatRoomFragmentArgs>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,49 +102,45 @@ class ChatRoomFragment : Fragment() {
         binding.chatTitleToolbar.title = groupName
 
         //-----Setup Adapter
-        adapter = ChatAdapter(context, object: MessageClickListener{
-            override fun onMessageClicked(position: Int, message: Message) {
-            when(message.messageType) {
-
-                1.0 -> {
-                    binding.fullSizeImageView.visibility = View.VISIBLE
-                    StfalconImageViewer.Builder<MyImage>(
-                        requireActivity(),
-                        listOf(MyImage((message as ImageMessage).imageRef!!)),
-                        ImageLoader<MyImage> { imageView, myImage ->
-                            Glide.with(requireActivity())
-                                .load(FirebaseStorage.getInstance().getReference(myImage.url))
-                                .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
-                                .into(imageView)
-                        })
-                        .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
-                        .show()
+        adapter = ChatAdapter(context, object: MessageClickListener{//ここでしか使わないクラスを無名クラス(オブジェクト)で作成。
+            override fun onMessageClicked(position: Int, message: Message) {//端的には、メソッド渡したかったてだけでしょ。ただ、他にもっと良い方法がありそうなもんだけどね。
+                when(message.messageType) {//発動するメソッドをメッセージのタイプによって条件分岐しているって感じ。
+                    1.0 -> {
+                        binding.fullSizeImageView.visibility = View.VISIBLE
+                        StfalconImageViewer.Builder<MyImage>(
+                            requireActivity(),
+                            listOf(MyImage((message as ImageMessage).imageRef!!)),
+                            ImageLoader<MyImage> { imageView, myImage ->
+                                Glide.with(requireActivity())
+                                    .load(FirebaseStorage.getInstance().getReference(myImage.url))
+                                    .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
+                                    .into(imageView)
+                            })
+                            .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
+                            .show()
+                    }
+                    2.0 -> {
+                        val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
+                        dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
+                            ?.setPositiveButton(R.string.yes) { _, _ ->
+                                downloadFile(message)//TODO ここに問題あり、ダウンロードできないのは、適切パーミションを与えられていないからでは？要修正
+                            }?.setNegativeButton(R.string.no, null)?.show()
+                    }
+                    3.0 -> {
+                        adapter.notifyDataSetChanged()//Adapterにデータの変更を伝える。録音の際に使用。
+                    }
                 }
-                2.0 -> {
-                    val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
-                    dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
-                        ?.setPositiveButton(R.string.yes) { _, _ ->
-                            downloadFile(message)
-                        }?.setNegativeButton(R.string.no, null)?.show()
-                }
-                3.0 -> {
-                    adapter.notifyDataSetChanged()
-                }
-            }
             }
         })
         binding.messageRecycler.adapter = adapter
 
-
         //-----Observe messages from Flow
         viewModel.messages.observe(viewLifecycleOwner, Observer{
             messageList = it as MutableList<Message>
-            ChatAdapter.messageList = messageList
-            it.let{adapter.submitList(it)}
-
+            ChatAdapter.messageList = messageList //別でここに入れているということは？特別な役割があるはずでしょ。
+            adapter.submitList(it)
             binding.messageRecycler.scrollToPosition(adapter.itemCount-1)
         })
-
 
         //------Observe user's actions
         viewModel.navigationToGroupDetail.observe(viewLifecycleOwner,EventObserver{
@@ -180,11 +174,8 @@ class ChatRoomFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
 
-
         return binding.root
     }
-
-
 
     override fun onStart() {
         super.onStart()
@@ -196,31 +187,24 @@ class ChatRoomFragment : Fragment() {
         EventBus.getDefault().unregister(this)
     }
 
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRecycleItemEvent(event: UpdateRecycleItemEvent) {
         adapter.notifyItemChanged(event.adapterPosition)
     }//Coroutine Flowに置き換える
 
-
-
     //-----ConditionalOption when touched record button
-    private fun handleRecord() {
-
-        if (isRecording) {
-
+    private fun handleRecord() {//まさにこういう部分をクラスデリゲーションしたい。
+        if (isRecording) {//レコード中を停止している。//可読性をあげるような記述に変更したい。//本来であれば、ViewModelに置いておきたい。
             stopRecording()
-            showPlaceholderRecord()
-            viewModel.createRecordMessage(
+            showPlaceholderRecord()//結構大事な役割というか、空データをリストに追加してるのにもかかわらず、それが伝わってこない。
+            viewModel.createRecordMessage(//録音ファイルパスをFirebaseに保存している。
                 "${requireActivity().externalCacheDir?.absolutePath}/audiorecord.3gp",
                 recordDuration.toString(),
                 )
             Toast.makeText(context, "録音が完了しました。", Toast.LENGTH_SHORT).show()
-            isRecording = !isRecording
-
-        } else {
-            when {
+            isRecording = !isRecording //TrueからFalseに切り替えて、録音中ではないというステータスに変更する。
+        } else {//録音スタートする時。
+            when {//以下、パーミションを取得するための処理。
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO,) == PackageManager.PERMISSION_GRANTED -> {
 
                     layout.showSnackbar(
@@ -256,7 +240,6 @@ class ChatRoomFragment : Fragment() {
             }
         }
     }
-
 
     private val requestAudioPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
@@ -323,7 +306,7 @@ class ChatRoomFragment : Fragment() {
 
     private fun showPlaceholderRecord(){
         messageList.add(
-            RecordMessage(
+            RecordMessage(//空メッセージをリストに追加。
                 FirebaseAuth.getInstance().uid,
                 null,
                 null,
@@ -336,9 +319,9 @@ class ChatRoomFragment : Fragment() {
                 null,
             )
         )
-        adapter.submitList(messageList)
-        adapter.notifyItemInserted(messageList.size - 1)
-        binding.messageRecycler.scrollToPosition(messageList.size - 1)
+        adapter.submitList(messageList)//修正したリストをアダプターに再提出。
+        adapter.notifyItemInserted(messageList.size - 1)//adapterにデータが追加されたことを通知。
+        binding.messageRecycler.scrollToPosition(messageList.size - 1)//スクロールの位置を変更
     }
 
     private fun launchUploader(request:Int) {
@@ -426,7 +409,6 @@ class ChatRoomFragment : Fragment() {
                 }
             }).check()
     }
-
 
     companion object {
         private const val REQUEST_IMAGE_OPEN = 101

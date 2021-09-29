@@ -19,6 +19,7 @@ class HomeViewPagerAdapter(fragment:Fragment): FragmentStateAdapter(fragment){
 
     override fun createFragment(position: Int): Fragment {
         return tabFragmentCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
+        //invoke()をつけてインスタンス化
     }
 
     override fun getItemCount(): Int {

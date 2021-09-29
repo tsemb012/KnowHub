@@ -30,7 +30,7 @@ class HomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeBinding;
     private lateinit var navController: NavController
-    private val viewModel:HomeViewModel by viewModels()
+    private val viewModel:HomeViewModel by viewModels()//hiltとかではないね。標準機能。
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +52,9 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment//NavHostFragmentをインスタンス化
+        navController = navHostFragment.navController//ホストフラグメントからコントローラーを取り出し。
+        //このフラグメントのコントローラーを使って、画面遷移とかナビゲーションを司るんじゃない？
 
         //-----ViewPager Objects
         val homeViewPagerAdapter = HomeViewPagerAdapter(this)
@@ -62,8 +63,9 @@ class HomeFragment: Fragment() {
 
         //-----TabLayout&ViewPager Linking
         val tabLayout: TabLayout = binding.tabLayout
-        TabLayoutMediator(tabLayout, viewPager
-        ) { tab: TabLayout.Tab, position: Int -> tab.text = "OBJECT" + (position + 1) }.attach()
+        TabLayoutMediator(tabLayout, viewPager) {
+                tab: TabLayout.Tab, position: Int -> tab.text = "OBJECT" + (position + 1)
+        }.attach()
 
         //-----SettingTab *After Linking Tab&ViewPager*
         requireNotNull(tabLayout.getTabAt(0)).setText(R.string.recommendation)
@@ -71,17 +73,20 @@ class HomeFragment: Fragment() {
 
         //-----Navigation to AddGroupFragment by FloatingActionButton
 
+        //クリックリスナーって、View.OnClickListenerインターフェースを無名で実装したものを渡しているだけ。
         binding.floatingActionButton.setOnClickListener(View.OnClickListener { v ->
             val action: NavDirections =
                 HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
             Navigation.findNavController(v).navigate(action)
+            //これ文法だけ見ると、上で取得したNavControllerからnavigateメソッド引っ張れそうだけど。
         })//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
+
 
         observeAuthenticationState()
     }
 
     private fun observeAuthenticationState() {
-
+        //ログインのロジックってライフサイクルに左右されて扱いにくい。完全に独立したクラスとして扱えれば良い。RPはどうなっているか？
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
                 HomeViewModel.AuthenticationState.AUTHENTICATED -> {
@@ -89,6 +94,7 @@ class HomeFragment: Fragment() {
                     viewModel.userProfile.observe(viewLifecycleOwner, Observer { userProfile ->
                         if (userProfile == null) {
                             navController.navigate(R.id.createProfileFragment)
+                            //構造的に不安定じゃないかな？　→　動作確認して問題なければ大丈夫でしょう。//MainActivityでも条件分岐で対処している。
                         }
                     })
                 }
@@ -99,7 +105,7 @@ class HomeFragment: Fragment() {
         })
     }
 
-    private fun startSignIn() {
+    private fun startSignIn() {//TODO サインインに関しては、少し抜けている部分があるので、もう少し詰めて考える必要がある。
         // Choose authentication providers
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
@@ -118,6 +124,8 @@ class HomeFragment: Fragment() {
             RC_RESIGN_IN )
     }
 
+    //ActivityResultの中で特段なんの処理も行ってないが、削除しても良いのでは？
+    //いや、ログインが成功した通知と失敗した時の通知を入れたい。
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -125,7 +133,7 @@ class HomeFragment: Fragment() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
+                val user = FirebaseAuth.getInstance().currentUser//
 
                 // ...
             } else {

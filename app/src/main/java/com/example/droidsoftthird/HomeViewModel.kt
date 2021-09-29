@@ -19,9 +19,10 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
+    //valだかViewModelが生成された瞬間に、LiveDataが生成されて判別される。
     val authenticationState = FirebaseUserLiveData().map { user ->
         if (user != null) {
-            AuthenticationState.AUTHENTICATED
+            AuthenticationState.AUTHENTICATED//LiveData<user>の中身をLiveData<AuthenticationState.AUTHENTICATED>に書き替えている。
         } else {
             AuthenticationState.UNAUTHENTICATED
         }
@@ -37,7 +38,7 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
             when (result) {
                 is Result.Success -> {
                     result.data?.let {
-                        _userProfile.postValue(result.data)
+                        _userProfile.postValue(result.data)//let使ってるんだからitでよいでしょ。
                         Timber.tag("check_").d(_userProfile.postValue(result.data).toString())
                     } ?: run {
                         _userProfile.postValue(null)

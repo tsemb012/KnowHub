@@ -16,9 +16,6 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     //TODO より良いUIを検討する。
-
-
-
     private val _imageUri = MutableLiveData<Uri>(null)
     val imageUri: LiveData<Uri>
         get() = _imageUri
@@ -134,9 +131,6 @@ class AddGroupViewModel @ViewModelInject constructor(private val repository: Use
     fun postIsChecked(boolean: Boolean) {
         _isChecked.postValue(boolean)
     }
-
-
-
 
     fun createGroup() {
         //DONE DroidSecondのuploadFromUriを用いて、Repository経由でアップロード処理を行う。

@@ -26,7 +26,7 @@ import timber.log.Timber
 class MyPageFragment: Fragment() {
 
     private lateinit var binding: FragmentMyPageBinding
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration//不要
     private lateinit var navController: NavController
     private val viewModel:MyPageViewModel by viewModels()
 
@@ -51,7 +51,7 @@ class MyPageFragment: Fragment() {
         /*val toolbar: Toolbar = binding.toolbar
         toolbar.setTitle(R.string.my_page)*/
 
-        requireActivity().actionBar?.title = getString(R.string.my_page)
+        requireActivity().actionBar?.title = getString(R.string.my_page)//TODO MainActivityと重複してないか？削除しても問題ないのでは？
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -62,7 +62,7 @@ class MyPageFragment: Fragment() {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
 
         //-----MenuGenerate for AppBar
-        toolbar.inflateMenu(R.menu.menu_main)*/
+        toolbar.inflateMenu(R.menu.menu_main)*/ //TODO ここでは良いが、実際のコードでは不要な部分削除しよう。
 
         /*TODO FilterをMenuに付与する際に再利用するコード
         binding.include.toolbar.setOnMenuItemClickListener { item ->
@@ -89,7 +89,6 @@ class MyPageFragment: Fragment() {
                 adapter.submitList(it) }
         })
 
-
         viewModel.navigateToChatRoom.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupInfo ->
             groupInfo?.let {
 
@@ -110,7 +109,7 @@ class MyPageFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-    }
+    }//TODO 使わないところは消しましょう。
 
     /*//TODO Filter製作時に再利用する。
     *//**
