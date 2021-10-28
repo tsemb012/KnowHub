@@ -1,6 +1,7 @@
 package com.example.droidsoftthird
 
 import android.annotation.SuppressLint
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
@@ -47,35 +48,12 @@ class MyPageFragment: Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        //-----ViewObjects for Navigation
-        /*val toolbar: Toolbar = binding.toolbar
-        toolbar.setTitle(R.string.my_page)*/
 
         requireActivity().actionBar?.title = getString(R.string.my_page)
 
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        /*appBarConfiguration = AppBarConfiguration.Builder(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment)).build()
-
-        //-----Setup for NavigationUI
-        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
-
-        //-----MenuGenerate for AppBar
-        toolbar.inflateMenu(R.menu.menu_main)*/
-
-        /*TODO FilterをMenuに付与する際に再利用するコード
-        binding.include.toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.sign_out) {
-                context?.let { AuthUI.getInstance().signOut(it) }
-                startSignIn()
-            } else {
-                //TODO WRITE CODE FOR MENU EXCEPT FOR SIGN_OUT
-            }
-            return@setOnMenuItemClickListener NavigationUI.onNavDestinationSelected(item,
-                navController)
-                    || super.onOptionsItemSelected(item)
-        }*/
 
         val adapter = GroupAdapter(GroupListener{ groupId, groupName ->
             viewModel.onGroupClicked(groupId, groupName)
@@ -112,27 +90,23 @@ class MyPageFragment: Fragment() {
 
     }
 
-    /*//TODO Filter製作時に再利用する。
-    *//**
-     * Inflates the overflow menu that contains filtering options.
-     *//*
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overflow_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.home,menu)
+        val primaryWhite = "#F6FFFE"
+        menu.getItem(0).icon.apply {
+            mutate() // Drawableを変更可能にする
+            setColorFilter(android.graphics.Color.parseColor(primaryWhite), PorterDuff.Mode.SRC_ATOP) // アイコンを白くする
+        }
     }
 
-    *//**
-     * Updates the filter in the [OverviewViewModel] when the menu items are selected from the
-     * overflow menu.
-     *//*
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.updateFilter(
-            when (item.itemId) {
-                R.id.show_rent_menu -> MarsApiFilter.SHOW_RENT
-                R.id.show_buy_menu -> MarsApiFilter.SHOW_BUY
-                else -> MarsApiFilter.SHOW_ALL
+        when (item.getItemId()) {
+            R.id.filter -> {
+                TODO("Filterの機能を追加する。")
+                return true
             }
-        )
-        return true
-    }*/
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 }
