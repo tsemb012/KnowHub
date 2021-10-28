@@ -104,4 +104,6 @@
     <string name="group">グループ</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
+    <string name="schedule_registered">登録済</string>
+    <string name="schedule_proposed">保留中</string>
 </resources>

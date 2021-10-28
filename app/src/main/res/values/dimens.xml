@@ -8,4 +8,8 @@
     <dimen name="item_group_image_height">150dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="fab_bottom_padding">72dp</dimen>
+    <dimen name="tab_layout_height_normal">50dp</dimen>
+    <dimen name="floating_button_margin_end">24dp</dimen>
+    <dimen name="floating_button_margin_bottom">24dp</dimen>
+    <dimen name="floating_button_elevation">2dp</dimen>
 </resources>

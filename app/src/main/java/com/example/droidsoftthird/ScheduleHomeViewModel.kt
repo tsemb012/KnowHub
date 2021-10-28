@@ -2,6 +2,6 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.ViewModel
 
-class ScheduleViewModel : ViewModel() {
+class ScheduleHomeViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }
