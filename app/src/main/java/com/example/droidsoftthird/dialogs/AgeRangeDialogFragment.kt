@@ -4,13 +4,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.GroupAddViewModel
 import com.example.droidsoftthird.R
 import com.google.android.material.slider.RangeSlider
 
@@ -18,7 +17,7 @@ import com.google.android.material.slider.RangeSlider
 //TODO Better to Modify to ViewBinding from FindViewBy
 class AgeRangeDialogFragment: DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
+    private val viewModel: GroupAddViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 

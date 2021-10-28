@@ -7,13 +7,13 @@
         <data>
             <variable
                 name="addGroupViewModel"
-                type="com.example.droidsoftthird.AddGroupViewModel" />
+                type="com.example.droidsoftthird.GroupAddViewModel" />
         </data>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".AddGroupFragment"
+            tools:context=".GroupAddFragment"
             android:background="@color/primary_light">
 
             <ProgressBar

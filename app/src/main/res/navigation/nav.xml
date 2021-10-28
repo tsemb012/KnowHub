@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
-        android:name="com.example.droidsoftthird.AddGroupFragment"
+        android:name="com.example.droidsoftthird.GroupAddFragment"
         android:label="AddGroupFragment" >
         <action
             android:id="@+id/action_addGroupFragment_to_homeFragment"
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
-        android:name="com.example.droidsoftthird.CreateProfileFragment"
+        android:name="com.example.droidsoftthird.ProfileCreateFragment"
         android:label="fragment_create_profile"
         tools:layout="@layout/fragment_create_profile" >
         <action
@@ -72,13 +72,16 @@
             app:destination="@id/chatRoomFragment" />
     </fragment>
     <fragment
-        android:id="@+id/scheduleFragment"
-        android:name="com.example.droidsoftthird.ScheduleFragment"
+        android:id="@+id/ScheduleHomeFragment"
+        android:name="com.example.droidsoftthird.ScheduleHomeFragment"
         android:label="fragment_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule_home" >
         <argument
             android:name="groupId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_ScheduleHomeFragment_to_scheduleCreateFragment"
+            app:destination="@id/scheduleCreateFragment" />
     </fragment>
 
     <fragment
@@ -98,7 +101,7 @@
             app:destination="@id/videoFragment" />
         <action
             android:id="@+id/action_chatRoomFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" />
+            app:destination="@id/ScheduleHomeFragment" />
         <action
             android:id="@+id/action_chatRoomFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
@@ -110,6 +113,10 @@
             app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_chatRoomFragment" app:destination="@id/chatRoomFragment" />
+    <fragment
+        android:id="@+id/scheduleCreateFragment"
+        android:name="com.example.droidsoftthird.ScheduleCreateFragment"
+        android:label="ScheduleCreateFragment" />
 
 
 </navigation>
