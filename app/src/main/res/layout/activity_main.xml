@@ -40,17 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 app:titleTextColor="@color/primary_white"
-                >
-
-                <!--<TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:text="Toolbar Title"
-                    android:layout_gravity="center"/>-->
-
-            </androidx.appcompat.widget.Toolbar>
+                />
 
         </com.google.android.material.appbar.AppBarLayout>
 

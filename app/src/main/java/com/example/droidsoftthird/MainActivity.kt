@@ -1,12 +1,14 @@
 package com.example.droidsoftthird
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -17,8 +19,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.example.droidsoftthird.databinding.NavHeaderBinding
 import com.firebase.ui.auth.AuthUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -28,34 +28,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel:MainViewModel by viewModels()
+    private val binding:ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
     private lateinit var navHeaderBinding: NavHeaderBinding;
+    
 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val bottomNav: BottomNavigationView = binding.bottomNav
-        val drawer: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-
-
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,navView,false)
-        navView.addHeaderView(navHeaderBinding.root)
-  /*      ActionBarDrawerToggle(this,drawer,binding.toolbar,R.string.open_drawer, R.string.close_drawer)
-            .drawerArrowDrawable.color = resources.getColor(R.color.primary_white)*/
+
+
+        navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
+        binding.navView.addHeaderView(navHeaderBinding.root)
 
 
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.ScheduleHomeFragment,R.id.videoFragment,R.id.createProfileFragment),drawer)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.ScheduleHomeFragment,R.id.videoFragment,R.id.createProfileFragment),binding.drawerLayout)
 
-        NavigationUI.setupWithNavController(navView, navController)
-        NavigationUI.setupWithNavController(bottomNav, navController)
+        NavigationUI.setupWithNavController(binding.navView, navController)
+        NavigationUI.setupWithNavController(binding.bottomNav, navController)
         setupActionBarWithNavController(navController,appBarConfiguration)//特定のフラグメントのみUpアイコンを表示させない。
         navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
             when(navDestination.id){
@@ -93,7 +89,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.ScheduleHomeFragment -> {
                     binding.toolbar.title = getString(R.string.schedule)
                     binding.bottomNav.visibility = View.VISIBLE
-                    binding.toolbar.visibility = View.GONE
+                    binding.toolbar.visibility = View.VISIBLE
+
                     binding.toolbar.navigationIcon = null
                 }
                 R.id.videoFragment -> {
@@ -117,10 +114,10 @@ class MainActivity : AppCompatActivity() {
                 else -> " "
             }
         }
-        navView.setNavigationItemSelectedListener{
+        binding.navView.setNavigationItemSelectedListener{
             if (it.itemId == R.id.log_out){
                 viewModel.clearUserProfile()
-                drawer.close()
+                binding.drawerLayout.close()
                 AuthUI.getInstance().signOut(this)
 
             } else {
@@ -128,12 +125,21 @@ class MainActivity : AppCompatActivity() {
             }
             return@setNavigationItemSelectedListener true
         }
-        binding.toolbar.inflateMenu(R.menu.menu_main)
+        binding.toolbar.inflateMenu(R.menu.home)
     }
 
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        return super.onCreateView(name, context, attrs)
+
+    }
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    override fun setSupportActionBar(toolbar: Toolbar?) {
+        super.setSupportActionBar(toolbar)
+        toolbar?.inflateMenu(R.menu.home)
     }
 
     companion object {

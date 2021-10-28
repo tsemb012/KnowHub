@@ -3,10 +3,9 @@ package com.example.droidsoftthird
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -14,9 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import com.example.droidsoftthird.databinding.FragmentHomeBinding
-import com.example.droidsoftthird.databinding.NavHeaderBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.tabs.TabLayout
@@ -27,6 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment: Fragment() {
+
+    companion object {
+        private const val PRIMARY_WHITE = "#F6FFFE"
+        const val RC_RESIGN_IN = 9002
+    }
 
     private lateinit var binding: FragmentHomeBinding;
     private lateinit var navController: NavController
@@ -137,7 +139,23 @@ class HomeFragment: Fragment() {
         }
     }
 
-    companion object {
-        const val RC_RESIGN_IN = 9002
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.home,menu)
+        val primaryWhite = "#F6FFFE"
+        menu.getItem(0).icon.apply {
+            mutate() // Drawableを変更可能にする
+            setColorFilter(android.graphics.Color.parseColor(primaryWhite), PorterDuff.Mode.SRC_ATOP) // アイコンを白くする
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.filter -> {
+                TODO("Filterの機能を追加する。")
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }
