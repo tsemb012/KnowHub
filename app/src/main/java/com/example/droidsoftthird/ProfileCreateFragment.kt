@@ -17,10 +17,10 @@ import com.example.droidsoftthird.dialogs.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateProfileFragment : Fragment(), View.OnClickListener {
+class ProfileCreateFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentCreateProfileBinding
-    private val viewModel: CreateProfileViewModel by viewModels()
+    private val viewModel: ProfileCreateViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +37,7 @@ class CreateProfileFragment : Fragment(), View.OnClickListener {
 
         viewModel.navigationToHome.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
-                CreateProfileFragmentDirections.actionCreateProfileFragmentToHomeFragment())
+                ProfileCreateFragmentDirections.actionCreateProfileFragmentToHomeFragment())
         })
 
         viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{

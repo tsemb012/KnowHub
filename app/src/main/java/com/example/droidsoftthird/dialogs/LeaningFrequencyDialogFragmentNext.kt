@@ -9,12 +9,12 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.GroupAddViewModel
 import com.example.droidsoftthird.R
 
 class LeaningFrequencyDialogFragmentNext:DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
+    private val viewModel: GroupAddViewModel by viewModels({requireParentFragment()})
     private var previousSelected:Int? = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

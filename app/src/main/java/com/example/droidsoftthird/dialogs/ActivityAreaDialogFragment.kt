@@ -6,16 +6,14 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.GroupAddViewModel
 import com.example.droidsoftthird.R
 
 class ActivityAreaDialogFragment:DialogFragment() {
 
 
     private var selected = 0
-    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
+    private val viewModel: GroupAddViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 

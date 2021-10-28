@@ -60,7 +60,6 @@ dependencies {
 
     //-----androidx
 
-
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
@@ -152,11 +151,14 @@ dependencies {
     //-----Maps Utils for Android
     implementation 'com.google.maps.android:android-maps-utils:1.1.0'
 
-    //-----CalendarView Library
+    //-----CalendarView
     implementation 'com.github.kizitonwose:CalendarView:1.0.4'
 
-    //-----CalendarView Library
+    //-----CalendarView
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    //-----DataBinding-ktx
+    implementation 'com.github.wada811:DataBinding-ktx:5.0.0'
 
 
 }

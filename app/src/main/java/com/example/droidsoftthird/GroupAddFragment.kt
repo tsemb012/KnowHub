@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
@@ -21,10 +20,10 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddGroupFragment:Fragment(),View.OnClickListener {
+class GroupAddFragment:Fragment(),View.OnClickListener {
 
     private lateinit var binding: FragmentGroupAddBinding
-    private val viewModel:AddGroupViewModel by viewModels()
+    private val viewModel:GroupAddViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +56,7 @@ class AddGroupFragment:Fragment(),View.OnClickListener {
 
         viewModel.navigationToHome.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
-                AddGroupFragmentDirections.actionAddGroupFragmentToHomeFragment())
+                GroupAddFragmentDirections.actionAddGroupFragmentToHomeFragment())
         })
 
         return binding.root

@@ -2,19 +2,16 @@ package com.example.droidsoftthird.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log.d
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
-import com.example.droidsoftthird.AddGroupViewModel
+import com.example.droidsoftthird.GroupAddViewModel
 import com.example.droidsoftthird.R
 import timber.log.Timber
 
 class GroupTypeDialogFragment: DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
+    private val viewModel: GroupAddViewModel by viewModels({requireParentFragment()})
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val items = arrayOf(
