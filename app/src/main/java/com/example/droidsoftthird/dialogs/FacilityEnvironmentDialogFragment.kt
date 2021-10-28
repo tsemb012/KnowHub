@@ -4,13 +4,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 
 class FacilityEnvironmentDialogFragment : DialogFragment() {
 
-    private val viewModel: AddGroupViewModel by viewModels({requireParentFragment()})
+    private val viewModel: GroupAddViewModel by viewModels({requireParentFragment()})
     private var selected = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

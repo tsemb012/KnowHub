@@ -6,15 +6,14 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.AddGroupViewModel
-import com.example.droidsoftthird.CreateProfileViewModel
+import com.example.droidsoftthird.ProfileCreateViewModel
 import com.example.droidsoftthird.R
 
 class ResidentialAreaDialogFragmentNext : DialogFragment() {
 
     //TODO 宣言部分を整理する。
     //
-    private val viewModel: CreateProfileViewModel by viewModels({requireParentFragment()})
+    private val viewModel: ProfileCreateViewModel by viewModels({requireParentFragment()})
     private var selected = 0
     private var previousSelected:Int? = 0
     private lateinit var items: Array<String>

@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -54,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.scheduleFragment,R.id.videoFragment,R.id.createProfileFragment),drawer)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.ScheduleHomeFragment,R.id.videoFragment,R.id.createProfileFragment),drawer)
 
         NavigationUI.setupWithNavController(navView, navController)
         NavigationUI.setupWithNavController(bottomNav, navController)
@@ -92,10 +90,10 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.visibility = View.VISIBLE
                     binding.toolbar.navigationIcon = null
                 }
-                R.id.scheduleFragment -> {
+                R.id.ScheduleHomeFragment -> {
                     binding.toolbar.title = getString(R.string.schedule)
                     binding.bottomNav.visibility = View.VISIBLE
-                    binding.toolbar.visibility = View.VISIBLE
+                    binding.toolbar.visibility = View.GONE
                     binding.toolbar.navigationIcon = null
                 }
                 R.id.videoFragment -> {

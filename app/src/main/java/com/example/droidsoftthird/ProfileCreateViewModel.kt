@@ -13,7 +13,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class CreateProfileViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class ProfileCreateViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
 
     private val _userImageUri = MutableLiveData<Uri>(null)
     val userImageUri: LiveData<Uri>
