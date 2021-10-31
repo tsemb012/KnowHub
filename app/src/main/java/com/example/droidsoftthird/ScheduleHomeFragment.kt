@@ -3,24 +3,22 @@ package com.example.droidsoftthird
 import android.graphics.PorterDuff
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.example.droidsoftthird.databinding.ActivityMainBinding
+import com.example.droidsoftthird.databinding.FragmentHomeBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint //このActivityはHiltが使うと宣言し、依存関係をHiltから引っ張ってくる。
-class ScheduleHomeFragment: Fragment() {
+class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
 
     private val binding: FragmentScheduleHomeBinding by dataBinding()
     private val viewModel: ScheduleHomeViewModel by viewModels()
@@ -32,6 +30,7 @@ class ScheduleHomeFragment: Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
