@@ -40,6 +40,10 @@ captures/
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
+<<<<<<< HEAD
+=======
+google_maps_api.xml
+>>>>>>> ce15bdab69a614e6f055832e56888e8a224b69ba
 
 # Freeline
 freeline.py
