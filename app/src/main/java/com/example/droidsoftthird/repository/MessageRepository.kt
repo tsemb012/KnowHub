@@ -20,6 +20,10 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+/*他と干渉しないChatRoomのレポジトリーのみ独立させている。
+* しかしChatに多くの機能を追加することになった場合、通常のレポジトリーと統合することも検討する。
+* */
+
 class MessageRepository  @Inject constructor(){
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
@@ -122,9 +126,6 @@ class MessageRepository  @Inject constructor(){
         }
     }
 
-    //TODO なるほど、そもそも成り立ちから違う。こちらはSubCollectionに入れているが、一方であちらはフィールドに入れている。
-    //TODO つまり独自の手段を探し出す必要があるということ。
-    //TODO メッセージの一個でかい枠を作っちゃえば良いんじゃないの？
     fun getChatEvents(groupId: String): Flow<QuerySnapshot> = callbackFlow {
         var messagesCollection:CollectionReference? = null
         try{

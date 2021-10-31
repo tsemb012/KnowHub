@@ -3,13 +3,12 @@ package com.example.droidsoftthird
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.UserProfile
-import com.example.droidsoftthird.repository.UserGroupRepository
-import com.google.firebase.auth.FirebaseAuth
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class HomeViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class HomeViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
 
     enum class AuthenticationState {
