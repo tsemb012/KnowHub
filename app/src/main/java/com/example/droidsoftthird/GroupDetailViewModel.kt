@@ -2,17 +2,16 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.repository.UserGroupRepository
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
 class GroupDetailViewModel @AssistedInject constructor(
-    private val repository: UserGroupRepository,
+    private val repository: BaseRepositoryImpl,
     @Assisted private val groupId:String,
     ):ViewModel() {
 

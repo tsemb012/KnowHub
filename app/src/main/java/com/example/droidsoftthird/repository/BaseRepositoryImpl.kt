@@ -24,12 +24,11 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class UserGroupRepository @Inject constructor() {
+class BaseRepositoryImpl @Inject constructor(): BaseRepository {
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
 
-
-    suspend fun getGroups(query: String): Result<List<Group>> =
+    override suspend fun getGroups(query: String): Result<List<Group>> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                     getQuery(query)
@@ -49,29 +48,9 @@ class UserGroupRepository @Inject constructor() {
                         Timber.tag("check_result4").d(it.toString())
                     }
             }
-
         }
 
-    private fun getQuery(query: String): Query {
-        return when(query){
-            QueryType.ALL.value ->
-                fireStore
-                    .collection("groups")
-                    .orderBy("timeStamp",Query.Direction.DESCENDING)
-                    .limit(LIMIT)
-            QueryType.MY_PAGE.value ->
-                fireStore
-                    .collection("groups")
-                    .whereArrayContains("members",FirebaseAuth.getInstance().currentUser.uid )
-                    .orderBy("timeStamp",Query.Direction.DESCENDING)
-                    .limit(LIMIT)
-            else ->
-                fireStore
-                    .collection("groups")
-        }
-    }
-
-    suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
+    override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){
         suspendCoroutine { continuation ->
             fireStore.collection("groups")
@@ -95,7 +74,7 @@ class UserGroupRepository @Inject constructor() {
     }
 
 
-    suspend fun uploadPhoto(uri: Uri): Result<StorageReference> {
+    override suspend fun uploadPhoto(uri: Uri): Result<StorageReference> {
         val photoRef = fireStorageRef.child("images/${UUID.randomUUID().toString()}")
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
@@ -143,7 +122,7 @@ class UserGroupRepository @Inject constructor() {
     }*/
 
 
-    suspend fun createGroup(group: Group): Result<Int> {
+    override suspend fun createGroup(group: Group): Result<Int> {
         val groupRef = fireStore.collection("groups").document()
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
@@ -165,7 +144,7 @@ class UserGroupRepository @Inject constructor() {
     }
 
 
-    suspend fun getUserProfile(): Result<UserProfile?> =
+    override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
@@ -190,7 +169,7 @@ class UserGroupRepository @Inject constructor() {
             }
         }
 
-    suspend fun createUserProfile(userProfile: UserProfile): Result<Int> {
+    override suspend fun createUserProfile(userProfile: UserProfile): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
@@ -210,7 +189,7 @@ class UserGroupRepository @Inject constructor() {
         }
     }
 
-    suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
+    override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 Firebase.auth.currentUser
@@ -230,7 +209,7 @@ class UserGroupRepository @Inject constructor() {
     }
 
 
-    suspend fun userJoinGroup(groupId: String): Result<Int> {
+    override suspend fun userJoinGroup(groupId: String): Result<Int> {
 
         val groupRef = fireStore.collection("groups").document(groupId)
         return withContext(Dispatchers.IO) {
@@ -254,6 +233,25 @@ class UserGroupRepository @Inject constructor() {
                         continuation.resume(Result.Error(it))
                     }
             }
+        }
+    }
+
+    private fun getQuery(query: String): Query {
+        return when(query){
+            QueryType.ALL.value ->
+                fireStore
+                    .collection("groups")
+                    .orderBy("timeStamp",Query.Direction.DESCENDING)
+                    .limit(LIMIT)
+            QueryType.MY_PAGE.value ->
+                fireStore
+                    .collection("groups")
+                    .whereArrayContains("members",FirebaseAuth.getInstance().currentUser.uid )
+                    .orderBy("timeStamp",Query.Direction.DESCENDING)
+                    .limit(LIMIT)
+            else ->
+                fireStore
+                    .collection("groups")
         }
     }
 

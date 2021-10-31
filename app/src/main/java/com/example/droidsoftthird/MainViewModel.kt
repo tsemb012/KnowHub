@@ -3,12 +3,12 @@ package com.example.droidsoftthird
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.UserProfile
-import com.example.droidsoftthird.repository.UserGroupRepository
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class MainViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class MainViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _userProfile = MutableLiveData<UserProfile?>()
     val userProfile: LiveData<UserProfile?>

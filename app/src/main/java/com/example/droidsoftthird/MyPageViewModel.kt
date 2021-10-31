@@ -1,18 +1,17 @@
 package com.example.droidsoftthird
 
-import androidx.compose.ui.text.createTextLayoutResult
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.repository.UserGroupRepository
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class MyPageViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class MyPageViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _groups = MutableLiveData<List<Group>?>()
     val groups: LiveData<List<Group>?>
