@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class MyPageViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class MyPageViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<Any?>): ViewModel() {
 
     private val _groups = MutableLiveData<List<Group>?>()
     val groups: LiveData<List<Group>?>
@@ -20,7 +20,7 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: BaseR
     fun getMyGroups(){
         viewModelScope.launch {
             val result = try{
-                repository.getGroups(QueryType.MY_PAGE.value)
+                repository.getGroups(GroupQuery.MY_PAGE.value)
 
             } catch(e: Exception){
                 Result.Error(Exception("Network request failed"))

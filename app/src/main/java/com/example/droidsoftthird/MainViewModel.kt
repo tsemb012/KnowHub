@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class MainViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class MainViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<Any?>): ViewModel() {
 
     private val _userProfile = MutableLiveData<UserProfile?>()
     val userProfile: LiveData<UserProfile?>

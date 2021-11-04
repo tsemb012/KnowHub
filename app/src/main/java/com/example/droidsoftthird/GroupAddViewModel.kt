@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-class GroupAddViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class GroupAddViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<Any?>): ViewModel() {
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     //TODO より良いUIを検討する。
