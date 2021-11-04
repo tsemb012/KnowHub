@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class RecommendPagerViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl):ViewModel() {
+class RecommendPagerViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<Any?>):ViewModel() {
 
 
     private val _groups = MutableLiveData<List<Group>?>()
@@ -27,7 +27,7 @@ class RecommendPagerViewModel @ViewModelInject constructor(private val repositor
     fun getAllGroups() {
         viewModelScope.launch {
             val result = try{
-                repository.getGroups(QueryType.ALL.value)
+                repository.getGroups(GroupQuery.ALL.value)
             } catch(e:Exception){
                 Result.Error(Exception("Network request failed"))
             }

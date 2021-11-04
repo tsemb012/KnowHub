@@ -11,7 +11,7 @@ import timber.log.Timber
 import java.lang.Exception
 
 class GroupDetailViewModel @AssistedInject constructor(
-    private val repository: BaseRepositoryImpl,
+    private val repository: BaseRepositoryImpl<Any?>,
     @Assisted private val groupId:String,
     ):ViewModel() {
 

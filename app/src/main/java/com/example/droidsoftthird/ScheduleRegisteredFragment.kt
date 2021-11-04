@@ -34,5 +34,4 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
         }
     }
-
 }
