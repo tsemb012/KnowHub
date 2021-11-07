@@ -37,9 +37,9 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
-         viewModel.uiModel.observe(viewLifecycleOwner){
-             observeSchedulesState(it.schedulesLoadState)
-         }
+        viewModel.uiModel.observe(viewLifecycleOwner){
+            observeSchedulesState(it.schedulesLoadState)
+        }
 
         class DayViewContainer(view: View): ViewContainer(view) {
             lateinit var day: CalendarDay

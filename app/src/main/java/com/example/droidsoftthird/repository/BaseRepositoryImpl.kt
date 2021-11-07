@@ -23,7 +23,7 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
+class BaseRepositoryImpl @Inject constructor(): BaseRepository {
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
