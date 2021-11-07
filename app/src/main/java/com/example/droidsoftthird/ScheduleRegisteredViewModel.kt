@@ -32,4 +32,8 @@ class ScheduleRegisteredViewModel @ViewModelInject constructor(private val repos
         _schedulesState.value = LoadState.Loading(job)
         job.start()
     }
+
+    fun initializeSchedulesState() {
+        _schedulesState.value = LoadState.Initialized
+    }
 }
