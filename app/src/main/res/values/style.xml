@@ -5,10 +5,14 @@
         <item name="colorPrimary">#B1DFD9</item>
         <item name="colorPrimaryDark">#009AA3</item>
         <item name="colorAccent">#CB4FB5</item>
+        <item name="drawerArrowStyle">@style/DrawerIcon</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+    <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/primary_white</item>
     </style>
 </resources>
