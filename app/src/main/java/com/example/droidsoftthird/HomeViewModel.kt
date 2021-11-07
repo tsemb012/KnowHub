@@ -45,7 +45,7 @@ class HomeViewModel @ViewModelInject constructor(private val repository: BaseRep
                         _userProfile.postValue(null)
                     }
                 }
-                //TODO　is Result.Error -> 取得失敗時のエラー記入
+                is Result.Failure -> Timber.d("error at ${this@HomeViewModel}")
             }
         }
     }
