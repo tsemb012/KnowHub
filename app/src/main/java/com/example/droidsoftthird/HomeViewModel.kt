@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class HomeViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<Any?>): ViewModel() {
+class HomeViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
 
     enum class AuthenticationState {

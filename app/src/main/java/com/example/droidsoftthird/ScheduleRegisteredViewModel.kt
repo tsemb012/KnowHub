@@ -10,7 +10,7 @@ import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.example.droidsoftthird.utils.combine
 import kotlinx.coroutines.launch
 
-class ScheduleRegisteredViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<*>): ViewModel() {
+class ScheduleRegisteredViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _schedulesState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     val uiModel by lazy {

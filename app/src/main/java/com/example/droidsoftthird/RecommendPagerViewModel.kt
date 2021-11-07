@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class RecommendPagerViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl<Any?>):ViewModel() {
+class RecommendPagerViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl):ViewModel() {
 
 
     private val _groups = MutableLiveData<List<Group>?>()
