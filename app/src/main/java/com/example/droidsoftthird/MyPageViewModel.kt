@@ -23,7 +23,7 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: BaseR
                 repository.getGroups(GroupQuery.MY_PAGE.value)
 
             } catch(e: Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             Timber.tag("check_result1-3").d(result.toString())
             when (result) {

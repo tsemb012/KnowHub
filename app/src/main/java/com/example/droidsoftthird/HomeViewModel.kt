@@ -34,7 +34,7 @@ class HomeViewModel @ViewModelInject constructor(private val repository: BaseRep
             val result = try{
                 repository.getUserProfile()
             } catch(e: Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             when (result) {
                 is Result.Success -> {

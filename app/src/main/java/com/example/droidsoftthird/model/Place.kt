@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model
 
-data class Place (
+data class Place(
     val isOnline: Boolean,
     val prefecture: String,
     val city: String,

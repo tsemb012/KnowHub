@@ -4,7 +4,6 @@ import android.net.Uri
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.RawSchedulePlan
-import com.example.droidsoftthird.model.SchedulePlan
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -41,11 +40,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                     try {
                         continuation.resume(Result.Success(it.toObject()))
                     } catch (e: Exception) {
-                        continuation.resume(Result.Error(e))
+                        continuation.resume(Result.Failure(e))
                     }
                 }
                 .addOnFailureListener {
-                    continuation.resume(Result.Error(it))
+                    continuation.resume(Result.Failure(it))
                 }
         }
     }
@@ -60,11 +59,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                         try {
                             continuation.resume(Result.Success(it.storage))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -81,9 +80,9 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                     try {
                         continuation.resume(Result.Success(R.string.upload_success))
                     } catch (e: Exception) {
-                        continuation.resume(Result.Error(e))
+                        continuation.resume(Result.Failure(e))
                     }
-                }.addOnFailureListener { continuation.resume(Result.Error(it)) }
+                }.addOnFailureListener { continuation.resume(Result.Failure(it)) }
             }
         }
     }
@@ -102,11 +101,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                                 continuation.resume(Result.Success(null))
                             }
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -121,11 +120,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -140,11 +139,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -168,11 +167,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                     try {
                         continuation.resume(Result.Success(R.string.upload_success))
                     } catch (e: Exception) {
-                        continuation.resume(Result.Error(e))
+                        continuation.resume(Result.Failure(e))
                     }
                 }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -189,11 +188,11 @@ class BaseRepositoryImpl<T> @Inject constructor(): BaseRepository {
                         try {
                             continuation.resume(Result.Success(it.toObjects(classType)))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
