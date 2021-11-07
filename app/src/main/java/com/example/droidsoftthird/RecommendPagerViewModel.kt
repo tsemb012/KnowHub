@@ -29,7 +29,7 @@ class RecommendPagerViewModel @ViewModelInject constructor(private val repositor
             val result = try{
                 repository.getGroups(GroupQuery.ALL.value)
             } catch(e:Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             when (result) {
                 is Result.Success -> _groups.postValue(result.data)
@@ -37,7 +37,7 @@ class RecommendPagerViewModel @ViewModelInject constructor(private val repositor
             }
             Timber.tag("check_result1").d(result.toString())
         }
-    }
+    }//TODO　二重でエラーをキャッチする必要はないよね？
 
 
 

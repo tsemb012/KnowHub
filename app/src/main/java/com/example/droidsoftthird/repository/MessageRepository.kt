@@ -3,7 +3,6 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.Result
-import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -40,11 +39,11 @@ class MessageRepository  @Inject constructor(){
                         try {
                             continuation.resume(Result.Success(it.storage))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -59,7 +58,7 @@ class MessageRepository  @Inject constructor(){
                 uploadTask.continueWithTask { task ->
                     if (!task.isSuccessful) {
                         task.exception?.let {
-                            continuation.resume(Result.Error(it))
+                            continuation.resume(Result.Failure(it))
                         }
                     }
                     fileRef.downloadUrl
@@ -67,11 +66,11 @@ class MessageRepository  @Inject constructor(){
                         try {
                             continuation.resume(Result.Success(it))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -86,7 +85,7 @@ class MessageRepository  @Inject constructor(){
                 uploadTask.continueWithTask { task ->
                     if (!task.isSuccessful) {
                         task.exception?.let {
-                            continuation.resume(Result.Error(it))
+                            continuation.resume(Result.Failure(it))
                         }
                     }
                     recordRef.downloadUrl
@@ -94,11 +93,11 @@ class MessageRepository  @Inject constructor(){
                     try {
                         continuation.resume(Result.Success(it))
                     } catch (e: Exception) {
-                        continuation.resume(Result.Error(e))
+                        continuation.resume(Result.Failure(e))
                     }
                 }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -116,11 +115,11 @@ class MessageRepository  @Inject constructor(){
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }

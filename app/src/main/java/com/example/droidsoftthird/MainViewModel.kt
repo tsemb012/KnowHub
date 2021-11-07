@@ -35,7 +35,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: BaseRep
             val result = try{
                 repository.getUserProfile()
             } catch(e: Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             when (result) {
                 is Result.Success -> {
@@ -46,7 +46,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: BaseRep
                         _userProfile.postValue(null)
                     }
                 }
-                is Result.Error -> Timber.d("error at ${this@MainViewModel}")
+                is Result.Failure -> Timber.d("error at ${this@MainViewModel}")
             }
         }
     }
