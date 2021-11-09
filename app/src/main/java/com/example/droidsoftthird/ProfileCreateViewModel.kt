@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.UserProfile
-import com.example.droidsoftthird.repository.UserGroupRepository
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ProfileCreateViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class ProfileCreateViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _userImageUri = MutableLiveData<Uri>(null)
     val userImageUri: LiveData<Uri>

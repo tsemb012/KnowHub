@@ -1,18 +1,18 @@
 package com.example.droidsoftthird
 
-import androidx.compose.ui.text.createTextLayoutResult
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.repository.UserGroupRepository
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.GROUP_MY_PAGE
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class MyPageViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class MyPageViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _groups = MutableLiveData<List<Group>?>()
     val groups: LiveData<List<Group>?>
@@ -21,10 +21,10 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: UserG
     fun getMyGroups(){
         viewModelScope.launch {
             val result = try{
-                repository.getGroups(QueryType.MY_PAGE.value)
+                repository.getGroups(GROUP_MY_PAGE)
 
             } catch(e: Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             Timber.tag("check_result1-3").d(result.toString())
             when (result) {

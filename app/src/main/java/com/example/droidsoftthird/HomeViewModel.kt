@@ -3,13 +3,12 @@ package com.example.droidsoftthird
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.UserProfile
-import com.example.droidsoftthird.repository.UserGroupRepository
-import com.google.firebase.auth.FirebaseAuth
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class HomeViewModel @ViewModelInject constructor(private val repository: UserGroupRepository): ViewModel() {
+class HomeViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
 
     enum class AuthenticationState {
@@ -35,7 +34,7 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
             val result = try{
                 repository.getUserProfile()
             } catch(e: Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             when (result) {
                 is Result.Success -> {
@@ -46,7 +45,7 @@ class HomeViewModel @ViewModelInject constructor(private val repository: UserGro
                         _userProfile.postValue(null)
                     }
                 }
-                //TODO　is Result.Error -> 取得失敗時のエラー記入
+                is Result.Failure -> Timber.d("error at ${this@HomeViewModel}")
             }
         }
     }

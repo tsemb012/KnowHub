@@ -2,17 +2,16 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.repository.UserGroupRepository
+import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
 class GroupDetailViewModel @AssistedInject constructor(
-    private val repository: UserGroupRepository,
+    private val repository: BaseRepositoryImpl,
     @Assisted private val groupId:String,
     ):ViewModel() {
 
@@ -65,7 +64,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             val result = try{
                 repository.getGroup(groupId)
             } catch(e: Exception){
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             when (result) {
                 is Result.Success -> _group.postValue(result.data)
@@ -81,12 +80,12 @@ class GroupDetailViewModel @AssistedInject constructor(
             val result = try {
                 repository.userJoinGroup(groupId)
             } catch (e: Exception) {
-                Result.Error(Exception("Network request failed"))
+                Result.Failure(Exception("Network request failed"))
             }
             when (result) {
                 is Result.Success -> Timber.tag(TAG.plus("1")).d(result.data.toString())
                 //TODO 成功時の処理を行う。
-                is Result.Error ->  Timber.tag(TAG.plus("2")).d(result.exception.toString())
+                is Result.Failure ->  Timber.tag(TAG.plus("2")).d(result.exception.toString())
                 //TODO SnackBarを出現させる処理を記入する。*/
             }
         }

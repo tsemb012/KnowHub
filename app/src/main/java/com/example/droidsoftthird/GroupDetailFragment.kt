@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentGroupDetailBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.security.acl.Group
@@ -27,16 +29,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GroupDetailFragment : Fragment() {
-
-    //TODO UIを洗練させる
-    //TODO 同フラグメント専用にBindingUtilのコードを作る。
-    //TODO ツールバータイトルの良い表示方法を検討する。
-    //TODO getGroup()の記述位置があっているか確認する。
-    //TODO FloatingFabのOnClickロジック及び設計を考える。
-    //TODO NavArgを使用した値の受け渡しに切り替える。
-    //TODO userIcon一覧を表示する。
-    //TODO Chatからアクセスした場合、参加ボタンを非表示にする。
-
 
     @Inject
     lateinit var groupDetailViewModelAssistedFactory: GroupDetailViewModel.Factory
@@ -79,6 +71,23 @@ class GroupDetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        viewModel.group.observe(viewLifecycleOwner, Observer {
+            if(it?.members?.contains(FirebaseAuth.getInstance().uid) == true){
+                binding.floatingBtnAdd.visibility = View.GONE
+            }
+        })
+
+        viewModel.confirmJoin.observe(viewLifecycleOwner,EventObserver{
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.confrimation)
+                .setMessage(R.string.confrimation_join_group)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    viewModel.userJoinGroup()
+                }
+                .setNeutralButton(R.string.cancel) { _, _ ->
+                }
+                .show()
+        })
         viewModel.navigateToMyPage.observe(viewLifecycleOwner, Observer { groupId ->
             groupId?.let {
                 this.findNavController().navigate(
@@ -88,8 +97,6 @@ class GroupDetailFragment : Fragment() {
             }
         })
 
-        //TODO initで呼び出すように変更する。
-
         return binding.root
     }
 
@@ -97,3 +104,5 @@ class GroupDetailFragment : Fragment() {
         private val TAG: String? = GroupDetailFragment::class.simpleName
     }
 }
+//TODO userIcon一覧を表示する。
+

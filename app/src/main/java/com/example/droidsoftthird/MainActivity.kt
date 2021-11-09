@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
         binding.navView.addHeaderView(navHeaderBinding.root)
 
@@ -90,7 +89,6 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.title = getString(R.string.schedule)
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.toolbar.visibility = View.VISIBLE
-
                     binding.toolbar.navigationIcon = null
                 }
                 R.id.videoFragment -> {
@@ -146,31 +144,3 @@ class MainActivity : AppCompatActivity() {
         const val RC_SIGN_IN = 9001
     }
 }
-
-
-
-/*TODO Animationを取り入れる際に再利用する。
-    val options = NavOptions.Builder()
-    .setLaunchSingleTop(true)
-    .setEnterAnim(R.anim.nav_default_pop_enter_anim)
-    .setExitAnim(R.anim.nav_default_exit_anim)
-    .setPopEnterAnim(R.anim.nav_default_pop_enter_anim)
-    .setPopExitAnim(R.anim.nav_default_exit_anim)
-    .build()
-    bottomNav.setOnNavigationItemSelectedListener { item->
-    when(item.itemId){
-        R.id.homeFragment -> {
-            navController.navigate(R.id.homeFragment,null,options)
-        }
-        R.id.myPageFragment -> {
-            navController.navigate(R.id.myPageFragment,null,options)
-        }
-        R.id.scheduleFragment -> {
-            navController.navigate(R.id.scheduleFragment,null,options)
-        }
-        R.id.videoFragment -> {
-            navController.navigate(R.id.videoFragment,null,options)
-        }
-    }
-    true
-    }*/
