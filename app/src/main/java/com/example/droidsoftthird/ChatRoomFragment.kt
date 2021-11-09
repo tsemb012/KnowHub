@@ -59,7 +59,7 @@ class ChatRoomFragment : Fragment() {
     @Inject lateinit var chatRoomViewModelAssistedFactory: ChatRoomViewModel.Factory
     private val groupId by lazy { ChatRoomFragmentArgs.fromBundle(requireArguments()).groupId }
     private val viewModel:ChatRoomViewModel by lazy { chatRoomViewModelAssistedFactory.create(groupId) }
-    private val binding: ChatRoomFragmentBinding by dataBinding()
+    private lateinit var binding: ChatRoomFragmentBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
     private lateinit var adapter: ChatAdapter
     private var messageList = mutableListOf<Message>()
@@ -78,41 +78,50 @@ class ChatRoomFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = ChatRoomFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         adapter = ChatAdapter(context, object: MessageClickListener{
             override fun onMessageClicked(position: Int, message: Message) {
-            when(message.messageType) {
+                when(message.messageType) {
 
-                1.0 -> {
-                    binding.fullSizeImageView.visibility = View.VISIBLE
-                    StfalconImageViewer.Builder<MyImage>(
-                        requireActivity(),
-                        listOf(MyImage((message as ImageMessage).imageRef!!)),
-                        ImageLoader<MyImage> { imageView, myImage ->
-                            Glide.with(requireActivity())
-                                .load(FirebaseStorage.getInstance().getReference(myImage.url))
-                                .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
-                                .into(imageView)
-                        })
-                        .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
-                        .show()
+                    1.0 -> {
+                        binding.fullSizeImageView.visibility = View.VISIBLE
+                        StfalconImageViewer.Builder<MyImage>(
+                            requireActivity(),
+                            listOf(MyImage((message as ImageMessage).imageRef!!)),
+                            ImageLoader<MyImage> { imageView, myImage ->
+                                Glide.with(requireActivity())
+                                    .load(FirebaseStorage.getInstance().getReference(myImage.url))
+                                    .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
+                                    .into(imageView)
+                            })
+                            .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
+                            .show()
+                    }
+                    2.0 -> {
+                        val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
+                        dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
+                            ?.setPositiveButton(R.string.yes) { _, _ ->
+                                downloadFile(message)
+                            }?.setNegativeButton(R.string.no, null)?.show()
+                    }
+                    3.0 -> {
+                        adapter.notifyDataSetChanged()
+                    }
                 }
-                2.0 -> {
-                    val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
-                    dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
-                        ?.setPositiveButton(R.string.yes) { _, _ ->
-                            downloadFile(message)
-                        }?.setNegativeButton(R.string.no, null)?.show()
-                }
-                3.0 -> {
-                    adapter.notifyDataSetChanged()
-                }
-            }
             }
         })
 
@@ -164,7 +173,6 @@ class ChatRoomFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
 
-        return binding.root
     }
 
     override fun onStart() {
