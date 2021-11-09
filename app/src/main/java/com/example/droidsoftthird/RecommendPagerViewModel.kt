@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.GROUP_ALL
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
@@ -27,7 +28,7 @@ class RecommendPagerViewModel @ViewModelInject constructor(private val repositor
     fun getAllGroups() {
         viewModelScope.launch {
             val result = try{
-                repository.getGroups(GroupQuery.ALL.value)
+                repository.getGroups(GROUP_ALL)
             } catch(e:Exception){
                 Result.Failure(Exception("Network request failed"))
             }

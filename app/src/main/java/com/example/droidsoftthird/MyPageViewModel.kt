@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.GROUP_MY_PAGE
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
@@ -20,7 +21,7 @@ class MyPageViewModel @ViewModelInject constructor(private val repository: BaseR
     fun getMyGroups(){
         viewModelScope.launch {
             val result = try{
-                repository.getGroups(GroupQuery.MY_PAGE.value)
+                repository.getGroups(GROUP_MY_PAGE)
 
             } catch(e: Exception){
                 Result.Failure(Exception("Network request failed"))

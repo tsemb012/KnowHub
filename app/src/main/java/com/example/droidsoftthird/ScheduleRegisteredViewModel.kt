@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.LoadState
 import com.example.droidsoftthird.model.toEntity
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.SCHEDULE_REGISTERED_ALL
 import com.example.droidsoftthird.utils.combine
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,9 @@ class ScheduleRegisteredViewModel @ViewModelInject constructor(private val repos
         ) { current, schedulesState -> ScheduleRegisteredUiModel(current, schedulesState) }
     }
 
-    private fun getSchedules(query: String){
+    fun fetchAllSchedules() { fetchSchedules(SCHEDULE_REGISTERED_ALL) }
+
+    private fun fetchSchedules(query: String){
         val job = viewModelScope.launch {
                 repository.getSchedules(query).apply {
                     when(this) {
