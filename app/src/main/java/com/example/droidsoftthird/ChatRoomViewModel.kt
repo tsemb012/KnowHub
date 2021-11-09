@@ -4,13 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.*
 import com.example.droidsoftthird.repository.MessageRepository
-import com.example.droidsoftthird.repository.UserGroupRepository
-import com.google.android.gms.auth.api.Auth
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

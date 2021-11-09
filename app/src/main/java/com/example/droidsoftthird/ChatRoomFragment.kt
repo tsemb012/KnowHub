@@ -24,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -44,6 +45,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.PermissionListener
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.stfalcon.imageviewer.loader.ImageLoader
+import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -52,152 +54,78 @@ import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
-//DONE AppBarにボタンを３つ追加する。
-//DONE LayoutからDataBindingを用いて、ViewModelのメソッドにアクセス。
-//DONE ViewModelのメソッドから、Fragmentにて処理を実行。
-//DONE フラグメントにて処理後、再度ViewModelでアップロード処理を行う。
-//DONE layout内にRecyclerviewを取り入れ、Adapterを入れる。
-//DONE　上記3種のDirectionを書き替え、ViewModel側にもメソッドを配置する。
-//DONE RepositoryをChat専用に変更する。
-//DONE Eventを使用した処理に切り替える。
-
 @AndroidEntryPoint
 class ChatRoomFragment : Fragment() {
-
-    //DONE messageListがviewModelのリストと重複しないか確認する。
-    //DONE Adapterに渡すクリックリスナーの実装処理を行う。
-    //DONE Adapterの構造を把握し、適切に組み立てる。
-    //DONE VoiceRecorderのプレースホルダーを代入する際に、リストごと代入しても良いのか？
-    //DONE PlaceHolderの意義を観察する。
-    //DONE PlaceHolderを代入する以上、使用するListはViewModelのリストを繋がっているはずだが繋がっていない。LetsChatから関連性を確認する。
-
-    //TODO Permission(requestWritePermissionLauncher)に対して、引数を渡す方法を検討する。
-    //TODO PermissionやMediaを使用した際のMVVMを検討する。
-    //TODO VoiceのしようとDownLoadの使用によりPermission関連の記述が多くなっている。コードをキレイにする方法はないだろうか。
-
-    //TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。
-    //TODO Audio再生中にプログレスバーが更新されない不具合を確認する。
-
-    //TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
-
-    //TODO Permissionの文言を日本語に書き換える。
-    //TODO DexterでのPermissionを置き換える。
-
-
+    @Inject lateinit var chatRoomViewModelAssistedFactory: ChatRoomViewModel.Factory
+    private val groupId by lazy { ChatRoomFragmentArgs.fromBundle(requireArguments()).groupId }
+    private val viewModel:ChatRoomViewModel by lazy { chatRoomViewModelAssistedFactory.create(groupId) }
     private lateinit var binding: ChatRoomFragmentBinding
-    private lateinit var layout: View
-
-    private val navArgs by navArgs<ChatRoomFragmentArgs>()
-
-    @Inject
-    lateinit var chatRoomViewModelAssistedFactory: ChatRoomViewModel.Factory
-    private lateinit var viewModel: ChatRoomViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
-
-
     private lateinit var adapter: ChatAdapter
     private var messageList = mutableListOf<Message>()
-
     private var recorder: MediaRecorder? = null
-    var isRecording = false
+    private var isRecording = false
     private var recordStart = 0L
     private var recordDuration = 0L
-
-    private val requestAudioPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                // Permission has been granted. Start camera preview Activity.
-                layout.showSnackbar(
-                    R.string.audio_permission_granted,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    startRecording()
-                }
-            } else {
-                // Permission request was denied.
-                layout.showSnackbar(
-                    R.string.audio_permission_denied,
-                    Snackbar.LENGTH_SHORT,
-                    R.string.ok)
+    private val requestAudioPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            binding.root.showSnackbar(R.string.audio_permission_granted, Snackbar.LENGTH_INDEFINITE, R.string.yes) {//パーミッションが許可されたとき。
+                startRecording()
             }
+        } else {
+            binding.root.showSnackbar(R.string.audio_permission_denied, Snackbar.LENGTH_SHORT, R.string.yes) //Permissionが拒否されたとき。
         }
-
-/*    private val requestWritePermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                // Permission has been granted. Start camera preview Activity.
-                layout.showSnackbar(
-                    R.string.audio_permission_granted,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    startRecording()
-                }
-            } else {
-                // Permission request was denied.
-                layout.showSnackbar(
-                    R.string.audio_permission_denied,
-                    Snackbar.LENGTH_SHORT,
-                    R.string.ok)
-            }
-        }*/
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = ChatRoomFragmentBinding.inflate(inflater, container, false)
-        layout = binding.root
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-
-        val groupId = ChatRoomFragmentArgs.fromBundle(requireArguments()).groupId
-        viewModel = chatRoomViewModelAssistedFactory.create(groupId)
-
-        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        //requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
+        binding.viewModel = viewModel
         adapter = ChatAdapter(context, object: MessageClickListener{
             override fun onMessageClicked(position: Int, message: Message) {
-            when(message.messageType) {
+                when(message.messageType) {
 
-                1.0 -> {
-                    binding.fullSizeImageView.visibility = View.VISIBLE
-                    StfalconImageViewer.Builder<MyImage>(
-                        requireActivity(),
-                        listOf(MyImage((message as ImageMessage).imageRef!!)),
-                        ImageLoader<MyImage> { imageView, myImage ->
-                            Glide.with(requireActivity())
-                                .load(FirebaseStorage.getInstance().getReference(myImage.url))
-                                .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
-                                .into(imageView)
-                        })
-                        .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
-                        .show()
+                    1.0 -> {
+                        binding.fullSizeImageView.visibility = View.VISIBLE
+                        StfalconImageViewer.Builder<MyImage>(
+                            requireActivity(),
+                            listOf(MyImage((message as ImageMessage).imageRef!!)),
+                            ImageLoader<MyImage> { imageView, myImage ->
+                                Glide.with(requireActivity())
+                                    .load(FirebaseStorage.getInstance().getReference(myImage.url))
+                                    .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
+                                    .into(imageView)
+                            })
+                            .withDismissListener { binding.fullSizeImageView.visibility = View.GONE }
+                            .show()
+                    }
+                    2.0 -> {
+                        val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
+                        dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
+                            ?.setPositiveButton(R.string.yes) { _, _ ->
+                                downloadFile(message)
+                            }?.setNegativeButton(R.string.no, null)?.show()
+                    }
+                    3.0 -> {
+                        adapter.notifyDataSetChanged()
+                    }
                 }
-                2.0 -> {
-                    val dialogBuilder = context?.let { it -> AlertDialog.Builder(it) }
-                    dialogBuilder?.setMessage(R.string.download_clicked_file_or_not)
-                        ?.setPositiveButton(R.string.yes) { _, _ ->
-                            downloadFile(message)
-                        }?.setNegativeButton(R.string.no, null)?.show()
-                }
-                3.0 -> {
-                    adapter.notifyDataSetChanged()
-                }
-            }
             }
         })
 
         binding.messageRecycler.adapter = adapter
-
-
 
         viewModel.messages.observe(viewLifecycleOwner, Observer{
             messageList = it as MutableList<Message>
@@ -245,7 +173,6 @@ class ChatRoomFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
 
-        return binding.root
     }
 
     override fun onStart() {
@@ -274,7 +201,7 @@ class ChatRoomFragment : Fragment() {
                 "${requireActivity().externalCacheDir?.absolutePath}/audiorecord.3gp",
                 recordDuration.toString(),
                 )
-            Toast.makeText(context, "Finished recording", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "録音が完了しました。", Toast.LENGTH_SHORT).show()
             isRecording = !isRecording
 
         } else {
@@ -282,10 +209,10 @@ class ChatRoomFragment : Fragment() {
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO,)
                         == PackageManager.PERMISSION_GRANTED -> {
 
-                    layout.showSnackbar(
+                    binding.root.showSnackbar(
                         R.string.audio_permission_available,
                         Snackbar.LENGTH_INDEFINITE,
-                        R.string.ok
+                        R.string.yes
                     ) {
                         startRecording()
                     }
@@ -293,10 +220,10 @@ class ChatRoomFragment : Fragment() {
 
                 shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO) -> {
 
-                    layout.showSnackbar(
+                    binding.root.showSnackbar(
                         R.string.permisson_is_required,
                         Snackbar.LENGTH_INDEFINITE,
-                        R.string.ok
+                        R.string.yes
                     ) {
                         requestAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
                     }
@@ -304,10 +231,10 @@ class ChatRoomFragment : Fragment() {
 
                 else -> {
 
-                    layout.showSnackbar(
+                    binding.root.showSnackbar(
                         R.string.audio_permission_not_available,
                         Snackbar.LENGTH_LONG,
-                        R.string.ok
+                        R.string.yes
                     ){requestAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)}
                 }
             }
@@ -430,7 +357,6 @@ class ChatRoomFragment : Fragment() {
         }
     }
 
-
     private fun downloadFile(message: Message) {
 
         //check for storage permission then download if granted
@@ -457,57 +383,22 @@ class ChatRoomFragment : Fragment() {
                 ) {
                     token?.continuePermissionRequest()
                     //notify parent activity that permission denied to show toast for manual permission giving
-                        layout.showSnackbar(
+                        binding.root.showSnackbar(
                             R.string.permisson_is_required,
                             Snackbar.LENGTH_INDEFINITE,
-                            R.string.ok
+                            R.string.yes
                         )
                     }
 
                 override fun onPermissionDenied(response: PermissionDeniedResponse?) {
                     //notify parent activity that permission denied to show toast for manual permission giving
-                        layout.showSnackbar(
+                        binding.root.showSnackbar(
                             R.string.permisson_is_denied,
                             Snackbar.LENGTH_INDEFINITE,
-                            R.string.ok
+                            R.string.yes
                         )
                 }
             }).check()
-
-
-       /* when {
-            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED -> {
-
-                layout.showSnackbar(
-                    R.string.audio_permission_available,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    download(message)
-                }
-            }
-
-            shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
-
-                layout.showSnackbar(
-                    R.string.permisson_is_required,
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.ok
-                ) {
-                    requestWritePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }
-
-            else -> {
-
-                layout.showSnackbar(
-                    R.string.audio_permission_not_available,
-                    Snackbar.LENGTH_LONG,
-                    R.string.ok
-                ){requestWritePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)}
-            }
-        }*/
     }
 
 
@@ -517,3 +408,16 @@ class ChatRoomFragment : Fragment() {
     }
 
 }
+
+
+//TODO Permission(requestWritePermissionLauncher)に対して、引数を渡す方法を検討する。
+//TODO PermissionやMediaを使用した際のMVVMを検討する。
+//TODO VoiceのしようとDownLoadの使用によりPermission関連の記述が多くなっている。コードをキレイにする方法はないだろうか。
+
+//TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。
+//TODO Audio再生中にプログレスバーが更新されない不具合を確認する。
+
+//TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
+
+//TODO Permissionの文言を日本語に書き換える。
+//TODO DexterでのPermissionを置き換える。

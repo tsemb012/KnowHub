@@ -15,236 +15,263 @@
             type="String" />
     </data>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-android:id="@+id/coordinator"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
-
-<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/pin_bar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
-    >
-    <!--android:fitsSystemWindows="true"-->
-
-    <com.google.android.material.appbar.CollapsingToolbarLayout
-        android:id="@+id/collapsing_toolbar_layout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:contentScrim="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways">
+        android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="2dp"
-        >
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/chat_room_title"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/pin_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            android:background="@android:color/transparent"
-            app:titleTextColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:title="ChatRoomTitle"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
-
-        <Button
-            android:id="@+id/group_detail_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="@string/group_info"
-            app:layout_constraintEnd_toStartOf="@+id/schedule_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chat_room_title"
-            android:onClick="@{() -> viewModel.onGroupDetailClicked()}"
-            app:layout_collapseMode="parallax"/>
-        <!--DONE　IDはどうやって渡す？-->
-
-        <Button
-            android:id="@+id/schedule_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="@string/schedule"
-            app:layout_constraintEnd_toStartOf="@+id/video_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/group_detail_button"
-            app:layout_constraintTop_toBottomOf="@id/chat_room_title"
-            android:onClick="@{() -> viewModel.onScheduleClicked()}"
-            app:layout_collapseMode="parallax"/>
-
-        <Button
-            android:id="@+id/video_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="@string/video"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/schedule_button"
-            app:layout_constraintTop_toBottomOf="@id/chat_room_title"
-            android:onClick="@{() -> viewModel.onVideoClicked()}"
-            app:layout_collapseMode="parallax"/>
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
-    <!--DONE AppBarLayoutの箇所を修正し、画面遷移に利用する。-->
-
-</com.google.android.material.appbar.AppBarLayout>
-
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/chat_background"
-        tools:context=".ChatRoomFragment">
-
-        <!--TODO tools:listitem="@layout/sent_message_item" が含まれていたが、
-                実際はAdapterからItemを挿入するためここで入れる必要はないのではないだろうか？
-                サンプルとして入れていただけなのだろうか？抜いても問題ないんじゃないだろうか。
-                もし問題が発生した場合は、中身を検証する。-->
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/message_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/message_layout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-             />
-            <!--tools:layout_editor_absoluteX="-321dp"-->
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/record_voice_fab"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/white"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/ic_baseline_mic_none_24"
-            app:backgroundTint="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{() -> viewModel.recordVoice()}"/>
+            android:background="@color/colorPrimaryDark"
+            >
+            <!--android:fitsSystemWindows="true"-->
 
-
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/message_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/circular_border_solid"
-            app:layout_constraintBottom_toBottomOf="@+id/record_voice_fab"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/record_voice_fab"
-            app:layout_constraintEnd_toStartOf="@id/attachment_image">
-
-
-            <!--配置を変えて送信ボタンを設置。-->
-
-
-
-            <EditText
-                android:id="@+id/message_edit_text"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/circular_border_solid"
-                android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
-                android:paddingStart="16sp"
-                android:textSize="16sp"
-                app:errorEnabled="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf ="parent"
-                android:text="@={viewModel.editMessage}"
-                />
-            <!--TODO inputTypeのFLAGを確認し、UI/UXを向上させる。-->
-            <!--android:hint="@string/type_a_message"-->
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:padding="2dp"
+                    android:background="@color/primary_dark"
+                    >
 
-        <ImageView
-            android:id="@+id/attachment_image"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/record_voice_fab"
-            android:contentDescription="attachments"
-            android:padding="6dp"
-            android:src="@drawable/ic_baseline_attach_file_24"
-            app:layout_constraintStart_toEndOf="@+id/message_layout"
-            app:layout_constraintEnd_toStartOf="@+id/send_message"
-            android:onClick="@{() -> viewModel.showBottomSheet()}"/>
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/chat_title_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                        app:navigationIconTint="@color/primary_white"
+                        app:titleTextColor="@color/primary_white"/>
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/group_detail_button"
+                        android:layout_width="95dp"
+                        android:layout_height="35dp"
+                        android:textSize="7dp"
+                        android:padding="0dp"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/schedule_button"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/chat_title_toolbar"
+                        android:onClick="@{() -> viewModel.onGroupDetailClicked()}"
+                        app:layout_collapseMode="parallax"
+                        android:text="Group"
+                        app:icon="@drawable/ic_baseline_groups_24"
+                        android:backgroundTint="@color/primary_blue"
+                        android:textColor="@color/primary_white"
+                        app:iconTint="@color/primary_white"
+                        app:iconPadding="7dp"
+                        />
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/schedule_button"
+                        android:layout_width="100dp"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="7dp"
+                        android:padding="0dp"
+                        app:layout_constraintEnd_toStartOf="@+id/video_button"
+                        app:layout_constraintStart_toEndOf="@+id/group_detail_button"
+                        app:layout_constraintTop_toBottomOf="@id/chat_title_toolbar"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        android:onClick="@{() -> viewModel.onScheduleClicked()}"
+                        app:layout_collapseMode="parallax"
+                        android:text="Schedule"
+                        app:icon="@drawable/ic_baseline_date_range_24"
+                        android:backgroundTint="@color/primary_blue"
+                        android:textColor="@color/primary_white"
+                        app:iconTint="@color/primary_white"
+                        app:iconPadding="4dp"
+                        />
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/video_button"
+                        android:layout_width="95dp"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="7dp"
+                        android:padding="0dp"
+                        app:layout_constraintStart_toEndOf="@+id/schedule_button"
+                        app:layout_constraintTop_toBottomOf="@id/chat_title_toolbar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        android:onClick="@{() -> viewModel.onVideoClicked()}"
+                        app:layout_collapseMode="parallax"
+                        android:text="Video"
+                        app:icon="@drawable/ic_baseline_videocam_24"
+                        android:backgroundTint="@color/primary_blue"
+                        android:textColor="@color/primary_white"
+                        app:iconTint="@color/primary_white"
+                        app:iconPadding="7dp"
+                        />
 
 
-        <ImageView
-            android:id="@+id/send_message"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="4dp"
-            android:padding="6dp"
-            app:layout_constraintBottom_toBottomOf="@+id/record_voice_fab"
-            android:src="@drawable/ic_baseline_send_24"
-            app:layout_constraintStart_toEndOf="@id/attachment_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:enabled="@{viewModel.enableState}"
-            android:onClick="@{() -> viewModel.createTextMessage()}"
-            />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/primary_base_yellow"
+                tools:context=".ChatRoomFragment">
+
+                <androidx.recyclerview.widget.RecyclerView
+
+                    android:id="@+id/message_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/bottom_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:clipToPadding="false"
+                    android:paddingTop="110dp"
+                    android:paddingBottom="30dp"
+
+                    />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/record_voice_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_baseline_mic_none_24"
+                    app:backgroundTint="@color/primary_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:onClick="@{() -> viewModel.recordVoice()}"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bottom_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@color/primary_dark"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/message_layout"
+                        android:layout_width="0dp"
+                        android:padding="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
+                        android:background="@drawable/circular_border_solid"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/attachment_image"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <EditText
+                            android:id="@+id/message_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/circular_border_solid"
+                            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+                            android:text="@={viewModel.editMessage}"
+                            android:textSize="16sp"
+                            app:errorEnabled="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <!--TODO inputTypeのFLAGを確認し、UI/UXを向上させる。-->
+                        <!--android:hint="@string/type_a_message"-->
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/attachment_image"
+                        android:layout_width="30dp"
+                        android:layout_height="40dp"
+                        android:padding="4dp"
+                        android:contentDescription="attachments"
+                        android:onClick="@{() -> viewModel.showBottomSheet()}"
+                        android:src="@drawable/ic_baseline_attach_file_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/send_message"
+                        app:layout_constraintStart_toEndOf="@+id/message_layout"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
-        android:id="@+id/fullSizeImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:visibility="gone" />
-    <!--FrameLayout上、かつ、こちらのviewが上に存在しているので、Visibilityを変更すれば、
-    　　 画面上にこちらが現れる。-->
+                    <ImageView
+                        android:id="@+id/send_message"
+                        android:layout_width="30dp"
+                        android:layout_height="40dp"
+                        android:padding="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:enabled="@{viewModel.enableState}"
+                        android:onClick="@{() -> viewModel.createTextMessage()}"
 
-</FrameLayout>
-
-
-<!--persistent bottom navigation-->
-<androidx.core.widget.NestedScrollView
-    android:id="@+id/bottom_sheet"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="0dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-    <!--DONE BottomSheetBehaviorの情報をまとめる。-->
+                        android:src="@drawable/enable_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/attachment_image"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!--place_info_card-->
-    <include
-        android:id="@+id/attachment_layout"
-        layout="@layout/attachment_layout"
-        app:viewModel = "@{viewModel}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <ImageView
+                android:id="@+id/fullSizeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:visibility="gone" />
+            <!--FrameLayout上、かつ、こちらのviewが上に存在しているので、Visibilityを変更すれば、
+            　　 画面上にこちらが現れる。-->
+
+        </FrameLayout>
+
+
+        <!--persistent bottom navigation-->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            <!--DONE BottomSheetBehaviorの情報をまとめる。-->
+
+
+            <!--place_info_card-->
+            <include
+                android:id="@+id/attachment_layout"
+                layout="@layout/attachment_layout"
+                app:viewModel = "@{viewModel}"/>
+
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
-
 

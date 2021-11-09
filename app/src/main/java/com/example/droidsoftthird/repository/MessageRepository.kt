@@ -3,7 +3,6 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.Result
-import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.model.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -19,6 +18,10 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+
+/*他と干渉しないChatRoomのレポジトリーのみ独立させている。
+* しかしChatに多くの機能を追加することになった場合、通常のレポジトリーと統合することも検討する。
+* */
 
 class MessageRepository  @Inject constructor(){
     private val fireStore = FirebaseFirestore.getInstance()
@@ -36,11 +39,11 @@ class MessageRepository  @Inject constructor(){
                         try {
                             continuation.resume(Result.Success(it.storage))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -55,7 +58,7 @@ class MessageRepository  @Inject constructor(){
                 uploadTask.continueWithTask { task ->
                     if (!task.isSuccessful) {
                         task.exception?.let {
-                            continuation.resume(Result.Error(it))
+                            continuation.resume(Result.Failure(it))
                         }
                     }
                     fileRef.downloadUrl
@@ -63,11 +66,11 @@ class MessageRepository  @Inject constructor(){
                         try {
                             continuation.resume(Result.Success(it))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -82,7 +85,7 @@ class MessageRepository  @Inject constructor(){
                 uploadTask.continueWithTask { task ->
                     if (!task.isSuccessful) {
                         task.exception?.let {
-                            continuation.resume(Result.Error(it))
+                            continuation.resume(Result.Failure(it))
                         }
                     }
                     recordRef.downloadUrl
@@ -90,11 +93,11 @@ class MessageRepository  @Inject constructor(){
                     try {
                         continuation.resume(Result.Success(it))
                     } catch (e: Exception) {
-                        continuation.resume(Result.Error(e))
+                        continuation.resume(Result.Failure(e))
                     }
                 }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
@@ -112,19 +115,16 @@ class MessageRepository  @Inject constructor(){
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
                         } catch (e: Exception) {
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(Result.Failure(e))
                         }
                     }
                     .addOnFailureListener {
-                        continuation.resume(Result.Error(it))
+                        continuation.resume(Result.Failure(it))
                     }
             }
         }
     }
 
-    //TODO なるほど、そもそも成り立ちから違う。こちらはSubCollectionに入れているが、一方であちらはフィールドに入れている。
-    //TODO つまり独自の手段を探し出す必要があるということ。
-    //TODO メッセージの一個でかい枠を作っちゃえば良いんじゃないの？
     fun getChatEvents(groupId: String): Flow<QuerySnapshot> = callbackFlow {
         var messagesCollection:CollectionReference? = null
         try{
