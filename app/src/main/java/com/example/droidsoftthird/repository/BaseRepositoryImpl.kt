@@ -199,18 +199,18 @@ class BaseRepositoryImpl @Inject constructor(): BaseRepository {
 
     private fun getQuery(query: String): Query {
         return when(query){
-            GroupQuery.ALL.value ->
+            GROUP_ALL->
                 fireStore
                     .collection("groups")
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
-            GroupQuery.MY_PAGE.value ->
+            GROUP_MY_PAGE ->
                 fireStore
                     .collection("groups")
                     .whereArrayContains("members",userId)
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
-            ScheduleQuery.REGISTERED_ALL.value ->
+            SCHEDULE_REGISTERED_ALL ->
                 fireStore
                     .collection("schedules")
                     .whereArrayContains("registered_member",userId)
@@ -219,8 +219,10 @@ class BaseRepositoryImpl @Inject constructor(): BaseRepository {
             else -> throw IllegalStateException()
         }
     }
-
     companion object {
         private const val  LIMIT = 50L
+        const val GROUP_ALL = "group_all"
+        const val GROUP_MY_PAGE = "group_my_page"
+        const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"
     }
 }
