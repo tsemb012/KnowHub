@@ -9,18 +9,19 @@ import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.ViewContainer
 
+/*
 class DayViewContainer(view: View): ViewContainer(view) {
     lateinit var day: CalendarDay
     val textView = CalendarDayBinding.bind(view).oneDayText
     init {
         view.setOnClickListener {
             if (day.owner == DayOwner.THIS_MONTH) {//選択した月が当月にあたるかを確認。
-
+                if (selectedDates.)
             }
         }
     }
+*/
 
-}
 /*
 
 val textView = Example1CalendarDayBinding.bind(view).exOneDayText
