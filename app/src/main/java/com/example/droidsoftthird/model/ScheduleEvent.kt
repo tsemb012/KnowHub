@@ -5,23 +5,25 @@ import com.google.firebase.firestore.ServerTimestamp
 import java.lang.IllegalStateException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.*
 import kotlin.collections.HashMap
 
-data class SchedulePlan(//空欄にして良い場所はNullableにしておく。
+data class ScheduleEvent(//空欄にして良い場所はNullableにしておく。
     val title: String,
     val date: LocalDate,
     val place: Place?,
-    val startTime: LocalDateTime?,
-    val endTime: LocalDateTime?,
+    val startTime: LocalTime?,
+    val endTime: LocalTime?,
     val groupId: String,
     val schedulePlanId: String,
-    val timeStamp: Date,
+    val timeStamp: LocalDateTime,
     )
 //TODO 繰り返し設定を追加する。
 //TODO CloudFunctionを使って、group情報をすでに保存されているGroupデータから引き出したい。
 
-data class RawSchedulePlan(
+data class RawScheduleEvent(
     var title: String? = null,
     var date: LocalDate? = null,
     var place: HashMap<String,Any> = hashMapOf(
@@ -31,8 +33,8 @@ data class RawSchedulePlan(
         "latitude" to 0.1234567,
         "longitude" to 0.1234567,
     ),
-    var startTime: LocalDateTime? = null,
-    var endTime: LocalDateTime? = null,
+    var startTime: LocalTime? = null,
+    var endTime: LocalTime? = null,
     var groupId: String? = null,
     @DocumentId
     var schedulePlanId: String? = null,
@@ -41,7 +43,7 @@ data class RawSchedulePlan(
 )
 //TODO HashMapの書き方をこれであっているか確認する
 
-fun RawSchedulePlan.toEntity() = SchedulePlan(
+fun RawScheduleEvent.toEntity() = ScheduleEvent(
     title = title ?: throw IllegalStateException(),
     date = date ?: throw IllegalStateException(),
     place = Place(
@@ -55,7 +57,7 @@ fun RawSchedulePlan.toEntity() = SchedulePlan(
     endTime = endTime,
     groupId = groupId ?: throw IllegalStateException(),
     schedulePlanId = schedulePlanId ?: throw IllegalStateException(),
-    timeStamp = timeStamp ?: throw IllegalStateException(),
+    timeStamp = LocalDateTime.ofInstant(timeStamp?.toInstant(), ZoneId.systemDefault() ),
 )
 
 

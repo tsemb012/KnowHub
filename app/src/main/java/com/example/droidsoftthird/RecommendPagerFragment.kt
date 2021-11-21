@@ -30,7 +30,6 @@ class RecommendPagerFragment:Fragment() {
         val binding: FragmentPagerRecommendBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_pager_recommend, container, false)
 
-
         binding.recommendPagerViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -56,8 +55,6 @@ class RecommendPagerFragment:Fragment() {
                 viewModel.onGroupDetailNavigated()
             }
         })
-
-
 
         val manager = GridLayoutManager(activity,2, GridLayoutManager.VERTICAL,false)
 

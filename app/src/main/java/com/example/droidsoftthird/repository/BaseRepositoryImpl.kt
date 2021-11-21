@@ -3,7 +3,7 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.model.RawSchedulePlan
+import com.example.droidsoftthird.model.RawScheduleEvent
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -177,7 +177,7 @@ class BaseRepositoryImpl @Inject constructor(): BaseRepository {
         }
     }
 
-    override suspend fun getSchedules(query: String): Result<List<RawSchedulePlan>> = getListResult(query, RawSchedulePlan::class.java)
+    override suspend fun getSchedules(query: String): Result<List<RawScheduleEvent>> = getListResult(query, RawScheduleEvent::class.java)
 
     private suspend fun <T> getListResult(query: String, classType: Class<T>): Result<List<T>> =
         withContext(Dispatchers.IO) {

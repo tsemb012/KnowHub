@@ -2,10 +2,8 @@ package com.example.droidsoftthird.repository
 
 import android.net.Uri
 import com.example.droidsoftthird.Result
-import com.example.droidsoftthird.ScheduleRegisteredFragment
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.model.RawSchedulePlan
-import com.example.droidsoftthird.model.SchedulePlan
+import com.example.droidsoftthird.model.RawScheduleEvent
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.StorageReference
@@ -28,6 +26,6 @@ interface BaseRepository {
 
     suspend fun userJoinGroup(groupId: String): Result<Int>
 
-    suspend fun getSchedules(query: String): Result<List<RawSchedulePlan>>
+    suspend fun getSchedules(query: String): Result<List<RawScheduleEvent>>
 
 }

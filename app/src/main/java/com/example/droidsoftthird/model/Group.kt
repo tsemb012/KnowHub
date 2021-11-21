@@ -29,4 +29,6 @@ data class Group (//FireStoreで使用する場合は、Nullableかつ初期値�
     val groupId: String? = null,
     @ServerTimestamp
     val timeStamp: Date? = null
+        //TODO DateAPI　から　Date &TimeAPIに変換する。
+        //TODO RawGroupからGroupに変換する使用に変更する。GroupのPOJO見直しする際に。
 )
