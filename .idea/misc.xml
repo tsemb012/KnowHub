@@ -13,11 +13,17 @@
         <entry key="app/src/main/res/layout/calendar_day.xml" value="0.1" />
         <entry key="app/src/main/res/layout/calendar_day_legend.xml" value="0.3619791666666667" />
         <entry key="app/src/main/res/layout/example_1_calendar_day.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/fragment_group_add.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_group_detail.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_schedule_create.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_schedule_home.xml" value="0.10875331564986737" />
         <entry key="app/src/main/res/layout/fragment_schedule_registered.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_item_schedule.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/layout/item_list_create_schedule.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout/list_item_group.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_item_schedule.xml" value="0.22037037037037038" />
         <entry key="app/src/main/res/layout/list_item_schedule_event.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/received_file_item.xml" value="0.22083333333333333" />
       </map>
     </option>
   </component>
