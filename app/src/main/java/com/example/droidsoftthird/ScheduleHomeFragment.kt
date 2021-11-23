@@ -21,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
 
     private val binding: FragmentScheduleHomeBinding by dataBinding()
-    private val viewModel: ScheduleHomeViewModel by viewModels()
     private val navController: NavController by lazy {
         (activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
@@ -35,11 +34,12 @@ class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
-            pager.adapter = ScheduleHomePagerAdapter(this@ScheduleHomeFragment)
+            pager.apply {
+                pager.adapter = ScheduleHomePagerAdapter(this@ScheduleHomeFragment)
+                pager.isUserInputEnabled = false
+            }
             tabLayout.let {
-                TabLayoutMediator(it, pager) {
-                    tab, position -> tab.text = "OBJECT" + (position + 1)
-                }.attach()
+                TabLayoutMediator(it, pager) { tab, position -> tab.text = "OBJECT" + (position + 1) }.attach()
                 it.getTabAt(0)?.setText(R.string.schedule_registered) ?: throw IllegalStateException()
                 it.getTabAt(1)?.setText(R.string.schedule_proposed) ?: throw IllegalStateException()
             }

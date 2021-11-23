@@ -17,4 +17,7 @@ data class UserProfile (
     val userId: String? = null,
     @ServerTimestamp
     val timeStamp: Date? = null
+
+    //TODO DateAPI　から　Date &TimeAPIに変換する。
+    //TODO RawProfileからProfileに変換する使用に変更する。GroupのPOJO見直しする際に。
 )

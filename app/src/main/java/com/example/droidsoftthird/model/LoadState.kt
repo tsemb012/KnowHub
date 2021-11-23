@@ -8,6 +8,7 @@ sealed class LoadState {
     data class Loaded<out T: Any>(val value: T): LoadState()
     class Loading(val job: Job): LoadState()
     class Error(val error: Throwable): LoadState()
+    object Processed: LoadState()
 
     @Suppress("UNCHECKED_CAST")
     fun <T: Any> getValueOrNull(): T? = if (this is Loaded<*>) value as T else null

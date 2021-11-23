@@ -109,4 +109,5 @@
     <string name="filter">フィルター</string>
     <string name="week_mode">週表示</string>
     <string name="on_progress">しばらくお待ちください</string>
+    <string name="event_time">%d時〜%d時</string>
 </resources>
