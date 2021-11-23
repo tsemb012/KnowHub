@@ -113,11 +113,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             }
             is LoadState.Processed -> {
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                //binding.oneCalendar.notifyMonthChanged(viewModel.uiModel.value?.selectedDate?.yearMonth ?: YearMonth.now())
-                //binding.oneCalendar.notifyDateChanged(viewModel.uiModel.value?.selectedDate?: LocalDate.now(),DayOwner.THIS_MONTH)
-                //binding.oneCalendar.dayBinder = DayBinderImpl(viewModel)
-                //viewModel.initializeSchedulesState()
-
+                binding.oneCalendar.notifyMonthChanged(viewModel.uiModel.value?.selectedDate?.yearMonth ?: YearMonth.now())
             }
             is LoadState.Error -> {
                 progressDialog.dismiss()
@@ -209,17 +205,22 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
                 viewModel.setSelectedDate(_day.date)
             } }
 
-            if (day.owner != DayOwner.THIS_MONTH) {
-                holder.textView.setTextColorRes(R.color.primary_white)
-                holder.textView.background = null
-                holder.dot.isVisible = false
-            } else {
+            if (day.owner == DayOwner.THIS_MONTH) {
                 if (!viewModel.uiModel.eventDates.contains(day.date)) { holder.dot.isVisible = false }
                 when {
-                    day.date == today -> { holder.textView.setBackgroundResource(R.drawable.ic_baseline_circle_today) }
-                    viewModel.uiModel.selectedDate == day.date -> { holder.textView.background = holder.view.gd(R.drawable.ic_baseline_circle_selected) }
-                    else -> { holder.textView.background = null }
+                    viewModel.uiModel.selectedDate == day.date -> { holder.textView.setBackgroundResource(R.drawable.ic_baseline_circle_selected)}
+                    today == day.date -> {
+                        holder.textView.setBackgroundResource(R.drawable.ic_baseline_circle_today)
+                    }
+                    else -> {
+                        holder.textView.setTextColorRes(R.color.primary_text_grey_dark)
+                        holder.textView.background = null
+                    }
                 }
+            } else {
+                holder.textView.setTextColorRes(R.color.primary_accent_red)
+                holder.dot.isVisible = false
+                holder.textView.background = null
             }
         }
 
