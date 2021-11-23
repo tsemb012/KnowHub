@@ -3,7 +3,7 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.model.RawSchedulePlan
+import com.example.droidsoftthird.model.RawScheduleEvent
 import com.example.droidsoftthird.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -177,7 +177,7 @@ class BaseRepositoryImpl @Inject constructor(): BaseRepository {
         }
     }
 
-    override suspend fun getSchedules(query: String): Result<List<RawSchedulePlan>> = getListResult(query, RawSchedulePlan::class.java)
+    override suspend fun getSchedules(query: String): Result<List<RawScheduleEvent>> = getListResult(query, RawScheduleEvent::class.java)
 
     private suspend fun <T> getListResult(query: String, classType: Class<T>): Result<List<T>> =
         withContext(Dispatchers.IO) {
@@ -199,18 +199,18 @@ class BaseRepositoryImpl @Inject constructor(): BaseRepository {
 
     private fun getQuery(query: String): Query {
         return when(query){
-            GroupQuery.ALL.value ->
+            GROUP_ALL->
                 fireStore
                     .collection("groups")
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
-            GroupQuery.MY_PAGE.value ->
+            GROUP_MY_PAGE ->
                 fireStore
                     .collection("groups")
                     .whereArrayContains("members",userId)
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
-            ScheduleQuery.REGISTERED_ALL.value ->
+            SCHEDULE_REGISTERED_ALL ->
                 fireStore
                     .collection("schedules")
                     .whereArrayContains("registered_member",userId)
@@ -219,8 +219,10 @@ class BaseRepositoryImpl @Inject constructor(): BaseRepository {
             else -> throw IllegalStateException()
         }
     }
-
     companion object {
         private const val  LIMIT = 50L
+        const val GROUP_ALL = "group_all"
+        const val GROUP_MY_PAGE = "group_my_page"
+        const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"
     }
 }
