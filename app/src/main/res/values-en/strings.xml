@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="event_time">%d時〜%d時</string>
+    <string name="schedule_event_name_hint">Please input </string>
 </resources>
