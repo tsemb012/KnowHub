@@ -17,13 +17,24 @@ import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(), View.OnClickListener {
 
-    private lateinit var binding: FragmentGroupAddBinding
-    private val viewModel:GroupAddViewModel by viewModels()
+    /**
+     * 【方針】
+     *      タッチアクションは、Fragmentで請け負う。
+     *      ViewModelで請け負った場合、observeしてFragmentからダイアログを起動させることになるので手間。
+     *      また、observeするために、リスナーごとにSubjectを作るのも非効率的だと思われる。
+     *      ついては、FragmentでViewにListenerをセットして、Dialogを起動する。
+     *      名前とコメントの記入欄だけViewModelに直接書き込めるようにする。
+     *      画面遷移については、UiModelの中に組み込んで、Succeedで全画面に戻るようにする。
+     * */
+
+    private val binding: FragmentGroupAddBinding by dataBinding()
+    private val viewModel:ScheduleCreateViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,39 +43,19 @@ class ScheduleCreateFragment:Fragment(), View.OnClickListener {
 
         ): View? {
 
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_group_add, container, false
-        )
+        with(binding) {
+            lifecycleOwner = viewLifecycleOwner
+            /*TODO
+               それぞれのViewにsetOnClickListener(this)を設置する
+               （例）binding.btnGroupImage.setOnClickListener(this)*/
+        }
 
-        binding.addGroupViewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner//lifecycleOwnerのつけ忘れに注意。LiveDataをViewに反映するために必要。
-
-        binding.btnGroupImage.setOnClickListener(this)
-        binding.btnToGroupDetailBarGroupType.setOnClickListener(this)
-        binding.btnToGroupDetailBarActivityArea.setOnClickListener(this)
-        binding.btnToGroupDetailBarFacilityEnvironment.setOnClickListener(this)
-        binding.btnToGroupDetailBarLearningFrequency.setOnClickListener(this)
-        binding.btnToGroupDetailBarAgeRange.setOnClickListener(this)
-        binding.btnToGroupDetailBarNumberPersons.setOnClickListener(this)
-        binding.btnToGroupDetailBarGenderRestriction.setOnClickListener(this)
-
-
-
-        viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{
-            binding.progressBar.visibility = View.VISIBLE
-        })
-
-        viewModel.navigationToHome.observe(viewLifecycleOwner,EventObserver{
-            findNavController().navigate(
-                GroupAddFragmentDirections.actionAddGroupFragmentToHomeFragment())
-        })
 
         return binding.root
     }
 
-    override fun onClick(v: View?) {//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
+    override fun onClick(v: View?) {
         when(v!!.id){
-            R.id.btn_group_image -> launchUploader()
             R.id.btn_to_groupDetailBar_group_type -> {
                 val dialog = GroupTypeDialogFragment()
                 childFragmentManager?.let { dialog.show(it, "group_type") }
