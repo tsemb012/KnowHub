@@ -15,13 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
+import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.dialogs.*
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScheduleCreateFragment:Fragment(), View.OnClickListener {
+class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
 
     /**
      * 【方針】
@@ -33,28 +35,32 @@ class ScheduleCreateFragment:Fragment(), View.OnClickListener {
      *      画面遷移については、UiModelの中に組み込んで、Succeedで全画面に戻るようにする。
      * */
 
-    private val binding: FragmentGroupAddBinding by dataBinding()
+    private val binding: FragmentScheduleCreateBinding by dataBinding()
     private val viewModel:ScheduleCreateViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
 
-        ): View? {
-
-        with(binding) {
-            lifecycleOwner = viewLifecycleOwner
-            /*TODO
-               それぞれのViewにsetOnClickListener(this)を設置する
-               （例）binding.btnGroupImage.setOnClickListener(this)*/
-        }
-
-
-        return binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupClickAction()
     }
 
-    override fun onClick(v: View?) {
+    private fun setupClickAction() {
+        with(binding) {
+            lifecycleOwner = viewLifecycleOwner
+            includeScheduleCreateDate.itemScheduleCreate.setOnClickListener{
+                val dialog = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText(R.string.schedule_create_date_hint)
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build()
+                childFragmentManager?.let { dialog.show(it, "schedule_date") }
+            }
+/*            includeScheduleCreateTime.itemScheduleCreate.setOnClickListener()
+            includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener()
+            includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener()*/
+        }
+    }
+
+    /*override fun onClick(v: View?) {
         when(v!!.id){
             R.id.btn_to_groupDetailBar_group_type -> {
                 val dialog = GroupTypeDialogFragment()
@@ -92,7 +98,7 @@ class ScheduleCreateFragment:Fragment(), View.OnClickListener {
                 }
             }
         }
-    }
+    }*/
 
     private fun launchUploader() {
         Log.d(ContentValues.TAG, "launchUploader")
@@ -105,14 +111,14 @@ class ScheduleCreateFragment:Fragment(), View.OnClickListener {
         )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_OPEN && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = requireNotNull(data?.data, { "requireNotNull" })
             viewModel.postImageUri(fullPhotoUri)
         }
-    }
+    }*/
 
 
 
