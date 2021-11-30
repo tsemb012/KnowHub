@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="event_time">%d時〜%d時</string>
+
+    <!--ScheduleGeneral-->
+
+    <!--ScheduleCreate-->
     <string name="schedule_event_name_hint">Please input </string>
+    <string name="schedule_create_date">Date</string>
+    <string name="schedule_create_time">Time</string>
+    <string name="schedule_create_location">Location</string>
+    <string name="schedule_create_group">Group</string>
+    <string name="schedule_create_date_hint">Please select an event date</string>
+
 </resources>

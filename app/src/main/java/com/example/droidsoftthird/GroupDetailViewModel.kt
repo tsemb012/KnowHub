@@ -27,7 +27,6 @@ class GroupDetailViewModel @AssistedInject constructor(
         }
     }
 
-
     val ageRange: LiveData<String> = Transformations.map(group) { group ->
 
             if (group?.minAge != -1 || group?.maxAge != -1) {

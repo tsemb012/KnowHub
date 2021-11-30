@@ -8,6 +8,15 @@
         <entry key="app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.22037037037037038" />
         <entry key="app/src/main/res/drawable/ic_baseline_circle_selected.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_circle_today.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_event_note_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_filter_list_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_group_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_groups_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_insert_drive_file_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_location_city_24.xml" value="0.3891726251276813" />
+        <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.3891726251276813" />
         <entry key="app/src/main/res/drawable/radius_rectangular_prime_base_yellow.xml" value="0.26875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3489583333333333" />
         <entry key="app/src/main/res/layout/calendar_day.xml" value="0.1" />
@@ -15,10 +24,13 @@
         <entry key="app/src/main/res/layout/example_1_calendar_day.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/layout/fragment_group_add.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_group_detail.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_schedule_create.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3765625" />
+        <entry key="app/src/main/res/layout/fragment_schedule_create.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_schedule_home.xml" value="0.10875331564986737" />
         <entry key="app/src/main/res/layout/fragment_schedule_registered.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/include_item_schedule.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/layout/include_item_group_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_item_schedule.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_item_schedule_create.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_list_create_schedule.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout/list_item_group.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_item_schedule.xml" value="0.22037037037037038" />
