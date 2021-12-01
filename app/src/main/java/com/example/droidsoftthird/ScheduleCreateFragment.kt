@@ -19,8 +19,13 @@ import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.dialogs.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
+import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
+import com.google.android.material.timepicker.TimeFormat
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
@@ -46,19 +51,59 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
 
     private fun setupClickAction() {
         with(binding) {
+
             lifecycleOwner = viewLifecycleOwner
+
             includeScheduleCreateDate.itemScheduleCreate.setOnClickListener{
                 val dialog = MaterialDatePicker.Builder.datePicker()
                     .setTitleText(R.string.schedule_create_date_hint)
                     .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                    .build()
-                childFragmentManager?.let { dialog.show(it, "schedule_date") }
+                    //TODO .setCalendarConstraints()
+                    .build().also {
+                        it.addOnPositiveButtonClickListener {
+                            val selectedDate = LocalDate.ofEpochDay(it)
+                            //TODO 選択した日をViewModelに突っ込む。
+                        }
+                    }
+                childFragmentManager.let { dialog.show(it, "schedule_date") }
             }
-/*            includeScheduleCreateTime.itemScheduleCreate.setOnClickListener()
-            includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener()
+
+            includeScheduleCreateTime.itemScheduleCreate.setOnClickListener{
+                val dialogForStartTime = MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setHour(12)
+                    .setMinute(10)
+                    .setInputMode(INPUT_MODE_CLOCK)
+                    .setTitleText("開始時間")
+                    .build()
+                val dialogForEndTime = MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setHour(12)
+                    .setMinute(10)
+                    .setInputMode(INPUT_MODE_CLOCK)
+                    .setTitleText("終了時間")
+                    .build()
+                childFragmentManager.let {
+                    dialogForStartTime.show(it, "schedule_date_start")
+                }
+                dialogForStartTime.addOnPositiveButtonClickListener {
+                    childFragmentManager.let { dialogForEndTime.show(it, "schedule_date_end") }
+                }
+                dialogForEndTime.addOnPositiveButtonClickListener {
+                    Log.i("hour",dialogForStartTime.hour.toString())
+                    Log.i("minute",dialogForStartTime.minute.toString())
+                    Log.i("hour",dialogForEndTime.hour.toString())
+                    Log.i("minute",dialogForEndTime.minute.toString())
+                    //TODO 取得したデータをViewModelに送って加工する。
+                }
+            }
+            fun showDialogForEndTime() {}
+            /*includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener()
             includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener()*/
         }
     }
+
+
 
     /*override fun onClick(v: View?) {
         when(v!!.id){
