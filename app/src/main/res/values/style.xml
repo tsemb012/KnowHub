@@ -6,6 +6,18 @@
         <item name="colorPrimaryDark">#009AA3</item>
         <item name="colorAccent">#CB4FB5</item>
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
+
+    </style>
+
+    <style name="AppTheme.MaterialDialogTime" parent="AppTheme">
+        <item name="colorAccent">@color/primary_dark</item>
+        <item name="md_color_button_text">@color/primary_dark</item>
+        <item name="md_ripple_color">@color/primary_text_grey</item>
+        <item name="md_corner_radius">16dp</item>
+    </style>
+
+    <style name="AppTheme.MaterialDialogDate" parent="AppTheme">
+        <item name="colorPrimary">@color/primary_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
