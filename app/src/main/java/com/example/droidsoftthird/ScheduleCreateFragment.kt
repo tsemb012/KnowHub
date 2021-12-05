@@ -100,8 +100,10 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                 dialogForStartTime.show()
             }
 
-            /*includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener()
-            includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener()*/
+            includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener {
+                childFragmentManager.let { LocationDialogFragment().show(it, "location") }
+            }
+            /*includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener()*/
         }
     }
 
