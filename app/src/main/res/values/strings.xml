@@ -121,5 +121,7 @@
     <string name="schedule_create_location">場所</string>
     <string name="schedule_create_group">グループ</string>
     <string name="schedule_create_date_hint">イベントの日付を入力してください</string>
+    <string name="schedule_create_time_start">開始時間</string>
+    <string name="schedule_create_time_end">終了時間</string>
 
 </resources>

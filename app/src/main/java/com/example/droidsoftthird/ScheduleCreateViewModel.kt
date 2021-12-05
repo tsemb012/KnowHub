@@ -25,4 +25,12 @@ class ScheduleCreateViewModel: ViewModel() {
     var eventLocation = MutableLiveData<String>()
     var eventGroup = MutableLiveData<String>()
 
+    fun setSelectedDate(selectedDate: LocalDate?) {
+        TODO("選択日時をセット")
+    }
+
+    fun setTimePeriod(startTime: Calendar, endTime: Calendar) {
+        TODO("開始・終了時間をセット")
+    }
+
 }

@@ -1,31 +1,26 @@
 package com.example.droidsoftthird
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onCancel
+import com.afollestad.materialdialogs.datetime.timePicker
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.dialogs.*
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
-import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
-import com.google.android.material.timepicker.TimeFormat
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
+import java.lang.IllegalStateException
+import java.time.*
+import java.util.*
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
@@ -53,97 +48,62 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         with(binding) {
 
             lifecycleOwner = viewLifecycleOwner
-
             includeScheduleCreateDate.itemScheduleCreate.setOnClickListener{
+                //setThemeを行うと不具合が発生するため、ContextからThemeの変更を行う。
+                requireActivity().setTheme(R.style.AppTheme_MaterialDialogDate)
+
+                val today = MaterialDatePicker.todayInUtcMilliseconds()
+                val endMonth = LocalDateTime.now().plusMonths(10)
+                    .atZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC))
+                    .toInstant().toEpochMilli()
+                val constraints = CalendarConstraints.Builder()
+                    .setStart(today).setEnd(endMonth).setValidator(DateValidatorPointForward.now())
+                    .build()
+
                 val dialog = MaterialDatePicker.Builder.datePicker()
-                    .setTitleText(R.string.schedule_create_date_hint)
-                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                    //TODO .setCalendarConstraints()
-                    .build().also {
-                        it.addOnPositiveButtonClickListener {
+                    .setSelection(today)
+                    .setCalendarConstraints(constraints)
+                    .build().apply {
+                        addOnPositiveButtonClickListener {
                             val selectedDate = LocalDate.ofEpochDay(it)
-                            //TODO 選択した日をViewModelに突っ込む。
+                            viewModel?.setSelectedDate(selectedDate) ?:IllegalStateException()
+                            requireActivity().setTheme(R.style.AppTheme)
                         }
+                        addOnCancelListener { requireActivity().setTheme(R.style.AppTheme) }
                     }
                 childFragmentManager.let { dialog.show(it, "schedule_date") }
             }
 
             includeScheduleCreateTime.itemScheduleCreate.setOnClickListener{
-                val dialogForStartTime = MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_12H)
-                    .setHour(12)
-                    .setMinute(10)
-                    .setInputMode(INPUT_MODE_CLOCK)
-                    .setTitleText("開始時間")
-                    .build()
-                val dialogForEndTime = MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_12H)
-                    .setHour(12)
-                    .setMinute(10)
-                    .setInputMode(INPUT_MODE_CLOCK)
-                    .setTitleText("終了時間")
-                    .build()
-                childFragmentManager.let {
-                    dialogForStartTime.show(it, "schedule_date_start")
-                }
-                dialogForStartTime.addOnPositiveButtonClickListener {
-                    childFragmentManager.let { dialogForEndTime.show(it, "schedule_date_end") }
-                }
-                dialogForEndTime.addOnPositiveButtonClickListener {
-                    Log.i("hour",dialogForStartTime.hour.toString())
-                    Log.i("minute",dialogForStartTime.minute.toString())
-                    Log.i("hour",dialogForEndTime.hour.toString())
-                    Log.i("minute",dialogForEndTime.minute.toString())
-                    //TODO 取得したデータをViewModelに送って加工する。
-                }
+
+                //Themeを直接変更できないので、ContextからThemeの変更を行う。
+                requireActivity().setTheme(R.style.AppTheme_MaterialDialogTime)
+
+                var startTime: Calendar = Calendar.getInstance()
+
+                val dialogForEndTime = MaterialDialog(requireContext())
+                    .title(R.string.schedule_create_time_end)
+                    .timePicker { _, endTime ->
+                    viewModel?.setTimePeriod(startTime, endTime) ?:IllegalStateException()
+                    requireActivity().setTheme(R.style.AppTheme)
+                    }
+                    .onCancel { requireActivity().setTheme(R.style.AppTheme) }
+                    .lifecycleOwner(this@ScheduleCreateFragment)
+
+                val dialogForStartTime = MaterialDialog(requireContext())
+                    .title(R.string.schedule_create_time_start)
+                    .timePicker(startTime) { _, time -> startTime = time }
+                    .positiveButton { dialogForEndTime.show() }
+                    .onCancel { requireActivity().setTheme(R.style.AppTheme) }
+                    .lifecycleOwner(this@ScheduleCreateFragment)
+
+                dialogForStartTime.show()
             }
-            fun showDialogForEndTime() {}
+
             /*includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener()
             includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener()*/
         }
     }
-
-
-
-    /*override fun onClick(v: View?) {
-        when(v!!.id){
-            R.id.btn_to_groupDetailBar_group_type -> {
-                val dialog = GroupTypeDialogFragment()
-                childFragmentManager?.let { dialog.show(it, "group_type") }
-            }
-            R.id.btn_to_groupDetailBar_activity_area -> {
-                val dialog = ActivityAreaDialogFragment()
-                childFragmentManager?.let { dialog.show(it, "activity_area") }
-            }
-            R.id.btn_to_groupDetailBar_facility_environment -> {
-                val dialog = FacilityEnvironmentDialogFragment()
-                childFragmentManager?.let { dialog.show(it, "facility_environment") }
-            }
-            R.id.btn_to_groupDetailBar_learning_frequency -> {
-                val dialog = LeaningFrequencyDialogFragment()
-                childFragmentManager?.let { dialog.show(it, "learning_frequency") }
-            }
-            R.id.btn_to_groupDetailBar_age_range -> {
-                val dialog = AgeRangeDialogFragment()
-                childFragmentManager?.let { dialog.show(it, "age_range") }
-            }
-            R.id.btn_to_groupDetailBar_number_persons -> {
-                val dialog = NumberPersonsDialogFragment()
-                childFragmentManager?.let { dialog.show(it, "number_persons") }
-            }
-            R.id.btn_to_groupDetailBar_gender_restriction -> {
-                val sm: SwitchMaterial = binding.genderRestrictionSwitch
-                sm.setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.postIsChecked(isChecked)
-                    if (isChecked) {
-                        Toast.makeText(context, "性別設定をOnにしました。", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(context, "性別設定をOffにしました。", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }*/
 
     private fun launchUploader() {
         Log.d(ContentValues.TAG, "launchUploader")

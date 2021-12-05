@@ -11,5 +11,7 @@
     <string name="schedule_create_location">Location</string>
     <string name="schedule_create_group">Group</string>
     <string name="schedule_create_date_hint">Please select an event date</string>
+    <string name="schedule_create_time_start">START TIME</string>
+    <string name="schedule_create_time_end">END TIME</string>
 
 </resources>

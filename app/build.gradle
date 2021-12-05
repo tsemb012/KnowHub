@@ -160,5 +160,10 @@ dependencies {
     //-----DataBinding-ktx
     implementation 'com.github.wada811:DataBinding-ktx:5.0.0'
 
+    //-----MaterialDateTimeDialog
+    implementation 'com.afollestad.material-dialogs:datetime:3.2.1'
+
+    //-----MaterialDateLifeCycle
+    implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0'
 
 }
