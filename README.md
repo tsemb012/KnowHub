@@ -39,7 +39,7 @@ Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-
             -Send Text, Voice Record, Image, Files
 
 
-    Under Implementation at feature/0.1.7-Calendar
+    Under Implementation at feature/0.2-Calendar
     ---------------------------------------------------------------------------------------
         Schdule Study-plan　of groups by Calendar
         Map activity area of groups by GoogleMapAPI
@@ -62,52 +62,71 @@ Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-
                 -画像データ
                 -テキストメッセージ
 
-    現在実装中　　(ブランチfeature/0.1.7-Calendarを参照ください。）
+    現在実装中　　(ブランチfeature/0.2 -Calendarを参照ください。）
     ---------------------------------------------------------------------------------------
         スケジュール
             -グループの勉強プランをカレンダーで管理。
+
+    実装予定　　(ブランチfeature/0.2 -Calendarを参照ください。）
+    ---------------------------------------------------------------------------------------
         マップ　
             -グループの活動地域を地図上に表示。
             -GoogleMapAPIを使用。
+        ビデオチャット
 
 
 ## Used Tech/使用技術
 
     USING/使用中
 
-        Kotlin
-        Dialogs
-        RecyclerView
         MVVM
-        LiveData
-        ViewModel
-        Android Databinding
-        Coroutine
-        Android-Flow
-        Navigation
-        Hilt/Dagger
-        Firebase
-            Authentication
-            Cloud FireStore
-            Cloud Storage
-        Glide
-        ViewPager2
-        MediaPlayer
-        Dexter
-        CoordinatorLayout
-        CircleImageView
+            LiveData
+            ViewModel
+            DataBinding
+        Rx
+            Coroutine
+            Android-Flow
+        Transition
+            Navigation
+        DI
+            Hilt/Dagger
+        Auth
+            Firebase Authentication
+        Image
+            Glide
+            Firebase CloudStorage
+            Stfalcon ImageViewer
+        UI
+            ViewPager2
+            Dialogs
+            RecyclerView
+            CircleImageView
+        DB
+            Firebase FireStore
+        Media
+            MediaPlayer
+        Permission
+            Dexter
 
-    PLAN TO USE/使用予定　 at feature/0.1.7-Calendar
 
-        GoogleMapAPI
-        Firebase
-            Cloud Messaging
-            Cloud Functions
-        Notification
-        AlarmManager
-        WorkManager
-        Stfalcon's ImageViewer
-        kizitonwose's CalendarView
+    PLAN TO USE/使用予定
+    　
+        at feature/0.2-Calendar
+
+            Map
+                GoogleMapAPI
+            UI
+                kizitonwose's CalendarView
+                MaterialDialog
+
+        at further branches
+
+            Notification
+                AlarmManager
+                WorkManager
+                Cloud Messaging
+            DB
+                Firebase CloudFunctions
 
 ## Reference/参照
 
@@ -153,3 +172,5 @@ Figma address: https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird-SNS-
       Implementing videoChat./ビデオチャット機能の実装。
       Testing this app./同アプリケーションのテスト実施。
       Applying MaterialDesign./マテリアルデザインの適用。
+      MultiModule/マルチモジュール化
+      Applying WCAG 2.0 for Design/WCAG2.0に準拠したデザイン
