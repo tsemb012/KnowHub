@@ -6,10 +6,13 @@ import com.example.droidsoftthird.model.LoadState
 import com.example.droidsoftthird.model.toEntity
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.SCHEDULE_REGISTERED_ALL
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import javax.inject.Inject
 
-class ScheduleRegisteredViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ScheduleViewModel(){
+@HiltViewModel
+class ScheduleRegisteredViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ScheduleViewModel(){
 
 
     fun fetchAllSchedules() { fetchSchedules(SCHEDULE_REGISTERED_ALL) }

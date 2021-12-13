@@ -8,11 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.GROUP_MY_PAGE
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class MyPageViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+@HiltViewModel
+class MyPageViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _groups = MutableLiveData<List<Group>?>()
     val groups: LiveData<List<Group>?>

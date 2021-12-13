@@ -7,12 +7,14 @@ import androidx.lifecycle.*
 import com.example.droidsoftthird.model.Group
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-
-class GroupAddViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+@HiltViewModel
+class GroupAddViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     //TODO より良いUIを検討する。
