@@ -32,15 +32,13 @@ class LocationDialogFragment: DialogFragment(), OnMapReadyCallback {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view: View = layoutInflater.inflate(R.layout.dialog_location, null, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this) ?: throw java.lang.IllegalStateException()
-        return activity?.let {
-            AlertDialog.Builder(it)
+        mapFragment.getMapAsync(this)
+        return AlertDialog.Builder(requireActivity())
                 .setTitle("地図(仮)")
                 .setPositiveButton(R.string.done) {_, _ -> }
                 .setNeutralButton(R.string.cancel) { _, _ -> }
                 .setView(view)
                 .create()
-        } ?: throw IllegalStateException("Activity cannot be null")
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
