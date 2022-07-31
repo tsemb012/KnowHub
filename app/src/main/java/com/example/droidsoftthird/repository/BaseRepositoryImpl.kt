@@ -2,9 +2,14 @@ package com.example.droidsoftthird.repository
 
 import android.net.Uri
 import com.example.droidsoftthird.*
-import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.model.RawScheduleEvent
-import com.example.droidsoftthird.model.UserProfile
+import com.example.droidsoftthird.api.MainApi
+import com.example.droidsoftthird.model.User
+import com.example.droidsoftthird.model.fire_model.Group
+import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
+import com.example.droidsoftthird.model.fire_model.UserProfile
+import com.example.droidsoftthird.model.json.SignUpJson
+import com.example.droidsoftthird.model.json.toEntity
+import com.example.droidsoftthird.model.request.PostSignUp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -23,10 +28,17 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class BaseRepositoryImpl @Inject constructor(): BaseRepository {
+class BaseRepositoryImpl @Inject constructor(
+        private val mainApi: MainApi
+): RailsApiRepository, FireStoreRepository {
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
+    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid
+    }
+
+    override suspend fun postNewUser(signup: SignUpJson): User? =
+        mainApi.postNewUser(PostSignUp.Request(signup)).body()?.toEntity()
+        //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
