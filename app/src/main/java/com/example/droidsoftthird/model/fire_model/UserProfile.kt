@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model
+package com.example.droidsoftthird.model.fire_model
 
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp

@@ -1,7 +1,7 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.UserProfile
+import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

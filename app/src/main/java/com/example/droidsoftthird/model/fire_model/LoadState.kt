@@ -1,10 +1,10 @@
-package com.example.droidsoftthird.model
+package com.example.droidsoftthird.model.fire_model
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Job
 
 sealed class LoadState {
-    object Initialized :LoadState()
+    object Initialized : LoadState()
     data class Loaded<out T: Any>(val value: T): LoadState()
     class Loading(val job: Job): LoadState()
     class Error(val error: Throwable): LoadState()
