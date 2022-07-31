@@ -1,8 +1,8 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.LiveData
-import com.example.droidsoftthird.model.LoadState
-import com.example.droidsoftthird.model.ScheduleEvent
+import com.example.droidsoftthird.model.fire_model.LoadState
+import com.example.droidsoftthird.model.fire_model.ScheduleEvent
 import java.lang.IllegalStateException
 import java.time.LocalDate
 

@@ -1,11 +1,10 @@
 package com.example.droidsoftthird
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.model.fire_model.Group
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.GROUP_ALL
 import dagger.hilt.android.lifecycle.HiltViewModel

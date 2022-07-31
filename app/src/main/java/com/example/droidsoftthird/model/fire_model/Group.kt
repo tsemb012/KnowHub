@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model
+package com.example.droidsoftthird.model.fire_model
 
 import android.text.TextUtils
 import com.google.firebase.auth.FirebaseUser

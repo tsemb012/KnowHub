@@ -1,7 +1,5 @@
-package com.example.droidsoftthird.model
-import com.google.firebase.Timestamp
+package com.example.droidsoftthird.model.fire_model
 import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
 interface Message{
@@ -24,7 +22,7 @@ data class TextMessage(
     @DocumentId
     override val messageId: String? = null,
 
-):Message
+): Message
 
 //1.0
 data class ImageMessage(
@@ -36,7 +34,7 @@ data class ImageMessage(
     override val timestamp: Date? = null,
     @DocumentId
     override val messageId: String? = null,
-):Message
+): Message
 
 //2.0
 data class FileMessage(
@@ -50,7 +48,7 @@ data class FileMessage(
     @DocumentId
     override val messageId: String? = null,
 
-):Message
+): Message
 
 //3.0
 data class RecordMessage(
@@ -66,5 +64,5 @@ data class RecordMessage(
     @DocumentId
     override val messageId: String? = null,
 
-):Message
+): Message
 
