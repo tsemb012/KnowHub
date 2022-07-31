@@ -2,13 +2,13 @@ package com.example.droidsoftthird.repository
 
 import android.net.Uri
 import com.example.droidsoftthird.Result
-import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.model.RawScheduleEvent
-import com.example.droidsoftthird.model.UserProfile
+import com.example.droidsoftthird.model.fire_model.Group
+import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
+import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.StorageReference
 
-interface BaseRepository {
+interface FireStoreRepository {
 
     suspend fun getGroups(query: String): Result<List<Group>>
 
