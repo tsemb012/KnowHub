@@ -84,7 +84,7 @@
             app:destination="@id/scheduleCreateFragment" />
     </fragment>
 
-    <fragment
+<!--    <fragment
         android:id="@+id/videoFragment"
         android:name="com.example.droidsoftthird.VideoFragment"
         android:label="VideoFragment" >
@@ -92,6 +92,13 @@
             android:name="groupId"
             app:argType="string" />
     </fragment>
+    -->
+    <!--TODO 一時的にVideoからLoginにつなぐ-->
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.droidsoftthird.view.login.LoginFragment"
+        android:label="LoginFragment" />
+
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.example.droidsoftthird.ChatRoomFragment"
