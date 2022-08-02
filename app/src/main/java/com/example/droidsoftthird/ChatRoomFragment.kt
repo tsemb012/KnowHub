@@ -144,7 +144,8 @@ class ChatRoomFragment : Fragment() {
 
         viewModel.navigationToVideo.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
-                ChatRoomFragmentDirections.actionChatRoomFragmentToVideoFragment(groupId))
+                ChatRoomFragmentDirections.actionChatRoomFragmentToVideoFragment(/*groupId*/)
+            )
         })
 
         viewModel.showBottomSheet.observe(viewLifecycleOwner,EventObserver{

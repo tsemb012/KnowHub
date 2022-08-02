@@ -12,6 +12,14 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
+
     defaultConfig {
         applicationId "com.example.droidsoftthird"
         minSdkVersion 21
@@ -45,6 +53,7 @@ android {
         jvmTarget = "11"
     }
 
+
     dataBinding {
         enabled true//NOTE DataBindingの有効化
     }
@@ -73,8 +82,8 @@ dependencies {
 
     def nav_version = '2.3.5'
     // Java language implementation
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
 
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -119,8 +128,17 @@ dependencies {
     //-----Hilt
     //implementation "com.google.dagger:hilt-android:$hilt_version"//最新のHiltはAssistedInjection非対応
     //kapt "com.google.dagger:hilt-android-compiler:$hilt_version"//パラメーターの渡し方が確立されるまでDagger2.31を使用。
-    implementation 'com.google.dagger:hilt-android:2.31-alpha'
-    kapt 'com.google.dagger:hilt-android-compiler:2.31-alpha'
+    implementation 'com.google.dagger:hilt-android:2.43.1'
+    kapt 'com.google.dagger:hilt-compiler:2.43.1'
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.43.1'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.43.1'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.43.1'
+    kaptTest 'com.google.dagger:hilt-compiler:2.43.1'
+
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
     kaptAndroidTest 'com.squareup.inject:assisted-inject-processor-dagger2:0.6.0'
@@ -141,15 +159,15 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     //-----JetpackCompose
-    def jetpack_compose =version '1.1.1'
-    implementation "androidx.compose.ui:ui:1.2.0"
-    implementation "androidx.compose.ui:ui-tooling:$jetpack_compose"
-    implementation "androidx.compose.foundation:foundation:$jetpack_compose"
-    implementation "androidx.compose.material:material:$jetpack_compose"
-    implementation "androidx.compose.material:material-icons-core:$jetpack_compose"
-    implementation "androidx.compose.material:material-icons-extended:$jetpack_compose"
-    implementation "androidx.compose.runtime:runtime-livedata:$jetpack_compose"
-    implementation "androidx.compose.runtime:runtime-rxjava2:$jetpack_compose"
+    def jetpack_compose_version = '1.1.1'
+    implementation "androidx.compose.ui:ui:$jetpack_compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$jetpack_compose_version"
+    implementation "androidx.compose.foundation:foundation:$jetpack_compose_version"
+    implementation "androidx.compose.material:material:$jetpack_compose_version"
+    implementation "androidx.compose.material:material-icons-core:$jetpack_compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$jetpack_compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$jetpack_compose_version"
+    implementation "androidx.compose.runtime:runtime-rxjava2:$jetpack_compose_version"
     implementation "androidx.activity:activity-compose:1.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 

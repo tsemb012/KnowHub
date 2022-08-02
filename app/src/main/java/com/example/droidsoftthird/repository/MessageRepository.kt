@@ -140,7 +140,7 @@ class MessageRepository  @Inject constructor(){
             messagesCollection?.orderBy("timestamp",Query.Direction.ASCENDING)?.addSnapshotListener{ snapshot, _->
             if (snapshot == null){return@addSnapshotListener}
             try {
-                offer(snapshot)
+                trySend(snapshot).isSuccess
             }catch(e:Throwable){
 
             }
