@@ -96,7 +96,7 @@
     <!--TODO 一時的にVideoからLoginにつなぐ-->
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.example.droidsoftthird.view.login.LoginFragment"
+        android:name="com.example.droidsoftthird.view.login.JetpackComposeFragment"
         android:label="LoginFragment" />
 
     <fragment
