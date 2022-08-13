@@ -45,16 +45,6 @@ class WelcomeViewModel @Inject constructor (private val userRepository: UserRepo
     }
 }
 
-/*class WelcomeViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WelcomeViewModel::class.java)) {
-            return WelcomeViewModel(UserRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}*/
-
 data class Event<out T>(private val content: T) {
 
     var hasBeenHandled = false
