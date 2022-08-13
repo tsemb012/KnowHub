@@ -25,7 +25,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.vm.entrance.WelcomeViewModel
-import com.example.droidsoftthird.vm.entrance.WelcomeViewModelFactory
 import com.example.droidsoftthird.ui.entrance.composable.WelcomeEvent
 import com.example.droidsoftthird.ui.entrance.composable.WelcomeScreen
 import com.example.droidsoftthird.ui.entrance.navigate
@@ -34,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WelcomeFragment: Fragment() {
 
-    private val viewModel: WelcomeViewModel by viewModels { WelcomeViewModelFactory() }
+    private val viewModel: WelcomeViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater,

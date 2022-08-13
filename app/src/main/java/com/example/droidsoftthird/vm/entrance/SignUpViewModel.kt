@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.droidsoftthird.repository.UserRepository
 import com.example.droidsoftthird.ui.entrance.Screen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SignUpViewModel(private val userRepository: UserRepository) : ViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor (private val userRepository: UserRepository) : ViewModel() {
 
     private val _navigateTo = MutableLiveData<Event<Screen>>()
     val navigateTo: LiveData<Event<Screen>>
@@ -31,7 +34,7 @@ class SignUpViewModel(private val userRepository: UserRepository) : ViewModel() 
     }
 }
 
-class SignUpViewModelFactory : ViewModelProvider.Factory {
+/*class SignUpViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
@@ -39,4 +42,4 @@ class SignUpViewModelFactory : ViewModelProvider.Factory {
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
+}*/

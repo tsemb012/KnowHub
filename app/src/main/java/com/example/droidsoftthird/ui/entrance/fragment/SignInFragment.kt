@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.vm.entrance.SignInViewModel
-import com.example.droidsoftthird.vm.entrance.SignInViewModelFactory
 import com.example.droidsoftthird.ui.entrance.composable.SignIn
 import com.example.droidsoftthird.ui.entrance.composable.SignInEvent
 import com.example.droidsoftthird.ui.entrance.navigate
@@ -20,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignInFragment: Fragment() {
 
-    private val viewModel: SignInViewModel by viewModels { SignInViewModelFactory() }
+    private val viewModel: SignInViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
