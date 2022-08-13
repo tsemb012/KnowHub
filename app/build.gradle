@@ -126,10 +126,9 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     //-----Hilt
-    //implementation "com.google.dagger:hilt-android:$hilt_version"//最新のHiltはAssistedInjection非対応
-    //kapt "com.google.dagger:hilt-android-compiler:$hilt_version"//パラメーターの渡し方が確立されるまでDagger2.31を使用。
-    implementation 'com.google.dagger:hilt-android:2.43.1'
-    kapt 'com.google.dagger:hilt-compiler:2.43.1'
+    def hilt_version = '2.38.1'
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // For instrumentation tests
     androidTestImplementation  'com.google.dagger:hilt-android-testing:2.43.1'
