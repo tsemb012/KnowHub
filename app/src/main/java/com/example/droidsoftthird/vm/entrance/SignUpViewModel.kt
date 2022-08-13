@@ -33,13 +33,3 @@ class SignUpViewModel @Inject constructor (private val userRepository: UserRepos
         _navigateTo.value = Event(Screen.Home)
     }
 }
-
-/*class SignUpViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
-            return SignUpViewModel(UserRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}*/

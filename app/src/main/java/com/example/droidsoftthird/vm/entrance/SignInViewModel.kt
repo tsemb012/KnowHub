@@ -31,13 +31,3 @@ class SignInViewModel @Inject constructor (private val userRepository: UserRepos
         _navigateTo.value = Event(Screen.Home)
     }
 }
-
-/*class SignInViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SignInViewModel::class.java)) {
-            return SignInViewModel(UserRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}*/
