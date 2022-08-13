@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.ui.entrance
+package com.example.droidsoftthird.ui.entrance.state
 
 import java.util.regex.Pattern
 
