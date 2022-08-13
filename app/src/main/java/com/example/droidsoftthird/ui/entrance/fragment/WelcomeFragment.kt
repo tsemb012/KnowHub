@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.droidsoftthird.ui.entrance
+package com.example.droidsoftthird.ui.entrance.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,8 +23,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.droidsoftthird.ui.entrance.Screen
+import com.example.droidsoftthird.vm.entrance.WelcomeViewModel
+import com.example.droidsoftthird.vm.entrance.WelcomeViewModelFactory
 import com.example.droidsoftthird.ui.entrance.composable.WelcomeEvent
 import com.example.droidsoftthird.ui.entrance.composable.WelcomeScreen
+import com.example.droidsoftthird.ui.entrance.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +44,7 @@ class WelcomeFragment: Fragment() {
         viewModel.navigateTo.observe(viewLifecycleOwner) { navigateToEvent ->
             navigateToEvent.getContentIfNotHandled()?.let { navigateTo ->
                 navigate(navigateTo, Screen.Welcome)
-            }
+            }//レイアウトを設定する作業みたい。
         }
 
         return ComposeView(requireContext()).apply {

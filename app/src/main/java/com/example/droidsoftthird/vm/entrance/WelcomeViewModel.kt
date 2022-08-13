@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.droidsoftthird.ui.entrance
+package com.example.droidsoftthird.vm.entrance
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.droidsoftthird.repository.UserRepository
+import com.example.droidsoftthird.ui.entrance.Screen
 import java.lang.IllegalStateException
 
-//TODO Hiltを導入
 class WelcomeViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     private val _navigateTo = MutableLiveData<Event<Screen>>()

@@ -17,9 +17,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.droidsoftthird.ui.entrance.EmailState
-import com.example.droidsoftthird.ui.entrance.EmailStateSaver
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.ui.entrance.state.EmailState
+import com.example.droidsoftthird.ui.entrance.state.EmailStateSaver
+import com.example.droidsoftthird.utils.compose.supportWideScreen
 
 
 sealed class WelcomeEvent {
@@ -130,11 +131,6 @@ private fun SignInCreateAccount(
         )
     }
 }
-
-private  fun Modifier.supportWideScreen() = this
-    .fillMaxWidth()
-    .wrapContentWidth(align = Alignment.CenterHorizontally)
-    .widthIn(max = 840.dp)
 
 @Preview(name = "Welcome light theme")
 @Composable
