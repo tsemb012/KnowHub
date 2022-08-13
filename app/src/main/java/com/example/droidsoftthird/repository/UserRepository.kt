@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.repository
 
 import androidx.compose.runtime.Immutable
+import javax.inject.Inject
 
 
 sealed class TestUser {
@@ -9,10 +10,11 @@ sealed class TestUser {
     object GuestUser : TestUser()
     object NoUserLoggedIn : TestUser()
 }
-//TODO 実験的に追加するRepository　RailsApiRepositoryと統合する。
-object UserRepository {
 
-    private var _user:TestUser = TestUser.NoUserLoggedIn
+//TODO 実験的に追加するRepository　RailsApiRepositoryと統合する。
+class UserRepository @Inject constructor() {
+
+    private var _user: TestUser = TestUser.NoUserLoggedIn
     val user: TestUser
         get() = _user
 

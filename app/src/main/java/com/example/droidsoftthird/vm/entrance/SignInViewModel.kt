@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.droidsoftthird.repository.UserRepository
 import com.example.droidsoftthird.ui.entrance.Screen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SignInViewModel(private val userRepository: UserRepository) : ViewModel() {
+@HiltViewModel
+class SignInViewModel @Inject constructor (private val userRepository: UserRepository) : ViewModel() {
 
     //TODO プロフィール入力も追加する。
     private val _navigateTo = MutableLiveData<Event<Screen>>()
@@ -29,7 +32,7 @@ class SignInViewModel(private val userRepository: UserRepository) : ViewModel() 
     }
 }
 
-class SignInViewModelFactory : ViewModelProvider.Factory {
+/*class SignInViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SignInViewModel::class.java)) {
@@ -37,4 +40,4 @@ class SignInViewModelFactory : ViewModelProvider.Factory {
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
+}*/

@@ -14,11 +14,12 @@ import com.example.droidsoftthird.ui.entrance.composable.SignUp
 import com.example.droidsoftthird.ui.entrance.composable.SignUpEvent
 import com.example.droidsoftthird.ui.entrance.navigate
 import com.example.droidsoftthird.vm.entrance.SignUpViewModel
-import com.example.droidsoftthird.vm.entrance.SignUpViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpFragment: Fragment() {
 
-    private val viewModel: SignUpViewModel by viewModels { SignUpViewModelFactory() }
+    private val viewModel: SignUpViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater,
