@@ -14,6 +14,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.example.droidsoftthird.databinding.FragmentHomeBinding
+import com.example.droidsoftthird.ui.entrance.Screen
+import com.example.droidsoftthird.ui.entrance.navigate
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.tabs.TabLayout
@@ -26,7 +28,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: Fragment() {
 
     companion object {
-        private const val PRIMARY_WHITE = "#F6FFFE"
         const val RC_RESIGN_IN = 9002
     }
 
@@ -101,9 +102,12 @@ class HomeFragment: Fragment() {
         })
     }
 
-    private fun startSignIn() {
+    private fun startSignIn() { //TODO ここを書き換える。
+        navigate(Screen.Welcome, Screen.Home)
+    }
+
         // Choose authentication providers
-        val providers = arrayListOf(
+/*        val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
@@ -117,8 +121,7 @@ class HomeFragment: Fragment() {
                 //.setLogo(R.drawable.ic_baseline_school_24)
                 .setAvailableProviders(providers)
                 .build(),
-            RC_RESIGN_IN )
-    }
+            RC_RESIGN_IN )*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
