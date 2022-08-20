@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -31,6 +32,10 @@ class SignUpFragment: Fragment() {
                 navigate(navigateTo, Screen.SignUp)
             }
         }
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        }
+
         return ComposeView(requireContext()).apply {
             id = R.id.signUpFragment
 
