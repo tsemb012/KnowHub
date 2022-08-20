@@ -42,6 +42,38 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
+    fun certifyTokenId(data: String) {
+        mainApi.postTokenId(data)
+    }
+
+    suspend fun singUp(email: String, password: String) : Result<String> =
+        withContext(Dispatchers.IO) {
+            suspendCoroutine { continuation ->
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { signInTask ->
+                                    if (signInTask.isSuccessful && signInTask.result != null) {
+                                        FirebaseAuth.getInstance().currentUser.getIdToken(true)
+                                            .addOnCompleteListener { idTokenTask ->
+                                                if (idTokenTask.isSuccessful && idTokenTask.result?.token != null) {
+                                                    continuation.resume(Result.Success(idTokenTask.result?.token!!))
+                                                } else {
+                                                    continuation.resume(Result.Failure(Exception("idTokenTask is failed")))
+                                                }
+                                            }
+                                    } else {
+                                        continuation.resume(Result.Failure(signInTask.exception ?:IllegalStateException()))
+                                    }
+                                }
+                        } else {
+                            continuation.resume(Result.Failure(task.exception ?: IllegalStateException()))
+                        }
+                    }
+            }
+        }//TODO　ネスト深すぎ。。要リファクタリング
+
     suspend fun singIn(email: String, password: String): Result<User> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
@@ -247,6 +279,9 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
+
+
+
     companion object {
         private const val  LIMIT = 50L
         const val GROUP_ALL = "group_all"

@@ -29,10 +29,8 @@ class SignInFragment: Fragment() {
     ): View {
         viewModel.navigateTo.observe(viewLifecycleOwner) { navigate(Screen.Home, Screen.SignIn) }
         viewModel.error.observe(viewLifecycleOwner) { error ->
-            error.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
             }
-        }
         return ComposeView(requireContext()).apply {
             id =  R.id.signInFragment
 

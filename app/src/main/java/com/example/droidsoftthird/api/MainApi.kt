@@ -7,6 +7,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface MainApi {
+    @POST("/users/login")
+    fun postTokenId(data: String)
+
     @POST("/users")
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
 }

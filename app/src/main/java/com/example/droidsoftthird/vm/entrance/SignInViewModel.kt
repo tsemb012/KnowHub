@@ -13,8 +13,8 @@ class SignInViewModel @Inject constructor (private val repository: BaseRepositor
     private val _navigateTo = MutableLiveData<Event<Screen>>()
     val navigateTo: LiveData<Event<Screen>>
         get() = _navigateTo
-    private val _error = MutableLiveData<Event<String>>()
-    val error: LiveData<Event<String>>
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String>
         get() = _error
 
     fun signIn(email: String, password: String) { //TODO ここの中身を書き換える。　→　Firebaseと繋いで
@@ -24,7 +24,7 @@ class SignInViewModel @Inject constructor (private val repository: BaseRepositor
             }.onSuccess {
                 _navigateTo.value = Event(Screen.Home)
             }.onFailure {
-                _error.value = it.message?.let { error -> Event(error) }
+                _error.value = it.message ?: "Unknown error"
             }
         }
     }
