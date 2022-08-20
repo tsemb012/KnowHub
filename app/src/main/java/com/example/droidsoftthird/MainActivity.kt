@@ -54,6 +54,12 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController,appBarConfiguration)//特定のフラグメントのみUpアイコンを表示させない。
         navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
             when(navDestination.id){
+                R.id.homeFragment,
+                R.id.signUpFragment,
+                R.id.signInFragment -> {
+                    binding.bottomNav.visibility = View.GONE
+                    binding.toolbar.visibility = View.GONE
+                }
                 R.id.createProfileFragment -> {
                     binding.toolbar.title = getString(R.string.input_profile)
                     binding.bottomNav.visibility = View.GONE
@@ -68,7 +74,6 @@ class MainActivity : AppCompatActivity() {
                     viewModel.authenticationState.observe(this, Observer { authenticationState ->
                         when (authenticationState) {
                             MainViewModel.AuthenticationState.AUTHENTICATED -> {
-                                Timber.d("check flow")
                                 viewModel.getUser()
                                 viewModel.userProfile.observe(this, Observer { userProfile ->
                                     if (userProfile != null) {
@@ -76,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                                     }
                                 })
                             }
+                            MainViewModel.AuthenticationState.UNAUTHENTICATED -> {  }
                         }
                     })
                 }
