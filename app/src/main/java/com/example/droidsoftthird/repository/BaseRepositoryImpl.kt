@@ -31,7 +31,7 @@ import kotlin.coroutines.suspendCoroutine
 class BaseRepositoryImpl @Inject constructor(
         private val mainApi: MainApi
 ): RailsApiRepository, FireStoreRepository {
-    private val fireStore = FirebaseFirestore.getInstance()
+    private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid
     }
@@ -41,6 +41,22 @@ class BaseRepositoryImpl @Inject constructor(
         //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
+
+    suspend fun singIn(email: String, password: String): Result<User> =
+        withContext(Dispatchers.IO) {
+            suspendCoroutine { continuation ->
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                it.result?.user?.let { user ->
+                                    continuation.resume(Result.Success(User(user.uid, user.email!!, user.displayName)))
+                                }
+                            } else {
+                                continuation.resume(Result.Failure(it.exception ?: IllegalStateException()))
+                            }
+                        }
+            }
+        }
 
     override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){
