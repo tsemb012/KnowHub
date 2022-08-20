@@ -31,18 +31,8 @@ class WelcomeViewModel @Inject constructor (private val userRepository: UserRepo
     private val _navigateTo = MutableLiveData<Event<Screen>>()
     val navigateTo: LiveData<Event<Screen>> = _navigateTo
 
-    fun continueSignIn(email: String) {
-        if (userRepository.isKnownUserEmail(email)) {
-            _navigateTo.value = Event(Screen.SignIn)
-        } else {
-            throw IllegalStateException()
-            //TODO エラーメッセージを出すように変更
-        }
-    }
-
-    fun signUp() {
-        _navigateTo.value = Event(Screen.SignUp)
-    }
+    fun signIn() { _navigateTo.value = Event(Screen.SignIn) }
+    fun signUp() { _navigateTo.value = Event(Screen.SignUp) }
 }
 
 data class Event<out T>(private val content: T) {

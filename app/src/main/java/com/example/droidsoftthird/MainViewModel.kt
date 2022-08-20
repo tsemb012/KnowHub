@@ -43,7 +43,6 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
                 is Result.Success -> {
                     result.data?.let {
                         _userProfile.postValue(result.data)
-                        Timber.tag("check_").d(_userProfile.postValue(result.data).toString())
                     } ?: run {
                         _userProfile.postValue(null)
                     }
