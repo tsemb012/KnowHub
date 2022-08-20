@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController,appBarConfiguration)//特定のフラグメントのみUpアイコンを表示させない。
         navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
             when(navDestination.id){
-                R.id.homeFragment,
+                R.id.welcomeFragment,
                 R.id.signUpFragment,
                 R.id.signInFragment -> {
                     binding.bottomNav.visibility = View.GONE

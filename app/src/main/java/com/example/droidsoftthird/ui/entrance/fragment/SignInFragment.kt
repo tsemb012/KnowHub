@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -26,9 +27,10 @@ class SignInFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.navigateTo.observe(viewLifecycleOwner) { navigateToEvent ->
-            navigateToEvent.getContentIfNotHandled()?.let { navigateTo ->
-                navigate(navigateTo, Screen.SignIn)
+        viewModel.navigateTo.observe(viewLifecycleOwner) { navigate(Screen.Home, Screen.SignIn) }
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
         }
         return ComposeView(requireContext()).apply {
