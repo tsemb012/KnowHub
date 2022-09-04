@@ -90,7 +90,7 @@ class HomeFragment: Fragment() {
                             //TODO データクラスごとひとまとめにして、nullを作らない方針の方がよくない？
                             //AuthUI.getInstance().signOut(requireActivity())
                             //navigate(Screen.Welcome, Screen.Home)
-                            //navController.navigate(R.id.createProfileFragment)
+                            navController.navigate(R.id.createProfileFragment)
                         }
                     })
                 }

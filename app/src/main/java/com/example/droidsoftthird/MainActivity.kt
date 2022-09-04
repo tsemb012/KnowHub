@@ -30,8 +30,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel:MainViewModel by viewModels()
     private val binding:ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
     private lateinit var navHeaderBinding: NavHeaderBinding;
-    
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
         binding.navView.addHeaderView(navHeaderBinding.root)
-
 
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -118,24 +115,32 @@ class MainActivity : AppCompatActivity() {
                 else -> " "
             }
         }
+
         binding.navView.setNavigationItemSelectedListener{
             if (it.itemId == R.id.log_out){
-                viewModel.clearUserProfile()
-                binding.drawerLayout.close()
-                AuthUI.getInstance().signOut(this)
-
+                clearCache()
+                signOut()
             } else {
                 //WRITE CODE FOR MENU EXCEPT FOR SIGN_OUT
             }
             return@setNavigationItemSelectedListener true
         }
+
         binding.toolbar.inflateMenu(R.menu.home)
     }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        return super.onCreateView(name, context, attrs)
-
+    private fun clearCache() {
+        viewModel.also {
+            it.clearUserProfile()
+            it.clearTokenCache()
+        }
     }
+
+    private fun signOut() {
+        binding.drawerLayout.close()
+        AuthUI.getInstance().signOut(this)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp()
@@ -144,9 +149,5 @@ class MainActivity : AppCompatActivity() {
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
         toolbar?.inflateMenu(R.menu.home)
-    }
-
-    companion object {
-        const val RC_SIGN_IN = 9001
     }
 }
