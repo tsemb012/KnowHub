@@ -11,6 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor (private val repository: BaseRepositoryImpl) : ViewModel() {
 
+    //TODO ここの全体の処理をリファクタリングする。
     private val _navigateTo = MutableLiveData<Event<Screen>>()
     val navigateTo: LiveData<Event<Screen>>
         get() = _navigateTo
@@ -22,44 +23,51 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
     fun signUp(email: String, password: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                repository.singUp(email, password)
+                repository.signUp(email, password)
             }.onSuccess {
                 when(it) {
                     is Result.Success -> {
-                        certifyTokenId(it.data)
+                        signUpByTokenId(it.data)//TODO ヘッダーからトークンを送るように変更する。
                     }
                     is Result.Failure -> {
                         _error.value = it.exception.message ?: "Error"
+                        _navigateTo.value = Event(Screen.Welcome)
                     }
                 }
-                _navigateTo.value = Event(Screen.Home)
             }.onFailure {
                 _error.value = it.message ?: "Unknown error"
             }
         }
     }
 
-    private fun certifyTokenId(data: String) {
+    private fun signUpByTokenId(tokenId: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                repository.certifyTokenId(data)
+                repository.certifyTokenId(tokenId)
             }.onSuccess {
-/*                when(it) {
-                    is Result.Success -> {
-                        _navigateTo.value = Event(Screen.Home)
-                    }
-                    is Result.Failure -> {
-                        _error.value = it.exception.message ?: "Error"
-                    }
-                }*/
+                saveTokenId(tokenId)
             }.onFailure {
-                _error.value = it.message ?: "Unknown error"
+                //TODO ログアウト
+                _error.value = it.message ?: "Error"
+                _navigateTo.value = Event(Screen.Welcome)
             }
         }
     }
 
+    private fun saveTokenId(tokenId: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                repository.saveTokenId(tokenId)
+                _navigateTo.value = Event(Screen.Home)//TODO プロフィールページに行くか。画面遷移を検討する。
+            }.onFailure {
+                //TODO ログアウト
+                _error.value = it.message ?: "Error"
+                _navigateTo.value = Event(Screen.Welcome)
+            }
+        }
+    }
 
     fun signIn() {
-        _navigateTo.value = Event(Screen.Home)
+        _navigateTo.value = Event(Screen.SignIn)
     }
 }
