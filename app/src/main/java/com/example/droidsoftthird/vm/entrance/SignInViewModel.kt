@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.vm.entrance
 
 import androidx.lifecycle.*
+import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.example.droidsoftthird.ui.entrance.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,6 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor (private val repository: BaseRepositoryImpl) : ViewModel() {
+    //TODO リファクタリングして簡略化
 
     private val _navigateTo = MutableLiveData<Event<Screen>>()
     val navigateTo: LiveData<Event<Screen>>
@@ -17,19 +19,35 @@ class SignInViewModel @Inject constructor (private val repository: BaseRepositor
     val error: LiveData<String>
         get() = _error
 
-    fun signIn(email: String, password: String) { //TODO ここの中身を書き換える。　→　Firebaseと繋いで
+    fun signIn(email: String, password: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 repository.singIn(email, password)
             }.onSuccess {
-                _navigateTo.value = Event(Screen.Home)
+                when (it) {
+                    is Result.Success -> saveTokenId(it.data)
+                    is Result.Failure -> _navigateTo.value = Event(Screen.Welcome)
+                }
             }.onFailure {
                 _error.value = it.message ?: "Unknown error"
             }
         }
     }
 
+    private fun saveTokenId(tokenId: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                repository.saveTokenId(tokenId)
+                _navigateTo.value = Event(Screen.Home)
+            }.onFailure {
+                //TODO ログアウト
+                _error.value = it.message ?: "Error"
+                _navigateTo.value = Event(Screen.Welcome)
+            }
+        }
+    }
+
     fun signUp() {
-        _navigateTo.value = Event(Screen.Home)
+        _navigateTo.value = Event(Screen.SignUp)
     }
 }

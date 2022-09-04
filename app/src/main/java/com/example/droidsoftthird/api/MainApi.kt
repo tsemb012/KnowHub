@@ -3,13 +3,15 @@ package com.example.droidsoftthird.api
 import com.example.droidsoftthird.model.json.UserJson
 import com.example.droidsoftthird.model.request.PostSignUp
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface MainApi {
-    @POST("/users/login")
-    fun postTokenId(data: String)
 
-    @POST("/users")
+    @GET("signup")
+    suspend fun postTokenId(
+            @Query("token_id") token: String
+    ) : Response<Any>
+
+    @POST("users")
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
 }

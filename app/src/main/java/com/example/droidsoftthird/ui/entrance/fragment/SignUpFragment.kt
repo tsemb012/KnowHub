@@ -53,7 +53,7 @@ class SignUpFragment: Fragment() {
                                     viewModel.signUp(event.email, event.password)
                                 }
                                 SignUpEvent.SignIn -> {
-                                    viewModel.signIn()
+                                    viewModel.signIn() //TODO サインインに移動するボタンを作成する。
                                 }
                                 SignUpEvent.NavigateBack -> {
                                     activity?.onBackPressedDispatcher?.onBackPressed()

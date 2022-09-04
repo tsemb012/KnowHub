@@ -1,6 +1,8 @@
 package com.example.droidsoftthird.repository
 
 import android.net.Uri
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.User
@@ -10,6 +12,7 @@ import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.model.json.SignUpJson
 import com.example.droidsoftthird.model.json.toEntity
 import com.example.droidsoftthird.model.request.PostSignUp
+import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -29,11 +32,17 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class BaseRepositoryImpl @Inject constructor(
-        private val mainApi: MainApi
-): RailsApiRepository, FireStoreRepository {
+        private val mainApi: MainApi,
+        private val dataStore: DataStore<Preferences>
+): RailsApiRepository, FirebaseRepository, DataStoreRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid
+    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
+
+    override suspend fun saveTokenId(tokenId: String) {
+        dataStore.edit { preferences ->
+            preferences[stringPreferencesKey(TOKEN_ID_KEY)] = tokenId
+        }
     }
 
     override suspend fun postNewUser(signup: SignUpJson): User? =
@@ -42,11 +51,9 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
-    fun certifyTokenId(data: String) {
-        mainApi.postTokenId(data)
-    }
+    suspend fun certifyTokenId(data: String) { mainApi.postTokenId(data).body()?.toString() }
 
-    suspend fun singUp(email: String, password: String) : Result<String> =
+    override suspend fun signUp(email: String, password: String) : Result<String> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -74,21 +81,26 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }//TODO　ネスト深すぎ。。要リファクタリング
 
-    suspend fun singIn(email: String, password: String): Result<User> =
+    suspend fun singIn(email: String, password: String): Result<String> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                it.result?.user?.let { user ->
-                                    continuation.resume(Result.Success(User(user.uid, user.email!!, user.displayName)))
+                    .addOnCompleteListener { signInTask ->
+                        if (signInTask.isSuccessful && signInTask.result != null) {
+                            FirebaseAuth.getInstance().currentUser.getIdToken(true)
+                                .addOnCompleteListener { idTokenTask ->
+                                    if (idTokenTask.isSuccessful && idTokenTask.result?.token != null) {
+                                        continuation.resume(Result.Success(idTokenTask.result?.token!!))
+                                    } else {
+                                        continuation.resume(Result.Failure(Exception("idTokenTask is failed")))
+                                    }
                                 }
-                            } else {
-                                continuation.resume(Result.Failure(it.exception ?: IllegalStateException()))
-                            }
+                        } else {
+                            continuation.resume(Result.Failure(signInTask.exception ?:IllegalStateException()))
                         }
+                    }
             }
-        }
+        }//TODO 要リファクタリング
 
     override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){
@@ -279,8 +291,6 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
-
-
 
     companion object {
         private const val  LIMIT = 50L

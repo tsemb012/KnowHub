@@ -8,7 +8,9 @@ import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.StorageReference
 
-interface FireStoreRepository {
+interface FirebaseRepository {
+
+    suspend fun signUp(email: String, password: String): Result<String>
 
     suspend fun getGroups(query: String): Result<List<Group>>
 
