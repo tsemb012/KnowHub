@@ -94,16 +94,14 @@ class HomeFragment: Fragment() {
                         }
                     })
                 }
-                else -> {
-                    startSignIn()
+                HomeViewModel.AuthenticationState.UNAUTHENTICATED -> {
+                    backToWelcome()
                 }
             }
         })
     }
 
-    private fun startSignIn() { //TODO ここを書き換える。
-        navigate(Screen.Welcome, Screen.Home)
-    }
+    private fun backToWelcome() { navigate(Screen.Welcome, Screen.Home) }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)

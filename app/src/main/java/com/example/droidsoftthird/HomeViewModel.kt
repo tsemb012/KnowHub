@@ -14,7 +14,7 @@ class HomeViewModel @Inject constructor(private val repository: BaseRepositoryIm
 
 
     enum class AuthenticationState {
-        AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
+        AUTHENTICATED, UNAUTHENTICATED
     }
 
 
