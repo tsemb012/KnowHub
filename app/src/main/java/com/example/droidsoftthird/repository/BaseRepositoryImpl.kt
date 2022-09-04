@@ -45,6 +45,12 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun clearTokenId() {
+        dataStore.edit { preferences ->
+            preferences.remove(stringPreferencesKey(TOKEN_ID_KEY))
+        }
+    }
+
     override suspend fun postNewUser(signup: SignUpJson): User? =
         mainApi.postNewUser(PostSignUp.Request(signup)).body()?.toEntity()
         //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。

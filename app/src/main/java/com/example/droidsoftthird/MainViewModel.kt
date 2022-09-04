@@ -51,4 +51,10 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
             }
         }
     }
+
+    fun clearTokenCache() {
+        viewModelScope.launch {
+            repository.clearTokenId()
+        }
+    }
 }
