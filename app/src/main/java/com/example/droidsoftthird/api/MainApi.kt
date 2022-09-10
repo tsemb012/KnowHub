@@ -9,7 +9,7 @@ interface MainApi {
 
     @GET("signup")
     suspend fun postTokenId(
-            @Query("token_id") token: String
+            @HeaderMap headers: Map<String, String>,
     ) : Response<Any>
 
     @POST("users")
