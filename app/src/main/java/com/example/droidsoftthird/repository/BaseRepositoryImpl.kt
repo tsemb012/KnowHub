@@ -57,7 +57,11 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
-    suspend fun certifyTokenId(data: String) { mainApi.postTokenId(data).body()?.toString() }
+    suspend fun certifyTokenId(tokenID: String) {
+        mapOf("Authorization" to "Bearer $tokenID").let {
+            mainApi.postTokenId(it)
+        }
+    }
 
     override suspend fun signUp(email: String, password: String) : Result<String> =
         withContext(Dispatchers.IO) {

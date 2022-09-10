@@ -22,10 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment: Fragment() {
 
-    companion object {
-        const val RC_RESIGN_IN = 9002
-    }
-
     private lateinit var binding: FragmentHomeBinding;
     private lateinit var navController: NavController
     private val viewModel:HomeViewModel by viewModels()
@@ -89,8 +85,8 @@ class HomeFragment: Fragment() {
                             //TODO ユーザープロフィールの処理についてどうするか検討する。
                             //TODO データクラスごとひとまとめにして、nullを作らない方針の方がよくない？
                             //AuthUI.getInstance().signOut(requireActivity())
-                            //navigate(Screen.Welcome, Screen.Home)
-                            navController.navigate(R.id.createProfileFragment)
+                            navigate(Screen.Welcome, Screen.Home)
+                            //navController.navigate(R.id.createProfileFragment)
                         }
                     })
                 }

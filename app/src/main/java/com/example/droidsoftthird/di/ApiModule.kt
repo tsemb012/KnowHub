@@ -1,14 +1,23 @@
 package com.example.droidsoftthird.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
+import com.example.droidsoftthird.repository.DataStoreRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -19,8 +28,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ApiModule {
 
-    /*TODO インターセプターでトークンを入れるようにする。*/
-/*    @Provides
+    @Provides
     @Singleton
     fun provideHeaderInterceptor(dataStore: DataStore<Preferences>) : HeaderInterceptor {
         return HeaderInterceptor(dataStore)
@@ -28,33 +36,23 @@ class ApiModule {
 
     class HeaderInterceptor(val dataStore: DataStore<Preferences>) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response = chain.run {
-            val requestBuilder = request().newBuilder()
-                .addHeader("Accept", "application/json")
-                .addHeader("deviceplatform", "android")
-                .addHeader("User-Agent", "DroidSoftThird")
-            val flow = dataStore.data.map { preferences ->
-                preferences[stringPreferencesKey(DataStoreRepository.TOKEN_ID_KEY)]
+            val token = runBlocking {
+                dataStore.data.map { preferences ->
+                    preferences[stringPreferencesKey("token")]
+                }.first()
             }
-            var tokenA: String? = null
-            runBlocking {
-                flow.collect { token -> tokenA = token }
-                proceed(//TODO DataStoreの値を入れる。Interceptorの書き方が汚いので綺麗にする。
-                    if (tokenA != null) {
-                        requestBuilder.addHeader("Authorization", "Bearer $tokenA")
-                    } else {
-                        requestBuilder
-                    }
-                        .build()
-                )
-            }
+            val request = request().newBuilder().apply {
+                if (!token.isNullOrBlank()) addHeader("Authorization", "Bearer $token")
+            }.build()
+            proceed(request)
         }
-    }*/
+    }
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {//interceptor: HeaderInterceptor
+    fun provideOkHttpClient(interceptor: HeaderInterceptor): OkHttpClient {//clientがhttpリクエストを受けたり、おくっったりする。
         return OkHttpClient.Builder()
-            //.addInterceptor(interceptor)
+            .addInterceptor(interceptor)
             .connectTimeout(40, TimeUnit.SECONDS)
             .readTimeout(40, TimeUnit.SECONDS)
             .writeTimeout(40, TimeUnit.SECONDS)
@@ -70,7 +68,7 @@ class ApiModule {
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-    }//TODO サーバーとパスワードやりとりをする方法を調べる。
+    }
 
     @Provides
     @Singleton
