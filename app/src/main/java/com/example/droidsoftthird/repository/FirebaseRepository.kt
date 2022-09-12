@@ -16,8 +16,6 @@ interface FirebaseRepository {
 
     suspend fun getGroup(groupId: String): Result<Group?>
 
-    suspend fun createGroup(group: Group): Result<Int>
-
     suspend fun uploadPhoto(uri: Uri): Result<StorageReference>
 
     suspend fun getUserProfile(): Result<UserProfile?>
