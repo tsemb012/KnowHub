@@ -34,7 +34,8 @@ class LeaningFrequencyDialogFragment:DialogFragment() {
                             dialogNext.arguments = args
                             dialogNext.show(parentFragmentManager, "activity_area_next")
                         } else {
-                            viewModel.postFrequency(getString(R.string.everyday))
+                            viewModel.postBasis(getString(R.string.everyday))
+                            viewModel.postFrequency(-1)
                         }
                     })
                 .setNeutralButton(R.string.cancel, DialogInterface.OnClickListener { dialog, which -> Unit}

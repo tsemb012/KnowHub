@@ -44,7 +44,7 @@ class LeaningFrequencyDialogFragmentNext:DialogFragment() {
                 .setPositiveButton(R.string.done,
                     DialogInterface.OnClickListener { _, _ ->
                         viewModel.postBasis(tv.text.toString())
-                        viewModel.postFrequency(np.value.toString())
+                        viewModel.postFrequency(np.value)
                     }).setNeutralButton(R.string.cancel,
                     DialogInterface.OnClickListener { _, _ -> Unit})
                 .setView(view)
