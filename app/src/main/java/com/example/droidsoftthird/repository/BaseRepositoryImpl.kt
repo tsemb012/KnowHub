@@ -151,23 +151,8 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createGroup(group: Group): Result<Int> {
-        val groupRef = fireStore.collection("groups").document()
-        return withContext(Dispatchers.IO){
-            suspendCoroutine { continuation ->
-                fireStore.runBatch { batch ->
-                    batch.set(groupRef,group)
-                    batch.update(groupRef,"members",FieldValue.arrayUnion(userId))
-                }.addOnSuccessListener {
-                    try {
-                        continuation.resume(Result.Success(R.string.upload_success))
-                    } catch (e: Exception) {
-                        continuation.resume(Result.Failure(e))
-                    }
-                }.addOnFailureListener { continuation.resume(Result.Failure(it)) }
-            }
-        }
-    }
+    override suspend fun createGroup(group: Group): String? =
+        mainApi.createGroup(group.toJson()).body()?.message
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
