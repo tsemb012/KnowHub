@@ -88,10 +88,10 @@ fun TextView.bindArea(prefecture: String, city: String){
 }
 
 @BindingAdapter("basis", "frequency")
-fun TextView.bindBasisFrequency(basis: String, frequency: String){
-    text = if (basis == resources.getString(R.string.no_set) && frequency == resources.getString(R.string.no_set)) {
+fun TextView.bindBasisFrequency(basis: String, frequency: Int){
+    text = if (basis == resources.getString(R.string.no_set) && frequency == -1) {
         resources.getString(R.string.no_set)
-    }else if(frequency == resources.getString(R.string.everyday)) {
+    }else if(frequency == 0) {
         resources.getString(R.string.everyday)
     }else {
         String.format("%s%s回", basis, frequency)
