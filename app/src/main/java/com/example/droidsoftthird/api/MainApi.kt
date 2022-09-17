@@ -18,5 +18,5 @@ interface MainApi {
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
 
     @POST("groups")
-    suspend fun createGroup(@Body request: PostGroup.Request): Response<MessageResponse>
+    suspend fun createGroup(@Body request: PostGroup): Response<MessageResponse>
 }
