@@ -20,7 +20,6 @@ import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.example.droidsoftthird.databinding.NavHeaderBinding
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint//has to be on MainActivity
 class MainActivity : AppCompatActivity() {
@@ -139,6 +138,8 @@ class MainActivity : AppCompatActivity() {
     private fun signOut() {
         binding.drawerLayout.close()
         AuthUI.getInstance().signOut(this)
+        val action = HomeFragmentDirections.actionHomeFragmentToWelcomeFragment()//TODO Navigationのコードを綺麗にする
+        navController.navigate(action)
     }
 
     override fun onSupportNavigateUp(): Boolean {
