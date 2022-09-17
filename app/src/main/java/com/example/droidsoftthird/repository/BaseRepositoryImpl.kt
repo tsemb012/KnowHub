@@ -11,6 +11,7 @@ import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.model.json.SignUpJson
 import com.example.droidsoftthird.model.json.toEntity
+import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.model.request.PostSignUp
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.firebase.auth.FirebaseAuth
@@ -151,7 +152,7 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createGroup(group: Group): String? =
+    override suspend fun createGroup(group: ApiGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
