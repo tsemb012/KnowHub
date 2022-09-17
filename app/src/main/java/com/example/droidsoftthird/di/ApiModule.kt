@@ -18,6 +18,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -38,7 +39,7 @@ class ApiModule {
         override fun intercept(chain: Interceptor.Chain): Response = chain.run {
             val token = runBlocking {
                 dataStore.data.map { preferences ->
-                    preferences[stringPreferencesKey("token")]
+                    preferences[stringPreferencesKey(TOKEN_ID_KEY)]
                 }.first()
             }
             val request = request().newBuilder().apply {
@@ -56,17 +57,23 @@ class ApiModule {
             .connectTimeout(40, TimeUnit.SECONDS)
             .readTimeout(40, TimeUnit.SECONDS)
             .writeTimeout(40, TimeUnit.SECONDS)
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+
     @Singleton
     @Provides
-    fun providerRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        val contentType = "application/json".toMediaType()
+    fun providerRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
 
@@ -74,11 +81,8 @@ class ApiModule {
     @Singleton
     fun provideMainApi(retrofit: Retrofit): MainApi = retrofit.create(MainApi::class.java)
 
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-
     companion object {
         private const val BASE_URL = "http://10.0.2.2:3000/"
+        private const val TOKEN_ID_KEY = "token_id_key"
     }
 }
