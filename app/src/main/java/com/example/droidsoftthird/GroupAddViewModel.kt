@@ -4,6 +4,7 @@ package com.example.droidsoftthird
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.fire_model.Group
+import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -133,11 +134,11 @@ class GroupAddViewModel @Inject constructor(private val repository: BaseReposito
         activateProgressBar()
         viewModelScope.launch {
             if(imageUri.value != null) {//TODO 画像の処理の仕方を再検討する。
-                async{ repository.uploadPhoto(imageUri.value!!) }.await().also {
+                async{ repository.uploadPhoto(imageUri.value!!) }.await().also { it ->
                     when(it){
                         is Result.Success -> {
                             val storageRef = it.data.path.plus(IMAGE_SIZE)//FirebaseExtinctionで画像加工及びファイル名を変更ししているため、ファイル名を修正する。
-                            val group = Group(
+                            val group = ApiGroup(
                                 FirebaseAuth.getInstance().uid ?: throw IllegalStateException(),
                                 storageRef,
                                 groupName.value.toString(),
@@ -156,7 +157,7 @@ class GroupAddViewModel @Inject constructor(private val repository: BaseReposito
                             )
                             runCatching { repository.createGroup(group) }
                                 .onSuccess { onHomeClicked() }
-                                .onFailure { TODO("エラー処理を実装する") }
+                                .onFailure { throw it }
                         }
                         is Result.Failure -> { TODO("アップロード失敗時の処理を記述する。") }
                     }
