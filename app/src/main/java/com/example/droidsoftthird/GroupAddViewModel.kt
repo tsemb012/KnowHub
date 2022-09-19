@@ -3,7 +3,6 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.fire_model.Group
 import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
@@ -139,6 +138,7 @@ class GroupAddViewModel @Inject constructor(private val repository: BaseReposito
                         is Result.Success -> {
                             val storageRef = it.data.path.plus(IMAGE_SIZE)//FirebaseExtinctionで画像加工及びファイル名を変更ししているため、ファイル名を修正する。
                             val group = ApiGroup(
+                                null,
                                 FirebaseAuth.getInstance().uid ?: throw IllegalStateException(),
                                 storageRef,
                                 groupName.value.toString(),

@@ -58,10 +58,11 @@ class MyPageFragment: Fragment() {
 
         viewModel.getMyGroups()
 
-        viewModel.groups.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.groups.observe(viewLifecycleOwner) {
             it.let {
-                adapter.submitList(it) }
-        })
+                //adapter.submitList(it)
+            }
+        }
 
 
         viewModel.navigateToChatRoom.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupInfo ->
