@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.FragmentPagerRecommendBinding
-import com.example.droidsoftthird.utils.EndlessScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint//Enable this class to receive dependency from Hilt
@@ -60,21 +58,22 @@ class RecommendPagerFragment:Fragment() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.initialize()
         }
-        binding.groupList.addOnScrollListener(object : EndlessScrollListener(manager) {
+/*        binding.groupList.addOnScrollListener(object : EndlessScrollListener(manager) {
             override fun onLoadMore(currentPage: Int) {
                 viewModel.loadMore(currentPage)
             }
             //TODO 正しく数字がインクリメントされているか。
             //TODO EndressScrollListenerの内部保存された変数をどうやって初期化するのか？　→　他のリスナーを参考にした方が良いのでは？
-        })
-        /*binding.groupList.addOnScrollListener(object:  RecyclerView.OnScrollListener(){
+        })*/
+        binding.groupList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.fetchNextPage()
+                if(!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE){
+                    viewModel.loadMore(0)
                 }
             }
-        })*/
+        })
+
         //TODO swipeRefreshLayoutで不足していたら、ConstraintLayoutを追加する。
 
         //TODO 最下部まで行ったら、再度値を取得するように

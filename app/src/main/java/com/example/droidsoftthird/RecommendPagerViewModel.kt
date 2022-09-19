@@ -8,7 +8,6 @@ import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +25,7 @@ class RecommendPagerViewModel @Inject constructor(private val repository: BaseRe
             }.onSuccess {
                 _groups.postValue(it)
             }.onFailure {
-                Result.Failure(Exception("Network request failed"))
+                throw it
             }
         }
     }
