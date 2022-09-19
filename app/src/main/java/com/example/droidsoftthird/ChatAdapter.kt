@@ -34,11 +34,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.ChatAdapter.Companion.messageList
 import com.example.droidsoftthird.databinding.*
-import com.example.droidsoftthird.model.*
+import com.example.droidsoftthird.model.fire_model.*
 import com.example.droidsoftthird.utils.AuthUtil
 import com.example.droidsoftthird.utils.UpdateRecycleItemEvent
-import com.google.common.eventbus.EventBus
-import timber.log.Timber
 import java.io.IOException
 import kotlin.properties.Delegates
 

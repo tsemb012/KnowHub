@@ -9,13 +9,21 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
 
     defaultConfig {
         applicationId "com.example.droidsoftthird"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -29,16 +37,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        checkDependencies true
+    }
+
     compileOptions {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
         // Sets Java compatibility to Java 8
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "11"
     }
+
 
     dataBinding {
         enabled true//NOTE DataBindingの有効化
@@ -48,28 +62,28 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    testImplementation 'junit:junit:4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //-----androidx
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.annotation:annotation:1.3.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    def nav_version = "2.3.2"
+    def nav_version = '2.3.5'
     // Java language implementation
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
 
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -82,14 +96,14 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // Jetpack Compose Integration
-    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    implementation 'androidx.navigation:navigation-compose:2.4.0-beta02'
 
     //-----FireBase
-    implementation 'com.google.firebase:firebase-firestore:22.0.0'
+    implementation 'com.google.firebase:firebase-firestore:24.0.0'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-storage:19.2.1'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics'
@@ -97,14 +111,14 @@ dependencies {
 
     //-----Viewpager2の依存関係
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation "com.google.android.material:material:1.1.0-beta01"
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
 
     //-----CardView
     implementation "androidx.cardview:cardview:1.0.0"
 
     //-----Fragment KTX
-    implementation "androidx.fragment:fragment-ktx:1.3.3"
+    implementation 'androidx.fragment:fragment-ktx:1.4.0'
 
     //-----Glide
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
@@ -112,13 +126,53 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     //-----Hilt
-    //implementation "com.google.dagger:hilt-android:$hilt_version"//最新のHiltはAssistedInjection非対応
-    //kapt "com.google.dagger:hilt-android-compiler:$hilt_version"//パラメーターの渡し方が確立されるまでDagger2.31を使用。
-    implementation 'com.google.dagger:hilt-android:2.31-alpha'
-    kapt 'com.google.dagger:hilt-android-compiler:2.31-alpha'
-    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
+    def hilt_version = '2.38.1'
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.43.1'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.43.1'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.43.1'
+    kaptTest 'com.google.dagger:hilt-compiler:2.43.1'
+
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
     kaptAndroidTest 'com.squareup.inject:assisted-inject-processor-dagger2:0.6.0'
+
+    //-----Retrofit
+    def retrofit_version = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+
+    //-----Moshi
+    def moshi_version = '1.13.0'
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+    //-----OkHttp
+    def okhttp_version = '4.10.0'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    //-----JetpackCompose
+    def jetpack_compose_version = '1.1.1'
+    implementation "androidx.compose.ui:ui:$jetpack_compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$jetpack_compose_version"
+    implementation "androidx.compose.foundation:foundation:$jetpack_compose_version"
+    implementation "androidx.compose.material:material:$jetpack_compose_version"
+    implementation "androidx.compose.material:material-icons-core:$jetpack_compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$jetpack_compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$jetpack_compose_version"
+    implementation "androidx.compose.runtime:runtime-rxjava2:$jetpack_compose_version"
+    implementation "androidx.activity:activity-compose:1.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+
+    //----- Preferences DataStore (SharedPreferences like APIs)
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore:1.0.0"
 
     //-----Room
     //implementation "androidx.room:room-ktx:$room_version"
@@ -146,7 +200,7 @@ dependencies {
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.0'
 
     //-----Maps SDK for Android
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
 
     //-----Maps Utils for Android
     implementation 'com.google.maps.android:android-maps-utils:1.1.0'
@@ -160,5 +214,13 @@ dependencies {
     //-----DataBinding-ktx
     implementation 'com.github.wada811:DataBinding-ktx:5.0.0'
 
+    //-----MaterialDateTimeDialog
+    implementation 'com.afollestad.material-dialogs:datetime:3.2.1'
+
+    //-----MaterialDateLifeCycle
+    implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0'
+
+    //-----SwipeRefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
 }

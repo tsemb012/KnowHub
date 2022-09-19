@@ -1,15 +1,12 @@
 package com.example.droidsoftthird
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
-import com.example.droidsoftthird.extentions.gs
-import com.example.droidsoftthird.model.Group
-import com.example.droidsoftthird.model.ScheduleEvent
+import com.example.droidsoftthird.model.fire_model.ScheduleEvent
 
 class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ScheduleEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
     //TODO Hiltで関数をインジェクトする。

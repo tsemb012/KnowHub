@@ -1,19 +1,21 @@
 package com.example.droidsoftthird
 
 import android.net.Uri
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.UserProfile
+import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class ProfileCreateViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+@HiltViewModel
+class ProfileCreateViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _userImageUri = MutableLiveData<Uri>(null)
     val userImageUri: LiveData<Uri>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.droidsoftthird.ScheduleCreateViewModel" />
+    </data>
+
+<FrameLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_group_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/primary_base_yellow"
+        style="@style/AppTheme">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/event_name_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:errorEnabled="true"
+            app:hintEnabled="true"
+            app:hintAnimationEnabled="true"
+            android:layout_marginTop="25dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.eventName}"
+                android:hint="@string/schedule_event_name_hint"
+                android:inputType="text"
+                android:background="@drawable/radius_rectangular_prime_base_yellow"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            app:errorEnabled="true"
+            app:hintEnabled="true"
+            app:hintAnimationEnabled="true"
+            android:layout_marginTop="5dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/event_comment"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="@={viewModel.eventComment}"
+                android:hint="@string/schedule_event_comment_hint"
+                android:inputType="text"
+                android:background="@drawable/radius_rectangular_prime_base_yellow"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include
+            android:id="@+id/include_schedule_create_date"
+            layout="@layout/include_item_schedule_create"
+            bind:title="@{@string/schedule_create_date}"
+            bind:drawable="@{@drawable/ic_baseline_date_range_24}"
+            bind:text="@{viewModel.eventDate}"
+            android:clickable="true"
+            />
+        <include
+            android:id="@+id/include_schedule_create_time"
+            layout="@layout/include_item_schedule_create"
+            bind:title="@{@string/schedule_create_time}"
+            bind:drawable="@{@drawable/ic_baseline_access_time_24}"
+            bind:text="@{viewModel.eventTime}"
+            />
+        <include
+            android:id="@+id/include_schedule_create_location"
+            layout="@layout/include_item_schedule_create"
+            bind:title="@{@string/schedule_create_location}"
+            bind:drawable="@{@drawable/ic_baseline_location_on_24}"
+            bind:text="@{viewModel.eventLocation}"
+            />
+        <include
+            android:id="@+id/include_schedule_create_group"
+            layout="@layout/include_item_schedule_create"
+            bind:title="@{@string/schedule_create_group}"
+            bind:drawable="@{@drawable/ic_baseline_group_24}"
+            bind:text="@{viewModel.eventGroup}"
+            />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/floating_button_elevation"
+        android:outlineSpotShadowColor="@color/primary_accent_purple"
+        android:backgroundTint="@color/primary_accent_purple"
+        app:srcCompat="@drawable/ic_baseline_add_circle_24"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="@dimen/floating_button_margin"/>
+
+</FrameLayout>
+
+
+</layout>

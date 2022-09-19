@@ -24,14 +24,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.databinding.ChatRoomFragmentBinding
-import com.example.droidsoftthird.model.*
+import com.example.droidsoftthird.model.fire_model.*
 import com.example.droidsoftthird.utils.UpdateRecycleItemEvent
 import com.example.droidsoftthird.utils.showSnackbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -45,7 +43,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.PermissionListener
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.stfalcon.imageviewer.loader.ImageLoader
-import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -147,7 +144,8 @@ class ChatRoomFragment : Fragment() {
 
         viewModel.navigationToVideo.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
-                ChatRoomFragmentDirections.actionChatRoomFragmentToVideoFragment(groupId))
+                ChatRoomFragmentDirections.actionChatRoomFragmentToVideoFragment(/*groupId*/)
+            )
         })
 
         viewModel.showBottomSheet.observe(viewLifecycleOwner,EventObserver{
