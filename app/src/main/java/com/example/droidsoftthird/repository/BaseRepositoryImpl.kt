@@ -155,6 +155,9 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createGroup(group: ApiGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
+    override suspend fun fetchGroups(nextPage: Int) : List<ApiGroup> =
+        mainApi.fetchGroups(nextPage).body()?.map { it.toEntity() } ?: listOf()
+
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->

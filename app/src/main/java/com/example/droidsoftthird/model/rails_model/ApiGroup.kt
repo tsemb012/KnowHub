@@ -3,6 +3,7 @@ package com.example.droidsoftthird.model.rails_model
 import com.example.droidsoftthird.model.request.PostGroup
 
 data class ApiGroup (//TODO もしかしたあtoJsonにする必要はないかもしれない
+    val groupId: String?,
     val hostUserId: String,
     val storageRef: String,
     val groupName: String,
@@ -24,7 +25,7 @@ data class ApiGroup (//TODO もしかしたあtoJsonにする必要はないか�
                 hostId = hostUserId,
                 name = groupName,
                 introduction = groupIntroduction,
-                type = groupType,
+                groupType = groupType,
                 prefecture = prefecture,
                 city = city,
                 facilityEnvironment = facilityEnvironment,

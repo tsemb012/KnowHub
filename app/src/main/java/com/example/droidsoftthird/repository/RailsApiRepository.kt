@@ -10,5 +10,6 @@ interface RailsApiRepository {
     suspend fun postNewUser(singup: SignUpJson): User?
 
     suspend fun createGroup(group: ApiGroup): String?
+    suspend fun fetchGroups(nextPage: Int) : List<ApiGroup>
 
 }
