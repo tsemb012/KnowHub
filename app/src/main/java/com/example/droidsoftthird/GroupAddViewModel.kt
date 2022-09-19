@@ -2,33 +2,28 @@ package com.example.droidsoftthird
 
 
 import android.net.Uri
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.Group
+import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.IllegalStateException
+import javax.inject.Inject
 
-
-class GroupAddViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+@HiltViewModel
+class GroupAddViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
-    //TODO より良いUIを検討する。
-
-
-
     private val _imageUri = MutableLiveData<Uri>(null)
     val imageUri: LiveData<Uri>
         get() = _imageUri
 
     var groupName = MutableLiveData<String>()
-    //R.string.please_input_group_name
 
-    val groupIntroduction =
-        MutableLiveData<String>()
-    //R.string.please_input_group_introduction.toString()
+    val groupIntroduction = MutableLiveData<String>()
 
     private val _groupType = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val groupType: LiveData<String>
@@ -50,8 +45,8 @@ class GroupAddViewModel @ViewModelInject constructor(private val repository: Bas
     val basis: LiveData<String>
         get() = _basis
 
-    private val _frequency = MutableLiveData<String>("未設定")//R.string.no_set.toString()
-    val frequency: LiveData<String>
+    private val _frequency = MutableLiveData<Int>(-1)//R.string.no_set.toString()
+    val frequency: LiveData<Int>
         get() = _frequency
 
     private val _minAge = MutableLiveData<Int>(-1)
@@ -110,13 +105,12 @@ class GroupAddViewModel @ViewModelInject constructor(private val repository: Bas
         _basis.postValue(s)
     }
 
-    fun postFrequency(s: String) {
-        _frequency.postValue(s)
+    fun postFrequency(i: Int) {
+        _frequency.postValue(i)
     }
 
     fun postMinAge(i: Int) {
         _minAge.postValue(i)
-
     }
 
     fun postMaxAge(i: Int) {
@@ -135,20 +129,17 @@ class GroupAddViewModel @ViewModelInject constructor(private val repository: Bas
         _isChecked.postValue(boolean)
     }
 
-
-
-
     fun createGroup() {
-        //DONE DroidSecondのuploadFromUriを用いて、Repository経由でアップロード処理を行う。
         activateProgressBar()
         viewModelScope.launch {
-            if(imageUri.value != null) {
-                async{repository.uploadPhoto(imageUri.value!!)}.await().also {
+            if(imageUri.value != null) {//TODO 画像の処理の仕方を再検討する。
+                async{ repository.uploadPhoto(imageUri.value!!) }.await().also { it ->
                     when(it){
                         is Result.Success -> {
                             val storageRef = it.data.path.plus(IMAGE_SIZE)//FirebaseExtinctionで画像加工及びファイル名を変更ししているため、ファイル名を修正する。
-                            val group = Group(
-                                FirebaseAuth.getInstance().uid,
+                            val group = ApiGroup(
+                                null,
+                                FirebaseAuth.getInstance().uid ?: throw IllegalStateException(),
                                 storageRef,
                                 groupName.value.toString(),
                                 groupIntroduction.value.toString(),
@@ -157,25 +148,21 @@ class GroupAddViewModel @ViewModelInject constructor(private val repository: Bas
                                 city.value.toString(),
                                 facilityEnvironment.value.toString(),
                                 basis.value.toString(),
-                                frequency.value.toString(),
+                                frequency.value!!,
                                 minAge.value!!,
                                 maxAge.value!!,
                                 minNumberPerson.value!!,
                                 maxNumberPerson.value!!,
                                 isChecked.value!!
                             )
-                            val result:Result<Int> = repository.createGroup(group)
-                            when(result){
-                              is Result.Success ->  {onHomeClicked()}//TODO アップロード成功時の処理を記述する。
-                              //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
-                            }
-
+                            runCatching { repository.createGroup(group) }
+                                .onSuccess { onHomeClicked() }
+                                .onFailure { throw it }
                         }
-                    //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                        is Result.Failure -> { TODO("アップロード失敗時の処理を記述する。") }
                     }
                 }
-            }else{//TODO 画像がNullだった場合の対処法も考える。
-            }
+            }else{ TODO("画像処理がNullだった場合の処理を検討する。") }
         }
     }
 

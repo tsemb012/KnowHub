@@ -1,14 +1,16 @@
 package com.example.droidsoftthird
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.UserProfile
+import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
     private val _userProfile = MutableLiveData<UserProfile?>()
     val userProfile: LiveData<UserProfile?>
@@ -41,13 +43,18 @@ class MainViewModel @ViewModelInject constructor(private val repository: BaseRep
                 is Result.Success -> {
                     result.data?.let {
                         _userProfile.postValue(result.data)
-                        Timber.tag("check_").d(_userProfile.postValue(result.data).toString())
                     } ?: run {
                         _userProfile.postValue(null)
                     }
                 }
                 is Result.Failure -> Timber.d("error at ${this@MainViewModel}")
             }
+        }
+    }
+
+    fun clearTokenCache() {
+        viewModelScope.launch {
+            repository.clearTokenId()
         }
     }
 }

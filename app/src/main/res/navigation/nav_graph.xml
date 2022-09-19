@@ -10,6 +10,27 @@
         android:name="com.example.droidsoftthird.MainActivity"
         android:label="MainActivity" />
     <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.droidsoftthird.ui.entrance.fragment.WelcomeFragment"
+        android:label="Welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.droidsoftthird.ui.entrance.fragment.SignInFragment"
+        android:label="Sign in">
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.droidsoftthird.ui.entrance.fragment.SignUpFragment"
+        android:label="Sign in">
+    </fragment>
+    <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.droidsoftthird.HomeFragment"
         android:label="HomeFragment" >
@@ -25,6 +46,9 @@
         <action
             android:id="@+id/action_homeFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
@@ -84,7 +108,7 @@
             app:destination="@id/scheduleCreateFragment" />
     </fragment>
 
-    <fragment
+<!--    <fragment
         android:id="@+id/videoFragment"
         android:name="com.example.droidsoftthird.VideoFragment"
         android:label="VideoFragment" >
@@ -92,6 +116,13 @@
             android:name="groupId"
             app:argType="string" />
     </fragment>
+    -->
+    <!--TODO 一時的にVideoからLoginにつなぐ-->
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.droidsoftthird.view.login.JetpackComposeFragment"
+        android:label="LoginFragment" />
+
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.example.droidsoftthird.ChatRoomFragment"

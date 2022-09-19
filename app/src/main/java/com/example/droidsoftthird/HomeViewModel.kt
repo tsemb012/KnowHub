@@ -1,18 +1,20 @@
 package com.example.droidsoftthird
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.UserProfile
+import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class HomeViewModel @ViewModelInject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
 
 
     enum class AuthenticationState {
-        AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
+        AUTHENTICATED, UNAUTHENTICATED
     }
 
 

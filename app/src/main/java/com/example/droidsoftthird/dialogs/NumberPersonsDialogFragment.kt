@@ -19,8 +19,7 @@ class NumberPersonsDialogFragment:DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val inflater = requireActivity().layoutInflater
-        val view: View = inflater.inflate(R.layout.dialog_number_persons, null, false)
+        val view: View = layoutInflater.inflate(R.layout.dialog_number_persons, null, false)
         val rs:RangeSlider = view.findViewById(R.id.rangeSlider_person)
 
         rs.stepSize = 1f
@@ -52,7 +51,6 @@ class NumberPersonsDialogFragment:DialogFragment() {
                 .setView(view)
                 .create()
         } ?: throw IllegalStateException("Activity cannot be null")
-
     }
 
 }

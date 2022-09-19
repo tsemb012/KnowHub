@@ -20,7 +20,6 @@ import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.example.droidsoftthird.databinding.NavHeaderBinding
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint//has to be on MainActivity
 class MainActivity : AppCompatActivity() {
@@ -30,8 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel:MainViewModel by viewModels()
     private val binding:ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
     private lateinit var navHeaderBinding: NavHeaderBinding;
-    
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater,R.layout.nav_header,binding.navView,false)
         binding.navView.addHeaderView(navHeaderBinding.root)
 
-
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -54,6 +50,12 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController,appBarConfiguration)//特定のフラグメントのみUpアイコンを表示させない。
         navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
             when(navDestination.id){
+                R.id.welcomeFragment,
+                R.id.signUpFragment,
+                R.id.signInFragment -> {
+                    binding.bottomNav.visibility = View.GONE
+                    binding.toolbar.visibility = View.GONE
+                }
                 R.id.createProfileFragment -> {
                     binding.toolbar.title = getString(R.string.input_profile)
                     binding.bottomNav.visibility = View.GONE
@@ -68,7 +70,6 @@ class MainActivity : AppCompatActivity() {
                     viewModel.authenticationState.observe(this, Observer { authenticationState ->
                         when (authenticationState) {
                             MainViewModel.AuthenticationState.AUTHENTICATED -> {
-                                Timber.d("check flow")
                                 viewModel.getUser()
                                 viewModel.userProfile.observe(this, Observer { userProfile ->
                                     if (userProfile != null) {
@@ -76,6 +77,7 @@ class MainActivity : AppCompatActivity() {
                                     }
                                 })
                             }
+                            MainViewModel.AuthenticationState.UNAUTHENTICATED -> {  }
                         }
                     })
                 }
@@ -112,24 +114,34 @@ class MainActivity : AppCompatActivity() {
                 else -> " "
             }
         }
+
         binding.navView.setNavigationItemSelectedListener{
             if (it.itemId == R.id.log_out){
-                viewModel.clearUserProfile()
-                binding.drawerLayout.close()
-                AuthUI.getInstance().signOut(this)
-
+                clearCache()
+                signOut()
             } else {
                 //WRITE CODE FOR MENU EXCEPT FOR SIGN_OUT
             }
             return@setNavigationItemSelectedListener true
         }
+
         binding.toolbar.inflateMenu(R.menu.home)
     }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        return super.onCreateView(name, context, attrs)
-
+    private fun clearCache() {
+        viewModel.also {
+            it.clearUserProfile()
+            it.clearTokenCache()
+        }
     }
+
+    private fun signOut() {
+        binding.drawerLayout.close()
+        AuthUI.getInstance().signOut(this)
+        val action = HomeFragmentDirections.actionHomeFragmentToWelcomeFragment()//TODO Navigationのコードを綺麗にする
+        navController.navigate(action)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp()
@@ -138,9 +150,5 @@ class MainActivity : AppCompatActivity() {
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
         toolbar?.inflateMenu(R.menu.home)
-    }
-
-    companion object {
-        const val RC_SIGN_IN = 9001
     }
 }

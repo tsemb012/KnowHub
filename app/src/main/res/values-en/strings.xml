@@ -1,4 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="event_time">%d時〜%d時</string>
+
+    <string name="app_name">DroidSoftThird</string>
+    <string name="Logout">Logout</string>
+    <string name="profile_page">プロフィール画面</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="tab_1st">オススメ</string>
+    <string name="tab_2nd">スケジュール</string>
+    <string name="tab_3rd">マップ</string>
+    <string name="group_name">グループ名</string>
+    <string name="group_introduction">グループ概要(やること、目標など)</string>
+    <string name="group_detail">詳細情報</string>
+    <string name="group_type">グループタイプ</string>
+    <string name="no_set">未設定</string>
+    <string name="activity_area">活動地域</string>
+    <string name="facility_environment">利用施設/環境</string>
+    <string name="learning_frequency">学習頻度</string>
+    <string name="age_range">年齢幅</string>
+    <string name="number_persons">人数制限</string>
+    <string name="gender_restriction">同性のみ</string>
+    <string name="seminar">セミナー</string>
+    <string name="workshop">ワークショップ</string>
+    <string name="mokumoku">もくもく会</string>
+    <string name="other">その他</string>
+    <string name="Next">次へ</string>
+    <string name="done">DONE</string>
+    <string name="cancel">キャンセル</string>
+    <string name="library">図書館</string>
+    <string name="rental_space">レンタルスペース</string>
+    <string name="cafe_restaurant">カフェ・ファミレス</string>
+    <string name="study_place">有料自習室</string>
+    <string name="online">オンライン</string>
+    <string name="park">公園</string>
+    <string name="everyday">毎日</string>
+    <string name="week">週</string>
+    <string name="month">月</string>
+    <string name="on">On</string>
+    <string name="message_no_network">No network connection.</string>
+    <string name="message_unknown">Unknown error.</string>
+    <string name="title_sign_in_error">Sign In Error</string>
+    <string name="option_retry">Retry</string>
+    <string name="option_exit">Exit</string>
+    <string name="progress_uploading">Uploading..</string>
+    <string name="upload_success">アップロード完了</string>
+    <string name="upload_fail">アップロード失敗</string>
+    <string name="group_add">グループの追加</string>
+    <string name="group_added">グループを追加しました。</string>
+    <string name="nickname">ニックネーム</string>
+    <string name="gender">性別</string>
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="gender_private">非公開</string>
+    <string name="age">年齢</string>
+    <string name="residential_area">居住地域</string>
+    <string name="edit_a_comment">コメントを入力してください。</string>
+    <string name="profile_add">プロフィールを追加しました。</string>
+    <string name="editProfile">プロフィールを編集</string>
+    <string name="recommendation">おすすめ</string>
+    <string name="schedule">スケジュール</string>
+    <string name="map">マップ</string>
+    <string name="input_a_group_name">グループ名を記入してください。</string>
+    <string name="input_group_introduction">グループの紹介文を記入してください。</string>
+    <string name="register">登録</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Log_out">ログアウト</string>
+    <string name="input_a_name">名前を入力してください。</string>
+    <string name="register_profile">プロフィールを登録</string>
+    <string name="search">検索</string>
+    <string name="my_page">マイページ</string>
+    <string name="video">ビデオ</string>
+    <string name="type_a_message">メッセージを入力してください。</string>
+    <string name="send_picture">画像を送信</string>
+    <string name="send_file">ファイルを送信</string>
+    <string name="group_info">グループ情報</string>
+    <string name="audio_permission_not_available">録音機能を使用するため、アクセス権限が求められています。</string>
+    <string name="permisson_is_required">ファイルへのアクセス権限が求められています。</string>
+    <string name="audio_permission_granted">オーディオへのアクセスが許可されました。録音を開始します。</string>
+    <string name="audio_permission_denied">オーディオへのアクセスが拒否されました。</string>
+    <string name="audio_permission_available">オーディオへのアクセスが許可されています。録音を開始します。</string>
+    <string name="permisson_is_denied">permission is denied.</string>
+    <string name="test_aaa">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</string>
+    <string name="download_clicked_file_or_not">クリックしたファイルをダウンロードしますか。</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="name">名前</string>
+    <string name="self_introduction">自己紹介</string>
+    <string name="please_attach_background_image">背景画像を添付しましょう</string>
+    <string name="group_register">グループを登録</string>
+    <string name="JoinIn">参加</string>
+    <string name="confrimation">確認</string>
+    <string name="confrimation_join_group">このグループに参加しますか？</string>
+    <string name="input_profile">プロフィール入力</string>
+    <string name="group">グループ</string>
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+    <string name="schedule_registered">登録済</string>
+    <string name="schedule_proposed">保留中</string>
+    <string name="filter">フィルター</string>
+    <string name="week_mode">週表示</string>
+    <string name="on_progress">しばらくお待ちください</string>
+    <!--ScheduleGeneral-->
+
+    <!--ScheduleCreate-->
+    <string name="schedule_event_name_hint">Please input </string>
+    <string name="schedule_event_comment_hint">コメント(100字以内)</string>
+    <string name="schedule_create_date">Date</string>
+    <string name="schedule_create_time">Time</string>
+    <string name="schedule_create_location">Location</string>
+    <string name="schedule_create_group">Group</string>
+    <string name="schedule_create_date_hint">Please select an event date</string>
+    <string name="schedule_create_time_start">START TIME</string>
+    <string name="schedule_create_time_end">END TIME</string>
+
+    <!-- ログイン画面 -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_guest">SIGN IN AS GUEST</string>
+    <string name="sign_in_create_account">Sign in or create an account</string>
+    <string name="or">or</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="user_continue">CONTINUE</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="terms_and_conditions">By continuing, you agree to our Terms of Service. We’ll
+        handle your data according to our Privacy Policy.</string>
+    <string name="feature_not_available">Feature not available</string>
+    <string name="dismiss">DISMISS</string>
+    <string name="next">NEXT</string>
+    <string name="previous">PREVIOUS</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="sign_up">SignUp</string>
+
+
 </resources>

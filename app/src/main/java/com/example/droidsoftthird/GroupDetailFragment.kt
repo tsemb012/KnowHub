@@ -51,7 +51,7 @@ class GroupDetailFragment : Fragment() {
         //-----NavUI Objects
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navController = navHostFragment!!.navController
-        val appBarConfiguration = AppBarConfiguration.Builder(navController.getGraph()).build()
+        val appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
 
         //-----Setup for NavigationUI
         NavigationUI.setupWithNavController(

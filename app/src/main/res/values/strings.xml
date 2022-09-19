@@ -2,7 +2,6 @@
     <string name="app_name">DroidSoftThird</string>
     <string name="Logout">Logout</string>
     <string name="profile_page">プロフィール画面</string>
-    <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -110,4 +109,42 @@
     <string name="week_mode">週表示</string>
     <string name="on_progress">しばらくお待ちください</string>
     <string name="event_time">%d時〜%d時</string>
+
+    <!--ScheduleGeneral-->
+
+    <!--ScheduleCreate-->
+    <string name="schedule_event_name_hint">イベント名(15字以内)</string>
+    <string name="schedule_event_comment_hint">コメント(100字以内)</string>
+    <string name="schedule_create_date">日時</string>
+    <string name="schedule_create_time">時間</string>
+    <string name="schedule_create_location">場所</string>
+    <string name="schedule_create_group">グループ</string>
+    <string name="schedule_create_date_hint">イベントの日付を入力してください</string>
+    <string name="schedule_create_time_start">開始時間</string>
+    <string name="schedule_create_time_end">終了時間</string>
+
+    <!-- ログイン画面 -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_guest">SIGN IN AS GUEST</string>
+    <string name="sign_in_create_account">Sign in or create an account</string>
+    <string name="or">または</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="user_continue">CONTINUE</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="terms_and_conditions">By continuing, you agree to our Terms of Service. We’ll
+        handle your data according to our Privacy Policy.</string>
+    <string name="feature_not_available">Feature not available</string>
+    <string name="dismiss">DISMISS</string>
+    <string name="next">NEXT</string>
+    <string name="previous">PREVIOUS</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="sign_up">アカウント作成</string>
+
+
 </resources>
