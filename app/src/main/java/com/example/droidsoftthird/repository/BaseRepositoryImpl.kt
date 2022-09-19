@@ -155,8 +155,8 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createGroup(group: ApiGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
-    override suspend fun fetchGroups(nextPage: Int) : List<ApiGroup> =
-        mainApi.fetchGroups(nextPage).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroups(page: Int) : List<ApiGroup> =
+        mainApi.fetchGroups(page).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
