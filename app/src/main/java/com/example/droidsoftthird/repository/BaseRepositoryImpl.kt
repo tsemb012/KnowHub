@@ -114,22 +114,21 @@ class BaseRepositoryImpl @Inject constructor(
         }//TODO 要リファクタリング
 
     override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
-    withContext(Dispatchers.IO){
-        suspendCoroutine { continuation ->
-            fireStore.collection("groups")
-                .document(groupId)
-                .get()
-                .addOnSuccessListener {
-                    try {
-                        continuation.resume(Result.Success(it.toObject()))
-                    } catch (e: Exception) {
-                        continuation.resume(Result.Failure(e))
-                    }
+    withContext(Dispatchers.IO){suspendCoroutine { continuation ->
+        fireStore.collection("groups")
+            .document(groupId)
+            .get()
+            .addOnSuccessListener {
+                try {
+                    continuation.resume(Result.Success(it.toObject()))
+                } catch (e: Exception) {
+                    continuation.resume(Result.Failure(e))
                 }
-                .addOnFailureListener {
-                    continuation.resume(Result.Failure(it))
-                }
-        }
+            }
+            .addOnFailureListener {
+                continuation.resume(Result.Failure(it))
+            }
+    }
     }
 
 
@@ -154,6 +153,9 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun createGroup(group: ApiGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
+
+    override suspend fun fetchGroup(groupId: String): ApiGroup =
+        mainApi.fetchGroup(groupId).body()?.toEntity()!!
 
     override suspend fun fetchGroups(page: Int) : List<ApiGroup> =
         mainApi.fetchGroups(page).body()?.map { it.toEntity() } ?: listOf()
