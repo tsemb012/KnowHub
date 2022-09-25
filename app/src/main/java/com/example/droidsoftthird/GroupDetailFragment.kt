@@ -8,23 +8,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.hilt.lifecycle.ViewModelFactoryModules_ActivityModule_ProvideFactoryFactory.provideFactory
-import androidx.hilt.lifecycle.ViewModelFactoryModules_FragmentModule_ProvideFactoryFactory.provideFactory
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.droidsoftthird.databinding.FragmentGroupDetailBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
-import java.security.acl.Group
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,7 +29,7 @@ class GroupDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: FragmentGroupDetailBinding = inflate(
             inflater, R.layout.fragment_group_detail, container, false
@@ -71,13 +63,17 @@ class GroupDetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.group.observe(viewLifecycleOwner, Observer {
-            if(it?.members?.contains(FirebaseAuth.getInstance().uid) == true){
+        viewModel.groupDetail.observe(viewLifecycleOwner) {
+            val isJoined = it?.members?.map { member -> member.userId }?.contains(FirebaseAuth.getInstance().currentUser?.uid)
+            if(isJoined == true) {
                 binding.floatingBtnAdd.visibility = View.GONE
+            } else {
+                binding.floatingBtnAdd.visibility = View.VISIBLE
             }
-        })
+        }
 
-        viewModel.confirmJoin.observe(viewLifecycleOwner,EventObserver{
+
+        viewModel.confirmJoin.observe(viewLifecycleOwner, EventObserver{
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.confrimation)
                 .setMessage(R.string.confrimation_join_group)
