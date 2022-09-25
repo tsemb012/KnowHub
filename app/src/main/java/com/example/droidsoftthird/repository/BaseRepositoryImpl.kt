@@ -12,12 +12,13 @@ import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.model.json.SignUpJson
 import com.example.droidsoftthird.model.json.toEntity
 import com.example.droidsoftthird.model.rails_model.ApiGroup
+import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
 import com.example.droidsoftthird.model.request.PostSignUp
+import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -114,22 +115,21 @@ class BaseRepositoryImpl @Inject constructor(
         }//TODO 要リファクタリング
 
     override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
-    withContext(Dispatchers.IO){
-        suspendCoroutine { continuation ->
-            fireStore.collection("groups")
-                .document(groupId)
-                .get()
-                .addOnSuccessListener {
-                    try {
-                        continuation.resume(Result.Success(it.toObject()))
-                    } catch (e: Exception) {
-                        continuation.resume(Result.Failure(e))
-                    }
+    withContext(Dispatchers.IO){suspendCoroutine { continuation ->
+        fireStore.collection("groups")
+            .document(groupId)
+            .get()
+            .addOnSuccessListener {
+                try {
+                    continuation.resume(Result.Success(it.toObject()))
+                } catch (e: Exception) {
+                    continuation.resume(Result.Failure(e))
                 }
-                .addOnFailureListener {
-                    continuation.resume(Result.Failure(it))
-                }
-        }
+            }
+            .addOnFailureListener {
+                continuation.resume(Result.Failure(it))
+            }
+    }
     }
 
 
@@ -155,8 +155,26 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createGroup(group: ApiGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
+    override suspend fun fetchGroupDetail(groupId: String): ApiGroupDetail {//TODO エラーハンドリングをまとめる
+        val response = mainApi.fetchGroup(groupId)
+        if (response.isSuccessful) {
+            return response.body()?.toEntity() ?: throw Exception("response body is null")
+        } else {
+            throw Exception("fetchGroupDetail is failed")
+        }
+    }
+
     override suspend fun fetchGroups(page: Int) : List<ApiGroup> =
         mainApi.fetchGroups(page).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun userJoinGroup(groupId: String): String? {
+        val response = mainApi.putUserToGroup(groupId, PutUserToGroup(userId))
+        return if (response.isSuccessful) {
+            return response.body()?.message
+        } else {
+            throw Exception("userJoinGroup is failed")
+        }
+    }
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
@@ -220,33 +238,6 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-
-    override suspend fun userJoinGroup(groupId: String): Result<Int> {
-
-        val groupRef = fireStore.collection("groups").document(groupId)
-        return withContext(Dispatchers.IO) {
-            suspendCoroutine { continuation ->
-                fireStore.runBatch {batch ->
-
-                    batch.update(groupRef,"members",FieldValue.arrayUnion(userId))
-                    /*TODO
-                    *   1. UserIdArrayをGroupのFieldに追加し、UIDを入れる。
-                    *   2. CloudFunctionを用いて、userProfile内にGroupのフィールド情報を同期できるように設定する。
-                    *   3. CloudFunctionを用いて、group内にUserProfileのuserImageのフィールド情報を同期できるように設定する。
-                    *   */
-                }.addOnSuccessListener {
-                    try {
-                        continuation.resume(Result.Success(R.string.upload_success))
-                    } catch (e: Exception) {
-                        continuation.resume(Result.Failure(e))
-                    }
-                }
-                    .addOnFailureListener {
-                        continuation.resume(Result.Failure(it))
-                    }
-            }
-        }
-    }
 
     override suspend fun getSchedules(query: String): Result<List<RawScheduleEvent>> = getListResult(query, RawScheduleEvent::class.java)
 

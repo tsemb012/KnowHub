@@ -29,7 +29,7 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed"
                 app:toolbarId="@+id/toolbar"
-                app:title="@{viewModel.group.groupName}"
+                app:title="@{viewModel.groupDetail.groupName}"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded2"
                 >
 
@@ -42,7 +42,7 @@
                     app:layout_anchorGravity="center"
                     app:layout_collapseMode="parallax"
                     app:srcCompat="@drawable/ic_launcher_foreground"
-                    app:imageFireStorage="@{viewModel.group.storageRef}"
+                    app:imageFireStorage="@{viewModel.groupDetail.storageRef}"
                     />
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -99,7 +99,7 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="15dp"
                     android:padding="15dp"
-                    android:text="@{viewModel.group.groupIntroduction}"
+                    android:text="@{viewModel.groupDetail.groupIntroduction}"
                     android:background="@drawable/radius_rectangular_prime_base_yellow"
                     />
 
@@ -108,7 +108,7 @@
                     layout="@layout/include_item_group_detail"
                     bind:title="@{@string/group_type}"
                     bind:drawable="@{@drawable/ic_baseline_group_24}"
-                    bind:text="@{viewModel.group.groupType}"
+                    bind:text="@{viewModel.groupDetail.groupType}"
                     />
 
                 <include
@@ -123,7 +123,7 @@
                     layout="@layout/include_item_group_detail"
                     bind:title="@{@string/facility_environment}"
                     bind:drawable="@{@drawable/ic_baseline_location_city_24}"
-                    bind:text="@{viewModel.group.facilityEnvironment}"
+                    bind:text="@{viewModel.groupDetail.facilityEnvironment}"
                     />
                 <include
                     android:id="@+id/include_learning_frequency"
@@ -146,15 +146,6 @@
                     bind:drawable="@{@drawable/ic_baseline_groups_24}"
                     bind:text="@{viewModel.numberPerson}"
                     />
-                    <!--
-                    <include
-                    android:id="@+id/include_gender_restriction"
-                    layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/gender_restriction}"
-                    bind:drawable="@{@drawable/ic_baseline_wc_24}"
-                    bind:text="@{viewModel.group.groupType}"
-                    />
-                    -->
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
