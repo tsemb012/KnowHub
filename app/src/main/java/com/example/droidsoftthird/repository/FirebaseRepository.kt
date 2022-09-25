@@ -24,8 +24,6 @@ interface FirebaseRepository {
 
     suspend fun updateAuthProfile(authProfileUpdates: UserProfileChangeRequest): Result<Int>
 
-    suspend fun userJoinGroup(groupId: String): Result<Int>
-
     suspend fun getSchedules(query: String): Result<List<RawScheduleEvent>>
 
 }

@@ -1,26 +1,23 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.fire_model.Group
-import com.example.droidsoftthird.model.rails_model.ApiGroup
+import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.lang.Exception
 
 class GroupDetailViewModel @AssistedInject constructor(
     private val repository: BaseRepositoryImpl,
     @Assisted private val groupId:String,
     ):ViewModel() {
 
-    private val _group = MutableLiveData<ApiGroup?>()
-    val group: LiveData<ApiGroup?>
-        get() = _group
+    private val _groupDetail = MutableLiveData<ApiGroupDetail?>()
+    val groupDetail: LiveData<ApiGroupDetail?>
+        get() = _groupDetail
 
-    val prefectureAndCity: LiveData<String> = Transformations.map(group){ group ->
+    val prefectureAndCity: LiveData<String> = Transformations.map(groupDetail){ group ->
         if (group?.prefecture != "未設定" ) {
             "${group?.prefecture}, ${group?.city}"
         } else {
@@ -28,7 +25,7 @@ class GroupDetailViewModel @AssistedInject constructor(
         }
     }
 
-    val ageRange: LiveData<String> = Transformations.map(group) { group ->
+    val ageRange: LiveData<String> = Transformations.map(groupDetail) { group ->
 
             if (group?.minAge != -1 || group?.maxAge != -1) {
                 "${group?.minAge} ~ ${group?.maxAge}才"
@@ -37,7 +34,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             }
     }
 
-    val numberPerson: LiveData<String> = Transformations.map(group) { group ->
+    val numberPerson: LiveData<String> = Transformations.map(groupDetail) { group ->
 
             if (group?.minNumberPerson != -1 || group?.maxNumberPerson != -1) {
                 "${group?.minNumberPerson} ~ ${group?.maxNumberPerson}人"
@@ -46,7 +43,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             }
     }
 
-    val basisFrequency: LiveData<String> = Transformations.map(group){ group ->
+    val basisFrequency: LiveData<String> = Transformations.map(groupDetail){ group ->
         if (group?.basis != "未設定" ) {
             "${group?.basis}${group?.frequency}回"
         } else {
@@ -61,9 +58,9 @@ class GroupDetailViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching { repository.fetchGroup(groupId)
+            runCatching { repository.fetchGroupDetail(groupId)
             }.onSuccess {
-                _group.postValue(it)
+                _groupDetail.postValue(it)
             }.onFailure {
                 throw it
             }
@@ -72,17 +69,13 @@ class GroupDetailViewModel @AssistedInject constructor(
 
     fun userJoinGroup() {
         viewModelScope.launch {
-            _navigateToMyPage.value = " "
-            val result = try {
+            runCatching {
                 repository.userJoinGroup(groupId)
-            } catch (e: Exception) {
-                Result.Failure(Exception("Network request failed"))
-            }
-            when (result) {
-                is Result.Success -> Timber.tag(TAG.plus("1")).d(result.data.toString())
-                //TODO 成功時の処理を行う。
-                is Result.Failure ->  Timber.tag(TAG.plus("2")).d(result.exception.toString())
-                //TODO SnackBarを出現させる処理を記入する。*/
+            }.onSuccess {
+                _navigateToMyPage.value = " "
+                //TODO ユーザー追加のトーストを出す
+            }.onFailure {
+                //TODO ユーザー追加失敗のトーストを出す
             }
         }
     }
