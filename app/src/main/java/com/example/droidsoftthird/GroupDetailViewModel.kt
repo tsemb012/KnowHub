@@ -2,6 +2,7 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.fire_model.Group
+import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -15,8 +16,8 @@ class GroupDetailViewModel @AssistedInject constructor(
     @Assisted private val groupId:String,
     ):ViewModel() {
 
-    private val _group = MutableLiveData<Group?>()
-    val group: LiveData<Group?>
+    private val _group = MutableLiveData<ApiGroup?>()
+    val group: LiveData<ApiGroup?>
         get() = _group
 
     val prefectureAndCity: LiveData<String> = Transformations.map(group){ group ->
@@ -60,16 +61,12 @@ class GroupDetailViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            val result = try{
-                repository.getGroup(groupId)
-            } catch(e: Exception){
-                Result.Failure(Exception("Network request failed"))
+            runCatching { repository.fetchGroup(groupId)
+            }.onSuccess {
+                _group.postValue(it)
+            }.onFailure {
+                throw it
             }
-            when (result) {
-                is Result.Success -> _group.postValue(result.data)
-                //else //TODO SnackBarを出現させる処理を記入する。
-            }
-            Timber.tag("check_result1").d(result.toString())
         }
     }
 

@@ -22,6 +22,9 @@ interface MainApi {
     @POST("groups")
     suspend fun createGroup(@Body request: PostGroup): Response<MessageResponse>
 
+    @GET("groups/{id}")
+    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroup>
+
     @GET("groups")
     suspend fun fetchGroups(@Query("page") page: Int): Response<List<GetGroup>>
 }
