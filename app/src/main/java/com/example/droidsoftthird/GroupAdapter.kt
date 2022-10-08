@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemGroupBinding
-import com.example.droidsoftthird.model.fire_model.Group
 import com.example.droidsoftthird.model.rails_model.ApiGroup
 
 class GroupAdapter(val clickListener: GroupListener): ListAdapter<ApiGroup, GroupAdapter.ViewHolder>(GroupDiffCallback()) {

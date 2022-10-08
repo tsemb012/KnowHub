@@ -4,14 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.fire_model.Group
 import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
-import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.GROUP_MY_PAGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
