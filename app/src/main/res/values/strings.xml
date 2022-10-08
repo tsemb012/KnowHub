@@ -146,6 +146,7 @@
     <string name="hide_password">Hide password</string>
     <string name="sign_up">アカウント作成</string>
     <string name="profile">プロフィール</string>
+    <string name="edit_profile">編集</string>
 
 
 </resources>

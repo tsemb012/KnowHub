@@ -143,6 +143,7 @@
     <string name="hide_password">Hide password</string>
     <string name="sign_up">SignUp</string>
     <string name="profile">Profile</string>
+    <string name="edit_profile">Edit</string>
 
 
 </resources>
