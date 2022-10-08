@@ -27,7 +27,10 @@ interface MainApi {
     suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupDetail>
 
     @GET("groups")
-    suspend fun fetchGroups(@Query("page") page: Int): Response<List<GetGroup>>
+    suspend fun fetchGroups(
+            @Query("page") page: Int? = null,
+            @Query("user_id") userId: String? = null
+    ): Response<List<GetGroup>>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
