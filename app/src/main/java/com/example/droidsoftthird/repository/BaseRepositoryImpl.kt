@@ -164,8 +164,11 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchGroups(page: Int) : List<ApiGroup> =
-        mainApi.fetchGroups(page).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroups(page: Int) : List<ApiGroup> = //TODO ドメイン層を作り、ビジネスロジックを詰め込む必要がある。
+        mainApi.fetchGroups(page = page).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
+        mainApi.fetchGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun userJoinGroup(groupId: String): String? {
         val response = mainApi.putUserToGroup(groupId, PutUserToGroup(userId))
@@ -281,6 +284,8 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
+
+
 
     companion object {
         private const val  LIMIT = 50L
