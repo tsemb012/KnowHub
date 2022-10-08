@@ -2,7 +2,7 @@ package com.example.droidsoftthird.model.rails_model
 
 import com.example.droidsoftthird.model.request.PostGroup
 
-data class ApiGroup (//TODO もしかしたあtoJsonにする必要はないかもしれない
+data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
     val groupId: String?,
     val hostUserId: String,
     val storageRef: String,
