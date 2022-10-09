@@ -13,6 +13,7 @@ import com.example.droidsoftthird.model.json.SignUpJson
 import com.example.droidsoftthird.model.json.toEntity
 import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
+import com.example.droidsoftthird.model.rails_model.UserDetail
 import com.example.droidsoftthird.model.request.PostSignUp
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
@@ -178,6 +179,8 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("userJoinGroup is failed")
         }
     }
+
+    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){

@@ -4,6 +4,7 @@ import com.example.droidsoftthird.model.User
 import com.example.droidsoftthird.model.json.SignUpJson
 import com.example.droidsoftthird.model.rails_model.ApiGroup
 import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
+import com.example.droidsoftthird.model.rails_model.UserDetail
 
 interface RailsApiRepository {
 
@@ -14,4 +15,5 @@ interface RailsApiRepository {
     suspend fun fetchJoinedGroups() : List<ApiGroup>
 
     suspend fun userJoinGroup(groupId: String): String?
+    suspend fun fetchUser(): UserDetail
 }
