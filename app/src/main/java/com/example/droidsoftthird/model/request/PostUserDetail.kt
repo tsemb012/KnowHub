@@ -11,7 +11,7 @@ class PostUserDetail(
         @Json(name = "user_image")
         val userImage: String,
         @Json(name = "back_ground_image")
-        val backGroundImage: String,
+        val groupImage: String,
         val comment:String,
         val gender: String,
         val age: Int,

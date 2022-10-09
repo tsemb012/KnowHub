@@ -6,6 +6,7 @@ import com.example.droidsoftthird.model.request.PostSignUp
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.model.response.GetGroup
 import com.example.droidsoftthird.model.response.GetGroupDetail
+import com.example.droidsoftthird.model.response.GetUserDetail
 import com.example.droidsoftthird.model.response.MessageResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -16,6 +17,10 @@ interface MainApi {
     suspend fun postTokenId(
             @HeaderMap headers: Map<String, String>,
     ) : Response<Any>
+
+    @GET("users/{user_id}")
+    fun fetchUser(@Path("user_id") userId: String): GetUserDetail
+
 
     @POST("users")
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>

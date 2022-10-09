@@ -8,7 +8,7 @@ import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import javax.inject.Inject
 
 
-class ProfileViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase): ViewModel() {
 
     //TODO 基本的に個人情報はRailsAPIにしまう。ユーザー名とユーザー画像だけはFirebaseとRailsAPIどちらにも入れる。
 
@@ -20,9 +20,10 @@ class ProfileViewModel @Inject constructor(private val repository: BaseRepositor
     val message: LiveData<ProfileMessage?>
         get() = _message
 
+    private suspend fun fetchUserDetail() = useCase.fetchUserDetail()
 
-    private fun fetchUserDetail(){
-        //TODO ユーザー情報を取得する
+    fun toEditProfileFragment() {
+        _message.value =  TODO ("ProfileMessage.ToEditProfileFragment")
     }
 
     inner class ProfileMessage {
