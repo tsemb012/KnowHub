@@ -28,7 +28,7 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed"
                 app:toolbarId="@+id/toolbar"
-                app:title="@{viewModel.profileDetail.userName}"
+                app:title="@{viewModel.userDetail.userName}"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded2"
                 >
 
@@ -41,7 +41,7 @@
                     app:layout_anchorGravity="center"
                     app:layout_collapseMode="parallax"
                     app:srcCompat="@drawable/ic_launcher_foreground"
-                    app:imageFireStorage="@{viewModel.profileDetail.storageRef}"
+                    app:imageFireStorage="@{viewModel.userDetail.groupImage}"
                     />
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -146,8 +146,7 @@
             android:textAlignment="center"
             app:layout_anchor="@id/appbar"
             app:layout_anchorGravity="bottom|right"
-            android:onClick="@{() -> viewModel.toEditPage()}"/>
-
+            android:onClick="@{() ->  viewModel.toEditProfileFragment()}"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
