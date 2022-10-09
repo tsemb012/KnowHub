@@ -147,6 +147,8 @@
     <string name="sign_up">アカウント作成</string>
     <string name="profile">プロフィール</string>
     <string name="edit_profile">編集</string>
+    <string name="user_name">ユーザー名</string>
+    <string name="profile_register">送信</string>
 
 
 </resources>
