@@ -144,6 +144,8 @@
     <string name="sign_up">SignUp</string>
     <string name="profile">Profile</string>
     <string name="edit_profile">Edit</string>
+    <string name="user_name">User Name</string>
+    <string name="profile_register">Submit</string>
 
 
 </resources>
