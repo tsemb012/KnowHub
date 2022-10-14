@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.rails_model
+package com.example.droidsoftthird.model.domain_model
 
 import com.example.droidsoftthird.model.request.PostGroup
 

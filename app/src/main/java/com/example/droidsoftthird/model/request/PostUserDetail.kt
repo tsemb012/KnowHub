@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.request
 
-import com.example.droidsoftthird.model.rails_model.Area
+import com.example.droidsoftthird.model.domain_model.Area
 import com.squareup.moshi.Json
 
 class PostUserDetail(
