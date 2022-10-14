@@ -149,6 +149,10 @@
     <string name="edit_profile">編集</string>
     <string name="user_name">ユーザー名</string>
     <string name="profile_register">送信</string>
+    <string name="positive_ok">OK</string>
+    <string name="negative_cancel">キャンセル</string>
+    <string name="profile_input_age_dialog_title">年齢を入力してください</string>
+    <string name="age_unit">歳</string>
 
 
 </resources>
