@@ -146,6 +146,10 @@
     <string name="edit_profile">Edit</string>
     <string name="user_name">User Name</string>
     <string name="profile_register">Submit</string>
+    <string name="positive_ok">OK</string>
+    <string name="negative_cancel">Cancel</string>
+    <string name="profile_input_age_dialog_title">Please input your age</string>
+    <string name="age_unit">years old</string>
 
 
 </resources>
