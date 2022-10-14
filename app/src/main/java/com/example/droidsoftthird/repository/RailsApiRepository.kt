@@ -2,9 +2,9 @@ package com.example.droidsoftthird.repository
 
 import com.example.droidsoftthird.model.User
 import com.example.droidsoftthird.model.json.SignUpJson
-import com.example.droidsoftthird.model.rails_model.ApiGroup
-import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
-import com.example.droidsoftthird.model.rails_model.UserDetail
+import com.example.droidsoftthird.model.domain_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
+import com.example.droidsoftthird.model.domain_model.UserDetail
 
 interface RailsApiRepository {
 

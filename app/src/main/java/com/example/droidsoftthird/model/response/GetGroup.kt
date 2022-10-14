@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.response
 
-import com.example.droidsoftthird.model.rails_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.squareup.moshi.Json
 
 data class GetGroup(//TODO 複雑なものをGroupDetailに責務を渡して、ただのGroupはシンプルにするべき。

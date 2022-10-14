@@ -3,8 +3,7 @@ package com.example.droidsoftthird
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.droidsoftthird.model.rails_model.UserDetail
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.model.domain_model.UserDetail
 import javax.inject.Inject
 
 

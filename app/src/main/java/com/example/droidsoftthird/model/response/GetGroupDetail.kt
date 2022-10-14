@@ -1,7 +1,7 @@
 package com.example.droidsoftthird.model.response
 
-import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
-import com.example.droidsoftthird.model.rails_model.ApiMember
+import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
+import com.example.droidsoftthird.model.domain_model.ApiMember
 import com.squareup.moshi.Json
 
 data class GetGroupDetail(

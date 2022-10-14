@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.rails_model
+package com.example.droidsoftthird.model.domain_model
 
 data class ApiGroupDetail (//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
         val groupId: String?,

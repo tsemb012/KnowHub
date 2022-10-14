@@ -5,7 +5,7 @@
     <data>
         <variable
             name="group"
-            type="com.example.droidsoftthird.model.rails_model.ApiGroup"/>
+            type="com.example.droidsoftthird.model.domain_model.ApiGroup"/>
 
         <variable
             name="clickListener"

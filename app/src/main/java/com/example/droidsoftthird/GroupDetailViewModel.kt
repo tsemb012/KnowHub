@@ -1,7 +1,7 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
+import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
