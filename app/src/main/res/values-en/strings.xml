@@ -150,6 +150,7 @@
     <string name="negative_cancel">Cancel</string>
     <string name="profile_input_age_dialog_title">Please input your age</string>
     <string name="age_unit">years old</string>
+    <string name="non_selected">Not selected</string>
 
 
 </resources>

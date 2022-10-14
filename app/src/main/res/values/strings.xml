@@ -153,6 +153,7 @@
     <string name="negative_cancel">キャンセル</string>
     <string name="profile_input_age_dialog_title">年齢を入力してください</string>
     <string name="age_unit">歳</string>
+    <string name="non_selected">指定なし</string>
 
 
 </resources>
