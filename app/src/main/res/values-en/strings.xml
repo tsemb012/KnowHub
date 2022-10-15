@@ -152,5 +152,10 @@
     <string name="age_unit">years old</string>
     <string name="non_selected">Not selected</string>
 
+    <string name="profile_edit_select_gender_request">Please select your gender</string>
+    <string name="profile_edit_gender_male_item">Male</string>
+    <string name="profile_edit_gender_female_item">Female</string>
+    <string name="profile_edit_gender_no_answer_item">No Answer</string>
+
 
 </resources>

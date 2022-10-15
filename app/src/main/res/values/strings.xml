@@ -155,5 +155,10 @@
     <string name="age_unit">歳</string>
     <string name="non_selected">指定なし</string>
 
+    <string name="profile_edit_select_gender_request">性別を選択してください</string>
+    <string name="profile_edit_gender_male_item">男性</string>
+    <string name="profile_edit_gender_female_item">女性</string>
+    <string name="profile_edit_gender_no_answer_item">無回答</string>
+
 
 </resources>
