@@ -6,19 +6,20 @@ data class UserDetail (
         val userId: String,
         val userName: String,
         val userImage: String,
-        val groupImage: String,
+        val backgroundImage: String,
         val comment:String,
         val gender: String,
         val age: Int,
         val area: Area,
         val groups: List<ApiGroup>,
 ) {
+    enum class Gender { MALE, FEMALE, NO_ANSWER }
     fun toJson() =
         PostUserDetail(
                 userId = userId,
                 userName = userName,
                 userImage = userImage,
-                groupImage = groupImage,
+                backgroundImage = backgroundImage,
                 comment = comment,
                 gender = gender,
                 age = age,

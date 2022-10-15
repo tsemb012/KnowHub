@@ -26,7 +26,7 @@ class ProfileCreateFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         binding = FragmentCreateProfileBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
