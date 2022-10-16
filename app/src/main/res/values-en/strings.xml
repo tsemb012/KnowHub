@@ -142,6 +142,20 @@
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
     <string name="sign_up">SignUp</string>
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit</string>
+    <string name="user_name">User Name</string>
+    <string name="profile_register">Submit</string>
+    <string name="positive_ok">OK</string>
+    <string name="negative_cancel">Cancel</string>
+    <string name="profile_input_age_dialog_title">Please input your age</string>
+    <string name="age_unit">years old</string>
+    <string name="non_selected">Not selected</string>
+
+    <string name="profile_edit_select_gender_request">Please select your gender</string>
+    <string name="profile_edit_gender_male_item">Male</string>
+    <string name="profile_edit_gender_female_item">Female</string>
+    <string name="profile_edit_gender_no_answer_item">No Answer</string>
 
 
 </resources>

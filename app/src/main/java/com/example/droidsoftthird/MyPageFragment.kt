@@ -4,20 +4,15 @@ import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.Toolbar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.droidsoftthird.databinding.FragmentMyPageBinding
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MyPageFragment: Fragment() {
@@ -38,7 +33,7 @@ class MyPageFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
@@ -60,10 +55,15 @@ class MyPageFragment: Fragment() {
 
         viewModel.groups.observe(viewLifecycleOwner) {
             it.let {
-                //adapter.submitList(it)
+                adapter.submitList(it)
             }
         }
 
+        viewModel.message.observe(viewLifecycleOwner) {
+            it.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        }
 
         viewModel.navigateToChatRoom.observe(viewLifecycleOwner, androidx.lifecycle.Observer{ groupInfo ->
             groupInfo?.let {

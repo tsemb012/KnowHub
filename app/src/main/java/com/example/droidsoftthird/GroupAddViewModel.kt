@@ -3,7 +3,7 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.rails_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel

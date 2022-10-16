@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_homeFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
@@ -95,6 +98,7 @@
             android:id="@+id/action_myPageFragment_to_chatRoomFragment"
             app:destination="@id/chatRoomFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/ScheduleHomeFragment"
         android:name="com.example.droidsoftthird.ScheduleHomeFragment"
@@ -148,6 +152,8 @@
         android:id="@+id/scheduleCreateFragment"
         android:name="com.example.droidsoftthird.ScheduleCreateFragment"
         android:label="ScheduleCreateFragment" />
-
-
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.droidsoftthird.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

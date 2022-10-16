@@ -48,8 +48,6 @@ class GroupAddFragment:Fragment(),View.OnClickListener {
         binding.btnToGroupDetailBarNumberPersons.setOnClickListener(this)
         binding.btnToGroupDetailBarGenderRestriction.setOnClickListener(this)
 
-
-
         viewModel.activateProgressBar.observe(viewLifecycleOwner,EventObserver{
             binding.progressBar.visibility = View.VISIBLE
         })
@@ -70,7 +68,15 @@ class GroupAddFragment:Fragment(),View.OnClickListener {
                 childFragmentManager?.let { dialog.show(it, "group_type") }
             }
             R.id.btn_to_groupDetailBar_activity_area -> {
-                val dialog = ActivityAreaDialogFragment()
+                val dialog = AreaDialogFragment (
+                    onExceptionListener =
+                        { TODO("オンラインを選択した時の処理を記述する。")},
+                    onConfirmListener =
+                        { area ->
+                            viewModel.postPrefecture(area.prefecture.name)
+                            viewModel.postCity(area.city?.name ?: getString(R.string.non_selected))
+                        }
+                )
                 childFragmentManager?.let { dialog.show(it, "activity_area") }
             }
             R.id.btn_to_groupDetailBar_facility_environment -> {

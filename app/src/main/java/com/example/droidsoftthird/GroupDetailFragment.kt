@@ -31,34 +31,11 @@ class GroupDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val binding: FragmentGroupDetailBinding = inflate(
-            inflater, R.layout.fragment_group_detail, container, false
-        )
-
-        //-----ViewObjects for Navigation
-        val layout: CollapsingToolbarLayout = binding.collapsingToolbarLayout
-        val toolbar: Toolbar = binding.materialToolbar
-        toolbar.title = " "
-
-        //-----NavUI Objects
-        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-        val navController = navHostFragment!!.navController
-        val appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
-
-        //-----Setup for NavigationUI
-        NavigationUI.setupWithNavController(
-            layout,
-            toolbar,
-            navController,
-            appBarConfiguration
-        )
+        val binding: FragmentGroupDetailBinding = inflate(inflater, R.layout.fragment_group_detail, container, false)
+        setupNavAppBar(binding)
 
         val groupId = GroupDetailFragmentArgs.fromBundle(requireArguments()).groupId
         val viewModel = groupDetailViewModelAssistedFactory.create(groupId)
-
-
-        //DONE GroupDetailViewModelのコーディング
-        //DONE GroupDetailViewModelFactoryのコーディング
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -96,9 +73,24 @@ class GroupDetailFragment : Fragment() {
         return binding.root
     }
 
-    companion object {
-        private val TAG: String? = GroupDetailFragment::class.simpleName
+    private fun setupNavAppBar(binding: FragmentGroupDetailBinding) {
+        //-----ViewObjects for Navigation
+        val layout: CollapsingToolbarLayout = binding.collapsingToolbarLayout
+        val toolbar: Toolbar = binding.materialToolbar
+        toolbar.title = " "
+
+        //-----NavUI Objects
+        val navHostFragment =
+            activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        val navController = navHostFragment!!.navController
+        val appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
+
+        //-----Setup for NavigationUI
+        NavigationUI.setupWithNavController(
+            layout,
+            toolbar,
+            navController,
+            appBarConfiguration
+        )
     }
 }
-//TODO userIcon一覧を表示する。
-
