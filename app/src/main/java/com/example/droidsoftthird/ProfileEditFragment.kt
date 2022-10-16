@@ -1,9 +1,12 @@
 package com.example.droidsoftthird
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
@@ -19,10 +22,14 @@ class ProfileEditFragment :Fragment(R.layout.fragment_profile_edit) {
 
     companion object {
         private const val DEFAULT_AGE = 30
+        const val REQUEST_CODE = "REQUEST_CODE"
+        const val REQUEST_CODE_USER_IMAGE = "REQUEST_CODE_USER_IMAGE"
+        const val REQUEST_CODE_BACKGROUND_IMAGE = "REQUEST_CODE_BACKGROUND_IMAGE"
     }
 
     private val binding: FragmentProfileEditBinding by dataBinding()
-    private val viewModel:ProfileEditViewModel by viewModels()
+    private val viewModel: ProfileEditViewModel by viewModels()
+    private val launcher = registerLauncher()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +58,23 @@ class ProfileEditFragment :Fragment(R.layout.fragment_profile_edit) {
     }
 
     private fun setupListeners() {
-        with (binding) {
+        with(binding) {
+            btnUserImage.setOnClickListener { launchUploader(REQUEST_CODE_USER_IMAGE) }
+            btnBackgroundImage.setOnClickListener { launchUploader(REQUEST_CODE_BACKGROUND_IMAGE) }
             genderItem.setOnClickListener { showGenderDialog() }
             ageItem.setOnClickListener { showAgeDialog() }
             areaItem.setOnClickListener { showAreaDialog() }
             submitProfileBtn.setOnClickListener { viewModel.submitProfile() }
         }
+    }
+
+    private fun launchUploader(typeCode: String) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+            putExtra(REQUEST_CODE, typeCode)
+        }
+        launcher.launch(intent)
     }
 
     private fun showGenderDialog() =
@@ -84,4 +102,21 @@ class ProfileEditFragment :Fragment(R.layout.fragment_profile_edit) {
                 onExceptionListener = {},
                 onConfirmListener = { viewModel.postArea(it) }
         ).show(childFragmentManager, "area")
+
+
+    private fun registerLauncher() =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val requestCode = it.data?.getStringExtra(REQUEST_CODE)
+                val uri = it.data?.data
+                if (uri != null) {
+                    when (requestCode) {
+                        REQUEST_CODE_USER_IMAGE -> viewModel.storeTemporalUserImage(uri)
+                        REQUEST_CODE_BACKGROUND_IMAGE -> viewModel.storeTemporalBackgroundImage(uri)
+                    }
+                }
+            } else {
+                Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+            }
+        }
 }

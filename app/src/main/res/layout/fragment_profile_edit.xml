@@ -11,6 +11,7 @@
             name="viewModel"
             type="com.example.droidsoftthird.ProfileEditViewModel" />
     </data>
+    <!--TODO ViewBindingの中身が問題なくうごかくか確認する。-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,6 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <!--TODO 顔写真を乗っける場所を追加。-->
+
 
                 <ImageView
                     android:id="@+id/btn_background_image"
@@ -58,9 +61,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:imageURI="@{viewModel.userDetail.backgroundImage}"
+                    app:imageURI="@{viewModel.uiModel.temporalBackgroundImage}"
                     android:src="@drawable/ic_baseline_image_24"
-
                     />
 
 
@@ -80,7 +82,7 @@
                         android:id="@+id/edit_user_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.userDetail.userName}"
+                        android:text="@={viewModel.userName}"
                         android:inputType="textPersonName"
                         />
 
@@ -103,7 +105,7 @@
                         android:id="@+id/edit_user_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.userDetail.userIntro}"
+                        android:text="@={viewModel.comment}"
                         android:inputType="textMultiLine"
                         />
 
@@ -131,45 +133,45 @@
                     android:background="@color/primary_light">
 
                     <include
-                        android:id="@+id/include_profile_edit_gender"
+                        android:id="@+id/gender_item"
                         layout="@layout/include_item_profile_edit"
                         bind:title="@{@string/profile_edit_gender}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.userDetail.gender}"
-                        bind:click="@{viewModel::showGenderDialog}"
+                        bind:text="@{viewModel.uiModel.editedUserDetail.gender}"
                         android:clickable="true" />
 
                     <include
-                        android:id="@+id/include_profile_edit_age"
+                        android:id="@+id/age_item"
                         layout="@layout/include_item_profile_edit"
                         bind:title="@{@string/profile_edit_age}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.userDetail.age}"
-                        bind:click="@{viewModel::showAgeDialog}"
+                        bind:text="@{viewModel.uiModel.editedUserDetail.age}"
                         android:clickable="true" />
                         <!--TODO Drawableを変更する-->
+                        <!--TODO 渡すテキストがあっているかを確認する。-->
 
                     <include
-                        android:id="@+id/include_profile_area"
+                        android:id="@+id/area_item"
                         layout="@layout/include_item_profile_edit"
                         bind:title="@{@string/profile_edit_activity_area}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.userDetail.area}"
-                        bind:click="@{viewModel::showAreaDialog}"
+                        bind:Area="@{viewModel.uiModel.editedUserDetail.area}"
                         android:clickable="true" />
-                    <!--TODO Drawableを変更する-->
+                        <!--TODO Drawableを変更する-->
+                        <!--TODO AreaのBindを設定する。-->
+
+                </LinearLayout>
 
 
                 <Button
-                    android:id="@+id/btn_to_profile"
+                    android:id="@+id/submit_profile_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_register"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-                    android:enabled="@{viewModel.isEnableRegister}"
-                    android:onClick="@{() -> viewModel.editProfile()}"
+                    android:enabled="@{viewModel.uiModel.submitEnabled}"
                     android:backgroundTint="@color/primary_dark"
                     />
 
