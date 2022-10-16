@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.net.Uri
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import javax.inject.Inject
@@ -9,6 +10,7 @@ class ProfileUseCase @Inject constructor(private val repository: BaseRepositoryI
 
     suspend fun fetchUserDetail() = repository.fetchUser()
     suspend fun updateUserDetail(userDetail: UserDetail) = repository.updateUserDetail(userDetail)
+    suspend fun uploadImage(image: Uri) = repository.uploadPhoto(image)
 
 
 }
