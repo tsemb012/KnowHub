@@ -3,12 +3,14 @@ package com.example.droidsoftthird
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
 import com.example.droidsoftthird.dialogs.AreaDialogFragment
 import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
 import com.example.droidsoftthird.model.domain_model.UserDetail
+import com.example.droidsoftthird.model.fire_model.LoadState
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,11 +24,30 @@ class ProfileEditFragment :Fragment(R.layout.fragment_profile_edit) {
     private val binding: FragmentProfileEditBinding by dataBinding()
     private val viewModel:ProfileEditViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.fetchUserDetail()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.fetchUserDetail()
+        bindLoadState()
         setupListeners()
+    }
+
+    private fun bindLoadState() { //TODO エラーハンドリングを共通化する。
+        viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            when (uiModel.loadState) {
+                is LoadState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                is LoadState.Loaded<*> -> binding.progressBar.visibility = View.GONE
+                is LoadState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), uiModel.loadState.error.message, Toast.LENGTH_SHORT).show()
+                }
+                else -> Unit
+            }
+        }
     }
 
     private fun setupListeners() {
