@@ -2,18 +2,19 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import com.example.droidsoftthird.model.domain_model.UserDetail
+import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.model.fire_model.LoadState
 
 data class ProfileUiModel (
-        val rawUserDetail: UserDetail? = null,
-        val editedUserDetail: UserDetail? = null,
+        val rawUserDetail: UserDetail = initializedUserDetail,
+        val editedUserDetail: UserDetail = initializedUserDetail,
         val isSubmitEnabled: Boolean = false,
         val temporalUserImage: Uri? = null,
         val temporalBackgroundImage: Uri? = null,
         val loadState: LoadState = LoadState.Initialized,
 ) {
-    val age = editedUserDetail?.age?.toString() ?: ""
-    val area = editedUserDetail?.area.let { it?.prefecture?.name + ", " + it?.city?.name }
+    val age = editedUserDetail.age.toString()
+    val area = editedUserDetail.area.let { it?.prefecture?.name + ", " + it?.city?.name }
 
     companion object {
         operator fun invoke(
@@ -26,20 +27,30 @@ data class ProfileUiModel (
         ) = ProfileUiModel(
                 rawUserDetail = _rawUserDetail,
                 editedUserDetail = _editedUserDetail,
-                isSubmitEnabled = isChangedUserDetail(current) && isNotEmptyUserDetail(current),
+                isSubmitEnabled = isValid(current),
                 temporalUserImage = _temporalUserImage,
                 temporalBackgroundImage = _temporalBackgroundImage,
                 loadState = _loadState,
         )
 
-        private fun isChangedUserDetail(current: ProfileUiModel) = current.rawUserDetail != current.editedUserDetail
-        private fun isNotEmptyUserDetail(current: ProfileUiModel): Boolean {
-            return current.editedUserDetail != null
-                && current.editedUserDetail.userName.isNotEmpty()
+        private fun isValid(current: ProfileUiModel) =
+                isChangedUserDetail(current) &&
+                isStoredTemporalImages(current) &&
+                isNotEmptyUserDetail(current)
+
+
+        private fun isChangedUserDetail(current: ProfileUiModel) =
+                current.rawUserDetail != current.editedUserDetail
+        private fun isStoredTemporalImages(current: ProfileUiModel) =
+                current.temporalUserImage != null
+                && current.temporalBackgroundImage != null
+        private fun isNotEmptyUserDetail(current: ProfileUiModel) =
+                current.editedUserDetail.userName.isNotBlank()
+                && current.editedUserDetail.comment.isNotBlank()
+                && current.editedUserDetail.gender.isNotBlank()
                 && current.editedUserDetail.comment.isNotEmpty()
-                //TODO ImageのValidationを追加する。
+                && current.editedUserDetail.area != null
                 && current.editedUserDetail.age != -1
-                //TODO Validationを追加していく
         }
+
     }
-}

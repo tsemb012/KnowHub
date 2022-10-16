@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.ProfileEditViewModel" />
+            type="com.example.droidsoftthird.ProfileSubmitViewModel" />
     </data>
     <!--TODO ViewBindingの中身が問題なくうごかくか確認する。-->
 
