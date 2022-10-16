@@ -16,4 +16,5 @@ interface RailsApiRepository {
 
     suspend fun userJoinGroup(groupId: String): String?
     suspend fun fetchUser(): UserDetail
+    suspend fun updateUserDetail(userDetail: UserDetail): String?
 }
