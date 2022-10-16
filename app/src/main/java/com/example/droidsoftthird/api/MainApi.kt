@@ -3,6 +3,7 @@ package com.example.droidsoftthird.api
 import com.example.droidsoftthird.model.json.UserJson
 import com.example.droidsoftthird.model.request.PostGroup
 import com.example.droidsoftthird.model.request.PostSignUp
+import com.example.droidsoftthird.model.request.PostUserDetail
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.model.response.GetGroup
 import com.example.droidsoftthird.model.response.GetGroupDetail
@@ -21,6 +22,11 @@ interface MainApi {
     @GET("users/{user_id}")
     fun fetchUser(@Path("user_id") userId: String): GetUserDetail
 
+    @PUT("users/{user_id}")
+    suspend fun putUserDetail(
+            @Path("user_id") userId: String,
+            @Body user: PostUserDetail
+    ): MessageResponse
 
     @POST("users")
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
