@@ -12,6 +12,9 @@ data class ProfileUiModel (
         val temporalBackgroundImage: Uri? = null,
         val loadState: LoadState = LoadState.Initialized,
 ) {
+    val age = editedUserDetail?.age?.toString() ?: ""
+    val area = editedUserDetail?.area.let { it?.prefecture?.name + ", " + it?.city?.name }
+
     companion object {
         operator fun invoke(
                 current: ProfileUiModel,

@@ -59,12 +59,12 @@ class ProfileEditFragment :Fragment(R.layout.fragment_profile_edit) {
 
     private fun setupListeners() {
         with(binding) {
-            btnUserImage.setOnClickListener { launchUploader(REQUEST_CODE_USER_IMAGE) }
-            btnBackgroundImage.setOnClickListener { launchUploader(REQUEST_CODE_BACKGROUND_IMAGE) }
+            userImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_USER_IMAGE) }
+            backgroundImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_BACKGROUND_IMAGE) }
             genderItem.setOnClickListener { showGenderDialog() }
             ageItem.setOnClickListener { showAgeDialog() }
             areaItem.setOnClickListener { showAreaDialog() }
-            submitProfileBtn.setOnClickListener { viewModel.submitProfile() }
+            submitProfileBtn.setOnClickListener { viewModel!!.submitProfile() }
         }
     }
 
