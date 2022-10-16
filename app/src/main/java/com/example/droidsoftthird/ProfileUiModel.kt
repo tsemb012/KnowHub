@@ -1,47 +1,36 @@
 package com.example.droidsoftthird
 
-import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.UserDetail
+import com.example.droidsoftthird.model.fire_model.LoadState
 
 data class ProfileUiModel (
         val rawUserDetail: UserDetail? = null,
-        val userDetail: UserDetail? = null,
+        val editedUserDetail: UserDetail? = null,
         val isSubmitEnabled: Boolean = false,
-    ) {
+        val loadState: LoadState = LoadState.Initialized,
+) {
     companion object {
         operator fun invoke(
                 current: ProfileUiModel,
-                _name: String,
-                _comment: String,
-                _userImage: String,
-                _backgroundImage: String,
                 _rawUserDetail: UserDetail,
-                _age: Int,
-                _area: Area,
-                _gender: String,
+                _editedUserDetail: UserDetail,
+                _loadState: LoadState,
         ) = ProfileUiModel(
                 rawUserDetail = _rawUserDetail,
-                userDetail = current.userDetail?.copy(
-                        userName = _name,
-                        comment = _comment,
-                        userImage = _userImage,
-                        backgroundImage = _backgroundImage,
-                        age= _age,
-                        area = _area,
-                        gender = _gender
-                ),
-                isSubmitEnabled =
-                    isChangedUserDetail(current) && isNotEmptyUserDetail(current)
+                editedUserDetail = _editedUserDetail,
+                isSubmitEnabled = isChangedUserDetail(current) && isNotEmptyUserDetail(current),
+                loadState = _loadState,
         )
 
-        private fun isChangedUserDetail(current: ProfileUiModel) = current.rawUserDetail != current.userDetail
+        private fun isChangedUserDetail(current: ProfileUiModel) = current.rawUserDetail != current.editedUserDetail
         private fun isNotEmptyUserDetail(current: ProfileUiModel): Boolean {
-            return current.userDetail != null
-                && current.userDetail.userName.isNotEmpty()
-                && current.userDetail.comment.isNotEmpty()
-                && current.userDetail.userImage.isNotEmpty()
-                && current.userDetail.backgroundImage.isNotEmpty()
-                && current.userDetail.age != -1
+            return current.editedUserDetail != null
+                && current.editedUserDetail.userName.isNotEmpty()
+                && current.editedUserDetail.comment.isNotEmpty()
+                && current.editedUserDetail.userImage.isNotEmpty()
+                && current.editedUserDetail.backgroundImage.isNotEmpty()
+                && current.editedUserDetail.age != -1
+                //TODO Validationを追加していく
         }
     }
 }
