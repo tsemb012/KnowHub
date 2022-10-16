@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto" >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.droidsoftthird.ProfileSubmitViewModel" />
+    </data>
+    <!--TODO ViewBindingの中身が問題なくうごかくか確認する。-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ProfileEditFragment"
+        android:background="@color/primary_light">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/caption"
+            android:layout_width="398dp"
+            android:layout_height="6dp"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/user_image_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <!--TODO 修正する。-->
+
+                <ImageView
+                    android:id="@+id/background_image_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:clickable="true"
+                    android:layout_width="0dp"
+                    android:layout_height="247dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:scaleX="1"
+                    android:scaleY="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:imageURI="@{viewModel.uiModel.temporalBackgroundImage}"
+                    android:src="@drawable/ic_baseline_image_24"
+                    />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/background_image_btn"
+                    android:hint="@string/user_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.userName}"
+                        android:inputType="textPersonName"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/group_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:hint="@string/group_introduction"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_user_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.comment}"
+                        android:inputType="textMultiLine"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <View
+                    android:id="@+id/divider_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintTop_toBottomOf="@+id/group_intro" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout1"
+                    style="@style/AppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_intro"
+                    android:background="@color/primary_light">
+
+                    <include
+                        android:id="@+id/gender_item"
+                        layout="@layout/include_item_profile_edit"
+                        bind:title="@{@string/gender}"
+                        bind:drawable="@{@drawable/ic_baseline_date_range_24}"
+                        bind:text="@{viewModel.uiModel.editedUserDetail.gender}"
+                        android:clickable="true" />
+
+                    <include
+                        android:id="@+id/age_item"
+                        layout="@layout/include_item_profile_edit"
+                        bind:title="@{@string/age}"
+                        bind:drawable="@{@drawable/ic_baseline_date_range_24}"
+                        bind:text="@{viewModel.uiModel.age}"
+                        android:clickable="true" />
+                        <!--TODO Drawableを変更する-->
+                        <!--TODO 渡すテキストがあっているかを確認する。-->
+
+                    <include
+                        android:id="@+id/area_item"
+                        layout="@layout/include_item_profile_edit"
+                        bind:title="@{@string/residential_area}"
+                        bind:drawable="@{@drawable/ic_baseline_date_range_24}"
+                        bind:text="@{viewModel.uiModel.area}"
+                        android:clickable="true" />
+                        <!--TODO Drawableを変更する-->
+                        <!--TODO AreaのBindを設定する。-->
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/submit_profile_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_register"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+                    android:enabled="@{viewModel.uiModel.submitEnabled}"
+                    android:backgroundTint="@color/primary_dark"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

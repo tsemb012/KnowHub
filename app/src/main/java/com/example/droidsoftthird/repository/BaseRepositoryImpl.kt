@@ -11,8 +11,9 @@ import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.model.json.SignUpJson
 import com.example.droidsoftthird.model.json.toEntity
-import com.example.droidsoftthird.model.rails_model.ApiGroup
-import com.example.droidsoftthird.model.rails_model.ApiGroupDetail
+import com.example.droidsoftthird.model.domain_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
+import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.request.PostSignUp
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
@@ -53,9 +54,9 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postNewUser(signup: SignUpJson): User? =
+/*    override suspend fun postNewUser(signup: SignUpJson): User? =
         mainApi.postNewUser(PostSignUp.Request(signup)).body()?.toEntity()
-        //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。
+        //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。*/
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
@@ -164,8 +165,11 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchGroups(page: Int) : List<ApiGroup> =
-        mainApi.fetchGroups(page).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroups(page: Int) : List<ApiGroup> = //TODO ドメイン層を作り、ビジネスロジックを詰め込む必要がある。
+        mainApi.fetchGroups(page = page).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
+        mainApi.fetchGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun userJoinGroup(groupId: String): String? {
         val response = mainApi.putUserToGroup(groupId, PutUserToGroup(userId))
@@ -175,6 +179,10 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("userJoinGroup is failed")
         }
     }
+
+    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
+    override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.toJson()).message
+    override suspend fun createUser(userDetail: UserDetail): String? = mainApi.postUser(userId, userDetail.copy(userId = userId).toJson()).message
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
@@ -281,6 +289,8 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
+
+
 
     companion object {
         private const val  LIMIT = 50L

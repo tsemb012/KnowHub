@@ -3,9 +3,11 @@ package com.example.droidsoftthird.api
 import com.example.droidsoftthird.model.json.UserJson
 import com.example.droidsoftthird.model.request.PostGroup
 import com.example.droidsoftthird.model.request.PostSignUp
+import com.example.droidsoftthird.model.request.PostUserDetail
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.model.response.GetGroup
 import com.example.droidsoftthird.model.response.GetGroupDetail
+import com.example.droidsoftthird.model.response.GetUserDetail
 import com.example.droidsoftthird.model.response.MessageResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -17,8 +19,21 @@ interface MainApi {
             @HeaderMap headers: Map<String, String>,
     ) : Response<Any>
 
-    @POST("users")
+    @GET("users/{user_id}")
+    fun fetchUser(@Path("user_id") userId: String): GetUserDetail
+
+    @PUT("users/{user_id}")
+    suspend fun putUserDetail(
+            @Path("user_id") userId: String,
+            @Body user: PostUserDetail
+    ): MessageResponse
+
+
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
+
+    @POST("users")
+    fun postUser(userId: String, toJson: PostUserDetail): MessageResponse
+
 
     @POST("groups")
     suspend fun createGroup(@Body request: PostGroup): Response<MessageResponse>
@@ -27,11 +42,15 @@ interface MainApi {
     suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupDetail>
 
     @GET("groups")
-    suspend fun fetchGroups(@Query("page") page: Int): Response<List<GetGroup>>
+    suspend fun fetchGroups(
+            @Query("page") page: Int? = null,
+            @Query("user_id") userId: String? = null
+    ): Response<List<GetGroup>>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
             @Path("id") groupId: String,
             @Body request: PutUserToGroup
     ): Response<MessageResponse>
+
 }
