@@ -181,6 +181,7 @@ class BaseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
+    override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.toJson()).message
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
