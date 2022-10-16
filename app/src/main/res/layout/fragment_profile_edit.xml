@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -45,11 +44,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <!--TODO 顔写真を乗っける場所を追加。-->
-
+                <ImageView
+                    android:id="@+id/user_image_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <!--TODO 修正する。-->
 
                 <ImageView
-                    android:id="@+id/btn_background_image"
+                    android:id="@+id/background_image_btn"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:clickable="true"
                     android:layout_width="0dp"
@@ -74,7 +83,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_background_image"
+                    app:layout_constraintTop_toBottomOf="@+id/background_image_btn"
                     android:hint="@string/user_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -135,7 +144,7 @@
                     <include
                         android:id="@+id/gender_item"
                         layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/profile_edit_gender}"
+                        bind:title="@{@string/gender}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
                         bind:text="@{viewModel.uiModel.editedUserDetail.gender}"
                         android:clickable="true" />
@@ -143,9 +152,9 @@
                     <include
                         android:id="@+id/age_item"
                         layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/profile_edit_age}"
+                        bind:title="@{@string/age}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.uiModel.editedUserDetail.age}"
+                        bind:text="@{viewModel.uiModel.age}"
                         android:clickable="true" />
                         <!--TODO Drawableを変更する-->
                         <!--TODO 渡すテキストがあっているかを確認する。-->
@@ -153,9 +162,9 @@
                     <include
                         android:id="@+id/area_item"
                         layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/profile_edit_activity_area}"
+                        bind:title="@{@string/residential_area}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:Area="@{viewModel.uiModel.editedUserDetail.area}"
+                        bind:text="@{viewModel.uiModel.area}"
                         android:clickable="true" />
                         <!--TODO Drawableを変更する-->
                         <!--TODO AreaのBindを設定する。-->
