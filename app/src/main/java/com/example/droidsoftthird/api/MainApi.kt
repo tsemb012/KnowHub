@@ -28,8 +28,12 @@ interface MainApi {
             @Body user: PostUserDetail
     ): MessageResponse
 
-    @POST("users")
+
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
+
+    @POST("users")
+    fun postUser(userId: String, toJson: PostUserDetail): MessageResponse
+
 
     @POST("groups")
     suspend fun createGroup(@Body request: PostGroup): Response<MessageResponse>
@@ -48,4 +52,5 @@ interface MainApi {
             @Path("id") groupId: String,
             @Body request: PutUserToGroup
     ): Response<MessageResponse>
+
 }

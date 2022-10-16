@@ -10,7 +10,7 @@ data class UserDetail (
         val comment:String,
         val gender: String,
         val age: Int,
-        val area: Area,
+        val area: Area?,
         val groups: List<ApiGroup>,
 ) {
     enum class Gender { MALE, FEMALE, NO_ANSWER }
@@ -23,6 +23,21 @@ data class UserDetail (
                 comment = comment,
                 gender = gender,
                 age = age,
-                area = area,
+                area = area ?: throw IllegalArgumentException("area is null"),
         )
 }
+
+internal val initializedUserDetail get() =
+        UserDetail(
+                userId = "",
+                userName = "",
+                userImage = "",
+                backgroundImage = "",
+                comment = "",
+                gender = "",
+                age = -1,
+                area = null,
+                groups = listOf()
+        )
+
+

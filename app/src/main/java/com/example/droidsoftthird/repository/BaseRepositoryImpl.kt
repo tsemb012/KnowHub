@@ -54,9 +54,9 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postNewUser(signup: SignUpJson): User? =
+/*    override suspend fun postNewUser(signup: SignUpJson): User? =
         mainApi.postNewUser(PostSignUp.Request(signup)).body()?.toEntity()
-        //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。
+        //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。*/
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
@@ -182,6 +182,7 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.toJson()).message
+    override suspend fun createUser(userDetail: UserDetail): String? = mainApi.postUser(userId, userDetail.copy(userId = userId).toJson()).message
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
