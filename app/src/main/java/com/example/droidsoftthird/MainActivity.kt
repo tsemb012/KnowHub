@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         //-----NavHost
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.ScheduleHomeFragment,R.id.createProfileFragment, R.id.profileFragment),binding.drawerLayout)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.ScheduleHomeFragment,R.id.profileCreateFragment, R.id.profileFragment),binding.drawerLayout)
 
         NavigationUI.setupWithNavController(binding.navView, navController)
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNav.visibility = View.GONE
                     binding.toolbar.visibility = View.GONE
                 }
-                R.id.createProfileFragment -> {
+                R.id.profileCreateFragment -> {
                     binding.toolbar.title = getString(R.string.input_profile)
                     binding.bottomNav.visibility = View.GONE
                     binding.toolbar.visibility = View.VISIBLE
