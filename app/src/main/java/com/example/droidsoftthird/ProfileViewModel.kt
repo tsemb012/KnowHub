@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.droidsoftthird.model.domain_model.UserDetail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-
+@HiltViewModel
 class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase): ViewModel() {
 
     //TODO 基本的に個人情報はRailsAPIにしまう。ユーザー名とユーザー画像だけはFirebaseとRailsAPIどちらにも入れる。
