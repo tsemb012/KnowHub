@@ -25,8 +25,8 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         const val REQUEST_CODE_BACKGROUND_IMAGE = "REQUEST_CODE_BACKGROUND_IMAGE"
     }
 
+    abstract val viewModel: ProfileSubmitViewModel
     protected val binding: FragmentProfileEditBinding by dataBinding()
-    protected val viewModel: ProfileSubmitViewModel by viewModels()
     private val launcher = registerLauncher()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

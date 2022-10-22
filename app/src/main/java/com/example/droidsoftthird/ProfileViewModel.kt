@@ -16,19 +16,7 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
     val userDetail: LiveData<UserDetail?>
         get() = _userDetail
 
-    private val _message = MutableLiveData<ProfileMessage?>()
-    val message: LiveData<ProfileMessage?>
-        get() = _message
-
     private suspend fun fetchUserDetail() = useCase.fetchUserDetail()
-
-    fun toEditProfileFragment() {
-        _message.value =  TODO ("ProfileMessage.ToEditProfileFragment")
-    }
-
-    inner class ProfileMessage {
-
-    }
 
 }
 

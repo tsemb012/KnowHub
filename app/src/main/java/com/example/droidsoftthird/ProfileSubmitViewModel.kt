@@ -13,7 +13,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-open class ProfileSubmitViewModel(private val useCase: ProfileUseCase): ViewModel() {
+open class ProfileSubmitViewModel (private val useCase: ProfileUseCase): ViewModel() {
 
     protected val rawUserDetail by lazy { MutableLiveData<UserDetail>() }
     private val _editedUserDetail by lazy {
