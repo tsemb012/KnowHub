@@ -16,7 +16,7 @@ class SeekBarDialogFragment(
         private val onPositiveClickListener: (Int) -> Unit
 ): DialogFragment() {
 
-    private val binding = DialogSeekBarBinding.inflate(layoutInflater)
+    private val binding: DialogSeekBarBinding by lazy { DialogSeekBarBinding.inflate(layoutInflater) }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setupSeekBar()
         return AlertDialog.Builder(requireContext())
