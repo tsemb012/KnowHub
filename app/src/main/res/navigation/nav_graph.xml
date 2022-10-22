@@ -122,18 +122,11 @@
     </fragment>
     -->
     <!--TODO 一時的にVideoからLoginにつなぐ-->
-    <fragment
-        android:id="@+id/videoFragment"
-        android:name="com.example.droidsoftthird.view.login.JetpackComposeFragment"
-        android:label="LoginFragment" />
 
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.example.droidsoftthird.ChatRoomFragment"
         android:label="ChatRoomFragment" >
-        <action
-            android:id="@+id/action_chatRoomFragment_to_videoFragment"
-            app:destination="@id/videoFragment" />
         <action
             android:id="@+id/action_chatRoomFragment_to_scheduleFragment"
             app:destination="@id/ScheduleHomeFragment" />

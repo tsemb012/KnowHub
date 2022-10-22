@@ -17,11 +17,6 @@
         android:title="@string/schedule"/>
 
     <item
-        android:id="@+id/videoFragment"
-        android:icon="@drawable/ic_baseline_videocam_24"
-        android:title="@string/video"/>
-
-    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_baseline_account_box_24"
         android:title="@string/profile"/>

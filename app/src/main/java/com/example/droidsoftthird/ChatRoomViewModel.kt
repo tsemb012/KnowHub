@@ -67,11 +67,6 @@ class ChatRoomViewModel @AssistedInject constructor(
         navigationToSchedule.value = Event("navigationToSchedule")
     }
 
-    val navigationToVideo = MutableLiveData<Event<String>>()
-    fun onVideoClicked(){
-        navigationToVideo.value = Event("navigationToVideo")
-    }
-
     val showBottomSheet = MutableLiveData<Event<String>>()
     fun showBottomSheet(){
         showBottomSheet.value = Event("show a bottom sheet")
