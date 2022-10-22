@@ -40,9 +40,9 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         with(binding) {
             userImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_USER_IMAGE) }
             backgroundImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_BACKGROUND_IMAGE) }
-            genderItem.setOnClickListener { showGenderDialog() }
-            ageItem.setOnClickListener { showAgeDialog() }
-            areaItem.setOnClickListener { showAreaDialog() }
+            genderItem.itemProfileEdit.setOnClickListener { showGenderDialog() }
+            ageItem.itemProfileEdit.setOnClickListener { showAgeDialog() }
+            areaItem.itemProfileEdit.setOnClickListener { showAreaDialog() }
         }
         setupSubmitListeners()
     }
