@@ -148,5 +148,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.droidsoftthird.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.droidsoftthird.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
 </navigation>

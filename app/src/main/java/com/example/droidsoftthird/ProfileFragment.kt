@@ -24,6 +24,7 @@ class ProfileFragment:Fragment(R.layout.fragment_profile) {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         setupNavAppBar()
+        setupClickListeners()
     }
 
     private fun setupNavAppBar() {
@@ -37,4 +38,9 @@ class ProfileFragment:Fragment(R.layout.fragment_profile) {
                 appBarConfiguration
         )
     }
+
+    private fun setupClickListeners() =
+        binding.transitToEditProfileFab.setOnClickListener {
+            navController.navigate(R.id.profileEditFragment)
+        }
 }
