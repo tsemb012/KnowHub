@@ -42,7 +42,7 @@
             app:destination="@id/groupDetailFragment" />
         <action
             android:id="@+id/action_homeFragment_to_createProfileFragment"
-            app:destination="@id/createProfileFragment" />
+            app:destination="@id/profileCreateFragment" />
         <action
             android:id="@+id/action_homeFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
@@ -81,15 +81,7 @@
             android:id="@+id/action_recommendPagerFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/createProfileFragment"
-        android:name="com.example.droidsoftthird.ProfileCreateFragment"
-        android:label="fragment_create_profile"
-        tools:layout="@layout/fragment_create_profile" >
-        <action
-            android:id="@+id/action_createProfileFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/myPageFragment"
         android:name="com.example.droidsoftthird.MyPageFragment"
@@ -157,4 +149,13 @@
         android:id="@+id/profileEditFragment"
         android:name="com.example.droidsoftthird.ProfileEditFragment"
         android:label="ProfileEditFragment" />
+
+    <fragment
+        android:id="@+id/profileCreateFragment"
+        android:name="com.example.droidsoftthird.ProfileCreateFragment"
+        android:label="ProfileCreateFragment">
+        <action
+            android:id="@+id/action_profileCreateFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

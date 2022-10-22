@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileEditFragment :ProfileSubmitFragment() {
 
     private val editViewModel: ProfileEditViewModel by viewModels()
-    override val viewModel: ProfileSubmitViewModel = editViewModel
+    override val viewModel: ProfileSubmitViewModel by lazy { editViewModel }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
