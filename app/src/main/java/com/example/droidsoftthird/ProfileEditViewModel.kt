@@ -17,6 +17,8 @@ class ProfileEditViewModel @Inject constructor(private val useCase: ProfileUseCa
                     rawUserDetail.value = it
                     temporalUserImage.value = it.userImage.toUri()
                     temporalBackgroundImage.value = it.backgroundImage.toUri()
+                    bindingUserName.value = it.userName
+                    bindingComment.value = it.comment
                     loadState.value = LoadState.Loaded(it)
                 }
                 .onFailure { loadState.value = LoadState.Error(it) }

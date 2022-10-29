@@ -91,7 +91,7 @@
                         android:id="@+id/edit_user_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.userName}"
+                        android:text="@={viewModel.bindingUserName}"
                         android:inputType="textPersonName"
                         />
 
@@ -114,7 +114,7 @@
                         android:id="@+id/edit_user_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.comment}"
+                        android:text="@={viewModel.bindingComment}"
                         android:inputType="textMultiLine"
                         />
 
@@ -146,7 +146,7 @@
                         layout="@layout/include_item_profile_edit"
                         bind:title="@{@string/gender}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.uiModel.editedUserDetail.gender}"
+                        bind:text="@{viewModel.uiModel.gender}"
                         android:clickable="true" />
 
                     <include
