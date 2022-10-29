@@ -8,10 +8,8 @@ import com.example.droidsoftthird.model.fire_model.LoadState
 data class ProfileUiModel (
         val rawUserDetail: UserDetail = initializedUserDetail,
         val editedUserDetail: UserDetail = initializedUserDetail,
-        val isSubmitEnabled: Boolean = false,
         val temporalUserImage: Uri? = null,
-        val temporalBackgroundImage: Uri? = null,
-
+        val isSubmitEnabled: Boolean = false,
         val loadState: LoadState = LoadState.Initialized,
 ) {
     val gender = editedUserDetail.gender.let { it.ifBlank { NO_SETTING } }
@@ -28,35 +26,35 @@ data class ProfileUiModel (
                 _rawUserDetail: UserDetail,
                 _editedUserDetail: UserDetail,
                 _temporalUserImage: Uri,
-                _temporalBackgroundImage: Uri,
                 isTextFilled: Boolean,
                 _loadState: LoadState,
         ) = ProfileUiModel(
                 rawUserDetail = _rawUserDetail,
                 editedUserDetail = _editedUserDetail,
-                isSubmitEnabled = isValid(current, isTextFilled),
                 temporalUserImage = _temporalUserImage,
-                temporalBackgroundImage = _temporalBackgroundImage,
+                isSubmitEnabled = isValid(_rawUserDetail, _editedUserDetail, _temporalUserImage, isTextFilled),
                 loadState = _loadState,
         )
 
         private const val NO_SETTING = "未設定"
 
-        private fun isValid(current: ProfileUiModel, isTextFilled: Boolean) =
-                isChangedUserDetail(current) &&
-                isStoredTemporalImages(current) &&
-                isNotEmptyUserDetail(current) &&
+        private fun isValid(
+                rawUserDetail: UserDetail,
+                editedUserDetail: UserDetail,
+                temporalUserImage: Uri,
+                isTextFilled: Boolean
+        ) =
+                isChangedUserDetail(rawUserDetail, editedUserDetail) &&
+                isStoredTemporalImages(temporalUserImage) &&
+                isNotEmptyUserDetail(editedUserDetail) &&
                 isTextFilled
 
-        private fun isChangedUserDetail(current: ProfileUiModel) =
-                current.rawUserDetail != current.editedUserDetail
-        private fun isStoredTemporalImages(current: ProfileUiModel) =
-                current.temporalUserImage != null
-                && current.temporalBackgroundImage != null
-        private fun isNotEmptyUserDetail(current: ProfileUiModel) =
-                   current.editedUserDetail.gender.isNotBlank()
-                && current.editedUserDetail.area != null
-                && current.editedUserDetail.age != -1
+        private fun isChangedUserDetail(raw: UserDetail, edited: UserDetail) = raw != edited
+        private fun isStoredTemporalImages(temporalUserImage: Uri) = temporalUserImage.toString().isNotBlank()
+        private fun isNotEmptyUserDetail(edited: UserDetail) =
+                edited.gender.isNotBlank() &&
+                edited.area != null &&
+                edited.age != -1
         }
 
     }
