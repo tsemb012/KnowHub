@@ -20,7 +20,7 @@ interface MainApi {
     ) : Response<Any>
 
     @GET("users/{user_id}")
-    fun fetchUser(@Path("user_id") userId: String): GetUserDetail
+    suspend fun fetchUser(@Path("user_id") userId: String): GetUserDetail
 
     @PUT("users/{user_id}")
     suspend fun putUserDetail(
