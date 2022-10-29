@@ -95,7 +95,7 @@ class LocalAreaDialogFragment(private val prefectureCode: Int, private val onCon
             .bufferedReader()
             .readLines()
             .first { it.split(",")[JAPAN_CITY_CODE].drop(1).dropLast(1).toInt() == cityCode }
-            .split(",")[JAPAN_CITY_SPELL]
+            .split(",")[JAPAN_CITY_SPELL].drop(1).dropLast(1)
             .capitalize()
 
         val rawCity = requireContext().assets.open(CITY_ADDRESS_CSV)
