@@ -17,12 +17,15 @@ interface MainApi {
     @GET("signup")
     suspend fun postTokenId(
             @HeaderMap headers: Map<String, String>,
+            @Query("user_id") userId: String,//TODO ここをpathに書き換える必要がある。
     ) : Response<Any>
 
     @GET("users/{user_id}")
-    suspend fun fetchUser(@Path("user_id") userId: String): GetUserDetail
+    suspend fun fetchUser(
+            @Path("user_id") userId: String
+    ): GetUserDetail
 
-    @PUT("users/{user_id}")
+    @PATCH("users/{user_id}")
     suspend fun putUserDetail(
             @Path("user_id") userId: String,
             @Body user: PostUserDetail
