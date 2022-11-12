@@ -11,8 +11,6 @@ data class GetUserDetail (
     val userName: String,
     @Json(name = "user_image")
     val userImage: String,
-    @Json(name = "back_ground_image")
-    val backgroundImage: String,
     val comment:String,
     val gender: String,
     val age: Int,
@@ -25,7 +23,6 @@ data class GetUserDetail (
                 userId = userId,
                 userName = userName,
                 userImage = userImage,
-                backgroundImage = backgroundImage,
                 comment = comment,
                 gender = gender,
                 age = age,
