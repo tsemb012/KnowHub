@@ -1,5 +1,7 @@
 package com.example.droidsoftthird.model.domain_model
 
+import com.example.droidsoftthird.model.request.PrefectureJson
+
 data class Prefecture(
         val prefectureCode: Int,
         val name: String,
@@ -12,4 +14,15 @@ data class Prefecture(
             val latitude: Double,
             val longitude: Double
     )
+
+    fun toJson() =
+        PrefectureJson(
+                prefectureCode = prefectureCode,
+                name = name,
+                spell = spell,
+                capitalName = capital.name,
+                capitalSpell = capital.spell,
+                capitalLatitude = capital.latitude,
+                capitalLongitude = capital.longitude
+        )
 }

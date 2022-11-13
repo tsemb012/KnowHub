@@ -3,11 +3,11 @@ package com.example.droidsoftthird.api
 import com.example.droidsoftthird.model.json.UserJson
 import com.example.droidsoftthird.model.request.PostGroup
 import com.example.droidsoftthird.model.request.PostSignUp
-import com.example.droidsoftthird.model.request.PostUserDetail
+import com.example.droidsoftthird.model.request.PostUserDetailJson
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.model.response.GetGroup
 import com.example.droidsoftthird.model.response.GetGroupDetail
-import com.example.droidsoftthird.model.response.GetUserDetail
+import com.example.droidsoftthird.model.response.GetUserDetailJson
 import com.example.droidsoftthird.model.response.MessageResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -23,19 +23,19 @@ interface MainApi {
     @GET("users/{user_id}")
     suspend fun fetchUser(
             @Path("user_id") userId: String
-    ): GetUserDetail
+    ): GetUserDetailJson
 
     @PATCH("users/{user_id}")
     suspend fun putUserDetail(
             @Path("user_id") userId: String,
-            @Body user: PostUserDetail
+            @Body user: PostUserDetailJson
     ): MessageResponse
 
 
     fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
 
     @POST("users")
-    fun postUser(userId: String, toJson: PostUserDetail): MessageResponse
+    fun postUser(userId: String, toJson: PostUserDetailJson): MessageResponse
 
 
     @POST("groups")

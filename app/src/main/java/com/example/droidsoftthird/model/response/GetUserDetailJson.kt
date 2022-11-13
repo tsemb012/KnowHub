@@ -1,10 +1,10 @@
 package com.example.droidsoftthird.model.response
 
-import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.UserDetail
+import com.example.droidsoftthird.model.request.AreaJson
 import com.squareup.moshi.Json
 
-data class GetUserDetail (
+data class GetUserDetailJson (
     @Json(name = "id")
     val userId: String,
     @Json(name = "user_name")
@@ -14,7 +14,7 @@ data class GetUserDetail (
     val comment:String,
     val gender: String,
     val age: Int,
-    val area: Area,
+    val area: AreaJson,
     val groups: List<GetGroup>,
     //val schedules: List<GetShcedule> TODO スケジュール実装後に追加
 ) {
@@ -26,7 +26,7 @@ data class GetUserDetail (
                 comment = comment,
                 gender = gender,
                 age = age,
-                area = area,
+                area = area.toEntity(),
                 groups = groups.map { it.toEntity() },
         )
 }
