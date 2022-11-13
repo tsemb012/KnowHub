@@ -73,7 +73,7 @@ class GroupAddFragment:Fragment(),View.OnClickListener {
                         { TODO("オンラインを選択した時の処理を記述する。")},
                     onConfirmListener =
                         { area ->
-                            viewModel.postPrefecture(area.prefecture.name)
+                            viewModel.postPrefecture(area?.prefecture?.name ?: getString(R.string.non_selected))
                             viewModel.postCity(area.city?.name ?: getString(R.string.non_selected))
                         }
                 )

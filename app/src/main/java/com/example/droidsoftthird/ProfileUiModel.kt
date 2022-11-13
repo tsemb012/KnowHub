@@ -16,7 +16,7 @@ data class ProfileUiModel (
     val age = editedUserDetail.age.toString().let { if(it == "-1") NO_SETTING else  it }
     val area = editedUserDetail.area.let {
         if (it == null)  NO_SETTING
-        else if (it.city == null) it.prefecture.name
+        else if (it.city == null) it.prefecture?.name ?: NO_SETTING
         else it?.prefecture?.name + ", " + it?.city?.name
     }
 
