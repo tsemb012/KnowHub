@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.model.request.PostUserDetail
+import com.example.droidsoftthird.model.request.PostUserDetailJson
 
 data class UserDetail (
         val userId: String,
@@ -14,14 +14,14 @@ data class UserDetail (
 ) {
     enum class Gender { MALE, FEMALE, NO_ANSWER }
     fun toJson() =
-        PostUserDetail(
+        PostUserDetailJson(
                 userId = userId,
                 userName = userName,
                 userImage = userImage,
                 comment = comment,
                 gender = gender,
                 age = age,
-                area = area ?: throw IllegalArgumentException("area is null"),
+                area = area?.toJson()
         )
 }
 
