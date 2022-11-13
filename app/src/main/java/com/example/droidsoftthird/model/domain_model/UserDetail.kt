@@ -9,7 +9,7 @@ data class UserDetail (
         val comment:String,
         val gender: String,
         val age: Int,
-        val area: Area?,
+        val area: Area,
         val groups: List<ApiGroup>,
 ) {
     enum class Gender { MALE, FEMALE, NO_ANSWER }
@@ -21,7 +21,7 @@ data class UserDetail (
                 comment = comment,
                 gender = gender,
                 age = age,
-                area = area?.toJson()
+                area = area.toJson()
         )
 }
 
@@ -33,7 +33,7 @@ internal val initializedUserDetail get() =
                 comment = "",
                 gender = "",
                 age = -1,
-                area = null,
+                area = Area(null, null),
                 groups = listOf()
         )
 

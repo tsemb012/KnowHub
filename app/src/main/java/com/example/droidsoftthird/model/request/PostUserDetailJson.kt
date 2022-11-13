@@ -25,12 +25,12 @@ class PostUserDetailJson(
 
 class AreaJson(
         @Json(name = "prefecture")
-        val prefecture: PrefectureJson,
+        val prefecture: PrefectureJson?,
         @Json(name = "city")
         val city: CityJson? = null
 ) {
         fun toEntity() = Area(
-                prefecture = prefecture.toEntity(),
+                prefecture = prefecture?.toEntity(),
                 city = city?.toEntity()
         )
 
