@@ -1,7 +1,6 @@
 package com.example.droidsoftthird.utils
 
 import android.net.Uri
-import android.text.format.DateUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -12,12 +11,46 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
 import com.google.android.material.slider.Slider
-import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+@BindingAdapter("imageURI")
+fun ImageView.imageURI(imageMap: Map<String, String>?) {
+    if (imageMap.isNullOrEmpty()) return
+    val key = imageMap.keys.first()
+    val image = imageMap.values.first()
+    when (key) {
+        "REF_FOR_INITIALIZE" -> {
+            Glide.with(this)
+                .load(image.let { FirebaseStorage.getInstance().getReference(it) })//TODO Transformationで画像の加工処理を行う。
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//Changed from AUTOMATIC to RESOURCE
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.ic_broken_image)
+                )
+                .into(this)
+        }
+        "URI_FOR_UPDATE" -> Glide.with(this)
+            .load(image?.let { Uri.parse(it) })
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//Changed from AUTOMATIC to RESOURCE
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.ic_broken_image)
+            )
+            .into(this)
+        else -> {
+            Glide.with(this)
+                .load(R.drawable.loading_animation)
+                .placeholder(R.drawable.ic_baseline_account_box_24)
+                .into(this)
+        }
+    }
+}
 
 //DONE GlideでStorageのデータを表示する。
 @BindingAdapter("imageFireStorage")
