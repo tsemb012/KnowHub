@@ -1,10 +1,9 @@
 package com.example.droidsoftthird
 
-import androidx.compose.ui.text.toUpperCase
-import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.fire_model.LoadState
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -23,17 +22,16 @@ class ProfileEditViewModel @Inject constructor(private val useCase: ProfileUseCa
         job.start()
     }
 
-    private fun initializeUiModel(it: UserDetail) {
+    private fun initializeUiModel(detail: UserDetail) {
 
-        rawUserDetail.value = it
-        temporalUserImage.value = it.userImage.toUri()
-        bindingUserName.value = it.userName
-        bindingComment.value = it.comment
-        loadState.value = LoadState.Loaded(it)
-        postGender(UserDetail.Gender.valueOf(it.gender.uppercase(Locale.ROOT)))
-        postAge(it.age)
-        postArea(it.area)
-        //storeTemporalUserImage()
+        rawUserDetail.value = detail
+        bindingUserName.value = detail.userName
+        bindingComment.value = detail.comment
+        temporalUserImage.value = mapOf(REF_FOR_INITIALIZE to detail.userImage)
+        loadState.value = LoadState.Loaded(detail)
+        postGender(UserDetail.Gender.valueOf(detail.gender.uppercase(Locale.ROOT)))
+        postAge(detail.age)
+        postArea(detail.area)
     }
 
     fun submitEditedUserProfile() = submitProfile(SubmitType.EDIT)

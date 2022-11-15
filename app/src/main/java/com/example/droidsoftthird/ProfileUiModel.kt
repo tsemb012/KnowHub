@@ -1,6 +1,5 @@
 package com.example.droidsoftthird
 
-import android.net.Uri
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.model.fire_model.LoadState
@@ -8,7 +7,7 @@ import com.example.droidsoftthird.model.fire_model.LoadState
 data class ProfileUiModel (
         val rawUserDetail: UserDetail = initializedUserDetail,
         val editedUserDetail: UserDetail = initializedUserDetail,
-        val temporalUserImage: Uri? = null,
+        val temporalUserImage: Map<String, String>? = null,
         val isSubmitEnabled: Boolean = false,
         val loadState: LoadState = LoadState.Initialized,
 ) {
@@ -25,7 +24,7 @@ data class ProfileUiModel (
                 current: ProfileUiModel,
                 _rawUserDetail: UserDetail,
                 _editedUserDetail: UserDetail,
-                _temporalUserImage: Uri,
+                _temporalUserImage: Map<String, String>,
                 isTextFilled: Boolean,
                 _loadState: LoadState,
         ) = ProfileUiModel(
@@ -41,7 +40,7 @@ data class ProfileUiModel (
         private fun isValid(
                 rawUserDetail: UserDetail,
                 editedUserDetail: UserDetail,
-                temporalUserImage: Uri,
+                temporalUserImage: Map<String, String>,
                 isTextFilled: Boolean
         ) =
                 isChangedUserDetail(rawUserDetail, editedUserDetail) &&
@@ -50,7 +49,7 @@ data class ProfileUiModel (
                 isTextFilled
 
         private fun isChangedUserDetail(raw: UserDetail, edited: UserDetail) = raw != edited
-        private fun isStoredTemporalImages(temporalUserImage: Uri) = temporalUserImage.toString().isNotBlank()
+        private fun isStoredTemporalImages(temporalUserImage: Map<String, String>) = temporalUserImage.isNotEmpty()
         private fun isNotEmptyUserDetail(edited: UserDetail) =
                 edited.gender.isNotBlank() &&
                 edited.area != null &&
