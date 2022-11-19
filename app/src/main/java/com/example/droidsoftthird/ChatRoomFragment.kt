@@ -142,12 +142,6 @@ class ChatRoomFragment : Fragment() {
                 ChatRoomFragmentDirections.actionChatRoomFragmentToScheduleFragment(groupId))
         })
 
-        viewModel.navigationToVideo.observe(viewLifecycleOwner,EventObserver{
-            findNavController().navigate(
-                ChatRoomFragmentDirections.actionChatRoomFragmentToVideoFragment(/*groupId*/)
-            )
-        })
-
         viewModel.showBottomSheet.observe(viewLifecycleOwner,EventObserver{
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })

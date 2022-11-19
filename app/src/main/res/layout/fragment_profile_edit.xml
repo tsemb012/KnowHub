@@ -44,21 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/user_image_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-                <!--TODO 修正する。-->
 
                 <ImageView
-                    android:id="@+id/background_image_btn"
+                    android:id="@+id/user_image_btn"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:clickable="true"
                     android:layout_width="0dp"
@@ -70,7 +58,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:imageURI="@{viewModel.uiModel.temporalBackgroundImage}"
+                    app:imageURI="@{viewModel.uiModel.temporalUserImage}"
                     android:src="@drawable/ic_baseline_image_24"
                     />
 
@@ -83,7 +71,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/background_image_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/user_image_btn"
                     android:hint="@string/user_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -91,7 +79,7 @@
                         android:id="@+id/edit_user_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.userName}"
+                        android:text="@={viewModel.bindingUserName}"
                         android:inputType="textPersonName"
                         />
 
@@ -114,7 +102,7 @@
                         android:id="@+id/edit_user_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.comment}"
+                        android:text="@={viewModel.bindingComment}"
                         android:inputType="textMultiLine"
                         />
 
@@ -146,7 +134,7 @@
                         layout="@layout/include_item_profile_edit"
                         bind:title="@{@string/gender}"
                         bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.uiModel.editedUserDetail.gender}"
+                        bind:text="@{viewModel.uiModel.gender}"
                         android:clickable="true" />
 
                     <include

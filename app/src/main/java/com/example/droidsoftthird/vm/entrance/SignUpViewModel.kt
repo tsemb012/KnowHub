@@ -58,7 +58,8 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
         viewModelScope.launch {
             kotlin.runCatching {
                 repository.saveTokenId(tokenId)
-                _navigateTo.value = Event(Screen.Home)//TODO プロフィールページに行くか。画面遷移を検討する。
+            }.onSuccess {
+                _navigateTo.value = Event(Screen.CreateProfile)//TODO プロフィールページに行くか。画面遷移を検討する。
             }.onFailure {
                 //TODO ログアウト
                 _error.value = it.message ?: "Error"

@@ -41,7 +41,7 @@
                     app:layout_anchorGravity="center"
                     app:layout_collapseMode="parallax"
                     app:srcCompat="@drawable/ic_launcher_foreground"
-                    app:imageFireStorage="@{viewModel.userDetail.backgroundImage}"
+                    app:imageFireStorage="@{viewModel.userDetail.userImage}"
                     />
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -137,7 +137,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/floating_btn_add"
+            android:id="@+id/transit_to_edit_profile_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -145,8 +145,7 @@
             android:text="@string/edit_profile"
             android:textAlignment="center"
             app:layout_anchor="@id/appbar"
-            app:layout_anchorGravity="bottom|right"
-            android:onClick="@{() ->  viewModel.toEditProfileFragment()}"/>
+            app:layout_anchorGravity="bottom|right" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

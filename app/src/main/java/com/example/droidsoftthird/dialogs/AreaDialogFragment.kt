@@ -13,23 +13,29 @@ class AreaDialogFragment(
         private val onExceptionListener: (String) -> Unit,
         private val onConfirmListener: (Area) -> Unit,
 ):DialogFragment() {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         buildPrefectureDialog(prefectures = resources.getStringArray(R.array.online_and_prefectures))
 
-    private fun buildPrefectureDialog(prefectures: Array<String>) =
-        AlertDialog.Builder(requireContext())
+    private fun buildPrefectureDialog(prefectures: Array<String>):AlertDialog {
+        var selectedPrefectureCode = 0
+        return AlertDialog.Builder(requireContext())
             .setTitle(R.string.activity_area)
-            .setSingleChoiceItems(prefectures, 0) { _, _ -> }
+            .setSingleChoiceItems(prefectures,
+                0) { _, selectedPrefecture -> selectedPrefectureCode = selectedPrefecture }
             .setIcon(R.drawable.ic_baseline_location_on_24)
-            .setPositiveButton(getString(R.string.Next)) { _, selectedCode ->
-                if (selectedCode != 0) {
-                    LocalAreaDialogFragment(selectedCode, onConfirmListener).show(parentFragmentManager, "activity_area_next")
+            .setPositiveButton(getString(R.string.Next)) { _, _ ->
+                if (selectedPrefectureCode != 0) {
+                    LocalAreaDialogFragment(selectedPrefectureCode, onConfirmListener).show(
+                        parentFragmentManager,
+                        "activity_area_next")
                 } else {
                     onExceptionListener(prefectures[0])
                 }
             }
             .setNeutralButton(R.string.cancel) { _, _ -> }
             .create()
+    }
 }
 
 
@@ -44,24 +50,26 @@ class LocalAreaDialogFragment(private val prefectureCode: Int, private val onCon
 
     private fun getCityMap(prefectureCode: Int): Map<Int, String> =
         requireContext().assets.open(JAPAN_ALL_ADDRESS_CSV).bufferedReader().readLines()
-            .filter { it.split(",")[JAPAN_PREFECTURE_CODE].toInt() == prefectureCode }
+            .filter { it.split(",")[JAPAN_PREFECTURE_CODE].drop(1).dropLast(1).toInt() == prefectureCode }
             .associateBy(
-                { it.split(",")[JAPAN_CITY_CODE].toInt() },
-                { it.split(",")[JAPAN_CITY_NAME] }
+                { it.split(",")[JAPAN_CITY_CODE].drop(1).dropLast(1).toInt() },
+                { it.split(",")[JAPAN_CITY_NAME].drop(1).dropLast(1) }
             )
 
-    private fun buildCityDialog(prefectureCode: Int, cityArray: Array<String>, cityMap: Map<Int, String>, ) =
-        AlertDialog.Builder(requireContext())
+    private fun buildCityDialog(prefectureCode: Int, cityArray: Array<String>, cityMap: Map<Int, String>, ): AlertDialog {
+        var selectedCityCode = -1
+        return AlertDialog.Builder(requireContext())
             .setTitle(R.string.activity_area)
             .setIcon(R.drawable.ic_baseline_location_on_24)
-            .setSingleChoiceItems(cityArray, 0) { _, _ -> }
-            .setPositiveButton(R.string.done) { _, selectedCity ->
-                val cityCode = cityMap.keys.elementAt(selectedCity)
+            .setSingleChoiceItems(cityArray, 0) { _, which -> selectedCityCode = which }
+            .setPositiveButton(R.string.done) { _, _ ->
+                val cityCode = cityMap.keys.elementAt(selectedCityCode)
                 val area = buildArea(prefectureCode, cityCode)
                 onConfirmListener(area)
             }
-            .setNeutralButton(R.string.cancel) { _, _ ->  }
+            .setNeutralButton(R.string.cancel) { _, _ -> }
             .create()
+    }
 
     private fun buildArea(prefectureCode: Int, cityCode: Int): Area {
 
@@ -86,14 +94,14 @@ class LocalAreaDialogFragment(private val prefectureCode: Int, private val onCon
         val spell = requireContext().assets.open(JAPAN_ALL_ADDRESS_CSV)
             .bufferedReader()
             .readLines()
-            .first { it.split(",")[JAPAN_CITY_CODE].toInt() == cityCode }
-            .split(",")[JAPAN_CITY_SPELL]
+            .first { it.split(",")[JAPAN_CITY_CODE].drop(1).dropLast(1).toInt() == cityCode }
+            .split(",")[JAPAN_CITY_SPELL].drop(1).dropLast(1)
             .capitalize()
 
         val rawCity = requireContext().assets.open(CITY_ADDRESS_CSV)
             .bufferedReader()
             .readLines()
-            .first{ it.split(",")[CITY_CODE].toInt() == cityCode }
+            .first{ it.split(",")[CITY_CODE].toIntOrNull() == cityCode }
             .split(",")
 
         val city = City(

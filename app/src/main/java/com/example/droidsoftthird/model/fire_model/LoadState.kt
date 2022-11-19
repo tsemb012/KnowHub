@@ -3,7 +3,7 @@ package com.example.droidsoftthird.model.fire_model
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Job
 
-sealed class LoadState {
+sealed class LoadState {//TODO 厳密にはLoadじゃないので適切な名前を考える。
     object Initialized : LoadState()
     data class Loaded<out T: Any>(val value: T): LoadState()
     class Loading(val job: Job): LoadState()
