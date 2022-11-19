@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
 import com.example.droidsoftthird.dialogs.AreaDialogFragment
 import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
@@ -22,11 +21,10 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         private const val DEFAULT_AGE = 30
         const val REQUEST_CODE = "REQUEST_CODE"
         const val REQUEST_CODE_USER_IMAGE = "REQUEST_CODE_USER_IMAGE"
-        const val REQUEST_CODE_BACKGROUND_IMAGE = "REQUEST_CODE_BACKGROUND_IMAGE"
     }
 
+    abstract val viewModel: ProfileSubmitViewModel
     protected val binding: FragmentProfileEditBinding by dataBinding()
-    protected val viewModel: ProfileSubmitViewModel by viewModels()
     private val launcher = registerLauncher()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,13 +34,12 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         setupListeners()
     }
 
-    protected fun setupListeners() {
+    private fun setupListeners() {
         with(binding) {
             userImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_USER_IMAGE) }
-            backgroundImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_BACKGROUND_IMAGE) }
-            genderItem.setOnClickListener { showGenderDialog() }
-            ageItem.setOnClickListener { showAgeDialog() }
-            areaItem.setOnClickListener { showAreaDialog() }
+            genderItem.itemProfileEdit.setOnClickListener { showGenderDialog() }
+            ageItem.itemProfileEdit.setOnClickListener { showAgeDialog() }
+            areaItem.itemProfileEdit.setOnClickListener { showAreaDialog() }
         }
         setupSubmitListeners()
     }
@@ -88,14 +85,8 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
     private fun registerLauncher() =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val requestCode = it.data?.getStringExtra(REQUEST_CODE)
                 val uri = it.data?.data
-                if (uri != null) {
-                    when (requestCode) {
-                        REQUEST_CODE_USER_IMAGE -> viewModel.storeTemporalUserImage(uri)
-                        REQUEST_CODE_BACKGROUND_IMAGE -> viewModel.storeTemporalBackgroundImage(uri)
-                    }
-                }
+                if (uri != null) { viewModel.storeTemporalUserImage(uri) }
             } else {
                 Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
             }

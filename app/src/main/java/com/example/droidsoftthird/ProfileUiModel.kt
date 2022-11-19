@@ -1,6 +1,5 @@
 package com.example.droidsoftthird
 
-import android.net.Uri
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.model.fire_model.LoadState
@@ -8,49 +7,53 @@ import com.example.droidsoftthird.model.fire_model.LoadState
 data class ProfileUiModel (
         val rawUserDetail: UserDetail = initializedUserDetail,
         val editedUserDetail: UserDetail = initializedUserDetail,
+        val temporalUserImage: Map<String, String>? = null,
         val isSubmitEnabled: Boolean = false,
-        val temporalUserImage: Uri? = null,
-        val temporalBackgroundImage: Uri? = null,
         val loadState: LoadState = LoadState.Initialized,
 ) {
-    val age = editedUserDetail.age.toString()
-    val area = editedUserDetail.area.let { it?.prefecture?.name + ", " + it?.city?.name }
+    val gender = editedUserDetail.gender.let { it.ifBlank { NO_SETTING } }
+    val age = editedUserDetail.age.toString().let { if(it == "-1") NO_SETTING else  it }
+    val area = editedUserDetail.area.let {
+        if (it == null)  NO_SETTING
+        else if (it.city == null) it.prefecture?.name ?: NO_SETTING
+        else it?.prefecture?.name + ", " + it?.city?.name
+    }
 
     companion object {
         operator fun invoke(
                 current: ProfileUiModel,
                 _rawUserDetail: UserDetail,
                 _editedUserDetail: UserDetail,
-                _temporalUserImage: Uri,
-                _temporalBackgroundImage: Uri,
+                _temporalUserImage: Map<String, String>,
+                isTextFilled: Boolean,
                 _loadState: LoadState,
         ) = ProfileUiModel(
                 rawUserDetail = _rawUserDetail,
                 editedUserDetail = _editedUserDetail,
-                isSubmitEnabled = isValid(current),
                 temporalUserImage = _temporalUserImage,
-                temporalBackgroundImage = _temporalBackgroundImage,
+                isSubmitEnabled = isValid(_rawUserDetail, _editedUserDetail, _temporalUserImage, isTextFilled),
                 loadState = _loadState,
         )
 
-        private fun isValid(current: ProfileUiModel) =
-                isChangedUserDetail(current) &&
-                isStoredTemporalImages(current) &&
-                isNotEmptyUserDetail(current)
+        private const val NO_SETTING = "未設定"
 
+        private fun isValid(
+                rawUserDetail: UserDetail,
+                editedUserDetail: UserDetail,
+                temporalUserImage: Map<String, String>,
+                isTextFilled: Boolean
+        ) =
+                isChangedUserDetail(rawUserDetail, editedUserDetail) &&
+                isStoredTemporalImages(temporalUserImage) &&
+                isNotEmptyUserDetail(editedUserDetail) &&
+                isTextFilled
 
-        private fun isChangedUserDetail(current: ProfileUiModel) =
-                current.rawUserDetail != current.editedUserDetail
-        private fun isStoredTemporalImages(current: ProfileUiModel) =
-                current.temporalUserImage != null
-                && current.temporalBackgroundImage != null
-        private fun isNotEmptyUserDetail(current: ProfileUiModel) =
-                current.editedUserDetail.userName.isNotBlank()
-                && current.editedUserDetail.comment.isNotBlank()
-                && current.editedUserDetail.gender.isNotBlank()
-                && current.editedUserDetail.comment.isNotEmpty()
-                && current.editedUserDetail.area != null
-                && current.editedUserDetail.age != -1
+        private fun isChangedUserDetail(raw: UserDetail, edited: UserDetail) = raw != edited
+        private fun isStoredTemporalImages(temporalUserImage: Map<String, String>) = temporalUserImage.isNotEmpty()
+        private fun isNotEmptyUserDetail(edited: UserDetail) =
+                edited.gender.isNotBlank() &&
+                edited.area != null &&
+                edited.age != -1
         }
 
     }

@@ -5,16 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
-import com.example.droidsoftthird.model.User
 import com.example.droidsoftthird.model.fire_model.Group
 import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.fire_model.UserProfile
-import com.example.droidsoftthird.model.json.SignUpJson
-import com.example.droidsoftthird.model.json.toEntity
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
 import com.example.droidsoftthird.model.domain_model.UserDetail
-import com.example.droidsoftthird.model.request.PostSignUp
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.firebase.auth.FirebaseAuth
@@ -62,7 +58,7 @@ class BaseRepositoryImpl @Inject constructor(
 
     suspend fun certifyTokenId(tokenID: String) {
         mapOf("Authorization" to "Bearer $tokenID").let {
-            mainApi.postTokenId(it)
+            mainApi.postTokenId(it, userId)
         }
     }
 
@@ -181,8 +177,8 @@ class BaseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
-    override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.toJson()).message
-    override suspend fun createUser(userDetail: UserDetail): String? = mainApi.postUser(userId, userDetail.copy(userId = userId).toJson()).message
+    override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
+    override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){

@@ -5,7 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.R
 import java.security.InvalidParameterException
 
-enum class Screen { Welcome, SignUp, SignIn, Home }
+enum class Screen { Welcome, SignUp, SignIn, Home, CreateProfile }
 
 fun Fragment.navigate(to: Screen, from: Screen) {
     if (to == from) {
@@ -23,6 +23,9 @@ fun Fragment.navigate(to: Screen, from: Screen) {
         }
         Screen.Home -> {
             findNavController().navigate(R.id.homeFragment)
+        }
+        Screen.CreateProfile -> {
+            findNavController().navigate(R.id.profileCreateFragment)
         }
     }
 }
