@@ -56,13 +56,13 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
-    suspend fun certifyTokenId(tokenID: String) {
+    override suspend fun certifyAndRegister(tokenID: String) {
         mapOf("Authorization" to "Bearer $tokenID").let {
             mainApi.postTokenId(it, userId)
         }
     }
 
-    override suspend fun signUp(email: String, password: String) : Result<String> =
+    override suspend fun signUpAndFetchToken(email: String, password: String) : Result<String> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -90,7 +90,7 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }//TODO　ネスト深すぎ。。要リファクタリング
 
-    suspend fun singIn(email: String, password: String): Result<String> =
+    override suspend fun singIn(email: String, password: String): Result<String> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
