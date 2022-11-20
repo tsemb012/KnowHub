@@ -10,7 +10,9 @@ import com.google.firebase.storage.StorageReference
 
 interface FirebaseRepository {
 
-    suspend fun signUp(email: String, password: String): Result<String>
+    suspend fun signUpAndFetchToken(email: String, password: String): Result<String>
+
+    suspend fun singIn(email: String, password: String): Result<String>
 
     suspend fun getGroups(query: String): Result<List<Group>>
 
