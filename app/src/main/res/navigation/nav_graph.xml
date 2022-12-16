@@ -136,7 +136,11 @@
     <fragment
         android:id="@+id/scheduleCreateFragment"
         android:name="com.example.droidsoftthird.ScheduleCreateFragment"
-        android:label="ScheduleCreateFragment" />
+        android:label="ScheduleCreateFragment" >
+        <action
+            android:id="@+id/action_scheduleCreateFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.droidsoftthird.ProfileFragment"
@@ -157,5 +161,13 @@
         <action
             android:id="@+id/action_profileCreateFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.droidsoftthird.MapFragment"
+        android:label="MapFragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_scheduleCreateFragment"
+            app:destination="@id/scheduleCreateFragment" />
     </fragment>
 </navigation>
