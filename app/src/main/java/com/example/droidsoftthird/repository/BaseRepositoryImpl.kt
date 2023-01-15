@@ -5,12 +5,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
+import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.fire_model.Group
 import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.fire_model.UserProfile
-import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
-import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.firebase.auth.FirebaseAuth
@@ -180,6 +178,9 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
+    override suspend fun searchPlaces(query: String, viewPort: ViewPort): List<Place> =
+        mainApi.getPlaces(query, viewPort.toJson(), LANGUAGE_JP).body()?.map { it.toEntity() } ?: listOf()
+
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
@@ -289,7 +290,8 @@ class BaseRepositoryImpl @Inject constructor(
 
 
     companion object {
-        private const val  LIMIT = 50L
+        private const val LIMIT = 50L
+        private const val LANGUAGE_JP = "ja"//言語設定する際に、直接Preferenceから取得するようにする。
         const val GROUP_ALL = "group_all"
         const val GROUP_MY_PAGE = "group_my_page"
         const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"

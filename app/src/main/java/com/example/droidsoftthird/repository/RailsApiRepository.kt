@@ -1,8 +1,6 @@
 package com.example.droidsoftthird.repository
 
-import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
-import com.example.droidsoftthird.model.domain_model.UserDetail
+import com.example.droidsoftthird.model.domain_model.*
 
 interface RailsApiRepository {
 
@@ -18,4 +16,5 @@ interface RailsApiRepository {
     //suspend fun postNewUser(singup: SignUpJson): User?
     suspend fun updateUserDetail(userDetail: UserDetail): String?
     suspend fun createUser(userDetail: UserDetail): String?
+    suspend fun searchPlaces(query: String, viewPoint: ViewPort): List<Place>
 }
