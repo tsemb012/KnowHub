@@ -179,7 +179,14 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
     override suspend fun searchPlaces(query: String, viewPort: ViewPort): List<Place> =
-        mainApi.getPlaces(query, viewPort.toJson(), LANGUAGE_JP).body()?.map { it.toEntity() } ?: listOf()
+        mainApi.getPlaces(
+                query = query,
+                language = LANGUAGE_JP,
+                northLat = viewPort.northEast?.latitude ?: 0.0,
+                eastLng = viewPort.northEast?.longitude ?: 0.0,
+                southLat = viewPort.southWest?.latitude ?: 0.0,
+                westLng = viewPort.southWest?.longitude ?: 0.0
+        ).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
