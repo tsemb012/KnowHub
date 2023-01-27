@@ -65,7 +65,7 @@ class MapFragment: Fragment() {
                         cameraPositionState = cameraPositionState,
                         onMapLoaded = { isMapLoaded = true },
                         updateCameraPosition = { northEast, southWest -> viewModel.updateViewPoint(northEast, southWest) },
-                        places = viewModel.places.value,
+                        places = viewModel.places,
                         onMarkerClick = { placeId -> viewModel.onMarkerClick(placeId) },
                 ) { SearchBox(viewModel.query) {
                     viewModel.searchPlaces()

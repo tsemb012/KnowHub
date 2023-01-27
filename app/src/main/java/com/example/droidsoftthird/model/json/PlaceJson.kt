@@ -17,7 +17,7 @@ data class PlaceJson(
         @Json(name = "formatted_address")
         val formattedAddress: String,
         @Json(name = "photos")
-        val photos: List<PhotoJson>,
+        val photos: List<PhotoJson>?,
 ) {
     data class GeometryJson(
             val location: Location,
@@ -55,6 +55,6 @@ data class PlaceJson(
             viewPort = geometry.viewport.toEntity(),
             formattedAddress = formattedAddress,
             plusCode = plusCode.toEntity(),
-            photos = photos.map { it.toEntity() },
+            photos = photos?.map { it.toEntity() },
     )
 }

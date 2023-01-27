@@ -10,7 +10,7 @@ data class Place (
         val viewPort: ViewPort,
         val formattedAddress: String,
         val plusCode: PlusCode,
-        val photos: List<LocationPhoto>
+        val photos: List<LocationPhoto>?
 )
 
 data class LocationPhoto (
