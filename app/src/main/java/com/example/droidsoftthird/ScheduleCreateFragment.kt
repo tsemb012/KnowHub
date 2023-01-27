@@ -103,7 +103,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
 
             includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener {
 
-                //findNavController().navigate()
+                findNavController().navigate(R.id.action_scheduleCreateFragment_to_mapFragment)
 
                 //childFragmentManager.let { LocationDialogFragment().show(it, "location") }
             }

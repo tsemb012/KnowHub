@@ -103,7 +103,7 @@ class HomeFragment: Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.home,menu)
         val primaryWhite = "#F6FFFE"
-        menu.getItem(0).icon.apply {
+        menu.getItem(0).icon?.apply {
             mutate() // Drawableを変更可能にする
             setColorFilter(android.graphics.Color.parseColor(primaryWhite), PorterDuff.Mode.SRC_ATOP) // アイコンを白くする
         }
