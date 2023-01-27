@@ -2,7 +2,6 @@ package com.example.droidsoftthird.api
 
 import com.example.droidsoftthird.model.json.PlaceJson
 import com.example.droidsoftthird.model.json.UserJson
-import com.example.droidsoftthird.model.json.ViewPortJson
 import com.example.droidsoftthird.model.request.PostGroup
 import com.example.droidsoftthird.model.request.PostSignUp
 import com.example.droidsoftthird.model.request.PostUserDetailJson
@@ -61,7 +60,10 @@ interface MainApi {
     @GET("maps/search_query")
     suspend fun getPlaces(
             @Query("input") query: String,
-            @Query("viewport") viewPortJson: ViewPortJson,
             @Query("language") language: String,
+            @Query("north_lat") northLat: Double,
+            @Query("east_lng") eastLng: Double,
+            @Query("south_lat") southLat: Double,
+            @Query("west_lng") westLng: Double,
     ): Response<List<PlaceJson>>
 }
