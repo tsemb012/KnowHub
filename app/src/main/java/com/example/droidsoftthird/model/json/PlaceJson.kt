@@ -1,7 +1,9 @@
 package com.example.droidsoftthird.model.json
 
 import com.example.droidsoftthird.model.domain_model.Location
+import com.example.droidsoftthird.model.domain_model.LocationPhoto
 import com.example.droidsoftthird.model.domain_model.Place
+import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 
 data class PlaceJson(
@@ -9,7 +11,7 @@ data class PlaceJson(
         val placeId: String,
         val name: String,
         val geometry: GeometryJson,
-        val types: List<TypeJson>,
+        val types: List<String>,
         @Json(name = "plus_code")
         val plusCode: PlusCodeJson,
         @Json(name = "formatted_address")
@@ -28,25 +30,31 @@ data class PlaceJson(
             val photoReference: String,
             @Json(name = "html_attributions")
             val htmlAttributions: List<String>,
-    )
+    ) {
+        fun toEntity() = LocationPhoto(
+                height = height,
+                width = width,
+                photoReference = photoReference,
+                htmlAttributions = htmlAttributions,
+        )
+    }
     data class PlusCodeJson(
             @Json(name = "compound_code")
             val compoundCode: String,
             @Json(name = "global_code")
             val globalCode: String,
-    )
-    data class TypeJson(
-            @Json(name = "point_of_interest")
-            val pointOfInterest: String,
-            val establishment: String,
-    )
+    ) {
+        fun toEntity() = PlusCode.builder().setCompoundCode(compoundCode).setGlobalCode(globalCode).build()
+    }
+
     fun toEntity(): Place = Place(
             placeId = placeId,
             name = name,
-            type = types[0].pointOfInterest,
+            types = types,
             location = geometry.location,
             viewPort = geometry.viewport.toEntity(),
             formattedAddress = formattedAddress,
-            //photos = photos,
+            plusCode = plusCode.toEntity(),
+            photos = photos.map { it.toEntity() },
     )
 }
