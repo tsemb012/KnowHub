@@ -1,17 +1,12 @@
 package com.example.droidsoftthird
 
 import android.graphics.PorterDuff
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import com.example.droidsoftthird.databinding.ActivityMainBinding
-import com.example.droidsoftthird.databinding.FragmentHomeBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wada811.databinding.dataBinding
@@ -54,7 +49,7 @@ class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.home,menu)
         val primaryWhite = "#F6FFFE"
-        menu.getItem(0).icon.apply {
+        menu.getItem(0).icon?.apply {
             mutate() // Drawableを変更可能にする
             setColorFilter(android.graphics.Color.parseColor(primaryWhite), PorterDuff.Mode.SRC_ATOP) // アイコンを白くする
         }
