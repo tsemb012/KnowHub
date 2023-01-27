@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 data class ViewPortJson (
         @Json(name = "northeast")
         val northEast: NorthEast?,
-        @Json(name = "northeast")
+        @Json(name = "southwest")
         val southWest: SouthWest?
 ) {
     data class NorthEast (
