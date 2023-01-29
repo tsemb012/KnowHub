@@ -11,6 +11,7 @@ import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.fire_model.UserProfile
 import com.example.droidsoftthird.model.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -178,14 +179,25 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
-    override suspend fun searchPlaces(query: String, viewPort: ViewPort): List<Place> =
-        mainApi.getPlaces(
+    override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
+        mainApi.getIndividualPlace(
                 query = query,
                 language = LANGUAGE_JP,
                 northLat = viewPort.northEast?.latitude ?: 0.0,
                 eastLng = viewPort.northEast?.longitude ?: 0.0,
                 southLat = viewPort.southWest?.latitude ?: 0.0,
                 westLng = viewPort.southWest?.longitude ?: 0.0
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun searchByText(query: String, centerPoint: LatLng): List<Place> =
+        mainApi.getPlacesByText(
+                query = query,
+                type = TODO("typeもUIから取得するように"),
+                language = LANGUAGE_JP,
+                region = REGION_JP,
+                centerLat = centerPoint.latitude,
+                centerLng = centerPoint.longitude,
+                radius = TODO("半径を追加するように"),
         ).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
@@ -299,6 +311,7 @@ class BaseRepositoryImpl @Inject constructor(
     companion object {
         private const val LIMIT = 50L
         private const val LANGUAGE_JP = "ja"//言語設定する際に、直接Preferenceから取得するようにする。
+        private const val REGION_JP = "jp"//設定する際に、直接Preferenceから取得するようにする。
         const val GROUP_ALL = "group_all"
         const val GROUP_MY_PAGE = "group_my_page"
         const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"

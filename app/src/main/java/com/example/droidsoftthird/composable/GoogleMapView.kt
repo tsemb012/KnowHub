@@ -13,6 +13,7 @@ fun GoogleMapView(
     onMapLoaded: () -> Unit = {},
     updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> },
     places: MutableState<List<Place>>,
+    currentPoint: MutableState<LatLng>,
     onMarkerClick: (String) -> Unit = {},
     searchBox: @Composable () -> Unit = {},
 ) {
@@ -24,8 +25,9 @@ fun GoogleMapView(
 
 
     if (mapVisible) {
-
         searchBox()
+        //TODO typeを選択で切るように追加でComposeを設置するように
+        //TODO でふぉるとではnullでoptionで外側から追加UIをセットするようにする。
         GoogleMap(
                 modifier = modifier,
                 cameraPositionState = cameraPositionState,
@@ -34,9 +36,11 @@ fun GoogleMapView(
                 onMapLoaded = onMapLoaded,
                 onPOIClick = { },
         ) {
+
             if (!cameraPositionState.isMoving) {//カメラの動きが止まった時のデータをViewModelにあげるようにする。
                 cameraPositionState.projection?.visibleRegion?.latLngBounds?.let {
                     updateCameraPosition(it.northeast, it.southwest)
+                    currentPoint.value = it.center
                 }
             }
             places.value.forEach {
@@ -48,12 +52,10 @@ fun GoogleMapView(
                         //onClick = { onMarkerClick(it.tag) }
                         //TODO ViewModelからidを使って、Placeの詳細を取得するようにする。
                         //TODO モーダルを出現させてから詳細を取得するようにするのが良いんじゃないか？
-                        //TODO
-
                 )
             }
+            //TODO Circleは現状そこまで必要じゃないからあと回しにする、。
         }
-        searchBox()
     }
 }
 

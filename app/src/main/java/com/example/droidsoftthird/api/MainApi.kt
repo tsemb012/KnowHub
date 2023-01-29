@@ -57,13 +57,24 @@ interface MainApi {
             @Body request: PutUserToGroup
     ): Response<MessageResponse>
 
-    @GET("maps/search_query")
-    suspend fun getPlaces(
+    @GET("maps/search_individual")
+    suspend fun getIndividualPlace(
             @Query("input") query: String,
             @Query("language") language: String,
             @Query("north_lat") northLat: Double,
             @Query("east_lng") eastLng: Double,
             @Query("south_lat") southLat: Double,
             @Query("west_lng") westLng: Double,
+    ): Response<List<PlaceJson>>
+
+    @GET("maps/search_by_text")
+    suspend fun getPlacesByText(
+            @Query("input") query: String,
+            @Query("type") type: String,
+            @Query("language") language: String,
+            @Query("region") region: String,
+            @Query("center_lat") centerLat: Double,
+            @Query("center_lng")centerLng: Double,
+            @Query("radius") radius: String,
     ): Response<List<PlaceJson>>
 }

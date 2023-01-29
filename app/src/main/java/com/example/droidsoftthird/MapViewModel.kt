@@ -18,6 +18,7 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     val tokyo = LatLng(35.681236, 139.767125)
     val query: MutableState<String> = mutableStateOf("")
     private val viewPort: MutableState<ViewPort> = mutableStateOf(ViewPort(null, null))
+    val centerPoint: MutableState<LatLng> = mutableStateOf(tokyo)
     val places: MutableState<List<Place>> = mutableStateOf(listOf())
     val messages = mutableStateOf("")
 
@@ -28,7 +29,8 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
         viewModelScope.launch {
             runCatching {
                 Log.d("tsemb012", "${query.value}, ${viewPort.value}")
-                useCase.searchPlaces(query.value, viewPort.value)
+                //useCase.searchIndividualPlace(query.value, viewPort.value)
+                useCase.searchByText(query.value, centerPoint.value)
             }
                 .onSuccess {
                     places.value = it
@@ -44,6 +46,7 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     fun updateViewPoint(northEast: LatLng, southWest: LatLng) {
         viewPort.value = ViewPort(northEast, southWest)
     }
+
 
     fun onMarkerClick(placeId: String) {
         viewModelScope.launch(context = viewModelScope.coroutineContext) {
