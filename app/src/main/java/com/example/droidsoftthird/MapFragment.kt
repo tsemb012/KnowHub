@@ -66,10 +66,10 @@ class MapFragment: Fragment() {
                         onMapLoaded = { isMapLoaded = true },
                         updateCameraPosition = { northEast, southWest -> viewModel.updateViewPoint(northEast, southWest) },
                         places = viewModel.places,
+                        currentPoint = viewModel.centerPoint,
                         onMarkerClick = { placeId -> viewModel.onMarkerClick(placeId) },
                 ) { SearchBox(viewModel.query) {
                     viewModel.searchPlaces()
-                    Log.d("MapFragment", "SearchBox")
                 } }
                 if (!isMapLoaded) {
                     AnimatedVisibility(
