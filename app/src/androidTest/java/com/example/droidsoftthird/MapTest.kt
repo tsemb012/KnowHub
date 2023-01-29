@@ -28,7 +28,7 @@ class MapTest{
 
     @Test
     fun `happypath`() {
-        runBlocking { repository.searchPlaces("ラーメン", viewPort) }.let {
+        runBlocking { repository.searchIndividualPlace("ラーメン", viewPort) }.let {
             TestCase.assertEquals(20, it.size)
         }
     }
