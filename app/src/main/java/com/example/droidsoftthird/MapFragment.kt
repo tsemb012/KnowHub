@@ -1,7 +1,6 @@
 package com.example.droidsoftthird
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.droidsoftthird.composable.DropDown
 import com.example.droidsoftthird.composable.SearchBox
 import com.example.droidsoftthird.composable.map.GoogleMapView
 import com.google.android.gms.maps.model.CameraPosition
@@ -67,10 +67,11 @@ class MapFragment: Fragment() {
                         updateCameraPosition = { northEast, southWest -> viewModel.updateViewPoint(northEast, southWest) },
                         places = viewModel.places,
                         currentPoint = viewModel.centerPoint,
+                        currentRadius = viewModel.radius,
                         onMarkerClick = { placeId -> viewModel.onMarkerClick(placeId) },
-                ) { SearchBox(viewModel.query) {
-                    viewModel.searchPlaces()
-                } }
+                        composableSearchBox = { SearchBox(viewModel.query) { viewModel.searchPlaces() } },
+                        composableDropDown = { DropDown(viewModel.selections, viewModel.selectedType) },
+                )
                 if (!isMapLoaded) {
                     AnimatedVisibility(
                         modifier = Modifier.fillMaxSize(),

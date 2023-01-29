@@ -15,11 +15,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewModel() {
 
+    val selectedType: MutableState<String> = mutableStateOf("restaurant")
+    val selections: MutableState<List<String>> = mutableStateOf(listOf("restaurant", "cafe"))
     val tokyo = LatLng(35.681236, 139.767125)
     val query: MutableState<String> = mutableStateOf("")
     private val viewPort: MutableState<ViewPort> = mutableStateOf(ViewPort(null, null))
     val centerPoint: MutableState<LatLng> = mutableStateOf(tokyo)
     val places: MutableState<List<Place>> = mutableStateOf(listOf())
+    val radius: MutableState<Int> = mutableStateOf(500)
     val messages = mutableStateOf("")
 
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
@@ -28,18 +31,14 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     fun searchPlaces() {//TODO Markerの名前を変えた方が良いかもしれない。
         viewModelScope.launch {
             runCatching {
-                Log.d("tsemb012", "${query.value}, ${viewPort.value}")
                 //useCase.searchIndividualPlace(query.value, viewPort.value)
-                useCase.searchByText(query.value, centerPoint.value)
+                useCase.searchByText(query.value, centerPoint.value, selectedType.value, radius.value)
             }
                 .onSuccess {
                     places.value = it
                     Log.d("tsemb012-2", it.toString())
                 }
-                .onFailure {
-                    messages.value = it.message ?: "Unknown error"
-                    Log.d("tsemb012-2", it.message ?: "Unknown error")
-                }
+                .onFailure { messages.value = it.message ?: "Unknown error" }
         }
     }
 

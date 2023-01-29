@@ -1,7 +1,11 @@
 package com.example.droidsoftthird.composable.map
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.model.domain_model.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -14,8 +18,10 @@ fun GoogleMapView(
     updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> },
     places: MutableState<List<Place>>,
     currentPoint: MutableState<LatLng>,
+    currentRadius: MutableState<Int>,
     onMarkerClick: (String) -> Unit = {},
-    searchBox: @Composable () -> Unit = {},
+    composableSearchBox: @Composable () -> Unit = {},
+    composableDropDown: @Composable () -> Unit = {},
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var shouldAnimateZoom by remember { mutableStateOf(true) }
@@ -25,7 +31,6 @@ fun GoogleMapView(
 
 
     if (mapVisible) {
-        searchBox()
         //TODO typeを選択で切るように追加でComposeを設置するように
         //TODO でふぉるとではnullでoptionで外側から追加UIをセットするようにする。
         GoogleMap(
@@ -36,11 +41,11 @@ fun GoogleMapView(
                 onMapLoaded = onMapLoaded,
                 onPOIClick = { },
         ) {
-
             if (!cameraPositionState.isMoving) {//カメラの動きが止まった時のデータをViewModelにあげるようにする。
                 cameraPositionState.projection?.visibleRegion?.latLngBounds?.let {
                     updateCameraPosition(it.northeast, it.southwest)
                     currentPoint.value = it.center
+                    currentRadius.value = distanceInMeters(it.center.latitude, it.center.longitude, it.northeast.latitude, it.center.longitude).toInt()
                 }
             }
             places.value.forEach {
@@ -56,6 +61,20 @@ fun GoogleMapView(
             }
             //TODO Circleは現状そこまで必要じゃないからあと回しにする、。
         }
+        Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
+            composableSearchBox()
+            composableDropDown()
+        }
     }
 }
 
+private fun distanceInMeters(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+    val earthRadius = 6371.0 // 地球の半径
+    val dLat = Math.toRadians(lat2 - lat1)
+    val dLng = Math.toRadians(lng2 - lng1)
+    val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2)
+    val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    return earthRadius * c * 1000.0
+} //TODO 精度をあげる。

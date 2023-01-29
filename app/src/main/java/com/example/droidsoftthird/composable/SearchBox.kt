@@ -16,10 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchBox(query: MutableState<String>, callback: () -> Unit) {
-    //val query = remember { query }
+fun SearchBox(query: MutableState<String>, callback: () -> Unit,){
     Row(
-        modifier = Modifier.height(56.dp).padding(top = 16.dp, ),
+        modifier = Modifier.height(56.dp),
         horizontalArrangement = Arrangement.Center,
     ) {
         TextField(
@@ -43,8 +42,8 @@ fun SearchBox(query: MutableState<String>, callback: () -> Unit) {
             label = { Text("Search") }
         )
         Button(
-            modifier = Modifier.height(56.dp),//TODO レイアウトを整備する必要がある。composableを再利用できるように外部から入れるようにする。
-            onClick = { callback() } //TODO 正常に動作するかを確認する。
+            modifier = Modifier.fillMaxHeight(),
+            onClick = { callback() }
         ) {
             Text("Search")
         }

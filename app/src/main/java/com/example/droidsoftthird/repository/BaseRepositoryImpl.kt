@@ -189,15 +189,15 @@ class BaseRepositoryImpl @Inject constructor(
                 westLng = viewPort.southWest?.longitude ?: 0.0
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun searchByText(query: String, centerPoint: LatLng): List<Place> =
+    override suspend fun searchByText(query: String, centerPoint: LatLng, type: String, radius: Int): List<Place> =
         mainApi.getPlacesByText(
                 query = query,
-                type = TODO("typeもUIから取得するように"),
+                type = type,
                 language = LANGUAGE_JP,
                 region = REGION_JP,
                 centerLat = centerPoint.latitude,
                 centerLng = centerPoint.longitude,
-                radius = TODO("半径を追加するように"),
+                radius = radius.toString(),
         ).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =

@@ -28,7 +28,7 @@ class MapUseCaseSpec: DescribeSpec(){
         describe("MapUseCase") {
             context("searchPlaces") {
                 it("should return a list of places") {
-                    repository.searchPlaces("ラーメン", viewPort)
+                    repository.searchIndividualPlace("ラーメン", viewPort)
 
                 }
             }

@@ -18,5 +18,5 @@ interface RailsApiRepository {
     suspend fun updateUserDetail(userDetail: UserDetail): String?
     suspend fun createUser(userDetail: UserDetail): String?
     suspend fun searchIndividualPlace(query: String, viewPoint: ViewPort): List<Place>
-    suspend fun searchByText(query: String, centerPoint: LatLng): List<Place>
+    suspend fun searchByText(query: String, centerPoint: LatLng, type: String, radius: Int): List<Place>
 }
