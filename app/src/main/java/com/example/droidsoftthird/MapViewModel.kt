@@ -28,7 +28,7 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
 
 
-    fun searchPlaces() {//TODO Markerの名前を変えた方が良いかもしれない。
+    fun searchByText() {//TODO Markerの名前を変えた方が良いかもしれない。
         viewModelScope.launch {
             runCatching {
                 //useCase.searchIndividualPlace(query.value, viewPort.value)
@@ -39,6 +39,18 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
                     Log.d("tsemb012-2", it.toString())
                 }
                 .onFailure { messages.value = it.message ?: "Unknown error" }
+        }
+    }
+
+    fun searchByPoi() {
+        viewModelScope.launch {
+            runCatching { useCase.searchByPoi(centerPoint.value, selectedType.value, radius.value) }
+                .onSuccess { places.value = it
+                    Log.d("tsemb012-2", it.toString())
+                }
+                .onFailure { messages.value = it.message ?: "Unknown error"
+                    Log.d("tsemb012-３", it.toString())
+                }
         }
     }
 
