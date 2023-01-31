@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.composable.map
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,16 +13,17 @@ import com.google.maps.android.compose.*
 
 @Composable
 fun GoogleMapView(
-    modifier: Modifier = Modifier,
-    cameraPositionState: CameraPositionState = rememberCameraPositionState(),
-    onMapLoaded: () -> Unit = {},
-    updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> },
-    places: MutableState<List<Place>>,
-    currentPoint: MutableState<LatLng>,
-    currentRadius: MutableState<Int>,
-    onMarkerClick: (String) -> Unit = {},
-    composableSearchBox: @Composable () -> Unit = {},
-    composableDropDown: @Composable () -> Unit = {},
+        modifier: Modifier = Modifier,
+        cameraPositionState: CameraPositionState = rememberCameraPositionState(),
+        onMapLoaded: () -> Unit = {},
+        updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> },
+        places: MutableState<List<Place>>,
+        currentPoint: MutableState<LatLng>,
+        currentRadius: MutableState<Int>,
+        onMarkerClick: (String) -> Unit = {},
+        composableSearchBox: @Composable () -> Unit = {},
+        composableDropDown: @Composable () -> Unit = {},
+        composableChipGroup: @Composable () -> Unit = {},
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var shouldAnimateZoom by remember { mutableStateOf(true) }
@@ -61,9 +63,12 @@ fun GoogleMapView(
             }
             //TODO Circleは現状そこまで必要じゃないからあと回しにする、。
         }
-        Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
-            composableSearchBox()
-            composableDropDown()
+        Column {
+            Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
+                composableSearchBox()
+                composableDropDown()
+            }
+            composableChipGroup()
         }
     }
 }

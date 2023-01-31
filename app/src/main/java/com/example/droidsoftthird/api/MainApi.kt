@@ -77,4 +77,14 @@ interface MainApi {
             @Query("center_lng")centerLng: Double,
             @Query("radius") radius: String,
     ): Response<List<PlaceJson>>
+
+    @GET("maps/search_nearby")
+    suspend fun getPlacesByPoi(
+            @Query("type") type: String,
+            @Query("language") language: String,
+            @Query("region") region: String,
+            @Query("center_lat") centerLat: Double,
+            @Query("center_lng")centerLng: Double,
+            @Query("radius") radius: String,
+    ): Response<List<PlaceJson>>
 }

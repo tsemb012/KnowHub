@@ -200,6 +200,16 @@ class BaseRepositoryImpl @Inject constructor(
                 radius = radius.toString(),
         ).body()?.map { it.toEntity() } ?: listOf()
 
+    override suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place> =
+        mainApi.getPlacesByPoi(
+                type = type,
+                language = LANGUAGE_JP,
+                region = REGION_JP,
+                centerLat = centerPoint.latitude,
+                centerLng = centerPoint.longitude,
+                radius = radius.toString(),
+        ).body()?.map { it.toEntity() } ?: listOf()
+
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
