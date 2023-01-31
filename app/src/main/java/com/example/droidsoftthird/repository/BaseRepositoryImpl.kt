@@ -204,7 +204,6 @@ class BaseRepositoryImpl @Inject constructor(
         mainApi.getPlacesByPoi(
                 type = type,
                 language = LANGUAGE_JP,
-                region = REGION_JP,
                 centerLat = centerPoint.latitude,
                 centerLng = centerPoint.longitude,
                 radius = radius.toString(),

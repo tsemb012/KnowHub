@@ -15,7 +15,7 @@ data class PlaceJson(
         @Json(name = "plus_code")
         val plusCode: PlusCodeJson,
         @Json(name = "formatted_address")
-        val formattedAddress: String,
+        val formattedAddress: String?,
         @Json(name = "photos")
         val photos: List<PhotoJson>?,
 ) {

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.droidsoftthird.composable.ChipGroup
 import com.example.droidsoftthird.composable.DropDown
 import com.example.droidsoftthird.composable.SearchBox
 import com.example.droidsoftthird.composable.map.GoogleMapView
@@ -69,8 +70,9 @@ class MapFragment: Fragment() {
                         currentPoint = viewModel.centerPoint,
                         currentRadius = viewModel.radius,
                         onMarkerClick = { placeId -> viewModel.onMarkerClick(placeId) },
-                        composableSearchBox = { SearchBox(viewModel.query) { viewModel.searchPlaces() } },
+                        composableSearchBox = { SearchBox(viewModel.query) { viewModel.searchByText() } },
                         composableDropDown = { DropDown(viewModel.selections, viewModel.selectedType) },
+                        composableChipGroup = { ChipGroup(viewModel.selections.value) { viewModel.searchByPoi() } },
                 )
                 if (!isMapLoaded) {
                     AnimatedVisibility(
