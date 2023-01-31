@@ -47,7 +47,7 @@ fun GoogleMapView(
                 cameraPositionState.projection?.visibleRegion?.latLngBounds?.let {
                     updateCameraPosition(it.northeast, it.southwest)
                     currentPoint.value = it.center
-                    currentRadius.value = distanceInMeters(it.center.latitude, it.center.longitude, it.northeast.latitude, it.center.longitude).toInt()
+                    currentRadius.value = distanceInMeters(it.center.latitude, it.center.longitude, it.center.latitude, it.northeast.longitude).toInt()
                 }
             }
             places.value.forEach {
@@ -81,5 +81,5 @@ private fun distanceInMeters(lat1: Double, lng1: Double, lat2: Double, lng2: Dou
         Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
         Math.sin(dLng / 2) * Math.sin(dLng / 2)
     val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    return earthRadius * c * 1000.0
+    return (earthRadius * c * 1000.0) * 0.8
 } //TODO 精度をあげる。
