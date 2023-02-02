@@ -86,4 +86,10 @@ interface MainApi {
             @Query("center_lng")centerLng: Double,
             @Query("radius") radius: String,
     ): Response<List<PlaceJson>>
+
+    @GET("maps/place_detail")
+    suspend fun getPlaceDetail(
+            @Query("place_id") placeId: String,
+            @Query("language") language: String,
+    ): Response<Any>
 }

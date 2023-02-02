@@ -56,7 +56,10 @@ fun GoogleMapView(
                         tag = it.placeId,
                         title = it.name,
                         snippet = it.types[0],
-                        //onClick = { onMarkerClick(it.tag) }
+                        onClick = { marker ->
+                            onMarkerClick(marker.tag.toString())
+                            true //TODO このBooleanの意味を後で確認する。
+                        }
                         //TODO ViewModelからidを使って、Placeの詳細を取得するようにする。
                         //TODO モーダルを出現させてから詳細を取得するようにするのが良いんじゃないか？
                 )
