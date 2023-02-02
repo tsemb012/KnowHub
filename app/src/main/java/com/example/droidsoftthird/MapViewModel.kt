@@ -27,6 +27,14 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
 
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
 
+    fun onMarkerClick(placeId: String) {
+        viewModelScope.launch {
+            runCatching { useCase.fetchPlaceDetail(placeId) }
+                .onSuccess { messages.value = it.toString() }
+                .onFailure { messages.value = it.message ?: "Unknown error" }
+        }
+    }
+
 
     fun searchByText() {//TODO Markerの名前を変えた方が良いかもしれない。
         viewModelScope.launch {
@@ -59,9 +67,9 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     }
 
 
-    fun onMarkerClick(placeId: String) {
-        viewModelScope.launch(context = viewModelScope.coroutineContext) {
-            runCatching { /*useCase.getPlaceDetail(placeId)*/ }
+    fun fetchPlaceDetail(placeId: String) {
+        viewModelScope.launch {
+            runCatching { useCase.fetchPlaceDetail(placeId) }
                 .onSuccess { /*messages = mutableStateOf(it.name)*/ }
                 .onFailure { /*messages = mutableStateOf(it.message ?: "")*/ }
         }

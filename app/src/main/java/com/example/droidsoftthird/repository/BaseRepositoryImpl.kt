@@ -209,6 +209,13 @@ class BaseRepositoryImpl @Inject constructor(
                 radius = radius.toString(),
         ).body()?.map { it.toEntity() } ?: listOf()
 
+    override suspend fun fetchPlaceDetail(placeId: String): Any =
+        mainApi.getPlaceDetail(
+                placeId = placeId,
+                language = LANGUAGE_JP
+        ).body() ?: throw Exception("response body is null")
+    //?.toEntity() ?: throw Exception("response body is null")
+
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
@@ -314,6 +321,7 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
+
 
 
 

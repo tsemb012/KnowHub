@@ -20,4 +20,5 @@ interface RailsApiRepository {
     suspend fun searchIndividualPlace(query: String, viewPoint: ViewPort): List<Place>
     suspend fun searchByText(query: String, centerPoint: LatLng, type: String, radius: Int): List<Place>
     suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place>
+    suspend fun fetchPlaceDetail(placeId: String): Any //PlaceDetail
 }
