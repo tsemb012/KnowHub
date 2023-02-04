@@ -1,11 +1,11 @@
 package com.example.droidsoftthird.composable.map
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.presentation_model.LoadState
@@ -31,50 +31,62 @@ fun GoogleMapView(
     var ticker by remember { mutableStateOf(0) }
     var mapProperties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL)) }
     var mapVisible by remember { mutableStateOf(true) }
+    val isLoading: Boolean = placesLoadState.value is LoadState.Loading
+    Column {
+        if (isLoading) LinearProgressIndicator(Modifier.fillMaxWidth())
+        Box {
+            if (mapVisible) {
+                //TODO typeを選択で切るように追加でComposeを設置するように
+                //TODO でふぉるとではnullでoptionで外側から追加UIをセットするようにする。
+                GoogleMap(
+                    modifier = modifier,
+                    cameraPositionState = cameraPositionState,
+                    properties = mapProperties,
+                    uiSettings = uiSettings,
+                    onMapLoaded = onMapLoaded,
+                    onPOIClick = { },
+                ) {
+                    if (!cameraPositionState.isMoving) {//カメラの動きが止まった時のデータをViewModelにあげるようにする。
+                        cameraPositionState.projection?.visibleRegion?.latLngBounds?.let {
+                            updateCameraPosition(it.northeast, it.southwest)
+                            currentPoint.value = it.center
+                            currentRadius.value = distanceInMeters(it.center.latitude,
+                                it.center.longitude,
+                                it.center.latitude,
+                                it.northeast.longitude).toInt()
+                        }
+                    }
 
-
-    if (mapVisible) {
-        //TODO typeを選択で切るように追加でComposeを設置するように
-        //TODO でふぉるとではnullでoptionで外側から追加UIをセットするようにする。
-        GoogleMap(
-                modifier = modifier,
-                cameraPositionState = cameraPositionState,
-                properties = mapProperties,
-                uiSettings = uiSettings,
-                onMapLoaded = onMapLoaded,
-                onPOIClick = { },
-        ) {
-            if (!cameraPositionState.isMoving) {//カメラの動きが止まった時のデータをViewModelにあげるようにする。
-                cameraPositionState.projection?.visibleRegion?.latLngBounds?.let {
-                    updateCameraPosition(it.northeast, it.southwest)
-                    currentPoint.value = it.center
-                    currentRadius.value = distanceInMeters(it.center.latitude, it.center.longitude, it.center.latitude, it.northeast.longitude).toInt()
+                    when (placesLoadState.value) {
+                        is LoadState.Error -> {
+                            Toast.makeText(LocalContext.current, placesLoadState.value.getErrorOrNull().toString(), Toast.LENGTH_SHORT).show()
+                        }
+                        is LoadState.Loaded<*> -> {
+                            placesLoadState.value.getValueOrNull<List<Place>>()?.forEach {
+                                Marker(
+                                    state = MarkerState(position = LatLng(it.location.lat, it.location.lng)),
+                                    tag = it.placeId,
+                                    title = it.name,
+                                    snippet = it.types[0],
+                                    onClick = { marker ->
+                                        onMarkerClick(marker.tag.toString())
+                                        true
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+                Column {
+                    Row(modifier = Modifier
+                        .height(56.dp)
+                        .padding(top = 16.dp)) {
+                        composableSearchBox()
+                        composableDropDown()
+                    }
+                    composableChipGroup()
                 }
             }
-
-
-            (placesLoadState.value  as LoadState.Loaded<List<Place>>).value.forEach {
-                Marker(
-                        state = MarkerState(position = LatLng(it.location.lat, it.location.lng)),
-                        tag = it.placeId,
-                        title = it.name,
-                        snippet = it.types[0],
-                        onClick = { marker ->
-                            onMarkerClick(marker.tag.toString())
-                            true //TODO このBooleanの意味を後で確認する。
-                        }
-                        //TODO ViewModelからidを使って、Placeの詳細を取得するようにする。
-                        //TODO モーダルを出現させてから詳細を取得するようにするのが良いんじゃないか？
-                )
-            }
-            //TODO Circleは現状そこまで必要じゃないからあと回しにする、。
-        }
-        Column {
-            Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
-                composableSearchBox()
-                composableDropDown()
-            }
-            composableChipGroup()
         }
     }
 }
