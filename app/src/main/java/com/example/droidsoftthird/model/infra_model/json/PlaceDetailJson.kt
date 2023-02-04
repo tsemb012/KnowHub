@@ -9,14 +9,13 @@ data class PlaceDetailJson(
         val placeId: String,
         val name: String,
         val types: List<String>,
-        val location: Location,
-        @Json(name = "viewport")
-        val viewPort: ViewPortJson,
+        val geometry: PlaceJson.GeometryJson,
         @Json(name = "formatted_address")
-        val formattedAddress: String?,
+        val formattedAddress: String,
         @Json(name = "plus_code")
-        val plusCode: PlusCode,
-        val photos: List<LocationPhoto>?,
+        val plusCode: PlaceJson.PlusCodeJson,
+        val photos: List<LocationPhotoJson>?,
+        @Json(name = "icon_background_color")
         val color: String?,
         val url: String?,
         @Json(name = "address_components")
@@ -36,15 +35,31 @@ data class PlaceDetailJson(
         )
     }
 
+    data class LocationPhotoJson(
+            val height: Int,
+            val width: Int,
+            @Json(name = "photo_reference")
+            val photoReference: String,
+            @Json(name = "html_attributions")
+            val htmlAttributions: List<String>,
+    ) {
+        fun toEntity() = LocationPhoto(
+                height = height,
+                width = width,
+                photoReference = photoReference,
+                htmlAttributions = htmlAttributions,
+        )
+    }
+
     fun toEntity(): PlaceDetail = PlaceDetail(
             placeId = placeId,
             name = name,
             types = types,
-            location = location,
-            viewPort = viewPort.toEntity(),
+            location = geometry.location,
+            viewPort = geometry.viewport.toEntity(),
             formattedAddress = formattedAddress,
-            plusCode = plusCode,
-            photos = photos,
+            plusCode = plusCode.toEntity(),
+            photos = photos?.map { it.toEntity() },
             color = color,
             url = url,
             addressComponents = addressComponents.map { it.toEntity() },

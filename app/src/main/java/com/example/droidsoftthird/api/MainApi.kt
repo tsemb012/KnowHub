@@ -92,5 +92,5 @@ interface MainApi {
     suspend fun getPlaceDetail(
             @Query("place_id") placeId: String,
             @Query("language") language: String,
-    ): Response<List<PlaceDetailJson>>
+    ): Response<PlaceDetailJson>
 }

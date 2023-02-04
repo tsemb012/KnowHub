@@ -67,6 +67,7 @@ class MapFragment: Fragment() {
                         onMapLoaded = { isMapLoaded = true },
                         updateCameraPosition = { northEast, southWest -> viewModel.updateViewPoint(northEast, southWest) },
                         placesLoadState = viewModel.placesLoadState,
+                        placeDetailLoadState = viewModel.placeDetailLoadState,
                         currentPoint = viewModel.centerPoint,
                         currentRadius = viewModel.radius,
                         onMarkerClick = { placeId -> viewModel.fetchPlaceDetail(placeId) },

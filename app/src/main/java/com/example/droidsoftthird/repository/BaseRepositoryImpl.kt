@@ -213,7 +213,7 @@ class BaseRepositoryImpl @Inject constructor(
         mainApi.getPlaceDetail(
                 placeId = placeId,
                 language = LANGUAGE_JP
-        ).body()?.first()?.toEntity()
+        ).body()?.toEntity()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
