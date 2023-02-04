@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.api
 
+import com.example.droidsoftthird.model.json.PlaceDetailJson
 import com.example.droidsoftthird.model.json.PlaceJson
 import com.example.droidsoftthird.model.json.UserJson
 import com.example.droidsoftthird.model.request.PostGroup
@@ -91,5 +92,5 @@ interface MainApi {
     suspend fun getPlaceDetail(
             @Query("place_id") placeId: String,
             @Query("language") language: String,
-    ): Response<Any>
+    ): Response<List<PlaceDetailJson>>
 }

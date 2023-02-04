@@ -1,6 +1,7 @@
 package com.example.droidsoftthird
 
 import com.example.droidsoftthird.model.domain_model.Place
+import com.example.droidsoftthird.model.domain_model.PlaceDetail
 import com.example.droidsoftthird.model.domain_model.ViewPort
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.android.gms.maps.model.LatLng
@@ -17,7 +18,7 @@ class MapUseCase  @Inject constructor(private val repository: BaseRepositoryImpl
     suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place> =
         repository.searchByPoi(centerPoint, type, radius) //POIで検索する。
 
-    suspend fun fetchPlaceDetail(placeId: String): Any =
+    suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
         repository.fetchPlaceDetail(placeId)
 
     //suspend fun fetchCurrentLocation():  TODO 現在地を取得するようにする。
