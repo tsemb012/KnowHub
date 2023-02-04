@@ -8,7 +8,7 @@ import com.squareup.moshi.Json
 
 data class PlaceJson(
     @Json(name = "place_id")
-        val placeId: String,
+    val placeId: String,
     val name: String,
     val geometry: GeometryJson,
     val types: List<String>,
