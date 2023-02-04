@@ -7,13 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.domain_model.ViewPort
+import com.example.droidsoftthird.model.fire_model.LoadState
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewModel() {
+
+    //LoadStateで読み込みを管理。それ以外の動作はCompose内部で管理。それに合わせてメッセージを切り替える。
 
     val selectedType: MutableState<String> = mutableStateOf("restaurant")
     val selections: MutableState<List<String>> = mutableStateOf(listOf("restaurant", "cafe"))
@@ -24,15 +28,22 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     val places: MutableState<List<Place>> = mutableStateOf(listOf())
     val radius: MutableState<Int> = mutableStateOf(500)
     val messages = mutableStateOf("")
+    val placeDetailLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
 
+    //TODO Flowで流してComibineするのが良いかも。
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
-
     fun onMarkerClick(placeId: String) {
-        viewModelScope.launch {
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching { useCase.fetchPlaceDetail(placeId) }
-                .onSuccess { messages.value = it.toString() }
-                .onFailure { messages.value = it.message ?: "Unknown error" }
+                .onSuccess {
+                    it?.let { placeDetail -> placeDetailLoadState.value = LoadState.Loaded(placeDetail) }
+                }
+                .onFailure {
+                    placeDetailLoadState.value = LoadState.Error(it)
+                }
         }
+        placeDetailLoadState.value = LoadState.Loading(job)
+        job.start()
     }
 
 

@@ -209,12 +209,11 @@ class BaseRepositoryImpl @Inject constructor(
                 radius = radius.toString(),
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun fetchPlaceDetail(placeId: String): Any =
+    override suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
         mainApi.getPlaceDetail(
                 placeId = placeId,
                 language = LANGUAGE_JP
-        ).body() ?: throw Exception("response body is null")
-    //?.toEntity() ?: throw Exception("response body is null")
+        ).body()?.first()?.toEntity()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
