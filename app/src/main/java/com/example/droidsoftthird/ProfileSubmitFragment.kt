@@ -12,7 +12,7 @@ import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
 import com.example.droidsoftthird.dialogs.AreaDialogFragment
 import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
 import com.example.droidsoftthird.model.domain_model.UserDetail
-import com.example.droidsoftthird.model.fire_model.LoadState
+import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
 import com.wada811.databinding.dataBinding
 
 abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {

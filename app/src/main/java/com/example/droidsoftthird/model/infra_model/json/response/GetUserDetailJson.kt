@@ -1,7 +1,7 @@
-package com.example.droidsoftthird.model.response
+package com.example.droidsoftthird.model.infra_model.json.response
 
 import com.example.droidsoftthird.model.domain_model.UserDetail
-import com.example.droidsoftthird.model.request.AreaJson
+import com.example.droidsoftthird.model.infra_model.json.request.AreaJson
 import com.squareup.moshi.Json
 
 data class GetUserDetailJson (

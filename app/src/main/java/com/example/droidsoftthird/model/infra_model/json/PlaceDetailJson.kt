@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.json
+package com.example.droidsoftthird.model.infra_model.json
 
 import com.example.droidsoftthird.model.domain_model.*
 import com.google.android.libraries.places.api.model.PlusCode

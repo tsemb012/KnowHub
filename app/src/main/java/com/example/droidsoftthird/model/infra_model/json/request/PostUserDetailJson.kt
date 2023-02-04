@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.request
+package com.example.droidsoftthird.model.infra_model.json.request
 
 import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.City
@@ -11,22 +11,22 @@ import com.squareup.moshi.Json
  * 例：　prefectureJson →　prefectureTable, cityJson →　cityTable*/
 
 class PostUserDetailJson(
-        @Json(name = "user_id")
+    @Json(name = "user_id")
         val userId: String,
-        @Json(name = "user_name")
+    @Json(name = "user_name")
         val userName: String? = null,
-        @Json(name = "user_image")
+    @Json(name = "user_image")
         val userImage: String,
-        val comment:String,
-        val gender: String,
-        val age: Int,
-        val area: AreaJson?,
+    val comment:String,
+    val gender: String,
+    val age: Int,
+    val area: AreaJson?,
 )
 
 class AreaJson(
-        @Json(name = "prefecture")
+    @Json(name = "prefecture")
         val prefecture: PrefectureJson?,
-        @Json(name = "city")
+    @Json(name = "city")
         val city: CityJson? = null
 ) {
         fun toEntity() = Area(

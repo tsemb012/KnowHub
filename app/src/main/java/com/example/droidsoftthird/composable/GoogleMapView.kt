@@ -8,22 +8,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.model.domain_model.Place
+import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 @Composable
 fun GoogleMapView(
-        modifier: Modifier = Modifier,
-        cameraPositionState: CameraPositionState = rememberCameraPositionState(),
-        onMapLoaded: () -> Unit = {},
-        updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> },
-        places: MutableState<List<Place>>,
-        currentPoint: MutableState<LatLng>,
-        currentRadius: MutableState<Int>,
-        onMarkerClick: (String) -> Unit = {},
-        composableSearchBox: @Composable () -> Unit = {},
-        composableDropDown: @Composable () -> Unit = {},
-        composableChipGroup: @Composable () -> Unit = {},
+    modifier: Modifier = Modifier,
+    cameraPositionState: CameraPositionState = rememberCameraPositionState(),
+    onMapLoaded: () -> Unit = {},
+    updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> },
+    placesLoadState: MutableState<LoadState>,
+    currentPoint: MutableState<LatLng>,
+    currentRadius: MutableState<Int>,
+    onMarkerClick: (String) -> Unit = {},
+    composableSearchBox: @Composable () -> Unit = {},
+    composableDropDown: @Composable () -> Unit = {},
+    composableChipGroup: @Composable () -> Unit = {},
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var shouldAnimateZoom by remember { mutableStateOf(true) }
@@ -50,7 +51,9 @@ fun GoogleMapView(
                     currentRadius.value = distanceInMeters(it.center.latitude, it.center.longitude, it.center.latitude, it.northeast.longitude).toInt()
                 }
             }
-            places.value.forEach {
+
+
+            (placesLoadState.value  as LoadState.Loaded<List<Place>>).value.forEach {
                 Marker(
                         state = MarkerState(position = LatLng(it.location.lat, it.location.lng)),
                         tag = it.placeId,

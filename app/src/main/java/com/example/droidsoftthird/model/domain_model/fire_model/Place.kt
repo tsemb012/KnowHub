@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.fire_model
+package com.example.droidsoftthird.model.domain_model.fire_model
 
 data class Place(
     val isOnline: Boolean,

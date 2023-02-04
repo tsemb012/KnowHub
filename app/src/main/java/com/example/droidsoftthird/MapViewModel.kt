@@ -1,13 +1,11 @@
 package com.example.droidsoftthird
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.domain_model.ViewPort
-import com.example.droidsoftthird.model.fire_model.LoadState
+import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineStart
@@ -25,14 +23,13 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     val query: MutableState<String> = mutableStateOf("")
     private val viewPort: MutableState<ViewPort> = mutableStateOf(ViewPort(null, null))
     val centerPoint: MutableState<LatLng> = mutableStateOf(tokyo)
-    val places: MutableState<List<Place>> = mutableStateOf(listOf())
     val radius: MutableState<Int> = mutableStateOf(500)
-    val messages = mutableStateOf("")
+    val placesLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
     val placeDetailLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
 
     //TODO Flowで流してComibineするのが良いかも。
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
-    fun onMarkerClick(placeId: String) {
+    fun fetchPlaceDetail(placeId: String) {
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching { useCase.fetchPlaceDetail(placeId) }
                 .onSuccess {
@@ -46,43 +43,40 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
         job.start()
     }
 
-
     fun searchByText() {//TODO Markerの名前を変えた方が良いかもしれない。
-        viewModelScope.launch {
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching {
-                //useCase.searchIndividualPlace(query.value, viewPort.value)
                 useCase.searchByText(query.value, centerPoint.value, selectedType.value, radius.value)
             }
                 .onSuccess {
-                    places.value = it
-                    Log.d("tsemb012-2", it.toString())
+                    placesLoadState.value = LoadState.Loaded(it)
                 }
-                .onFailure { messages.value = it.message ?: "Unknown error" }
+                .onFailure { placesLoadState.value = LoadState.Error(it) }
         }
+        placesLoadState.value = LoadState.Loading(job)
+        job.start()
     }
 
     fun searchByPoi() {
-        viewModelScope.launch {
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching { useCase.searchByPoi(centerPoint.value, selectedType.value, radius.value) }
-                .onSuccess { places.value = it
-                    Log.d("tsemb012-2", it.toString())
-                }
-                .onFailure { messages.value = it.message ?: "Unknown error"
-                    Log.d("tsemb012-３", it.toString())
-                }
+                .onSuccess { placesLoadState.value = LoadState.Loaded(it) }
+                .onFailure { placesLoadState.value = LoadState.Error(it) }
+        }
+        placesLoadState.value = LoadState.Loading(job)
+        job.start()
+    }
+    /*
+    TODO 個別検索のユースケースは今のところ存在しないので置いておく。
+    fun searchByIndividual() {
+        viewModelScope.launch {
+            runCatching { useCase.searchIndividualPlace(query.value, viewPort.value) }
+                .onSuccess {  }
+                .onFailure {  }
         }
     }
-
+    */
     fun updateViewPoint(northEast: LatLng, southWest: LatLng) {
         viewPort.value = ViewPort(northEast, southWest)
-    }
-
-
-    fun fetchPlaceDetail(placeId: String) {
-        viewModelScope.launch {
-            runCatching { useCase.fetchPlaceDetail(placeId) }
-                .onSuccess { /*messages = mutableStateOf(it.name)*/ }
-                .onFailure { /*messages = mutableStateOf(it.message ?: "")*/ }
-        }
     }
 }

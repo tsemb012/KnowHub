@@ -1,13 +1,13 @@
-package com.example.droidsoftthird.model.json
+package com.example.droidsoftthird.model.infra_model.json
 
 import com.example.droidsoftthird.model.domain_model.ViewPort
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.moshi.Json
 
 data class ViewPortJson (
-        @Json(name = "northeast")
+    @Json(name = "northeast")
         val northEast: NorthEast?,
-        @Json(name = "southwest")
+    @Json(name = "southwest")
         val southWest: SouthWest?
 ) {
     data class NorthEast (

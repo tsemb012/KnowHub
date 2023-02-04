@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.response
+package com.example.droidsoftthird.model.infra_model.json.response
 
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.squareup.moshi.Json

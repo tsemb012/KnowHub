@@ -1,6 +1,7 @@
-package com.example.droidsoftthird.model.fire_model
+package com.example.droidsoftthird.model.presentation_model
 
 import androidx.lifecycle.MutableLiveData
+import com.example.droidsoftthird.model.domain_model.Place
 import kotlinx.coroutines.Job
 
 sealed class LoadState {//TODO 厳密にはLoadじゃないので適切な名前を考える。

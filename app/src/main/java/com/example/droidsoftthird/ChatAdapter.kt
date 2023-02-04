@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.ChatAdapter.Companion.messageList
 import com.example.droidsoftthird.databinding.*
+import com.example.droidsoftthird.model.domain_model.fire_model.*
 import com.example.droidsoftthird.model.fire_model.*
 import com.example.droidsoftthird.utils.AuthUtil
 import com.example.droidsoftthird.utils.UpdateRecycleItemEvent

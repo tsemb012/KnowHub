@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.request
+package com.example.droidsoftthird.model.infra_model.json.request
 
 import com.squareup.moshi.Json
 

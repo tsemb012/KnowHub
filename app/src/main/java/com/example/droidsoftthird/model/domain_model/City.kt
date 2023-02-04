@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.model.request.CityJson
+import com.example.droidsoftthird.model.infra_model.json.request.CityJson
 import com.squareup.moshi.Json
 
 data class City (

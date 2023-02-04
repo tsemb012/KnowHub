@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model.json
+package com.example.droidsoftthird.model.infra_model.json
 
 import com.example.droidsoftthird.model.domain_model.Location
 import com.example.droidsoftthird.model.domain_model.LocationPhoto
@@ -7,21 +7,21 @@ import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 
 data class PlaceJson(
-        @Json(name = "place_id")
+    @Json(name = "place_id")
         val placeId: String,
-        val name: String,
-        val geometry: GeometryJson,
-        val types: List<String>,
-        @Json(name = "plus_code")
+    val name: String,
+    val geometry: GeometryJson,
+    val types: List<String>,
+    @Json(name = "plus_code")
         val plusCode: PlusCodeJson,
-        @Json(name = "formatted_address")
+    @Json(name = "formatted_address")
         val formattedAddress: String?,
-        @Json(name = "photos")
+    @Json(name = "photos")
         val photos: List<PhotoJson>?,
 ) {
     data class GeometryJson(
-            val location: Location,
-            val viewport: ViewPortJson,
+        val location: Location,
+        val viewport: ViewPortJson,
     )
     data class PhotoJson(
             val height: Int,
