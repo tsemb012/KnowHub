@@ -2,8 +2,7 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.UserDetail
-import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
-import com.google.firebase.storage.FirebaseStorage
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

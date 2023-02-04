@@ -3,14 +3,12 @@ package com.example.droidsoftthird
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.fire_model.*
-import com.example.droidsoftthird.model.fire_model.*
 import com.example.droidsoftthird.repository.MessageRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList

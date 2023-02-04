@@ -2,7 +2,7 @@ package com.example.droidsoftthird
 
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
-import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.LoadState
 
 data class ProfileUiModel (
     val rawUserDetail: UserDetail = initializedUserDetail,
