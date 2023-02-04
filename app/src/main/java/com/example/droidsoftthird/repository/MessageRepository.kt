@@ -3,7 +3,7 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.Result
-import com.example.droidsoftthird.model.fire_model.Message
+import com.example.droidsoftthird.model.domain_model.fire_model.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage

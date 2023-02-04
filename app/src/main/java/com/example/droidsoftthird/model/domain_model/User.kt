@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.model
+package com.example.droidsoftthird.model.domain_model
 
 data class User (
         val id: String,

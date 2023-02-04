@@ -1,16 +1,16 @@
 package com.example.droidsoftthird.api
 
-import com.example.droidsoftthird.model.json.PlaceDetailJson
-import com.example.droidsoftthird.model.json.PlaceJson
-import com.example.droidsoftthird.model.json.UserJson
-import com.example.droidsoftthird.model.request.PostGroup
-import com.example.droidsoftthird.model.request.PostSignUp
-import com.example.droidsoftthird.model.request.PostUserDetailJson
-import com.example.droidsoftthird.model.request.PutUserToGroup
-import com.example.droidsoftthird.model.response.GetGroup
-import com.example.droidsoftthird.model.response.GetGroupDetail
-import com.example.droidsoftthird.model.response.GetUserDetailJson
-import com.example.droidsoftthird.model.response.MessageResponse
+import com.example.droidsoftthird.model.infra_model.json.PlaceDetailJson
+import com.example.droidsoftthird.model.infra_model.json.PlaceJson
+import com.example.droidsoftthird.model.infra_model.json.UserJson
+import com.example.droidsoftthird.model.infra_model.json.request.PostGroup
+import com.example.droidsoftthird.model.infra_model.json.request.PostSignUp
+import com.example.droidsoftthird.model.infra_model.json.request.PostUserDetailJson
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroup
+import com.example.droidsoftthird.model.infra_model.json.response.GetGroup
+import com.example.droidsoftthird.model.infra_model.json.response.GetGroupDetail
+import com.example.droidsoftthird.model.infra_model.json.response.GetUserDetailJson
+import com.example.droidsoftthird.model.infra_model.json.response.MessageResponse
 import retrofit2.Response
 import retrofit2.http.*
 

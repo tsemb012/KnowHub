@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
-import com.example.droidsoftthird.model.fire_model.LoadState
+import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
 import com.example.droidsoftthird.utils.combine
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.async

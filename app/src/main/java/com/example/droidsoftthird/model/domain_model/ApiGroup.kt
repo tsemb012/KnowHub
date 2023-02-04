@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.model.request.PostGroup
+import com.example.droidsoftthird.model.infra_model.json.request.PostGroup
 
 data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
     val groupId: String?,

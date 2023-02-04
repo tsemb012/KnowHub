@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.model.json.ViewPortJson
+import com.example.droidsoftthird.model.infra_model.json.ViewPortJson
 import com.google.android.gms.maps.model.LatLng
 
 data class ViewPort(

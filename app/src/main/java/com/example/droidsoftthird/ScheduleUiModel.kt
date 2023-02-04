@@ -1,16 +1,16 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.LiveData
-import com.example.droidsoftthird.model.fire_model.LoadState
-import com.example.droidsoftthird.model.fire_model.ScheduleEvent
+import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
+import com.example.droidsoftthird.model.domain_model.fire_model.ScheduleEvent
 import java.lang.IllegalStateException
 import java.time.LocalDate
 
 data class ScheduleUiModel (
-        val schedulesLoadState: LoadState = LoadState.Initialized,//TODO ここをMessageに変更
-        val selectedDate: LocalDate = LocalDate.now(),
-        val allEvents: List<ScheduleEvent> = emptyList(),
-        val selectedEvents: List<ScheduleEvent> = emptyList(),//TODO ここにAllを追加する。
+    val schedulesLoadState: LoadState = LoadState.Initialized,//TODO ここをMessageに変更
+    val selectedDate: LocalDate = LocalDate.now(),
+    val allEvents: List<ScheduleEvent> = emptyList(),
+    val selectedEvents: List<ScheduleEvent> = emptyList(),//TODO ここにAllを追加する。
 ) {
     companion object {
         operator fun invoke(

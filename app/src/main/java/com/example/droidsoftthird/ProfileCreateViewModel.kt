@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
-import com.example.droidsoftthird.model.fire_model.UserProfile
+import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import dagger.hilt.android.lifecycle.HiltViewModel

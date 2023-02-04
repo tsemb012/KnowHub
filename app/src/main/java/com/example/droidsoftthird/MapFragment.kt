@@ -66,10 +66,10 @@ class MapFragment: Fragment() {
                         cameraPositionState = cameraPositionState,
                         onMapLoaded = { isMapLoaded = true },
                         updateCameraPosition = { northEast, southWest -> viewModel.updateViewPoint(northEast, southWest) },
-                        places = viewModel.places,
+                        placesLoadState = viewModel.placesLoadState,
                         currentPoint = viewModel.centerPoint,
                         currentRadius = viewModel.radius,
-                        onMarkerClick = { placeId -> viewModel.onMarkerClick(placeId) },
+                        onMarkerClick = { placeId -> viewModel.fetchPlaceDetail(placeId) },
                         composableSearchBox = { SearchBox(viewModel.query) { viewModel.searchByText() } },
                         composableDropDown = { DropDown(viewModel.selections, viewModel.selectedType) },
                         composableChipGroup = { ChipGroup(viewModel.selections.value) { viewModel.searchByPoi() } },
@@ -88,12 +88,7 @@ class MapFragment: Fragment() {
                         )
                     }
                 }
-                /*if (viewModel.isBottomSheetVisible) {
-
-                }*/
             }
         }
-
     }
-
 }

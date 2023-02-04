@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
-import com.example.droidsoftthird.model.fire_model.ScheduleEvent
+import com.example.droidsoftthird.model.domain_model.fire_model.ScheduleEvent
 
 class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ScheduleEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
     //TODO Hiltで関数をインジェクトする。

@@ -1,6 +1,6 @@
-package com.example.droidsoftthird.model.json
+package com.example.droidsoftthird.model.infra_model.json
 
-import com.example.droidsoftthird.model.User
+import com.example.droidsoftthird.model.domain_model.User
 
 class UserJson (
     val id: String,

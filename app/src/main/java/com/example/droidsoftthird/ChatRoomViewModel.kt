@@ -2,6 +2,7 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
+import com.example.droidsoftthird.model.domain_model.fire_model.*
 import com.example.droidsoftthird.model.fire_model.*
 import com.example.droidsoftthird.repository.MessageRepository
 import com.google.firebase.auth.FirebaseAuth

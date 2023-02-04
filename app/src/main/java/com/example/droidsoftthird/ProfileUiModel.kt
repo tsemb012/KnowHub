@@ -2,14 +2,14 @@ package com.example.droidsoftthird
 
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
-import com.example.droidsoftthird.model.fire_model.LoadState
+import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
 
 data class ProfileUiModel (
-        val rawUserDetail: UserDetail = initializedUserDetail,
-        val editedUserDetail: UserDetail = initializedUserDetail,
-        val temporalUserImage: Map<String, String>? = null,
-        val isSubmitEnabled: Boolean = false,
-        val loadState: LoadState = LoadState.Initialized,
+    val rawUserDetail: UserDetail = initializedUserDetail,
+    val editedUserDetail: UserDetail = initializedUserDetail,
+    val temporalUserImage: Map<String, String>? = null,
+    val isSubmitEnabled: Boolean = false,
+    val loadState: LoadState = LoadState.Initialized,
 ) {
     val gender = editedUserDetail.gender.let { it.ifBlank { NO_SETTING } }
     val age = editedUserDetail.age.toString().let { if(it == "-1") NO_SETTING else  it }
@@ -21,12 +21,12 @@ data class ProfileUiModel (
 
     companion object {
         operator fun invoke(
-                current: ProfileUiModel,
-                _rawUserDetail: UserDetail,
-                _editedUserDetail: UserDetail,
-                _temporalUserImage: Map<String, String>,
-                isTextFilled: Boolean,
-                _loadState: LoadState,
+            current: ProfileUiModel,
+            _rawUserDetail: UserDetail,
+            _editedUserDetail: UserDetail,
+            _temporalUserImage: Map<String, String>,
+            isTextFilled: Boolean,
+            _loadState: LoadState,
         ) = ProfileUiModel(
                 rawUserDetail = _rawUserDetail,
                 editedUserDetail = _editedUserDetail,

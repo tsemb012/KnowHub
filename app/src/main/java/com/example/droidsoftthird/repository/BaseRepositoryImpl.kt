@@ -6,10 +6,10 @@ import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.domain_model.*
-import com.example.droidsoftthird.model.fire_model.Group
-import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
-import com.example.droidsoftthird.model.fire_model.UserProfile
-import com.example.droidsoftthird.model.request.PutUserToGroup
+import com.example.droidsoftthird.model.domain_model.fire_model.Group
+import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
+import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
