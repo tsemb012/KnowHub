@@ -30,7 +30,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.databinding.ChatRoomFragmentBinding
 import com.example.droidsoftthird.model.domain_model.fire_model.*
-import com.example.droidsoftthird.model.fire_model.*
 import com.example.droidsoftthird.utils.UpdateRecycleItemEvent
 import com.example.droidsoftthird.utils.showSnackbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior

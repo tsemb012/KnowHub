@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.model.domain_model.Place
-import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 

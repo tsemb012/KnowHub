@@ -1,8 +1,8 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.domain_model.fire_model.LoadState
 import com.example.droidsoftthird.model.domain_model.fire_model.toEntity
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.SCHEDULE_REGISTERED_ALL
 import dagger.hilt.android.lifecycle.HiltViewModel
