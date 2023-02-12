@@ -1,6 +1,7 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.usecase
 
 import android.net.Uri
+import com.example.droidsoftthird.Result
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.firebase.auth.UserProfileChangeRequest
