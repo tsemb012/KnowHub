@@ -3,10 +3,14 @@ package com.example.droidsoftthird
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.usecase.GroupUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.util.*
+import javax.inject.Inject
 
-class ScheduleCreateViewModel(): ViewModel() {
+@HiltViewModel
+class ScheduleCreateViewModel @Inject constructor(useCase: GroupUseCase): ViewModel() {
 
     companion object {
         private const val NOT_SET_JPN = "未設定"
