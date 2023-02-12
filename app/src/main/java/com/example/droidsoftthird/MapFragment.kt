@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.*
@@ -12,10 +13,10 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.composable.ChipGroup
-import com.example.droidsoftthird.composable.CircleProgressBar
-import com.example.droidsoftthird.composable.DropDown
-import com.example.droidsoftthird.composable.SearchBox
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.example.droidsoftthird.composable.*
+import com.example.droidsoftthird.model.domain_model.EditedPlaceDetail
 import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.google.android.gms.maps.model.CameraPosition
@@ -52,10 +53,17 @@ import dagger.hilt.android.AndroidEntryPoint
 *   2つComposeをまたぐ場合は？　→　この場合は上部に新しいComposewo作りラップするようにする。
 */
 
+//TODO サーバーから降ってくるデータをViewModelに保持するようにする。
+//TODO uiStateをjetpackComposeの内部に止める構造にする。
+//TODO 不要な変数を削除してくようにする。
+//TODO 公式にuiStateのベストプラクティスみたいなのがあるので、それに合わせていく。
+
 @AndroidEntryPoint
 class MapFragment: Fragment() {
 
-    private val viewModel: MapViewModel by viewModels()
+    private val mapViewModel: MapViewModel by viewModels()
+    private val scheduleViewModel:ScheduleCreateViewModel by navGraphViewModels(R.id.schedule_graph)
+
     val tokyo = LatLng(35.681236, 139.767125)
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(tokyo, 11f)//これを現在地に変更する。
 
@@ -67,38 +75,34 @@ class MapFragment: Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                val cameraPositionState = rememberCameraPositionState { position = defaultCameraPosition }
                 var isMapLoaded by remember { mutableStateOf(false) }
-                val uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
-                val mapProperties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL)) }
-                val mapVisible by remember { mutableStateOf(true) }
-                val isLoading: Boolean = viewModel.placesLoadState.value is LoadState.Loading || (viewModel.placeDetailLoadState.value is LoadState.Loading)
-                val isError: Boolean = viewModel.placesLoadState.value is LoadState.Error || (viewModel.placeDetailLoadState.value is LoadState.Error)
-
-                com.example.droidsoftthird.composable.BottomModal(
-                    placeDetailLoadState = viewModel.placeDetailLoadState,
-                    onConfirm = ::confirmPlace
+                BottomModal(
+                        placeDetailLoadState = mapViewModel.placeDetailLoadState,
+                        onConfirm = { confirmPlace(it) }
                 ) {
                     Column {
-                        if (isLoading) LinearProgressIndicator(Modifier.fillMaxWidth())
+                        if (mapViewModel.isLoading) LinearProgressIndicator(Modifier.fillMaxWidth())
+                        if (mapViewModel.isError) {
+                            if (mapViewModel.placeDetailLoadState.value is LoadState.Error) Toast.makeText(requireContext(), mapViewModel.placeDetailLoadState.value.getErrorOrNull().toString(), Toast.LENGTH_SHORT).show()
+                            if (mapViewModel.placesLoadState.value is LoadState.Error) Toast.makeText(requireContext(), mapViewModel.placesLoadState.value.getErrorOrNull().toString(), Toast.LENGTH_SHORT).show()
+                        }
                         Box {
-                            if (mapVisible) {
-                                GoogleMap(
-                                    cameraPositionState = cameraPositionState,
-                                    modifier = Modifier,
-                                    properties = mapProperties,
-                                    uiSettings = uiSettings,
-                                    onMapLoaded = { isMapLoaded = true },
-                                    onPOIClick = { },
-                                    content = function(cameraPositionState, viewModel.centerPoint, viewModel.radius),
-                                )
-                                Column {
-                                    Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
-                                        SearchBox(viewModel.query) { viewModel.searchByText() }
-                                        DropDown(viewModel.selections, viewModel.selectedType)
-                                    }
-                                    ChipGroup(viewModel.selections) { viewModel.searchByPoi() }
+                            val cameraPositionState = rememberCameraPositionState { position = defaultCameraPosition }
+                            GoogleMap(
+                                cameraPositionState = cameraPositionState,
+                                modifier = Modifier,
+                                properties = MapProperties(mapType = MapType.NORMAL),
+                                uiSettings = MapUiSettings(compassEnabled = false),
+                                onMapLoaded = { isMapLoaded = true },
+                                onPOIClick = { },
+                                content = function(cameraPositionState, mapViewModel.centerPoint, mapViewModel.radius),
+                            )
+                            Column {
+                                Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
+                                    SearchBox(mapViewModel.query) { mapViewModel.searchByText() }
+                                    DropDown(mapViewModel.selections, mapViewModel.selectedType)
                                 }
+                                ChipGroup(mapViewModel.selections) { mapViewModel.searchByPoi() }
                             }
                         }
                     }
@@ -108,9 +112,13 @@ class MapFragment: Fragment() {
         }
     }
 
-    fun confirmPlace () {
-       // val place = viewModel.places.value.find { it.id == place.id }
-        //TODO Fragment間で値の受け渡しをするように
+    private fun confirmPlace(editedPlaceDetail: EditedPlaceDetail?) {
+
+        if (editedPlaceDetail != null) {
+            val action = MapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)
+            findNavController().navigate(action)
+            scheduleViewModel.eventLocation.value = editedPlaceDetail.name
+        }
     }
 
 
@@ -139,15 +147,15 @@ class MapFragment: Fragment() {
                 }
             }
 
-            if (viewModel.placesLoadState.value is LoadState.Loaded<*> ) {
-                viewModel.placesLoadState.value.getValueOrNull<List<Place>>()?.forEach {
+            if (mapViewModel.placesLoadState.value is LoadState.Loaded<*> ) {
+                mapViewModel.placesLoadState.value.getValueOrNull<List<Place>>()?.forEach {
                     Marker(
                             state = MarkerState(position = LatLng(it.location.lat, it.location.lng)),
                             tag = it.placeId,
                             title = it.name,
                             snippet = it.types[0],
                             onClick = { marker ->
-                                viewModel.fetchPlaceDetail((marker.tag.toString()))
+                                mapViewModel.fetchPlaceDetail((marker.tag.toString()))
                                 true
                             }
                     )
