@@ -71,7 +71,7 @@
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_date}"
             bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-            bind:text="@{viewModel.eventDate}"
+            bind:text="@={viewModel.eventDate}"
             android:clickable="true"
             />
         <include
@@ -79,14 +79,14 @@
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_time}"
             bind:drawable="@{@drawable/ic_baseline_access_time_24}"
-            bind:text="@{viewModel.eventTime}"
+            bind:text="@={viewModel.eventTime}"
             />
         <include
             android:id="@+id/include_schedule_create_location"
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_location}"
             bind:drawable="@{@drawable/ic_baseline_location_on_24}"
-            bind:text="@{viewModel.eventLocation}"
+            bind:text="@={viewModel._eventLocation}"
             />
         <include
             android:id="@+id/include_schedule_create_group"

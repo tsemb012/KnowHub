@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onCancel
 import com.afollestad.materialdialogs.datetime.timePicker
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
-import com.example.droidsoftthird.dialogs.*
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -37,12 +36,14 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
      * */
 
     private val binding: FragmentScheduleCreateBinding by dataBinding()
-    private val viewModel:ScheduleCreateViewModel by viewModels()
+    private val viewModel:ScheduleCreateViewModel by navGraphViewModels(R.id.schedule_graph)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClickAction()
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
     }
 
     private fun setupClickAction() {
@@ -66,8 +67,8 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                     .setCalendarConstraints(constraints)
                     .build().apply {
                         addOnPositiveButtonClickListener {
-                            val selectedDate = LocalDate.ofEpochDay(it)
-                            viewModel?.setSelectedDate(selectedDate) ?:IllegalStateException()
+                            val selectedDate = Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+                            viewModel?.setSelectedDate(selectedDate)
                             requireActivity().setTheme(R.style.AppTheme)
                         }
                         addOnCancelListener { requireActivity().setTheme(R.style.AppTheme) }
@@ -107,7 +108,19 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
 
                 //childFragmentManager.let { LocationDialogFragment().show(it, "location") }
             }
-            /*includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener()*/
+            includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener {
+                /*MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("グループを選択してください。")
+                    .setItems(viewModel.groupsLoadState.value) { _, which ->
+                        when (which) {
+                            0 -> viewModel?.setGroupType(GroupType.FAMILY)
+                            1 -> viewModel?.setGroupType(GroupType.FRIEND)
+                            2 -> viewModel?.setGroupType(GroupType.WORK)
+                            3 -> viewModel?.setGroupType(GroupType.OTHER)
+                        }
+                    }
+                    .show()*/
+            }
         }
     }
 
