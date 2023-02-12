@@ -159,8 +159,12 @@
     <string name="profile_edit_gender_male_item">男性</string>
     <string name="profile_edit_gender_female_item">女性</string>
     <string name="profile_edit_gender_no_answer_item">無回答</string>
-
-
+    <string name="map_place_name">場所名</string>
+    <string name="map_address">住所</string>
+    <string name="map_category">カテゴリー</string>
+    <string name="map_memo">メモ</string>
+    <string name="map_cancel">キャンセル</string>
+    <string name="general_confirm">確定</string>
 
 
 </resources>
