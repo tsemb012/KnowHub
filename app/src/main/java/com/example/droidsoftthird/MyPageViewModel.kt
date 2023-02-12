@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class MyPageViewModel @Inject constructor(private val useCase: GroupUseCase): ViewModel() {
 
     private val _groups = MutableLiveData<List<ApiGroup>?>()
     val groups: LiveData<List<ApiGroup>?>
@@ -23,7 +23,7 @@ class MyPageViewModel @Inject constructor(private val repository: BaseRepository
 
     fun getMyGroups() {
         viewModelScope.launch {
-            runCatching { repository.fetchJoinedGroups() }
+            runCatching { useCase.fetchJoinedGroups() }
                 .onSuccess { _groups.value = it }
                 .onFailure { _message.value = it.message }
         }
