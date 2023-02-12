@@ -1,18 +1,19 @@
 package com.example.droidsoftthird
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import java.time.LocalDate
 import java.util.*
 
-class ScheduleCreateViewModel: ViewModel() {
+class ScheduleCreateViewModel(): ViewModel() {
 
     companion object {
         private const val NOT_SET_JPN = "未設定"
         private const val NOT_SET_ENG = "Not set"
     }
 
+    val groupsLoadState: MutableLiveData<LoadState> = MutableLiveData(LoadState.Initialized)
     var eventName = MutableLiveData<String>()
     var eventComment = MutableLiveData<String>()
 
@@ -26,11 +27,11 @@ class ScheduleCreateViewModel: ViewModel() {
     var eventGroup = MutableLiveData<String>()
 
     fun setSelectedDate(selectedDate: LocalDate?) {
-        TODO("選択日時をセット")
+        eventDate.value = selectedDate?.toString()?.format("yyyy/MM/dd") ?: NOT_SET_JPN
     }
 
     fun setTimePeriod(startTime: Calendar, endTime: Calendar) {
-        TODO("開始・終了時間をセット")
+        eventTime.value = "${startTime.get(Calendar.HOUR_OF_DAY)}:${startTime.get(Calendar.MINUTE)} - ${endTime.get(Calendar.HOUR_OF_DAY)}:${endTime.get(Calendar.MINUTE)}"
     }
 
 }
