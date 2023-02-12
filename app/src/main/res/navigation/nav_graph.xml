@@ -101,19 +101,8 @@
             app:argType="string" />
         <action
             android:id="@+id/action_ScheduleHomeFragment_to_scheduleCreateFragment"
-            app:destination="@id/scheduleCreateFragment" />
+            app:destination="@id/schedule_graph" />
     </fragment>
-
-<!--    <fragment
-        android:id="@+id/videoFragment"
-        android:name="com.example.droidsoftthird.VideoFragment"
-        android:label="VideoFragment" >
-        <argument
-            android:name="groupId"
-            app:argType="string" />
-    </fragment>
-    -->
-    <!--TODO 一時的にVideoからLoginにつなぐ-->
 
     <fragment
         android:id="@+id/chatRoomFragment"
@@ -133,14 +122,6 @@
             app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_chatRoomFragment" app:destination="@id/chatRoomFragment" />
-    <fragment
-        android:id="@+id/scheduleCreateFragment"
-        android:name="com.example.droidsoftthird.ScheduleCreateFragment"
-        android:label="ScheduleCreateFragment" >
-        <action
-            android:id="@+id/action_scheduleCreateFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
-    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.droidsoftthird.ProfileFragment"
@@ -162,12 +143,24 @@
             android:id="@+id/action_profileCreateFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.example.droidsoftthird.MapFragment"
-        android:label="MapFragment" >
-        <action
-            android:id="@+id/action_mapFragment_to_scheduleCreateFragment"
-            app:destination="@id/scheduleCreateFragment" />
-    </fragment>
+
+    <navigation android:id="@+id/schedule_graph"
+        app:startDestination="@id/scheduleCreateFragment">
+        <fragment
+            android:id="@+id/scheduleCreateFragment"
+            android:name="com.example.droidsoftthird.ScheduleCreateFragment"
+            android:label="ScheduleCreateFragment">
+            <action
+                android:id="@+id/action_scheduleCreateFragment_to_mapFragment"
+                app:destination="@id/mapFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/mapFragment"
+            android:name="com.example.droidsoftthird.MapFragment"
+            android:label="MapFragment">
+            <action
+                android:id="@+id/action_mapFragment_to_scheduleCreateFragment"
+                app:destination="@id/scheduleCreateFragment" />
+        </fragment>
+    </navigation>
 </navigation>

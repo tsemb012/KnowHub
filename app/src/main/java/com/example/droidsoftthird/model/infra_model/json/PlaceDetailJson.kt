@@ -28,7 +28,7 @@ data class PlaceDetailJson(
             val shortName: String,
             val types: List<String>
     ) {
-        fun toEntity() = PlaceDetail.AddressComponent(
+        fun toEntity() = AddressComponent(
                 longName = longName,
                 shortName = shortName,
                 types = types,
