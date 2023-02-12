@@ -27,6 +27,9 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     val placesLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
     val placeDetailLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
 
+    val isLoading = placesLoadState.value is LoadState.Loading || placeDetailLoadState.value is LoadState.Loading
+    val isError = placesLoadState.value is LoadState.Error || placeDetailLoadState.value is LoadState.Error
+
     //TODO Flowで流してComibineするのが良いかも。
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
     fun fetchPlaceDetail(placeId: String) {
