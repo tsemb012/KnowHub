@@ -1,4 +1,4 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.usecase
 
 import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.domain_model.PlaceDetail
