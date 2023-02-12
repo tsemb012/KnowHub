@@ -86,7 +86,7 @@
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_location}"
             bind:drawable="@{@drawable/ic_baseline_location_on_24}"
-            bind:text="@={viewModel._eventLocation}"
+            bind:text="@={viewModel.eventLocation}"
             />
         <include
             android:id="@+id/include_schedule_create_group"
