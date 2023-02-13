@@ -6,16 +6,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onCancel
 import com.afollestad.materialdialogs.datetime.timePicker
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
+import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
@@ -36,12 +38,12 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
      * */
 
     private val binding: FragmentScheduleCreateBinding by dataBinding()
-    private val viewModel:ScheduleCreateViewModel by navGraphViewModels(R.id.schedule_graph)
-
+    private val viewModel:ScheduleCreateViewModel by hiltNavGraphViewModels(R.id.schedule_graph)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClickAction()
+        viewModel.initializeGroups()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
@@ -109,17 +111,12 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                 //childFragmentManager.let { LocationDialogFragment().show(it, "location") }
             }
             includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener {
-                /*MaterialAlertDialogBuilder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle("グループを選択してください。")
-                    .setItems(viewModel.groupsLoadState.value) { _, which ->
-                        when (which) {
-                            0 -> viewModel?.setGroupType(GroupType.FAMILY)
-                            1 -> viewModel?.setGroupType(GroupType.FRIEND)
-                            2 -> viewModel?.setGroupType(GroupType.WORK)
-                            3 -> viewModel?.setGroupType(GroupType.OTHER)
-                        }
+                    .setItems((viewModel?.groupsLoadState?.value?.getValueOrNull() as List<ApiGroup>? )?.map { it.groupName }?.toTypedArray()) { _, which ->
+                        viewModel?.setSelectedGroup(which)
                     }
-                    .show()*/
+                    .show()
             }
         }
     }
