@@ -38,7 +38,7 @@
                 android:id="@+id/event_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.eventName}"
+                android:text="@={viewModel.uiModel.bindingEventName}"
                 android:hint="@string/schedule_event_name_hint"
                 android:inputType="text"
                 android:background="@drawable/radius_rectangular_prime_base_yellow"
@@ -59,7 +59,7 @@
                 android:id="@+id/event_comment"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:text="@={viewModel.eventComment}"
+                android:text="@={viewModel.uiModel.bindingEventComment}"
                 android:hint="@string/schedule_event_comment_hint"
                 android:inputType="text"
                 android:background="@drawable/radius_rectangular_prime_base_yellow"
@@ -71,7 +71,7 @@
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_date}"
             bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-            bind:text="@={viewModel.eventDate}"
+            bind:text="@{viewModel.uiModel.uiDate}"
             android:clickable="true"
             />
         <include
@@ -79,26 +79,27 @@
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_time}"
             bind:drawable="@{@drawable/ic_baseline_access_time_24}"
-            bind:text="@={viewModel.eventTime}"
+            bind:text="@{viewModel.uiModel.uiPeriod}"
             />
         <include
             android:id="@+id/include_schedule_create_location"
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_location}"
             bind:drawable="@{@drawable/ic_baseline_location_on_24}"
-            bind:text="@={viewModel.eventLocation}"
+            bind:text="@{viewModel.uiModel.uiPlace}"
             />
         <include
             android:id="@+id/include_schedule_create_group"
             layout="@layout/include_item_schedule_create"
             bind:title="@{@string/schedule_create_group}"
             bind:drawable="@{@drawable/ic_baseline_group_24}"
-            bind:text="@{viewModel.eventGroup}"
+            bind:text="@{viewModel.uiModel.uiGroup}"
             />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
+        android:enabled="@{viewModel.uiModel.isSubmitEnabled}"
         android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

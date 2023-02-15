@@ -117,7 +117,7 @@ class MapFragment: Fragment() {
         if (editedPlaceDetail != null) {
             val action = MapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)
             findNavController().navigate(action)
-            scheduleViewModel.eventLocation.value = editedPlaceDetail.name
+            scheduleViewModel.postPlace(editedPlaceDetail)
         }
     }
 
