@@ -1,9 +1,6 @@
 package com.example.droidsoftthird
 
-import android.content.ContentValues
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -13,7 +10,6 @@ import com.afollestad.materialdialogs.callbacks.onCancel
 import com.afollestad.materialdialogs.datetime.timePicker
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
-import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -42,109 +38,93 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupClickAction()
+        setupClickActions()
         viewModel.initializeGroups()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
 
-    private fun setupClickAction() {
+    private fun setupClickActions() {
         with(binding) {
-
             lifecycleOwner = viewLifecycleOwner
-            includeScheduleCreateDate.itemScheduleCreate.setOnClickListener{
-                //setThemeを行うと不具合が発生するため、ContextからThemeの変更を行う。
-                requireActivity().setTheme(R.style.AppTheme_MaterialDialogDate)
+            setupDateDialog()
+            setupPeriodDialog()
+            setupMapNav()
+            setupGroupDialog()
+        }
+    }
 
-                val today = MaterialDatePicker.todayInUtcMilliseconds()
-                val endMonth = LocalDateTime.now().plusMonths(10)
-                    .atZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC))
-                    .toInstant().toEpochMilli()
-                val constraints = CalendarConstraints.Builder()
-                    .setStart(today).setEnd(endMonth).setValidator(DateValidatorPointForward.now())
-                    .build()
+    private fun FragmentScheduleCreateBinding.setupGroupDialog() {
+        includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("グループを選択してください。")
+                .setItems(viewModel?.groupArray?: arrayOf()) { _, which ->
+                    viewModel?.postSelectedGroup(which)
+                }
+                .show()
+        }
+    }
 
-                val dialog = MaterialDatePicker.Builder.datePicker()
-                    .setSelection(today)
-                    .setCalendarConstraints(constraints)
-                    .build().apply {
-                        addOnPositiveButtonClickListener {
-                            val selectedDate = Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-                            viewModel?.setSelectedDate(selectedDate)
-                            requireActivity().setTheme(R.style.AppTheme)
-                        }
-                        addOnCancelListener { requireActivity().setTheme(R.style.AppTheme) }
-                    }
-                childFragmentManager.let { dialog.show(it, "schedule_date") }
-            }
+    private fun FragmentScheduleCreateBinding.setupMapNav() {
+        includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener {
+            findNavController().navigate(R.id.action_scheduleCreateFragment_to_mapFragment)
+        }
+    }
 
-            includeScheduleCreateTime.itemScheduleCreate.setOnClickListener{
+    private fun FragmentScheduleCreateBinding.setupPeriodDialog() {
+        includeScheduleCreateTime.itemScheduleCreate.setOnClickListener {
 
-                //Themeを直接変更できないので、ContextからThemeの変更を行う。
-                requireActivity().setTheme(R.style.AppTheme_MaterialDialogTime)
+            //Themeを直接変更できないので、ContextからThemeの変更を行う。
+            requireActivity().setTheme(R.style.AppTheme_MaterialDialogTime)
 
-                var startTime: Calendar = Calendar.getInstance()
+            var startTime: Calendar = Calendar.getInstance()
 
-                val dialogForEndTime = MaterialDialog(requireContext())
-                    .title(R.string.schedule_create_time_end)
-                    .timePicker { _, endTime ->
-                    viewModel?.setTimePeriod(startTime, endTime) ?:IllegalStateException()
+            val dialogForEndTime = MaterialDialog(requireContext())
+                .title(R.string.schedule_create_time_end)
+                .timePicker { _, endTime ->
+                    viewModel?.postTimePeriod(startTime, endTime) ?: IllegalStateException()
                     requireActivity().setTheme(R.style.AppTheme)
-                    }
-                    .onCancel { requireActivity().setTheme(R.style.AppTheme) }
-                    .lifecycleOwner(this@ScheduleCreateFragment)
+                }
+                .onCancel { requireActivity().setTheme(R.style.AppTheme) }
+                .lifecycleOwner(this@ScheduleCreateFragment)
 
-                val dialogForStartTime = MaterialDialog(requireContext())
-                    .title(R.string.schedule_create_time_start)
-                    .timePicker(startTime) { _, time -> startTime = time }
-                    .positiveButton { dialogForEndTime.show() }
-                    .onCancel { requireActivity().setTheme(R.style.AppTheme) }
-                    .lifecycleOwner(this@ScheduleCreateFragment)
+            val dialogForStartTime = MaterialDialog(requireContext())
+                .title(R.string.schedule_create_time_start)
+                .timePicker(startTime) { _, time -> startTime = time }
+                .positiveButton { dialogForEndTime.show() }
+                .onCancel { requireActivity().setTheme(R.style.AppTheme) }
+                .lifecycleOwner(this@ScheduleCreateFragment)
 
-                dialogForStartTime.show()
-            }
-
-            includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener {
-
-                findNavController().navigate(R.id.action_scheduleCreateFragment_to_mapFragment)
-
-                //childFragmentManager.let { LocationDialogFragment().show(it, "location") }
-            }
-            includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("グループを選択してください。")
-                    .setItems((viewModel?.groupsLoadState?.value?.getValueOrNull() as List<ApiGroup>? )?.map { it.groupName }?.toTypedArray()) { _, which ->
-                        viewModel?.setSelectedGroup(which)
-                    }
-                    .show()
-            }
+            dialogForStartTime.show()
         }
     }
 
-    private fun launchUploader() {
-        Log.d(ContentValues.TAG, "launchUploader")
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "image/*"
-            addCategory(Intent.CATEGORY_OPENABLE)}
-        startActivityForResult(
-            intent,
-            REQUEST_IMAGE_OPEN
-        )
-    }
+    private fun FragmentScheduleCreateBinding.setupDateDialog() {
+        includeScheduleCreateDate.itemScheduleCreate.setOnClickListener {
+            //setThemeを行うと不具合が発生するため、ContextからThemeの変更を行う。
+            requireActivity().setTheme(R.style.AppTheme_MaterialDialogDate)
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            val today = MaterialDatePicker.todayInUtcMilliseconds()
+            val endMonth = LocalDateTime.now().plusMonths(10)
+                .atZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC))
+                .toInstant().toEpochMilli()
+            val constraints = CalendarConstraints.Builder()
+                .setStart(today).setEnd(endMonth).setValidator(DateValidatorPointForward.now())
+                .build()
 
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_OPEN && resultCode == Activity.RESULT_OK) {
-            val fullPhotoUri: Uri = requireNotNull(data?.data, { "requireNotNull" })
-            viewModel.postImageUri(fullPhotoUri)
+            val dialog = MaterialDatePicker.Builder.datePicker()
+                .setSelection(today)
+                .setCalendarConstraints(constraints)
+                .build().apply {
+                    addOnPositiveButtonClickListener {
+                        val selectedDate =
+                            Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+                        viewModel?.postSelectedDate(selectedDate)
+                        requireActivity().setTheme(R.style.AppTheme)
+                    }
+                    addOnCancelListener { requireActivity().setTheme(R.style.AppTheme) }
+                }
+            childFragmentManager.let { dialog.show(it, "schedule_date") }
         }
-    }*/
-
-
-
-    companion object {
-        private const val REQUEST_IMAGE_OPEN = 101
     }
-
 }
