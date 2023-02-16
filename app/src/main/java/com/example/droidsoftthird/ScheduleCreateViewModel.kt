@@ -1,10 +1,12 @@
 package com.example.droidsoftthird
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedPlaceDetail
+import com.example.droidsoftthird.model.domain_model.EventItemStack
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
 import com.example.droidsoftthird.usecase.GroupUseCase
@@ -27,24 +29,21 @@ class ScheduleCreateViewModel @Inject constructor(
         private const val NOT_SET_ENG = "Not set"
     }
 
-    private val _selectedDate by lazy { MutableLiveData<LocalDate>(null) }
-    private val _selectedPeriod by lazy { MutableLiveData<Pair<Calendar, Calendar>>(null) }
-    private val _selectedPlace by lazy { MutableLiveData<EditedPlaceDetail>(null) }
-    private val _selectedGroup by lazy { MutableLiveData<ApiGroup>(null) }
-    private val _groupsLoadState by lazy { MutableLiveData<LoadState>() }
+    private val _groupsLoadState by lazy { MutableLiveData<LoadState>(LoadState.Initialized) }
+    private val _selectedItems by lazy { MutableLiveData(EventItemStack()) }
+    val _bindingEventName by lazy { MutableLiveData("") }
+    val _bindingEventComment by lazy { MutableLiveData("") }
 
     val groupArray get () = (_groupsLoadState.value?.getValueOrNull() as List<ApiGroup>?)?.map { it.groupName }?.toTypedArray() ?: arrayOf()
 
-    val uiModel by lazy {
+    val uiModel: LiveData<ScheduleCreateUiModel> by lazy {
         combine(
                 ScheduleCreateUiModel(),
                 _groupsLoadState,
-                _selectedDate,
-                _selectedPeriod,
-                _selectedPlace,
-                _selectedGroup,
-        ) { current, _groupsLoadState, _selectedDate, _selectedPeriod, _selectedPlace, _selectedGroup ->
-            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedDate, _selectedPeriod, _selectedPlace, _selectedGroup)
+                _selectedItems,
+                _bindingEventName
+        ) { current, _groupsLoadState, _selectedItems,_bindingEventName ->
+            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedItems,_bindingEventName)
         }
     }
 
@@ -58,20 +57,20 @@ class ScheduleCreateViewModel @Inject constructor(
     }
 
     fun postSelectedDate(selectedDate: LocalDate) {
-        _selectedDate.value = selectedDate
+        _selectedItems.postValue(_selectedItems.value?.copy(selectedDate = selectedDate))
     }
 
     fun postTimePeriod(startTime: Calendar, endTime: Calendar) {
-        _selectedPeriod.value = Pair(startTime, endTime)
+        _selectedItems.value = _selectedItems.value?.copy(selectedPeriod = Pair(startTime, endTime))
     }
 
     fun postPlace(place: EditedPlaceDetail) {
-        _selectedPlace.postValue(place)
+        _selectedItems.value = _selectedItems.value?.copy(selectedPlace = place)
     }
 
     fun postSelectedGroup(which: Int) {
         val selectedGroup = _groupsLoadState.value?.getValueOrNull<List<ApiGroup>>()?.get(which)
-        _selectedGroup.value = selectedGroup
+        _selectedItems.value = _selectedItems.value?.copy(selectedGroup = selectedGroup)
     }
 
 }
