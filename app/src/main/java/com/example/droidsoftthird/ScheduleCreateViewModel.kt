@@ -57,7 +57,7 @@ class ScheduleCreateViewModel @Inject constructor(
     }
 
     fun postSelectedDate(selectedDate: LocalDate) {
-        _selectedItems.postValue(_selectedItems.value?.copy(selectedDate = selectedDate))
+        _selectedItems.value = _selectedItems.value?.copy(selectedDate = selectedDate)
     }
 
     fun postTimePeriod(startTime: Calendar, endTime: Calendar) {
