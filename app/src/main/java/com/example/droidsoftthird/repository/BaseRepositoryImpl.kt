@@ -21,9 +21,12 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -31,11 +34,14 @@ import kotlin.coroutines.suspendCoroutine
 
 class BaseRepositoryImpl @Inject constructor(
         private val mainApi: MainApi,
-        private val dataStore: DataStore<Preferences>
+        private val dataStore: DataStore<Preferences>,
+        private val moshi: Moshi
 ): RailsApiRepository, FirebaseRepository, DataStoreRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
+    private val localDateAdapter = moshi.adapter(LocalDate::class.java)
+    private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
 
     override suspend fun saveTokenId(tokenId: String) {
         dataStore.edit { preferences ->
@@ -179,6 +185,8 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
+    override suspend fun createEvent(event: ScheduleEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
+
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
                 query = query,
@@ -320,9 +328,6 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
-
-
-
 
     companion object {
         private const val LIMIT = 50L

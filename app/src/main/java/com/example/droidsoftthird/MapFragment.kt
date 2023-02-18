@@ -16,7 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.droidsoftthird.composable.*
-import com.example.droidsoftthird.model.domain_model.EditedPlaceDetail
+import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.google.android.gms.maps.model.CameraPosition
@@ -112,7 +112,7 @@ class MapFragment: Fragment() {
         }
     }
 
-    private fun confirmPlace(editedPlaceDetail: EditedPlaceDetail?) {
+    private fun confirmPlace(editedPlaceDetail: EditedPlace?) {
 
         if (editedPlaceDetail != null) {
             val action = MapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)

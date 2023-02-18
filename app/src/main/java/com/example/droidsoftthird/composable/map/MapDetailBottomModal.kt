@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 fun BottomModal(
     placeDetailLoadState: MutableState<LoadState>,
-    onConfirm: (EditedPlaceDetail?) -> Unit = {},
+    onConfirm: (EditedPlace?) -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
-    var editedPlaceDetail by remember { mutableStateOf<EditedPlaceDetail?>(null) }
+    var editedPlaceDetail by remember { mutableStateOf<EditedPlace?>(null) }
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -30,7 +30,7 @@ fun BottomModal(
             if (placeDetailLoadState.value is LoadState.Loaded<*>) {
                 placeDetailLoadState.value.getValueOrNull<PlaceDetail>()?.let {
                     scope.launch { bottomSheetState.show() }
-                    editedPlaceDetail = it.toEditedPlaceDetail()
+                    editedPlaceDetail = it.toEditedPlace()
                 }
                 placeDetailLoadState.value = LoadState.Initialized
             }
