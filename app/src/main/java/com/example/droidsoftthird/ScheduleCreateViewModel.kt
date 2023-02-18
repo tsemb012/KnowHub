@@ -1,16 +1,19 @@
 package com.example.droidsoftthird
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.EditedPlaceDetail
-import com.example.droidsoftthird.model.domain_model.EventItemStack
+import com.example.droidsoftthird.model.domain_model.EditedPlace
+import com.example.droidsoftthird.model.domain_model.SelectedItemStack
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
+import com.example.droidsoftthird.usecase.EventUseCase
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.example.droidsoftthird.utils.combine
+import com.example.droidsoftthird.utils.converter.convertToLocalTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
@@ -21,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleCreateViewModel @Inject constructor(
         private val groupUseCase: GroupUseCase,
-        //private val eventUseCase: EventUseCase,
+        private val eventUseCase: EventUseCase,
 ): ViewModel() {
 
     companion object {
@@ -30,9 +33,9 @@ class ScheduleCreateViewModel @Inject constructor(
     }
 
     private val _groupsLoadState by lazy { MutableLiveData<LoadState>(LoadState.Initialized) }
-    private val _selectedItems by lazy { MutableLiveData(EventItemStack()) }
-    val _bindingEventName by lazy { MutableLiveData("") }
-    val _bindingEventComment by lazy { MutableLiveData("") }
+    private val _selectedItems by lazy { MutableLiveData(SelectedItemStack()) }
+    val bindingEventName by lazy { MutableLiveData("") }
+    val bindingEventComment by lazy { MutableLiveData("") }
 
     val groupArray get () = (_groupsLoadState.value?.getValueOrNull() as List<ApiGroup>?)?.map { it.groupName }?.toTypedArray() ?: arrayOf()
 
@@ -41,9 +44,10 @@ class ScheduleCreateViewModel @Inject constructor(
                 ScheduleCreateUiModel(),
                 _groupsLoadState,
                 _selectedItems,
-                _bindingEventName
-        ) { current, _groupsLoadState, _selectedItems,_bindingEventName ->
-            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedItems,_bindingEventName)
+                bindingEventName,
+                bindingEventComment
+        ) { current, _groupsLoadState, _selectedItems,_bindingEventName, _bindingEventComment  ->
+            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedItems,_bindingEventName, _bindingEventComment)
         }
     }
 
@@ -61,10 +65,11 @@ class ScheduleCreateViewModel @Inject constructor(
     }
 
     fun postTimePeriod(startTime: Calendar, endTime: Calendar) {
-        _selectedItems.value = _selectedItems.value?.copy(selectedPeriod = Pair(startTime, endTime))
+        val period = Pair(startTime.convertToLocalTime(), endTime.convertToLocalTime())
+        _selectedItems.value = _selectedItems.value?.copy(selectedPeriod = period)
     }
 
-    fun postPlace(place: EditedPlaceDetail) {
+    fun postPlace(place: EditedPlace) {
         _selectedItems.value = _selectedItems.value?.copy(selectedPlace = place)
     }
 
@@ -73,4 +78,13 @@ class ScheduleCreateViewModel @Inject constructor(
         _selectedItems.value = _selectedItems.value?.copy(selectedGroup = selectedGroup)
     }
 
+    fun submitEvent() {
+        if(uiModel.value?.isSubmitEnabled == true) {
+            viewModelScope.launch {
+                runCatching { eventUseCase.submitEvent(uiModel.value?.fixedEvent!!) }//TODO !!を消すようにする。
+                    .onSuccess { Log.d("tsemb012", it) }
+                    .onFailure { Log.d("tsemb012", it.toString()) } //TODO　提出ができるようになったら
+            }
+        }
+    }
 }

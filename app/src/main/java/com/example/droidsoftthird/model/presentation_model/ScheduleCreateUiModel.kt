@@ -1,45 +1,56 @@
 package com.example.droidsoftthird.model.presentation_model
 
-import androidx.lifecycle.MutableLiveData
 import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.EditedPlaceDetail
-import com.example.droidsoftthird.model.domain_model.EventItemStack
+import com.example.droidsoftthird.model.domain_model.EditedPlace
+import com.example.droidsoftthird.model.domain_model.ScheduleEvent
+import com.example.droidsoftthird.model.domain_model.SelectedItemStack
 import java.time.LocalDate
-import java.util.*
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 data class ScheduleCreateUiModel (
     val isLoading: Boolean = false,
     val error: Throwable? = null,
     private val groups: List<ApiGroup>? = null,
-    private val selectedItems: EventItemStack = EventItemStack(),
+    private val selectedItems: SelectedItemStack = SelectedItemStack(),
     private val bindingUiName: String? = null,
-    private val bindingUiComment: MutableLiveData<String> = MutableLiveData(""),
+    private val bindingUiComment: String? = null,
 ) {
     val uiDate = selectedItems.selectedDate?.toString()?.format("yyyy/MM/dd") ?: NO_SETTING
-    val uiPeriod = selectedItems.selectedPeriod?.let { "${it.first.get(Calendar.HOUR_OF_DAY)}:${it.first.get(Calendar.MINUTE)} - ${it.second.get(Calendar.HOUR_OF_DAY)}:${it.second.get(Calendar.MINUTE)}" } ?: NO_SETTING
+    val uiPeriod = selectedItems.selectedPeriod?.let { "${it.first.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}:${it.first.format(DateTimeFormatter.ofPattern("HH:mm:ss"))} - ${it.second.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}:${it.second.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}" } ?: NO_SETTING
     val uiPlace = selectedItems.selectedPlace?.name ?: NO_SETTING
     val uiGroup = selectedItems.selectedGroup?.groupName ?: NO_SETTING
-
+    val fixedEvent: ScheduleEvent get() = ScheduleEvent(
+            name = bindingUiName ?: throw IllegalStateException("name is null"),
+            comment = bindingUiComment ?: throw IllegalStateException("comment is null"),
+            date = selectedItems.selectedDate ?: throw IllegalStateException("date is null"),
+            period = selectedItems.selectedPeriod ?: throw IllegalStateException("period is null"),
+            place = selectedItems.selectedPlace ?: throw IllegalStateException("place is null"),
+            groupId = selectedItems.selectedGroup?.groupId ?: throw IllegalStateException("group is null"),
+    )
     val isSubmitEnabled = isValid(
             bindingUiName,
-            bindingUiComment.value,
+            bindingUiComment,
             selectedItems.selectedDate,
             selectedItems.selectedPeriod,
             selectedItems.selectedPlace,
             selectedItems.selectedGroup,
     )
+
     companion object {
         operator fun invoke(
                 current: ScheduleCreateUiModel,
                 groupsLoadState: LoadState,
-                _selectedItems: EventItemStack,
+                _selectedItems: SelectedItemStack,
                 _bindingEventName: String,
+                _bindingEventComment: String,
         ) = ScheduleCreateUiModel(
                     isLoading = groupsLoadState is LoadState.Loading,
                     error = groupsLoadState.getErrorOrNull(),
                     groups = groupsLoadState.getValueOrNull(),
                     selectedItems = _selectedItems,
                     bindingUiName = _bindingEventName,
+                    bindingUiComment = _bindingEventComment,
         )
 
         private const val NO_SETTING = "未設定"
@@ -48,8 +59,8 @@ data class ScheduleCreateUiModel (
                 userName: String?,
                 comment: String?,
                 selectedDate: LocalDate?,
-                selectedPeriod: Pair<Calendar, Calendar>?,
-                selectedPlace: EditedPlaceDetail?,
+                selectedPeriod: Pair<LocalTime, LocalTime>?,
+                selectedPlace: EditedPlace?,
                 selectedGroup: ApiGroup?,
         ) =
                 userName != null && userName.isNotBlank() &&

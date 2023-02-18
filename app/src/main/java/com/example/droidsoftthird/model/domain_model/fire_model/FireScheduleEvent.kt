@@ -10,7 +10,7 @@ import java.time.ZoneId
 import java.util.*
 import kotlin.collections.HashMap
 
-data class ScheduleEvent(//空欄にして良い場所はNullableにしておく。
+data class FireScheduleEvent(//空欄にして良い場所はNullableにしておく。
     val title: String,
     val date: LocalDate,
     val place: Place?,
@@ -43,7 +43,7 @@ data class RawScheduleEvent(
 )
 //TODO HashMapの書き方をこれであっているか確認する
 
-fun RawScheduleEvent.toEntity() = ScheduleEvent(
+fun RawScheduleEvent.toEntity() = FireScheduleEvent(
     title = title ?: throw IllegalStateException(),
     date = date ?: throw IllegalStateException(),
     place = Place(

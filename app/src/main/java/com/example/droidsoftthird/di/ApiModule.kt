@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.repository.AuthenticationRepositoryImpl
-import com.squareup.moshi.Moshi
+import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -19,6 +19,9 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -28,8 +31,9 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        //private const val BASE_URL = "http://10.0.2.2:3000/" エミュレーターで起動する場合
-        private const val BASE_URL = "http://192.168.10.104:3000/"
+        private const val BASE_URL = "http://10.0.2.2:3000/" //エミュレーターで起動する場合
+        //private const val BASE_URL = "http://192.168.10.104:3000/"
+        //private const val BASE_URL = "http://192.168.200.21:3000/"
         private const val TOKEN_ID_KEY = "token_id_key"
     }
 
@@ -59,7 +63,10 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+    fun provideMoshi(): Moshi = Moshi.Builder()
+        .add(LocalTimeAdapter)
+        .add(LocalDateAdapter)
+        .addLast(KotlinJsonAdapterFactory()).build()
 
     @Singleton
     @Provides
@@ -113,5 +120,30 @@ class ApiModule {
                 response.request
             }
         }
+    }
+}
+
+//TODO 適切な場所に移動するように
+object LocalTimeAdapter {
+    @ToJson
+    fun toJson(value: LocalTime): String {
+        return value.format(DateTimeFormatter.ISO_LOCAL_TIME)
+    }
+
+    @FromJson
+    fun fromJson(value: String): LocalTime {
+        return LocalTime.parse(value, DateTimeFormatter.ISO_LOCAL_TIME)
+    }
+}
+
+object LocalDateAdapter {
+    @ToJson
+    fun toJson(value: LocalDate): String {
+        return value.toString()
+    }
+
+    @FromJson
+    fun fromJson(value: String): LocalDate {
+        return LocalDate.parse(value)
     }
 }
