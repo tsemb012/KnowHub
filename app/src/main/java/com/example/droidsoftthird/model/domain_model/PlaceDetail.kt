@@ -21,7 +21,7 @@ data class PlaceDetail(
        fun toEditedPlace() = EditedPlace(
                placeId = placeId,
                name = name,
-               type =  types.first(),
+               placeType =  types.first(),
                location = location,
                formattedAddress = formattedAddress,
                plusCode = plusCode,
@@ -34,7 +34,7 @@ data class PlaceDetail(
 data class EditedPlace(
         val placeId: String,
         val name: String,
-        val type: String,
+        val placeType: String,
         val location: Location,
         val formattedAddress: String?,
         val plusCode: PlusCode,
@@ -45,7 +45,7 @@ data class EditedPlace(
                 return EditedPlaceJson(
                         placeId = placeId,
                         name = name,
-                        type = type,
+                        placeType = placeType,
                         latitude = location.lat,
                         longitude = location.lng,
                         address = formattedAddress ?: "",
