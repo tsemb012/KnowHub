@@ -37,7 +37,7 @@ fun BottomModal(
             Column {
                 ListItem(label = stringResource(R.string.map_place_name), value = editedPlaceDetail?.name ?: "")
                 ListItem(label = stringResource(R.string.map_address), value = editedPlaceDetail?.formattedAddress ?: "")
-                ListItem(label = stringResource(R.string.map_category), value = editedPlaceDetail?.type ?: "")
+                ListItem(label = stringResource(R.string.map_category), value = editedPlaceDetail?.placeType ?: "")
                 EditableListItem(label = stringResource(R.string.map_memo), value = editedPlaceDetail?.memo?: "", onTextChanged = { editedPlaceDetail = editedPlaceDetail?.copy(memo = it) })
                 Row {
                     Button(onClick = { scope.launch { bottomSheetState.hide() } }) {

@@ -21,8 +21,8 @@ data class ScheduleEvent(
                         name = name,
                         comment = comment,
                         date = localDateAdapter.toJson(date),
-                        start = localTimeAdapter.toJson(start),
-                        end = localTimeAdapter.toJson(end),
+                        startTime = localTimeAdapter.toJson(start),
+                        endTime = localTimeAdapter.toJson(end),
                         place = place.toJson(),
                         groupId = groupId
                 )
