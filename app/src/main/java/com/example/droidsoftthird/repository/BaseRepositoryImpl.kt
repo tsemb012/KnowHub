@@ -186,6 +186,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
     override suspend fun createEvent(event: ScheduleEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
+    override suspend fun fetchEvents(): List<ScheduleEventForHome> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
@@ -319,12 +320,6 @@ class BaseRepositoryImpl @Inject constructor(
                     .whereArrayContains("members",userId)
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
-            SCHEDULE_REGISTERED_ALL ->
-                fireStore
-                    .collection("schedules")
-                    .whereArrayContains("registered_member",userId)
-                    .orderBy("timeStamp",Query.Direction.DESCENDING)
-                    .limit(LIMIT)
             else -> throw IllegalStateException()
         }
     }
@@ -335,6 +330,5 @@ class BaseRepositoryImpl @Inject constructor(
         private const val REGION_JP = "jp"//設定する際に、直接Preferenceから取得するようにする。
         const val GROUP_ALL = "group_all"
         const val GROUP_MY_PAGE = "group_my_page"
-        const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"
     }
 }

@@ -2,6 +2,7 @@ package com.example.droidsoftthird.api
 
 import com.example.droidsoftthird.model.infra_model.json.PlaceDetailJson
 import com.example.droidsoftthird.model.infra_model.json.PlaceJson
+import com.example.droidsoftthird.model.infra_model.json.ScheduleEventJson
 import com.example.droidsoftthird.model.infra_model.json.UserJson
 import com.example.droidsoftthird.model.infra_model.json.request.*
 import com.example.droidsoftthird.model.infra_model.json.response.GetGroup
@@ -90,6 +91,11 @@ interface MainApi {
             @Query("place_id") placeId: String,
             @Query("language") language: String,
     ): Response<PlaceDetailJson>
+
+    @GET("events")
+    suspend fun getEvents(
+            @Query("user_id") userId: String
+    ) : List<ScheduleEventJson>
 
     @POST("events")
     suspend fun postEvent(

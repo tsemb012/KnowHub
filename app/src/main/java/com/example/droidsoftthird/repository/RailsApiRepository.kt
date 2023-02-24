@@ -24,4 +24,5 @@ interface RailsApiRepository {
     suspend fun fetchPlaceDetail(placeId: String): PlaceDetail?
 
     suspend fun createEvent(event: ScheduleEvent): String?
+    suspend fun fetchEvents(): List<ScheduleEventForHome>
 }

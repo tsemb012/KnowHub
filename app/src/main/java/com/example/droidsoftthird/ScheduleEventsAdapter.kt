@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
-import com.example.droidsoftthird.model.domain_model.fire_model.FireScheduleEvent
+import com.example.droidsoftthird.model.domain_model.ScheduleEventForHome
 
-class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<FireScheduleEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
+class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ScheduleEventForHome, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
     //TODO Hiltで関数をインジェクトする。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.from(parent)
 
@@ -23,12 +23,12 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<FireSche
                 return ViewHolder(binding)
             }
         }
-        fun bind(item: FireScheduleEvent, clickListener: () -> Unit) {
+        fun bind(item: ScheduleEventForHome, clickListener: () -> Unit) {
             with(binding){
                 scheduleEventItem.setOnClickListener { clickListener }
                 /*eventDayOfWeek.text = item.date
                 eventDate.text = item.date*/
-                eventTitle.text = item.title
+                eventTitle.text = item.name
                 /*eventTime.text = binding.root.gs(R.string.event_time,item.startTime.toString(), item.endTime.toString())
                 eventPlace.text = item.place.  TODO Firebaseから受け取るデータの型が決定してから詰めていく。*/
                 executePendingBindings()
@@ -37,12 +37,12 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<FireSche
     }
 }
 
-class ScheduleEventDiffCallback : DiffUtil.ItemCallback<FireScheduleEvent>() {
+class ScheduleEventDiffCallback : DiffUtil.ItemCallback<ScheduleEventForHome>() {
 
-    override fun areItemsTheSame(oldItem: FireScheduleEvent, newItem: FireScheduleEvent): Boolean {
+    override fun areItemsTheSame(oldItem: ScheduleEventForHome, newItem: ScheduleEventForHome): Boolean {
         return oldItem.toString() == newItem.toString()
     }
-    override fun areContentsTheSame(oldItem: FireScheduleEvent, newItem: FireScheduleEvent): Boolean {
+    override fun areContentsTheSame(oldItem: ScheduleEventForHome, newItem: ScheduleEventForHome): Boolean {
         return oldItem == newItem
     }
 }

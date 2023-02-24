@@ -28,3 +28,14 @@ data class ScheduleEvent(
                 )
         }
 }
+
+data class ScheduleEventForHome(
+        val hostId: String? = null,
+        val name: String,
+        val comment: String,
+        val date: LocalDate,
+        val period: Pair<LocalTime, LocalTime>,
+        val groupId: String,
+        val groupName: String,
+        val placeName: String,
+)
