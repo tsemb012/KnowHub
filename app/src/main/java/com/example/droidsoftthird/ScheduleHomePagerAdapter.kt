@@ -12,8 +12,8 @@ class ScheduleHomePagerAdapter(fragment: Fragment): FragmentStateAdapter(fragmen
         private const val SCHEDULE_PROPOSED_INDEX = 1
     }
     private val tabFragmentCreators: Map<Int, () -> Fragment> = mapOf(
-        SCHEDULE_REGISTERED_INDEX to { ScheduleRegisteredFragment() },
-        SCHEDULE_PROPOSED_INDEX to { ScheduleProposedFragment() }
+        SCHEDULE_REGISTERED_INDEX to { ScheduleCalendarFragment() },
+        SCHEDULE_PROPOSED_INDEX to { ScheduleListFragment() }
     )
 
     override fun getItemCount() = PAGE_COUNT

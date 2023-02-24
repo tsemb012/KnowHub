@@ -1,39 +1,31 @@
 package com.example.droidsoftthird
 
-import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.animation.doOnEnd
-import androidx.core.animation.doOnStart
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droidsoftthird.databinding.CalendarDayBinding
-import com.example.droidsoftthird.databinding.FragmentScheduleRegisteredBinding
+import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
-import com.kizitonwose.calendarview.model.InDateStyle
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
-import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -41,10 +33,10 @@ import java.time.format.TextStyle
 import java.util.*
 
 @AndroidEntryPoint
-class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered) {
+class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
-    private val viewModel: ScheduleRegisteredViewModel by viewModels()
-    private val binding: FragmentScheduleRegisteredBinding by dataBinding()
+    private val viewModel: ScheduleCalendarViewModel by viewModels()
+    private val binding: FragmentScheduleCalendarBinding by dataBinding()
     private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::scheduleItemClickListener) }
     private val progressDialog by lazy { //TODO Linearに変更する。
         ProgressDialog(requireActivity()).apply {
@@ -84,13 +76,13 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             setup(startMonth, endMonth, daysOfWeekFromLocale().first())
             scrollToMonth(currentMonth)
             dayBinder = DayViewBinder(viewModel)
-            monthScrollListener = this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
+            monthScrollListener = this@ScheduleCalendarFragment::scrollMonth
         }
     }
 
     private fun setupEventList() {
         binding.recyclerView.apply {
-            adapter = this@ScheduleRegisteredFragment.adapter
+            adapter = this@ScheduleCalendarFragment.adapter
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
                 getDrawable(context, R.drawable.divider)?.let { setDrawable(it) } ?: throw IllegalStateException("Divider drawable not found")
