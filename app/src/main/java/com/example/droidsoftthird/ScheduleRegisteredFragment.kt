@@ -81,10 +81,10 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
     }
 
     private fun setupCalendarMatrix() {
-        binding.oneCalendar.apply {
+        binding.calendarMatrix.apply {
             setup(startMonth, endMonth, daysOfWeek.first())
             scrollToMonth(currentMonth)
-            dayBinder = DayBinderImpl(viewModel)
+            dayBinder = DayViewBinder(viewModel)
             monthScrollListener = this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
         }
     }
@@ -110,11 +110,11 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
                 progressDialog.dismiss()
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
                 viewModel.initializeSchedulesState()
-                binding.oneCalendar.notifyCalendarChanged()
+                binding.calendarMatrix.notifyCalendarChanged()
             }
             is LoadState.Processed -> {
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                binding.oneCalendar.notifyMonthChanged(viewModel.uiModel.value?.selectedDate?.yearMonth ?: YearMonth.now())
+                binding.calendarMatrix.notifyMonthChanged(viewModel.uiModel.value?.selectedDate?.yearMonth ?: YearMonth.now())
             }
             is LoadState.Error -> {
                 progressDialog.dismiss()
@@ -126,7 +126,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
     private fun scrollMonth(it: CalendarMonth) {//スクロール時のロジック
         val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
-        if (binding.oneCalendar.maxRowCount == 6) {//Monthモード
+        if (binding.calendarMatrix.maxRowCount == 6) {//Monthモード
             binding.exOneYearText.text = it.yearMonth.year.toString()
             binding.exOneMonthText.text = monthTitleFormatter.format(it.yearMonth)
         } else {//Weekモード
@@ -147,9 +147,9 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
     }
 
     private fun checkBox (btn: CompoundButton, monthToWeek: Boolean) {
-        val firstDate = binding.oneCalendar.findFirstVisibleDay()?.date ?: return@checkBox
-        val lastDate = binding.oneCalendar.findLastVisibleDay()?.date ?: return@checkBox
-        val oneWeekHeight = binding.oneCalendar.daySize.height
+        val firstDate = binding.calendarMatrix.findFirstVisibleDay()?.date ?: return@checkBox
+        val lastDate = binding.calendarMatrix.findLastVisibleDay()?.date ?: return@checkBox
+        val oneWeekHeight = binding.calendarMatrix.daySize.height
         val oneMonthHeight = oneWeekHeight * 6
         val oldHeight = if (monthToWeek) oneMonthHeight else oneWeekHeight
         val newHeight = if (monthToWeek) oneWeekHeight else oneMonthHeight
@@ -157,13 +157,13 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
         with(animator) {
             addUpdateListener { animator ->
-                binding.oneCalendar.updateLayoutParams {
+                binding.calendarMatrix.updateLayoutParams {
                     height = animator.animatedValue as Int
                 }
             }
             doOnStart {
                 if (!monthToWeek) {
-                    binding.oneCalendar.updateMonthConfiguration(
+                    binding.calendarMatrix.updateMonthConfiguration(
                         inDateStyle = InDateStyle.ALL_MONTHS,
                         maxRowCount = 6,
                         hasBoundaries = true
@@ -172,19 +172,19 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             }
             doOnEnd {
                 if (monthToWeek) {
-                    binding.oneCalendar.updateMonthConfiguration(
+                    binding.calendarMatrix.updateMonthConfiguration(
                         inDateStyle = InDateStyle.FIRST_MONTH,
                         maxRowCount = 1,
                         hasBoundaries = false
                     )
                 }
                 if (monthToWeek) {
-                    binding.oneCalendar.scrollToDate(firstDate)
+                    binding.calendarMatrix.scrollToDate(firstDate)
                 } else {
                     if (firstDate.yearMonth == lastDate.yearMonth) {
-                        binding.oneCalendar.scrollToMonth(firstDate.yearMonth)
+                        binding.calendarMatrix.scrollToMonth(firstDate.yearMonth)
                     } else {
-                        binding.oneCalendar.scrollToMonth(minOf(firstDate.yearMonth.next, endMonth))
+                        binding.calendarMatrix.scrollToMonth(minOf(firstDate.yearMonth.next, endMonth))
                     }
                 }
             }
@@ -193,7 +193,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
         }
     }
 
-    class DayBinderImpl(val viewModel: ScheduleViewModel) : DayBinder<DayBinderImpl.DayViewHolder> { //TODO　疎結合にする必要がある。リサイクラービューのやり方を真似れば大丈夫。 　
+    class DayViewBinder(val viewModel: ScheduleViewModel) : DayBinder<DayViewBinder.DayViewHolder> { //TODO　疎結合にする必要がある。リサイクラービューのやり方を真似れば大丈夫。 　
         private val today = LocalDate.now()
 
         override fun create(view: View): DayViewHolder = DayViewHolder.from(view)
