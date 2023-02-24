@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.model.request.PrefectureJson
+import com.example.droidsoftthird.model.infra_model.json.request.PrefectureJson
 
 data class Prefecture(
         val prefectureCode: Int,

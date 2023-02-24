@@ -23,7 +23,7 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
     fun signUp(email: String, password: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                repository.signUp(email, password)
+                repository.signUpAndFetchToken(email, password)
             }.onSuccess {
                 when(it) {
                     is Result.Success -> {
@@ -43,7 +43,7 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
     private fun signUpByTokenId(tokenId: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                repository.certifyTokenId(tokenId)
+                repository.certifyAndRegister(tokenId)
             }.onSuccess {
                 saveTokenId(tokenId)
             }.onFailure {

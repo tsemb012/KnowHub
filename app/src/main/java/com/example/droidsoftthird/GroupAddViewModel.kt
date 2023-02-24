@@ -4,7 +4,7 @@ package com.example.droidsoftthird
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -14,7 +14,7 @@ import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @HiltViewModel
-class GroupAddViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): ViewModel() {
 
     //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     private val _imageUri = MutableLiveData<Uri>(null)
@@ -133,7 +133,7 @@ class GroupAddViewModel @Inject constructor(private val repository: BaseReposito
         activateProgressBar()
         viewModelScope.launch {
             if(imageUri.value != null) {//TODO 画像の処理の仕方を再検討する。
-                async{ repository.uploadPhoto(imageUri.value!!) }.await().also { it ->
+                async{ useCase.uploadPhoto(imageUri.value!!) }.await().also { it ->
                     when(it){
                         is Result.Success -> {
                             val storageRef = it.data.path.plus(IMAGE_SIZE)//FirebaseExtinctionで画像加工及びファイル名を変更ししているため、ファイル名を修正する。
@@ -155,7 +155,7 @@ class GroupAddViewModel @Inject constructor(private val repository: BaseReposito
                                 maxNumberPerson.value!!,
                                 isChecked.value!!
                             )
-                            runCatching { repository.createGroup(group) }
+                            runCatching { useCase.createGroup(group) }
                                 .onSuccess { onHomeClicked() }
                                 .onFailure { throw it }
                         }

@@ -1,14 +1,13 @@
 package com.example.droidsoftthird.api
 
-import com.example.droidsoftthird.model.json.UserJson
-import com.example.droidsoftthird.model.request.PostGroup
-import com.example.droidsoftthird.model.request.PostSignUp
-import com.example.droidsoftthird.model.request.PostUserDetailJson
-import com.example.droidsoftthird.model.request.PutUserToGroup
-import com.example.droidsoftthird.model.response.GetGroup
-import com.example.droidsoftthird.model.response.GetGroupDetail
-import com.example.droidsoftthird.model.response.GetUserDetailJson
-import com.example.droidsoftthird.model.response.MessageResponse
+import com.example.droidsoftthird.model.infra_model.json.PlaceDetailJson
+import com.example.droidsoftthird.model.infra_model.json.PlaceJson
+import com.example.droidsoftthird.model.infra_model.json.UserJson
+import com.example.droidsoftthird.model.infra_model.json.request.*
+import com.example.droidsoftthird.model.infra_model.json.response.GetGroup
+import com.example.droidsoftthird.model.infra_model.json.response.GetGroupDetail
+import com.example.droidsoftthird.model.infra_model.json.response.GetUserDetailJson
+import com.example.droidsoftthird.model.infra_model.json.response.MessageResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -56,4 +55,44 @@ interface MainApi {
             @Body request: PutUserToGroup
     ): Response<MessageResponse>
 
+    @GET("maps/search_individual")
+    suspend fun getIndividualPlace(
+            @Query("input") query: String,
+            @Query("language") language: String,
+            @Query("north_lat") northLat: Double,
+            @Query("east_lng") eastLng: Double,
+            @Query("south_lat") southLat: Double,
+            @Query("west_lng") westLng: Double,
+    ): Response<List<PlaceJson>>
+
+    @GET("maps/search_by_text")
+    suspend fun getPlacesByText(
+            @Query("input") query: String,
+            @Query("type") type: String,
+            @Query("language") language: String,
+            @Query("region") region: String,
+            @Query("center_lat") centerLat: Double,
+            @Query("center_lng")centerLng: Double,
+            @Query("radius") radius: String,
+    ): Response<List<PlaceJson>>
+
+    @GET("maps/search_nearby")
+    suspend fun getPlacesByPoi(
+            @Query("type") type: String,
+            @Query("language") language: String,
+            @Query("center_lat") centerLat: Double,
+            @Query("center_lng")centerLng: Double,
+            @Query("radius") radius: String,
+    ): Response<List<PlaceJson>>
+
+    @GET("maps/place_detail")
+    suspend fun getPlaceDetail(
+            @Query("place_id") placeId: String,
+            @Query("language") language: String,
+    ): Response<PlaceDetailJson>
+
+    @POST("events")
+    suspend fun postEvent(
+            @Body request: PostScheduleEventJson
+    ): MessageResponse
 }

@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RecommendPagerViewModel @Inject constructor(private val repository: BaseRepositoryImpl):ViewModel() {
+class RecommendPagerViewModel @Inject constructor(private val useCase: GroupUseCase):ViewModel() {
 
     private val _groups = MutableLiveData<List<ApiGroup>?>()
     val groups: LiveData<List<ApiGroup>?>
@@ -21,7 +21,7 @@ class RecommendPagerViewModel @Inject constructor(private val repository: BaseRe
         clearGroups()
         viewModelScope.launch {
             runCatching {
-                repository.fetchGroups(0)
+                useCase.fetchGroups(0)
             }.onSuccess {
                 _groups.postValue(it)
             }.onFailure {
@@ -51,7 +51,7 @@ class RecommendPagerViewModel @Inject constructor(private val repository: BaseRe
         val nextPage = currentPage.inc()
         viewModelScope.launch {
             runCatching {
-                repository.fetchGroups(nextPage)
+                useCase.fetchGroups(nextPage)
             }.onSuccess { nextGroups ->
                 groups.value?.let { currentGroups ->
                     _groups.postValue(currentGroups + nextGroups)

@@ -29,11 +29,11 @@
     <string name="seminar">セミナー</string>
     <string name="workshop">ワークショップ</string>
     <string name="mokumoku">もくもく会</string>
-    <string name="other">その他</string>
-    <string name="Next">次へ</string>
+    <string name="other">Other</string>
+    <string name="Next">Next</string>
     <string name="done">DONE</string>
-    <string name="cancel">キャンセル</string>
-    <string name="library">図書館</string>
+    <string name="cancel">Cancel</string>
+    <string name="library">Library</string>
     <string name="rental_space">レンタルスペース</string>
     <string name="cafe_restaurant">カフェ・ファミレス</string>
     <string name="study_place">有料自習室</string>
@@ -156,6 +156,12 @@
     <string name="profile_edit_gender_male_item">Male</string>
     <string name="profile_edit_gender_female_item">Female</string>
     <string name="profile_edit_gender_no_answer_item">No Answer</string>
+    <string name="map_place_name">Place Name</string>
+    <string name="map_address">Address</string>
+    <string name="map_category">Category</string>
+    <string name="map_memo">Memo</string>
+
+    <string name="general_confirm">Confirm</string>
 
 
 </resources>
