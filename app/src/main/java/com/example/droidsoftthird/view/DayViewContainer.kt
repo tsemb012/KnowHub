@@ -2,7 +2,6 @@ package com.example.droidsoftthird.view
 
 import android.view.View
 import com.example.droidsoftthird.databinding.CalendarDayBinding
-import com.example.droidsoftthird.databinding.CalendarDayLegendBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleRegisteredBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleRegisteredBindingImpl
 import com.kizitonwose.calendarview.model.CalendarDay
