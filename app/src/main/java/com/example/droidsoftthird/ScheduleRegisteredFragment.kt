@@ -55,43 +55,51 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             setCancelable(false)
         }
     }
-    //TODO ScheduleEventsAdapterをHiltでインジェクトする。
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-
-            lifecycleOwner = viewLifecycleOwner
-
-            dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
-                (view as TextView).apply {
-                    text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
-                    setTextColorRes(R.color.primary_text_grey)
-                }
-            }
-
-            oneCalendar.apply {
-                setup(startMonth, endMonth, daysOfWeek.first())
-                scrollToMonth(currentMonth)
-                dayBinder = DayBinderImpl(viewModel)
-                monthScrollListener = this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
-            }
-
-            weekModeCheckBox.setOnCheckedChangeListener(this@ScheduleRegisteredFragment::checkBox)
-
-            recyclerView.apply {
-                adapter = this@ScheduleRegisteredFragment.adapter
-                layoutManager = LinearLayoutManager(context)
-                val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
-                dividerItemDecoration.setDrawable(getDrawable(context, R.drawable.divider) ?: throw IllegalStateException() )
-                addItemDecoration(dividerItemDecoration)
-            }
-        }
-        viewModel.uiModel.observe(viewLifecycleOwner) {
-            observeSchedulesState(it.schedulesLoadState)
-            //binding.oneCalendar.notifyCalendarChanged()
-        }
+        setupView()
+        viewModel.uiModel.observe(viewLifecycleOwner) { observeSchedulesState(it.schedulesLoadState) }
         viewModel.fetchAllEvents()
+    }
+
+    private fun setupView() {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.weekModeCheckBox.setOnCheckedChangeListener(this@ScheduleRegisteredFragment::checkBox)
+        setupWeekLabel()
+        setupCalendarMatrix()
+        setupEventList()
+    }
+
+    private fun setupWeekLabel() {
+        binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
+            (view as TextView).apply {
+                text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
+                    .toUpperCase(Locale.ENGLISH)
+                setTextColorRes(R.color.primary_text_grey)
+            }
+        }
+    }
+
+    private fun setupCalendarMatrix() {
+        binding.oneCalendar.apply {
+            setup(startMonth, endMonth, daysOfWeek.first())
+            scrollToMonth(currentMonth)
+            dayBinder = DayBinderImpl(viewModel)
+            monthScrollListener = this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
+        }
+    }
+
+    private fun setupEventList() {
+        binding.recyclerView.apply {
+            adapter = this@ScheduleRegisteredFragment.adapter
+            layoutManager = LinearLayoutManager(context)
+            val dividerItemDecoration =
+                DividerItemDecoration(context, LinearLayoutManager(context).orientation)
+            dividerItemDecoration.setDrawable(getDrawable(context, R.drawable.divider)
+                ?: throw IllegalStateException())
+            addItemDecoration(dividerItemDecoration)
+        }
     }
 
     private fun scheduleItemClickListener() {
