@@ -27,6 +27,6 @@ data class ScheduleUiModel (
     }
 }
 
-val LiveData<ScheduleUiModel>.eventDates get() = value?.schedulesLoadState?.getValueOrNull<List<ScheduleEventForHome>>()?.map { scheduleEvent -> scheduleEvent.date } ?: emptyList()
+val LiveData<ScheduleUiModel>.eventDates get() = value?.allEvents?.map { scheduleEvent -> scheduleEvent.date } ?: emptyList()
 val LiveData<ScheduleUiModel>.selectedDate get() = value?.selectedDate ?: throw IllegalStateException()
 
