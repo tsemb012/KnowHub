@@ -2,14 +2,14 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.example.droidsoftthird.usecase.GroupUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class GroupDetailViewModel @AssistedInject constructor(
-    private val repository: BaseRepositoryImpl,
+    private val useCase: GroupUseCase,
     @Assisted private val groupId:String,
     ):ViewModel() {
 
@@ -58,7 +58,7 @@ class GroupDetailViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching { repository.fetchGroupDetail(groupId)
+            runCatching { useCase.fetchGroupDetail(groupId)
             }.onSuccess {
                 _groupDetail.postValue(it)
             }.onFailure {
@@ -70,7 +70,7 @@ class GroupDetailViewModel @AssistedInject constructor(
     fun userJoinGroup() {
         viewModelScope.launch {
             runCatching {
-                repository.userJoinGroup(groupId)
+                useCase.userJoinGroup(groupId)
             }.onSuccess {
                 _navigateToMyPage.value = " "
                 //TODO ユーザー追加のトーストを出す

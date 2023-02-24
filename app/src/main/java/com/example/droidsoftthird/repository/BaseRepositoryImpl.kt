@@ -5,14 +5,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
-import com.example.droidsoftthird.model.fire_model.Group
-import com.example.droidsoftthird.model.fire_model.RawScheduleEvent
-import com.example.droidsoftthird.model.fire_model.UserProfile
-import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
-import com.example.droidsoftthird.model.domain_model.UserDetail
-import com.example.droidsoftthird.model.request.PutUserToGroup
+import com.example.droidsoftthird.model.domain_model.*
+import com.example.droidsoftthird.model.domain_model.fire_model.Group
+import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
+import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroup
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -22,9 +21,12 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -32,11 +34,14 @@ import kotlin.coroutines.suspendCoroutine
 
 class BaseRepositoryImpl @Inject constructor(
         private val mainApi: MainApi,
-        private val dataStore: DataStore<Preferences>
+        private val dataStore: DataStore<Preferences>,
+        private val moshi: Moshi
 ): RailsApiRepository, FirebaseRepository, DataStoreRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
+    private val localDateAdapter = moshi.adapter(LocalDate::class.java)
+    private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
 
     override suspend fun saveTokenId(tokenId: String) {
         dataStore.edit { preferences ->
@@ -56,13 +61,13 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
 
-    suspend fun certifyTokenId(tokenID: String) {
+    override suspend fun certifyAndRegister(tokenID: String) {
         mapOf("Authorization" to "Bearer $tokenID").let {
             mainApi.postTokenId(it, userId)
         }
     }
 
-    override suspend fun signUp(email: String, password: String) : Result<String> =
+    override suspend fun signUpAndFetchToken(email: String, password: String) : Result<String> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -90,7 +95,7 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }//TODO　ネスト深すぎ。。要リファクタリング
 
-    suspend fun singIn(email: String, password: String): Result<String> =
+    override suspend fun singIn(email: String, password: String): Result<String> =
         withContext(Dispatchers.IO) {
             suspendCoroutine { continuation ->
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
@@ -179,6 +184,44 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
+
+    override suspend fun createEvent(event: ScheduleEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
+
+    override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
+        mainApi.getIndividualPlace(
+                query = query,
+                language = LANGUAGE_JP,
+                northLat = viewPort.northEast?.latitude ?: 0.0,
+                eastLng = viewPort.northEast?.longitude ?: 0.0,
+                southLat = viewPort.southWest?.latitude ?: 0.0,
+                westLng = viewPort.southWest?.longitude ?: 0.0
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun searchByText(query: String, centerPoint: LatLng, type: String, radius: Int): List<Place> =
+        mainApi.getPlacesByText(
+                query = query,
+                type = type,
+                language = LANGUAGE_JP,
+                region = REGION_JP,
+                centerLat = centerPoint.latitude,
+                centerLng = centerPoint.longitude,
+                radius = radius.toString(),
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place> =
+        mainApi.getPlacesByPoi(
+                type = type,
+                language = LANGUAGE_JP,
+                centerLat = centerPoint.latitude,
+                centerLng = centerPoint.longitude,
+                radius = radius.toString(),
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
+        mainApi.getPlaceDetail(
+                placeId = placeId,
+                language = LANGUAGE_JP
+        ).body()?.toEntity()
 
     override suspend fun getUserProfile(): Result<UserProfile?> =
         withContext(Dispatchers.IO){
@@ -286,10 +329,10 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-
-
     companion object {
-        private const val  LIMIT = 50L
+        private const val LIMIT = 50L
+        private const val LANGUAGE_JP = "ja"//言語設定する際に、直接Preferenceから取得するようにする。
+        private const val REGION_JP = "jp"//設定する際に、直接Preferenceから取得するようにする。
         const val GROUP_ALL = "group_all"
         const val GROUP_MY_PAGE = "group_my_page"
         const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"

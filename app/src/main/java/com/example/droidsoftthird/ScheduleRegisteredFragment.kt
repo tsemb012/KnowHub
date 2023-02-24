@@ -21,7 +21,7 @@ import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleRegisteredBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
-import com.example.droidsoftthird.model.fire_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner

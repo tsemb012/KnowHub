@@ -2,8 +2,8 @@ package com.example.droidsoftthird
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.droidsoftthird.model.fire_model.LoadState
-import com.example.droidsoftthird.model.fire_model.ScheduleEvent
+import com.example.droidsoftthird.model.domain_model.fire_model.FireScheduleEvent
+import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.utils.combine
 import java.time.LocalDate
 
@@ -11,7 +11,7 @@ open class ScheduleViewModel : ViewModel() {
 
     protected val schedulesState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     private val selectedDate: MutableLiveData<LocalDate> by lazy { MutableLiveData(LocalDate.now()) }
-    protected val selectedEvents: MutableLiveData<List<ScheduleEvent>> by lazy { MutableLiveData(emptyList())}
+    protected val selectedEvents: MutableLiveData<List<FireScheduleEvent>> by lazy { MutableLiveData(emptyList())}
     val uiModel by lazy {
         combine(
             ScheduleUiModel(),

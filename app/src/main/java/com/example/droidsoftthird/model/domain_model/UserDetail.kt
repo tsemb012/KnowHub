@@ -1,6 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.model.request.PostUserDetailJson
+import com.example.droidsoftthird.model.infra_model.json.request.PostUserDetailJson
 
 data class UserDetail (
         val userId: String,

@@ -8,7 +8,7 @@
 
         <variable
             name="message"
-            type="com.example.droidsoftthird.model.fire_model.RecordMessage" />
+            type="com.example.droidsoftthird.model.domain_model.fire_model.RecordMessage" />
 
         <variable
             name="clickListener"
