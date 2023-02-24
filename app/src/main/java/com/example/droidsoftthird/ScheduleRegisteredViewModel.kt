@@ -1,41 +1,35 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.domain_model.fire_model.toEntity
 import com.example.droidsoftthird.model.presentation_model.LoadState
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
-import com.example.droidsoftthird.repository.BaseRepositoryImpl.Companion.SCHEDULE_REGISTERED_ALL
+import com.example.droidsoftthird.usecase.EventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleRegisteredViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ScheduleViewModel(){
+class ScheduleRegisteredViewModel @Inject constructor(
+        private val userCase: EventUseCase,
+): ScheduleViewModel(){
 
 
-    fun fetchAllSchedules() { fetchSchedules(SCHEDULE_REGISTERED_ALL) }
-    private fun fetchSchedules(query: String){
-        val job = viewModelScope.launch {
-                repository.getSchedules(query).apply {
-                    when(this) {
-                        is Result.Success -> {
-                            data.map { it.toEntity() }.let {
-                                schedulesState.value = LoadState.Loaded(it)
-                                selectedEvents.value = it.mapNotNull { scheduleEvent ->
-                                    if (scheduleEvent.date == LocalDate.now()) { scheduleEvent } else null
-                                }
-                            }
-                        }
-                        is Result.Failure -> schedulesState.value = LoadState.Error(exception)
-                    }
+    fun fetchAllEvents(){
+
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
+            kotlin.runCatching { userCase.fetchEvents() }
+                .onSuccess { events ->
+                    eventsState.value = LoadState.Loaded(events)
+                }
+                .onFailure {
+                        e -> eventsState.value = LoadState.Error(e)
                 }
         }
-        schedulesState.value = LoadState.Loading(job)
+        eventsState.value = LoadState.Loading(job)
         job.start()
     }
 
     fun initializeSchedulesState() {
-        schedulesState.value = LoadState.Initialized
+        eventsState.value = LoadState.Initialized
     }
 }

@@ -60,7 +60,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchAllSchedules()
+        viewModel.fetchAllEvents()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,10 +69,9 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
             lifecycleOwner = viewLifecycleOwner
 
-            legendLayout.legendLayout.children.forEachIndexed { index, view -> //親レイアウトからinclude、元layout、そして子ビューを引き出して処理。
+            legendLayout.legendLayout.children.forEachIndexed { index, view ->
                 (view as TextView).apply {
-                    text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-                        .toUpperCase(Locale.ENGLISH)
+                    text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
                     setTextColorRes(R.color.primary_text_grey)
                 }
             }
@@ -108,7 +107,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             is LoadState.Loaded<*> -> { //TODO ここで受け取る型をジェネリクスで特定する。
                 progressDialog.dismiss()
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                viewModel.initializeSchedulesState()
+                //viewModel.initializeSchedulesState()
             }
             is LoadState.Processed -> {
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
