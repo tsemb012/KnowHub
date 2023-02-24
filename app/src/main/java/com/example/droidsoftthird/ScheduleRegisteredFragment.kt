@@ -60,7 +60,6 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchAllEvents()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,7 +68,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
             lifecycleOwner = viewLifecycleOwner
 
-            legendLayout.legendLayout.children.forEachIndexed { index, view ->
+            dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
                 (view as TextView).apply {
                     text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
                     setTextColorRes(R.color.primary_text_grey)
@@ -79,9 +78,8 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             oneCalendar.apply {
                 setup(startMonth, endMonth, daysOfWeek.first())
                 scrollToMonth(currentMonth)
-                dayBinder = DayBinderImpl(viewModel)//リサイクラービューにビューホルダーを入れるようなイメージ？
-                monthScrollListener =
-                    this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
+                dayBinder = DayBinderImpl(viewModel)
+                monthScrollListener = this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
             }
 
             weekModeCheckBox.setOnCheckedChangeListener(this@ScheduleRegisteredFragment::checkBox)
@@ -94,7 +92,11 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
                 addItemDecoration(dividerItemDecoration)
             }
         }
-        viewModel.uiModel.observe(viewLifecycleOwner) { observeSchedulesState(it.schedulesLoadState) }
+        viewModel.uiModel.observe(viewLifecycleOwner) {
+            observeSchedulesState(it.schedulesLoadState)
+            binding.oneCalendar.notifyCalendarChanged()
+        }
+        viewModel.fetchAllEvents()
     }
 
     private fun scheduleItemClickListener() {
