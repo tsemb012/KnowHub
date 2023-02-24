@@ -8,8 +8,8 @@ import java.time.LocalDate
 
 data class ScheduleUiModel (
     val schedulesLoadState: LoadState = LoadState.Initialized,//TODO State情報
-    val selectedDate: LocalDate = LocalDate.now(),
     val allEvents: List<ScheduleEventForHome> = emptyList(), //TODO ここにAllを追加する。
+    val selectedDate: LocalDate = LocalDate.now(),
     val selectedEvents: List<ScheduleEventForHome> = emptyList(),//TODO ここにAllを追加する。
 ) {
     companion object {
@@ -20,8 +20,8 @@ data class ScheduleUiModel (
             selectedEvents: List<ScheduleEventForHome>
         ) = ScheduleUiModel(
                 schedulesLoadState = schedulesLoadState,
+                allEvents = schedulesLoadState.getValueOrNull() ?: current.allEvents,
                 selectedDate = selectedDate,
-                allEvents = schedulesLoadState.getValueOrNull() ?: emptyList(),
                 selectedEvents = selectedEvents
         )
     }
