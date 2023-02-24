@@ -62,7 +62,6 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.weekModeCheckBox.setOnCheckedChangeListener(this@ScheduleRegisteredFragment::checkBox)
         setupWeekLabel()
         setupCalendarMatrix()
         setupEventList()
@@ -143,54 +142,6 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
                     binding.exOneYearText.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
                 }
             }
-        }
-    }
-
-    private fun checkBox (btn: CompoundButton, monthToWeek: Boolean) {
-        val firstDate = binding.calendarMatrix.findFirstVisibleDay()?.date ?: return@checkBox
-        val lastDate = binding.calendarMatrix.findLastVisibleDay()?.date ?: return@checkBox
-        val oneWeekHeight = binding.calendarMatrix.daySize.height
-        val oneMonthHeight = oneWeekHeight * 6
-        val oldHeight = if (monthToWeek) oneMonthHeight else oneWeekHeight
-        val newHeight = if (monthToWeek) oneWeekHeight else oneMonthHeight
-        val animator = ValueAnimator.ofInt(oldHeight, newHeight)
-
-        with(animator) {
-            addUpdateListener { animator ->
-                binding.calendarMatrix.updateLayoutParams {
-                    height = animator.animatedValue as Int
-                }
-            }
-            doOnStart {
-                if (!monthToWeek) {
-                    binding.calendarMatrix.updateMonthConfiguration(
-                        inDateStyle = InDateStyle.ALL_MONTHS,
-                        maxRowCount = 6,
-                        hasBoundaries = true
-                    )
-                }
-            }
-            doOnEnd {
-                val endMonth = YearMonth.now().plusMonths(10)
-                if (monthToWeek) {
-                    binding.calendarMatrix.updateMonthConfiguration(
-                        inDateStyle = InDateStyle.FIRST_MONTH,
-                        maxRowCount = 1,
-                        hasBoundaries = false
-                    )
-                }
-                if (monthToWeek) {
-                    binding.calendarMatrix.scrollToDate(firstDate)
-                } else {
-                    if (firstDate.yearMonth == lastDate.yearMonth) {
-                        binding.calendarMatrix.scrollToMonth(firstDate.yearMonth)
-                    } else {
-                        binding.calendarMatrix.scrollToMonth(minOf(firstDate.yearMonth.next, endMonth))
-                    }
-                }
-            }
-            duration = 250
-            start()
         }
     }
 }
