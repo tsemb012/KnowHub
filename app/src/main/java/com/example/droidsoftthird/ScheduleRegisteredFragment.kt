@@ -42,7 +42,6 @@ import java.util.*
 @AndroidEntryPoint
 class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered) {
 
-   // @Inject lateinit var scheduleRegisteredViewModelAssistedFactory: ScheduleRegisteredViewModel.Factory
     private val viewModel: ScheduleRegisteredViewModel by viewModels()
     private val binding: FragmentScheduleRegisteredBinding by dataBinding()
     private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::scheduleItemClickListener) }
@@ -57,10 +56,6 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
         }
     }
     //TODO ScheduleEventsAdapterをHiltでインジェクトする。
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
