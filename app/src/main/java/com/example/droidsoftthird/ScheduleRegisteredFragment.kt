@@ -46,11 +46,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
     private val viewModel: ScheduleRegisteredViewModel by viewModels()
     private val binding: FragmentScheduleRegisteredBinding by dataBinding()
     private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::scheduleItemClickListener) }
-    private val daysOfWeek:Array<DayOfWeek> by lazy { daysOfWeekFromLocale() }
-    private val currentMonth = YearMonth.now()
-    private val startMonth = currentMonth.minusMonths(10)
-    private val endMonth = currentMonth.plusMonths(10)
-    private val progressDialog by lazy {
+    private val progressDialog by lazy { //TODO Linearに変更する。
         ProgressDialog(requireActivity()).apply {
             setMessage(getString(R.string.on_progress))
             setCancelable(false)
@@ -75,14 +71,18 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
     private fun setupWeekLabel() {
         binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
             val textView = view as TextView
-            textView.text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
+            textView.text = daysOfWeekFromLocale()[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
             textView.setTextColor(ContextCompat.getColor(textView.context, R.color.primary_text_grey))
         }
     }
 
     private fun setupCalendarMatrix() {
+        val currentMonth = YearMonth.now()
+        val startMonth = YearMonth.now().minusMonths(10)
+        val endMonth = YearMonth.now().plusMonths(10)
+
         binding.calendarMatrix.apply {
-            setup(startMonth, endMonth, daysOfWeek.first())
+            setup(startMonth, endMonth, daysOfWeekFromLocale().first())
             scrollToMonth(currentMonth)
             dayBinder = DayViewBinder(viewModel)
             monthScrollListener = this@ScheduleRegisteredFragment::scrollMonth //スクロール時の処理を入れてあげる。
@@ -171,6 +171,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
                 }
             }
             doOnEnd {
+                val endMonth = YearMonth.now().plusMonths(10)
                 if (monthToWeek) {
                     binding.calendarMatrix.updateMonthConfiguration(
                         inDateStyle = InDateStyle.FIRST_MONTH,
@@ -192,52 +193,66 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             start()
         }
     }
+}
 
-    class DayViewBinder(val viewModel: ScheduleViewModel) : DayBinder<DayViewBinder.DayViewHolder> { //TODO　疎結合にする必要がある。リサイクラービューのやり方を真似れば大丈夫。 　
-        private val today = LocalDate.now()
+class DayViewBinder(private val viewModel: ScheduleViewModel) : DayBinder<DayViewBinder.DayViewHolder> {
 
-        override fun create(view: View): DayViewHolder = DayViewHolder.from(view)
-        override fun bind(holder: DayViewHolder, day: CalendarDay) {
+    override fun create(view: View) = DayViewHolder.from(view)
+    override fun bind(holder: DayViewHolder, day: CalendarDay) { holder.bind(day, viewModel.uiModel.eventDates, viewModel.uiModel.selectedDate, LocalDate.now(), viewModel) }
 
-            holder.day = day
-            holder.textView.text = day.date.dayOfMonth.toString()
-            holder.clickListener = { _day -> if (_day.owner == DayOwner.THIS_MONTH) {
-                viewModel.setSelectedDate(_day.date)
-            } }
+    class DayViewHolder private constructor(view: View, dayViewBinding: CalendarDayBinding) : ViewContainer(view) {
 
-            if (day.owner == DayOwner.THIS_MONTH) {
-                holder.dot.isVisible = viewModel.uiModel.eventDates.contains(day.date)
-                when {
-                    viewModel.uiModel.selectedDate == day.date -> { holder.textView.setBackgroundResource(R.drawable.ic_baseline_circle_selected)}
-                    today == day.date -> {
-                        holder.textView.setBackgroundResource(R.drawable.ic_baseline_circle_today)
-                    }
-                    else -> {
-                        holder.textView.setTextColorRes(R.color.primary_text_grey_dark)
-                        holder.textView.background = null
-                    }
+        companion object { fun from(view: View) = DayViewHolder(view, CalendarDayBinding.bind(view)) }
+
+        lateinit var day: CalendarDay
+        lateinit var clickListener: (day: CalendarDay) -> Unit
+        private var textView = dayViewBinding.calendarDayText
+        private var dot = dayViewBinding.calendarDayDot
+
+        init { view.setOnClickListener { clickListener(day) } }
+
+        fun bind(
+            day: CalendarDay,
+            eventDates: List<LocalDate>,
+            selectedDate: LocalDate?,
+            today: LocalDate,
+            viewModel: ScheduleViewModel
+        ) { bindDays(day, viewModel, eventDates, selectedDate, today) }
+
+        private fun bindDays(
+            day: CalendarDay,
+            viewModel: ScheduleViewModel,
+            eventDates: List<LocalDate>,
+            selectedDate: LocalDate?,
+            today: LocalDate,
+        ) {
+            this.day = day
+            textView.text = day.date.dayOfMonth.toString()
+            clickListener = { _day -> if (_day.owner == DayOwner.THIS_MONTH) { viewModel.setSelectedDate(_day.date) } }
+            if (day.owner == DayOwner.THIS_MONTH) bindThisMonthDays(eventDates, day, selectedDate, today) else bindOtherMonthDays()
+        }
+
+        private fun bindThisMonthDays(
+            eventDates: List<LocalDate>,
+            day: CalendarDay,
+            selectedDate: LocalDate?,
+            today: LocalDate,
+        ) {
+            dot.isVisible = eventDates.contains(day.date)
+            when {
+                selectedDate == day.date -> { textView.setBackgroundResource(R.drawable.ic_baseline_circle_selected) }
+                today == day.date -> { textView.setBackgroundResource(R.drawable.ic_baseline_circle_today) }
+                else -> {
+                    textView.setTextColorRes(R.color.primary_text_grey_dark)
+                    textView.background = null
                 }
-            } else {
-                holder.textView.setTextColorRes(R.color.primary_accent_red)
-                holder.dot.isVisible = false
-                holder.textView.background = null
             }
         }
 
-        class DayViewHolder private constructor(view: View, dayViewBinding: CalendarDayBinding) : ViewContainer(view) {
-
-            lateinit var day: CalendarDay
-            lateinit var clickListener: (day : CalendarDay) -> Unit
-            var textView = dayViewBinding.calendarDayText
-            var dot = dayViewBinding.calendarDayDot
-            init { view.setOnClickListener { clickListener(day) } }
-
-            companion object {
-                fun from(view: View): DayViewHolder {
-                    val binding = CalendarDayBinding.bind(view)
-                    return DayViewHolder(view, binding)
-                }
-            }
+        private fun bindOtherMonthDays() {
+            textView.setTextColorRes(R.color.primary_accent_red)
+            dot.isVisible = false
+            textView.background = null
         }
     }
 }
