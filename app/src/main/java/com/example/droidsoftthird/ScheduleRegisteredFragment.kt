@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -73,11 +74,9 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
     private fun setupWeekLabel() {
         binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
-            (view as TextView).apply {
-                text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-                    .toUpperCase(Locale.ENGLISH)
-                setTextColorRes(R.color.primary_text_grey)
-            }
+            val textView = view as TextView
+            textView.text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
+            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.primary_text_grey))
         }
     }
 
@@ -94,11 +93,9 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
         binding.recyclerView.apply {
             adapter = this@ScheduleRegisteredFragment.adapter
             layoutManager = LinearLayoutManager(context)
-            val dividerItemDecoration =
-                DividerItemDecoration(context, LinearLayoutManager(context).orientation)
-            dividerItemDecoration.setDrawable(getDrawable(context, R.drawable.divider)
-                ?: throw IllegalStateException())
-            addItemDecoration(dividerItemDecoration)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+                getDrawable(context, R.drawable.divider)?.let { setDrawable(it) } ?: throw IllegalStateException("Divider drawable not found")
+            })
         }
     }
 
