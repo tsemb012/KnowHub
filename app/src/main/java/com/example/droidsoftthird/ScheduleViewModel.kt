@@ -9,13 +9,13 @@ import java.time.LocalDate
 
 open class ScheduleViewModel : ViewModel() {
 
-    protected val eventsState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
+    protected val sacheduleLoadState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     private val selectedDate: MutableLiveData<LocalDate> by lazy { MutableLiveData(LocalDate.now()) }
     protected val selectedEvents: MutableLiveData<List<ScheduleEventForHome>> by lazy { MutableLiveData(emptyList())}
     val uiModel by lazy {
         combine(
                 ScheduleUiModel(),
-                eventsState,
+                sacheduleLoadState,
                 selectedDate,
                 selectedEvents,
         ) { current, _schedulesState, _selectedDate, _selectedEvents ->
@@ -29,6 +29,6 @@ open class ScheduleViewModel : ViewModel() {
             if (scheduleEventForHome.date == selectedDate) { scheduleEventForHome }
             else null
         }
-        eventsState.value = LoadState.Processed
+        sacheduleLoadState.value = LoadState.Processed
     }
 }

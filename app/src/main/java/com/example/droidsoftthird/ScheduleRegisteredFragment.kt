@@ -94,7 +94,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
         }
         viewModel.uiModel.observe(viewLifecycleOwner) {
             observeSchedulesState(it.schedulesLoadState)
-            binding.oneCalendar.notifyCalendarChanged()
+            //binding.oneCalendar.notifyCalendarChanged()
         }
         viewModel.fetchAllEvents()
     }
@@ -105,11 +105,12 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
 
     private fun observeSchedulesState(schedulesLoadState: LoadState) {
         when (schedulesLoadState) {
-            is LoadState.Loading -> progressDialog//.show()
+            is LoadState.Loading -> progressDialog.show()
             is LoadState.Loaded<*> -> { //TODO ここで受け取る型をジェネリクスで特定する。
                 progressDialog.dismiss()
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                //viewModel.initializeSchedulesState()
+                viewModel.initializeSchedulesState()
+                binding.oneCalendar.notifyCalendarChanged()
             }
             is LoadState.Processed -> {
                 adapter.submitList(viewModel.uiModel.value?.selectedEvents)
@@ -135,8 +136,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
                 binding.exOneYearText.text = firstDate.yearMonth.year.toString()
                 binding.exOneMonthText.text = monthTitleFormatter.format(firstDate)
             } else {
-                binding.exOneMonthText.text =
-                    "${monthTitleFormatter.format(firstDate)} - ${monthTitleFormatter.format(lastDate)}"
+                binding.exOneMonthText.text = "${monthTitleFormatter.format(firstDate)} - ${monthTitleFormatter.format(lastDate)}"
                 if (firstDate.year == lastDate.year) {
                     binding.exOneYearText.text = firstDate.yearMonth.year.toString()
                 } else {
@@ -206,7 +206,7 @@ class ScheduleRegisteredFragment: Fragment(R.layout.fragment_schedule_registered
             } }
 
             if (day.owner == DayOwner.THIS_MONTH) {
-                if (!viewModel.uiModel.eventDates.contains(day.date)) { holder.dot.isVisible = false }
+                holder.dot.isVisible = viewModel.uiModel.eventDates.contains(day.date)
                 when {
                     viewModel.uiModel.selectedDate == day.date -> { holder.textView.setBackgroundResource(R.drawable.ic_baseline_circle_selected)}
                     today == day.date -> {
