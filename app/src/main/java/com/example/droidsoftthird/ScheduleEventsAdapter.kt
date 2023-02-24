@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
+import com.example.droidsoftthird.extentions.gs
 import com.example.droidsoftthird.model.domain_model.ScheduleEventForHome
 
 class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ScheduleEventForHome, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
@@ -26,11 +27,11 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<Schedule
         fun bind(item: ScheduleEventForHome, clickListener: () -> Unit) {
             with(binding){
                 scheduleEventItem.setOnClickListener { clickListener }
-                /*eventDayOfWeek.text = item.date
-                eventDate.text = item.date*/
+                eventDayOfWeek.text = item.date.dayOfWeek.toString().substring(0,3)
+                eventDate.text = item.date.toString()
                 eventTitle.text = item.name
-                /*eventTime.text = binding.root.gs(R.string.event_time,item.startTime.toString(), item.endTime.toString())
-                eventPlace.text = item.place.  TODO Firebaseから受け取るデータの型が決定してから詰めていく。*/
+                eventTime.text = binding.root.gs(R.string.event_time,item.period.first.hour,item.period.second.hour)
+                eventPlace.text = item.placeName
                 executePendingBindings()
             }
         }
