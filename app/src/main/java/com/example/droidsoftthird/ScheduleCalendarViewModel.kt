@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleRegisteredViewModel @Inject constructor(
+class ScheduleCalendarViewModel @Inject constructor(
         private val userCase: EventUseCase,
 ): ScheduleViewModel(){
 

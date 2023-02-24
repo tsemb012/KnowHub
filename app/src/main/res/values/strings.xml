@@ -103,8 +103,8 @@
     <string name="group">グループ</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
-    <string name="schedule_registered">登録済</string>
-    <string name="schedule_proposed">保留中</string>
+    <string name="schedule_calendar">カレンダー</string>
+    <string name="schedule_list">リスト</string>
     <string name="filter">フィルター</string>
     <string name="week_mode">週表示</string>
     <string name="on_progress">しばらくお待ちください</string>
