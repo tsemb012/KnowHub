@@ -15,7 +15,7 @@ data class PostScheduleEventJson(
         val startTime: String,
         @Json(name = "end_time")
         val endTime: String,
-        val place: EditedPlaceJson,
+        val place: EditedPlaceJson?,
         @Json(name = "group_id")
         val groupId: String
 )

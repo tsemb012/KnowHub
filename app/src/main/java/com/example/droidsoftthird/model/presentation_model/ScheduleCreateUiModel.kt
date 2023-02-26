@@ -18,23 +18,24 @@ data class ScheduleCreateUiModel (
 ) {
     val uiDate = selectedItems.selectedDate?.toString()?.format("yyyy/MM/dd") ?: NO_SETTING
     val uiPeriod = selectedItems.selectedPeriod?.let { "${it.first.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}:${it.first.format(DateTimeFormatter.ofPattern("HH:mm:ss"))} - ${it.second.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}:${it.second.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}" } ?: NO_SETTING
-    val uiPlace = selectedItems.selectedPlace?.name ?: NO_SETTING
+    val uiPlace = if (selectedItems.isOnline == true) "オンライン" else selectedItems.selectedPlace?.name ?: NO_SETTING
     val uiGroup = selectedItems.selectedGroup?.groupName ?: NO_SETTING
     val fixedEvent: ScheduleEvent get() = ScheduleEvent(
             name = bindingUiName ?: throw IllegalStateException("name is null"),
             comment = bindingUiComment ?: throw IllegalStateException("comment is null"),
             date = selectedItems.selectedDate ?: throw IllegalStateException("date is null"),
             period = selectedItems.selectedPeriod ?: throw IllegalStateException("period is null"),
-            place = selectedItems.selectedPlace ?: throw IllegalStateException("place is null"),
+            place = if (selectedItems.isOnline == true) null else selectedItems.selectedPlace,
             groupId = selectedItems.selectedGroup?.groupId ?: throw IllegalStateException("group is null"),
     )
-    val isSubmitEnabled = isValid(
+    val isSubmitEnabled get() = isValid(
             bindingUiName,
             bindingUiComment,
             selectedItems.selectedDate,
             selectedItems.selectedPeriod,
             selectedItems.selectedPlace,
             selectedItems.selectedGroup,
+            selectedItems.isOnline == true,
     )
 
     companion object {
@@ -62,13 +63,17 @@ data class ScheduleCreateUiModel (
                 selectedPeriod: Pair<LocalTime, LocalTime>?,
                 selectedPlace: EditedPlace?,
                 selectedGroup: ApiGroup?,
-        ) =
-                userName != null && userName.isNotBlank() &&
-                comment != null && comment.isNotBlank() &&
-                selectedDate != null &&
-                selectedPeriod != null &&
-                selectedPlace != null &&
-                selectedGroup != null
+                isOnline: Boolean,
+        ):Boolean {
+            return (
+                    userName != null && userName.isNotBlank() &&
+                    comment != null && comment.isNotBlank() &&
+                    selectedDate != null &&
+                    selectedPeriod != null &&
+                    selectedGroup != null &&
+                    ((!isOnline && selectedPlace != null) || isOnline)
+                )
+        }
     }
 }
 

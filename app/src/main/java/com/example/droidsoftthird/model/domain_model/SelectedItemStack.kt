@@ -8,4 +8,5 @@ data class SelectedItemStack(
         val selectedPeriod:Pair<LocalTime, LocalTime>? = null,
         val selectedPlace:EditedPlace? = null,
         val selectedGroup:ApiGroup? = null,
+        val isOnline:Boolean? = null,
 )

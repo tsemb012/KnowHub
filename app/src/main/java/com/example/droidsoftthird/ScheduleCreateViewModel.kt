@@ -46,8 +46,8 @@ class ScheduleCreateViewModel @Inject constructor(
                 _selectedItems,
                 bindingEventName,
                 bindingEventComment
-        ) { current, _groupsLoadState, _selectedItems,_bindingEventName, _bindingEventComment  ->
-            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedItems,_bindingEventName, _bindingEventComment)
+        ) { current, _groupsLoadState, _selectedItems, _bindingEventName, _bindingEventComment  ->
+            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedItems, _bindingEventName, _bindingEventComment)
         }
     }
 
@@ -69,13 +69,17 @@ class ScheduleCreateViewModel @Inject constructor(
         _selectedItems.value = _selectedItems.value?.copy(selectedPeriod = period)
     }
 
-    fun postPlace(place: EditedPlace) {
+    fun postPlace(place: EditedPlace?) {
         _selectedItems.value = _selectedItems.value?.copy(selectedPlace = place)
     }
 
     fun postSelectedGroup(which: Int) {
         val selectedGroup = _groupsLoadState.value?.getValueOrNull<List<ApiGroup>>()?.get(which)
         _selectedItems.value = _selectedItems.value?.copy(selectedGroup = selectedGroup)
+    }
+
+    fun postIsOnline(checked: Boolean) {
+        _selectedItems.value = _selectedItems.value?.copy(isOnline = checked)
     }
 
     fun submitEvent() {

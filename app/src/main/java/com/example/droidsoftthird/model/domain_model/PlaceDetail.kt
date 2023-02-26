@@ -41,7 +41,7 @@ data class EditedPlace(
         val url: String?,
         val memo: String?,
 ): Parcelable {
-        fun toJson(): EditedPlaceJson {
+        fun toJson(): EditedPlaceJson? {
                 return EditedPlaceJson(
                         placeId = placeId,
                         name = name,
