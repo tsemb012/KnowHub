@@ -1,12 +1,12 @@
 package com.example.droidsoftthird.api
 
-import com.example.droidsoftthird.model.infra_model.json.PlaceDetailJson
-import com.example.droidsoftthird.model.infra_model.json.PlaceJson
-import com.example.droidsoftthird.model.infra_model.json.GetItemEventJson
+import com.example.droidsoftthird.model.infra_model.json.response.GetPlaceDetailJson
+import com.example.droidsoftthird.model.infra_model.json.response.GetPlaceJson
+import com.example.droidsoftthird.model.infra_model.json.response.GetItemEventJson
 import com.example.droidsoftthird.model.infra_model.json.UserJson
 import com.example.droidsoftthird.model.infra_model.json.request.*
-import com.example.droidsoftthird.model.infra_model.json.response.GetGroup
-import com.example.droidsoftthird.model.infra_model.json.response.GetGroupDetail
+import com.example.droidsoftthird.model.infra_model.json.response.GetGroupJson
+import com.example.droidsoftthird.model.infra_model.json.response.GetGroupDetailJson
 import com.example.droidsoftthird.model.infra_model.json.response.GetUserDetailJson
 import com.example.droidsoftthird.model.infra_model.json.response.MessageResponse
 import retrofit2.Response
@@ -32,28 +32,28 @@ interface MainApi {
     ): MessageResponse
 
 
-    fun postNewUser(@Body request: PostSignUp.Request): Response<UserJson>
+    fun postNewUser(@Body request: PostSignUpJson.Request): Response<UserJson>
 
     @POST("users")
     fun postUser(userId: String, toJson: PostUserDetailJson): MessageResponse
 
 
     @POST("groups")
-    suspend fun createGroup(@Body request: PostGroup): Response<MessageResponse>
+    suspend fun createGroup(@Body request: PostGroupJson): Response<MessageResponse>
 
     @GET("groups/{id}")
-    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupDetail>
+    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupDetailJson>
 
     @GET("groups")
     suspend fun fetchGroups(
             @Query("page") page: Int? = null,
             @Query("user_id") userId: String? = null
-    ): Response<List<GetGroup>>
+    ): Response<List<GetGroupJson>>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
             @Path("id") groupId: String,
-            @Body request: PutUserToGroup
+            @Body request: PutUserToGroupJson
     ): Response<MessageResponse>
 
     @GET("maps/search_individual")
@@ -64,7 +64,7 @@ interface MainApi {
             @Query("east_lng") eastLng: Double,
             @Query("south_lat") southLat: Double,
             @Query("west_lng") westLng: Double,
-    ): Response<List<PlaceJson>>
+    ): Response<List<GetPlaceJson>>
 
     @GET("maps/search_by_text")
     suspend fun getPlacesByText(
@@ -75,7 +75,7 @@ interface MainApi {
             @Query("center_lat") centerLat: Double,
             @Query("center_lng")centerLng: Double,
             @Query("radius") radius: String,
-    ): Response<List<PlaceJson>>
+    ): Response<List<GetPlaceJson>>
 
     @GET("maps/search_nearby")
     suspend fun getPlacesByPoi(
@@ -84,13 +84,13 @@ interface MainApi {
             @Query("center_lat") centerLat: Double,
             @Query("center_lng")centerLng: Double,
             @Query("radius") radius: String,
-    ): Response<List<PlaceJson>>
+    ): Response<List<GetPlaceJson>>
 
     @GET("maps/place_detail")
     suspend fun getPlaceDetail(
             @Query("place_id") placeId: String,
             @Query("language") language: String,
-    ): Response<PlaceDetailJson>
+    ): Response<GetPlaceDetailJson>
 
     @GET("events")
     suspend fun getEvents(

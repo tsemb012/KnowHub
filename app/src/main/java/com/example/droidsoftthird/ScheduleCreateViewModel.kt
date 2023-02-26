@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedPlace
-import com.example.droidsoftthird.model.domain_model.SelectedItemStack
+import com.example.droidsoftthird.model.presentation_model.SelectedItemStack
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
 import com.example.droidsoftthird.usecase.EventUseCase
