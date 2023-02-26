@@ -30,6 +30,7 @@ data class ScheduleEvent(
 }
 
 data class ScheduleEventForHome(
+        val eventId: String,
         val hostId: String? = null,
         val name: String,
         val comment: String,

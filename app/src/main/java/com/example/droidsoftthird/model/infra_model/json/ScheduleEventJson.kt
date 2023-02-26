@@ -7,6 +7,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class ScheduleEventJson (
+        @Json(name = "id")
+        val eventId : String,
         @Json(name = "host_id")
         val hostId: String,
         val name: String,
@@ -28,6 +30,7 @@ data class ScheduleEventJson (
             localTimeAdapter: JsonAdapter<LocalTime>
     ): ScheduleEventForHome {
         return ScheduleEventForHome(
+                eventId = eventId,
                 hostId = hostId,
                 name = name,
                 comment = comment,
