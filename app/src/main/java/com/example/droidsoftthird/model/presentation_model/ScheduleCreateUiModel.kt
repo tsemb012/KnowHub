@@ -3,7 +3,6 @@ package com.example.droidsoftthird.model.presentation_model
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.CreateEvent
-import com.example.droidsoftthird.model.domain_model.SelectedItemStack
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -40,11 +39,11 @@ data class ScheduleCreateUiModel (
 
     companion object {
         operator fun invoke(
-                current: ScheduleCreateUiModel,
-                groupsLoadState: LoadState,
-                _selectedItems: SelectedItemStack,
-                _bindingEventName: String,
-                _bindingEventComment: String,
+            current: ScheduleCreateUiModel,
+            groupsLoadState: LoadState,
+            _selectedItems: SelectedItemStack,
+            _bindingEventName: String,
+            _bindingEventComment: String,
         ) = ScheduleCreateUiModel(
                     isLoading = groupsLoadState is LoadState.Loading,
                     error = groupsLoadState.getErrorOrNull(),

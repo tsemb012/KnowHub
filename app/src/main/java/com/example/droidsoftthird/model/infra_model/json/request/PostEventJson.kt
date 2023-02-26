@@ -15,12 +15,12 @@ data class PostEventJson(
         val startTime: String,
         @Json(name = "end_time")
         val endTime: String,
-        val place: EditedPlaceJson?,
+        val place: PostPlaceJson?,
         @Json(name = "group_id")
         val groupId: String
 )
 
-data class EditedPlaceJson(
+data class PostPlaceJson(
         val name: String,
         val address: String,
         val latitude: Double,

@@ -2,7 +2,7 @@ package com.example.droidsoftthird.model.infra_model.json.request
 
 import com.squareup.moshi.Json
 
-data class PostGroup(
+data class PostGroupJson(
         @Json(name = "host_id")
         val hostId: String,
         val name: String,

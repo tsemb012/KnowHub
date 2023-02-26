@@ -1,7 +1,7 @@
 package com.example.droidsoftthird.model.domain_model
 
 import android.os.Parcelable
-import com.example.droidsoftthird.model.infra_model.json.request.EditedPlaceJson
+import com.example.droidsoftthird.model.infra_model.json.request.PostPlaceJson
 import com.google.android.libraries.places.api.model.PlusCode
 import kotlinx.android.parcel.Parcelize
 
@@ -41,8 +41,8 @@ data class EditedPlace(
         val url: String?,
         val memo: String?,
 ): Parcelable {
-        fun toJson(): EditedPlaceJson? {
-                return EditedPlaceJson(
+        fun toJson(): PostPlaceJson? {
+                return PostPlaceJson(
                         placeId = placeId,
                         name = name,
                         placeType = placeType,

@@ -9,7 +9,7 @@ import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.domain_model.fire_model.Group
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
-import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroup
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -173,7 +173,7 @@ class BaseRepositoryImpl @Inject constructor(
         mainApi.fetchGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun userJoinGroup(groupId: String): String? {
-        val response = mainApi.putUserToGroup(groupId, PutUserToGroup(userId))
+        val response = mainApi.putUserToGroup(groupId, PutUserToGroupJson(userId))
         return if (response.isSuccessful) {
             return response.body()?.message
         } else {

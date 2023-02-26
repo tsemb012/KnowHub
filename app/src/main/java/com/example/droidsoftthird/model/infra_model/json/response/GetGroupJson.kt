@@ -3,7 +3,7 @@ package com.example.droidsoftthird.model.infra_model.json.response
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.squareup.moshi.Json
 
-data class GetGroup(//TODO 複雑なものをGroupDetailに責務を渡して、ただのGroupはシンプルにするべき。
+data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡して、ただのGroupはシンプルにするべき。
         val id: String,
         @Json(name = "host_id")
         val hostId: String,
