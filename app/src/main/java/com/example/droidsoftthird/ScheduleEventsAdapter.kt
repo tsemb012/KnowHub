@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
 import com.example.droidsoftthird.extentions.gs
-import com.example.droidsoftthird.model.domain_model.ScheduleEventForHome
+import com.example.droidsoftthird.model.domain_model.ItemEvent
 
-class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ScheduleEventForHome, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
+class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ItemEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
     //TODO Hiltで関数をインジェクトする。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.from(parent)
 
@@ -24,7 +24,7 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<Schedule
                 return ViewHolder(binding)
             }
         }
-        fun bind(item: ScheduleEventForHome, clickListener: () -> Unit) {
+        fun bind(item: ItemEvent, clickListener: () -> Unit) {
             with(binding){
                 scheduleEventItem.setOnClickListener { clickListener }
                 eventDayOfWeek.text = item.date.dayOfWeek.toString().substring(0,3)
@@ -38,12 +38,12 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<Schedule
     }
 }
 
-class ScheduleEventDiffCallback : DiffUtil.ItemCallback<ScheduleEventForHome>() {
+class ScheduleEventDiffCallback : DiffUtil.ItemCallback<ItemEvent>() {
 
-    override fun areItemsTheSame(oldItem: ScheduleEventForHome, newItem: ScheduleEventForHome): Boolean {
+    override fun areItemsTheSame(oldItem: ItemEvent, newItem: ItemEvent): Boolean {
         return oldItem.toString() == newItem.toString()
     }
-    override fun areContentsTheSame(oldItem: ScheduleEventForHome, newItem: ScheduleEventForHome): Boolean {
+    override fun areContentsTheSame(oldItem: ItemEvent, newItem: ItemEvent): Boolean {
         return oldItem == newItem
     }
 }

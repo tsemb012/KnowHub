@@ -23,6 +23,6 @@ interface RailsApiRepository {
     suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place>
     suspend fun fetchPlaceDetail(placeId: String): PlaceDetail?
 
-    suspend fun createEvent(event: ScheduleEvent): String?
-    suspend fun fetchEvents(): List<ScheduleEventForHome>
+    suspend fun createEvent(event: CreateEvent): String?
+    suspend fun fetchEvents(): List<ItemEvent>
 }

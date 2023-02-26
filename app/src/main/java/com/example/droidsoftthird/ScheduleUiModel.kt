@@ -1,23 +1,23 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.LiveData
-import com.example.droidsoftthird.model.domain_model.ScheduleEventForHome
+import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import java.lang.IllegalStateException
 import java.time.LocalDate
 
 data class ScheduleUiModel (
     val schedulesLoadState: LoadState = LoadState.Initialized,//TODO State情報
-    val allEvents: List<ScheduleEventForHome> = emptyList(), //TODO ここにAllを追加する。
+    val allEvents: List<ItemEvent> = emptyList(), //TODO ここにAllを追加する。
     val selectedDate: LocalDate = LocalDate.now(),
-    val selectedEvents: List<ScheduleEventForHome> = emptyList(),//TODO ここにAllを追加する。
+    val selectedEvents: List<ItemEvent> = emptyList(),//TODO ここにAllを追加する。
 ) {
     companion object {
         operator fun invoke(
             current: ScheduleUiModel,
             schedulesLoadState: LoadState,
             selectedDate:LocalDate,
-            selectedEvents: List<ScheduleEventForHome>
+            selectedEvents: List<ItemEvent>
         ) = ScheduleUiModel(
                 schedulesLoadState = schedulesLoadState,
                 allEvents = schedulesLoadState.getValueOrNull() ?: current.allEvents,

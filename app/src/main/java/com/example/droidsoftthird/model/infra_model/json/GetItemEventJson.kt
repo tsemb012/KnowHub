@@ -1,12 +1,12 @@
 package com.example.droidsoftthird.model.infra_model.json
 
-import com.example.droidsoftthird.model.domain_model.ScheduleEventForHome
+import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class ScheduleEventJson (
+data class GetItemEventJson (
         @Json(name = "id")
         val eventId : String,
         @Json(name = "host_id")
@@ -28,8 +28,8 @@ data class ScheduleEventJson (
     fun toEntity(
             localDateAdapter: JsonAdapter<LocalDate>,
             localTimeAdapter: JsonAdapter<LocalTime>
-    ): ScheduleEventForHome {
-        return ScheduleEventForHome(
+    ): ItemEvent {
+        return ItemEvent(
                 eventId = eventId,
                 hostId = hostId,
                 name = name,

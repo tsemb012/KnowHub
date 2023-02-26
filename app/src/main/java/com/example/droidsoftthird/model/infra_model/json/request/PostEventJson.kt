@@ -5,7 +5,7 @@ import com.example.droidsoftthird.model.domain_model.Location
 import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 
-data class PostScheduleEventJson(
+data class PostEventJson(
         @Json(name = "host_id")
         val hostId: String,
         val name: String,

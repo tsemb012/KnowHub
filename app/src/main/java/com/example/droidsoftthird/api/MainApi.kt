@@ -2,7 +2,7 @@ package com.example.droidsoftthird.api
 
 import com.example.droidsoftthird.model.infra_model.json.PlaceDetailJson
 import com.example.droidsoftthird.model.infra_model.json.PlaceJson
-import com.example.droidsoftthird.model.infra_model.json.ScheduleEventJson
+import com.example.droidsoftthird.model.infra_model.json.GetItemEventJson
 import com.example.droidsoftthird.model.infra_model.json.UserJson
 import com.example.droidsoftthird.model.infra_model.json.request.*
 import com.example.droidsoftthird.model.infra_model.json.response.GetGroup
@@ -95,10 +95,10 @@ interface MainApi {
     @GET("events")
     suspend fun getEvents(
             @Query("user_id") userId: String
-    ) : List<ScheduleEventJson>
+    ) : List<GetItemEventJson>
 
     @POST("events")
     suspend fun postEvent(
-            @Body request: PostScheduleEventJson
+            @Body request: PostEventJson
     ): MessageResponse
 }
