@@ -9,11 +9,11 @@ import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
 import com.example.droidsoftthird.extentions.gs
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 
-class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ItemEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
+class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAdapter<ItemEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
     //TODO Hiltで関数をインジェクトする。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) { holder.bind(getItem(position), clickListener) }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) { holder.bind(getItem(position), onSelectEvent) }
 
     class ViewHolder private constructor(val binding: ListItemScheduleEventBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -24,9 +24,9 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<ItemEven
                 return ViewHolder(binding)
             }
         }
-        fun bind(item: ItemEvent, clickListener: () -> Unit) {
+        fun bind(item: ItemEvent, onSelectEvent: (String) -> Unit) {
             with(binding){
-                scheduleEventItem.setOnClickListener { clickListener }
+                scheduleEventItem.setOnClickListener { onSelectEvent(item.eventId) }
                 eventDayOfWeek.text = item.date.dayOfWeek.toString().substring(0,3)
                 eventDate.text = item.date.toString()
                 eventTitle.text = item.name

@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_ScheduleHomeFragment_to_scheduleCreateFragment"
             app:destination="@id/schedule_graph" />
+        <action
+            android:id="@+id/action_ScheduleHomeFragment_to_scheduleDetailFragment"
+            app:destination="@id/scheduleDetailFragment" />
     </fragment>
 
     <fragment
@@ -163,4 +166,12 @@
                 app:destination="@id/scheduleCreateFragment" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/scheduleDetailFragment"
+        android:name="com.example.droidsoftthird.ScheduleDetailFragment"
+        android:label="ScheduleDetailFragment" >
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -4,20 +4,20 @@ import com.example.droidsoftthird.model.domain_model.*
 import com.squareup.moshi.Json
 
 data class GetPlaceDetailJson(
-    @Json(name = "place_id")
+        @Json(name = "place_id")
         val placeId: String,
-    val name: String,
-    val types: List<String>,
-    val geometry: GetPlaceJson.GeometryJson,
-    @Json(name = "formatted_address")
+        val name: String,
+        val types: List<String>,
+        val geometry: GetPlaceJson.GeometryJson,
+        @Json(name = "formatted_address")
         val formattedAddress: String,
-    @Json(name = "plus_code")
+        @Json(name = "plus_code")
         val plusCode: GetPlaceJson.PlusCodeJson,
-    val photos: List<LocationPhotoJson>?,
-    @Json(name = "icon_background_color")
+        val photos: List<LocationPhotoJson>?,
+        @Json(name = "icon_background_color")
         val color: String?,
-    val url: String?,
-    @Json(name = "address_components")
+        val url: String?,
+        @Json(name = "address_components")
         val addressComponents: List<AddressComponentJson>,
 ) {
     data class AddressComponentJson(

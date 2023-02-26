@@ -11,6 +11,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droidsoftthird.databinding.CalendarDayBinding
@@ -37,7 +38,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
     private val viewModel: ScheduleCalendarViewModel by viewModels()
     private val binding: FragmentScheduleCalendarBinding by dataBinding()
-    private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::scheduleItemClickListener) }
+    private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::selectEvent) }
     private val progressDialog by lazy { //TODO Linearに変更する。
         ProgressDialog(requireActivity()).apply {
             setMessage(getString(R.string.on_progress))
@@ -90,8 +91,8 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         }
     }
 
-    private fun scheduleItemClickListener() {
-        TODO("詳細画面への画面遷移ロジックを入れる。")
+    private fun selectEvent(eventId: String) {
+        findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleDetailFragment(eventId))
     }
 
     private fun observeSchedulesState(schedulesLoadState: LoadState) {
