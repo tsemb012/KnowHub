@@ -2,7 +2,7 @@ package com.example.droidsoftthird.model.presentation_model
 
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedPlace
-import com.example.droidsoftthird.model.domain_model.ScheduleEvent
+import com.example.droidsoftthird.model.domain_model.CreateEvent
 import com.example.droidsoftthird.model.domain_model.SelectedItemStack
 import java.time.LocalDate
 import java.time.LocalTime
@@ -20,7 +20,7 @@ data class ScheduleCreateUiModel (
     val uiPeriod = selectedItems.selectedPeriod?.let { "${it.first.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}:${it.first.format(DateTimeFormatter.ofPattern("HH:mm:ss"))} - ${it.second.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}:${it.second.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}" } ?: NO_SETTING
     val uiPlace = if (selectedItems.isOnline == true) "オンライン" else selectedItems.selectedPlace?.name ?: NO_SETTING
     val uiGroup = selectedItems.selectedGroup?.groupName ?: NO_SETTING
-    val fixedEvent: ScheduleEvent get() = ScheduleEvent(
+    val fixedEvent: CreateEvent get() = CreateEvent(
             name = bindingUiName ?: throw IllegalStateException("name is null"),
             comment = bindingUiComment ?: throw IllegalStateException("comment is null"),
             date = selectedItems.selectedDate ?: throw IllegalStateException("date is null"),
