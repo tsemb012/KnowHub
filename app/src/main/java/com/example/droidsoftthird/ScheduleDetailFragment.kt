@@ -4,7 +4,11 @@ import androidx.fragment.app.Fragment
 
 class ScheduleDetailFragment: Fragment() {
 
-    //TODO データクラスを修正 + 統合できるように　+ Idを取得できるように
+
+
+
+
+    //DONE データクラスを修正 + 統合できるように　+ Idを取得できるように
     //TODO 画面遷移 scheduleIdを取得できるように
     //TODO ViewModelの作成
     //TODO ユースケケースにメソッドを追加
