@@ -11,7 +11,7 @@ data class ScheduleEvent(
         val comment: String,
         val date: LocalDate,
         val period: Pair<LocalTime, LocalTime>,
-        val place: EditedPlace,
+        val place: EditedPlace? = null,
         val groupId: String,
 ) {
         fun toJson(localDateAdapter: JsonAdapter<LocalDate>, localTimeAdapter: JsonAdapter<LocalTime>): PostScheduleEventJson {
@@ -23,7 +23,7 @@ data class ScheduleEvent(
                         date = localDateAdapter.toJson(date),
                         startTime = localTimeAdapter.toJson(start),
                         endTime = localTimeAdapter.toJson(end),
-                        place = place.toJson(),
+                        place = place?.toJson(),
                         groupId = groupId
                 )
         }

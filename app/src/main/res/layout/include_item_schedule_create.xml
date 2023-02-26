@@ -26,7 +26,7 @@
     android:clickable="true">
 
     <TextView
-        android:id="@+id/item_schedule_create_title"
+        android:id="@+id/is_online_title"
         android:text="@{title}"
         android:drawableStart="@{drawable}"
         android:drawablePadding="3dp"
