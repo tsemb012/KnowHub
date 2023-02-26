@@ -21,7 +21,7 @@ data class ScheduleEventJson (
         @Json(name = "group_name")
         val groupName:String,
         @Json(name = "place_name")
-        val placeName: String,
+        val placeName: String?,
 ) {
     fun toEntity(
             localDateAdapter: JsonAdapter<LocalDate>,
@@ -38,7 +38,7 @@ data class ScheduleEventJson (
                 ),
                 groupId = groupId,
                 groupName = groupName,
-                placeName = placeName,
+                placeName = if(placeName.isNullOrBlank()) "オンライン" else placeName
         )
     }
 }

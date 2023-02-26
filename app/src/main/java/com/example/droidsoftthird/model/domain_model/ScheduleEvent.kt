@@ -37,5 +37,5 @@ data class ScheduleEventForHome(
         val period: Pair<LocalTime, LocalTime>,
         val groupId: String,
         val groupName: String,
-        val placeName: String,
+        val placeName: String?,
 )

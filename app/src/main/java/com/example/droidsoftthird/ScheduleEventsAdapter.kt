@@ -31,7 +31,7 @@ class ScheduleEventsAdapter(val clickListener: () -> Unit): ListAdapter<Schedule
                 eventDate.text = item.date.toString()
                 eventTitle.text = item.name
                 eventTime.text = binding.root.gs(R.string.event_time,item.period.first.hour,item.period.second.hour)
-                eventPlace.text = item.placeName
+                eventPlace.text = item?.placeName
                 executePendingBindings()
             }
         }
