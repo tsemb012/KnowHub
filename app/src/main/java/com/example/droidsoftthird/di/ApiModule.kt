@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.repository.AuthenticationRepositoryImpl
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

@@ -52,12 +52,21 @@ fun EventDetailScreen(
                 event.value?.let { eventDetail ->
                     MapWithMarker(eventViewModel, Modifier.height(200.dp).fillMaxWidth())
 
-                    Button(
-                        onClick = { eventViewModel.joinEvent() },
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    ) {
-                        Text("イベントに参加")
-                    }
+                    if (eventDetail.registeredUserIds.contains(eventViewModel.userId)) {
+                            Button(
+                                onClick = { eventViewModel.leaveEvent() },
+                                modifier = Modifier.padding(vertical = 8.dp)
+                            ) {
+                                Text("イベントから抜ける")
+                            }
+                        } else {
+                            Button(
+                                onClick = { eventViewModel.joinEvent() },
+                                modifier = Modifier.padding(vertical = 8.dp)
+                            ) {
+                                Text("イベントに参加")
+                            }
+                        }
 
                     ListItem(title = "イベント名", content = eventDetail.name)
                     ListItem(title = "コメント", content = eventDetail.comment)

@@ -106,4 +106,10 @@ interface MainApi {
             @Path("id") eventId: String,
             @Body request: PutUserToEventJson
     ): MessageResponse
+
+    @PATCH("events/{id}/unregister")
+    suspend fun putEvent(
+        @Path("id") eventId: String,
+        @Body request: RemoveUserFromEventJson
+    ): MessageResponse
 }
