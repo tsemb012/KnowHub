@@ -11,6 +11,7 @@ import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
+import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -43,6 +44,8 @@ class BaseRepositoryImpl @Inject constructor(
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
     private val localDateAdapter = moshi.adapter(LocalDate::class.java)
     private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
+
+    override suspend fun getUserId() = userId
 
     override suspend fun saveTokenId(tokenId: String) {
         dataStore.edit { preferences ->
@@ -190,6 +193,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
     override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
+    override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(

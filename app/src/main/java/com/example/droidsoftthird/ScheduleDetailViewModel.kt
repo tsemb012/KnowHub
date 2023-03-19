@@ -6,23 +6,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.usecase.EventUseCase
+import com.example.droidsoftthird.usecase.SettingUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ScheduleDetailViewModel @AssistedInject constructor(
-    private val useCase: EventUseCase,
+    private val eventUseCase: EventUseCase,
+    private val settingUseCase: SettingUseCase,
     @Assisted private val eventId:String,
 ): ViewModel() {
 
     val eventDetail = mutableStateOf<EventDetail?>(null)
     val message = mutableStateOf<String?>(null)
+    val userId by lazy { runBlocking { settingUseCase.getUserId() } }
 
-
-    fun initialize() {
+    fun fetchEventDetail() {
         viewModelScope.launch {
-            kotlin.runCatching { useCase.fetchEventDetail(eventId) }
+            kotlin.runCatching { eventUseCase.fetchEventDetail(eventId) }
                 .onSuccess {
                     eventDetail.value = it
                     Log.d("tsemb012", "$eventDetail")
@@ -36,16 +39,33 @@ class ScheduleDetailViewModel @AssistedInject constructor(
 
     fun joinEvent() {
         val job = viewModelScope.launch {
-            kotlin.runCatching { useCase.joinEvent(eventId) }
+            kotlin.runCatching { eventUseCase.joinEvent(eventId) }
                 .onSuccess {
                     message.value = "参加しました"
                     Log.d("tsemb012", "参加しました")
+                    fetchEventDetail()
                 }
                 .onFailure {
                     message.value = it.message
                     Log.d("tsemb012", "${it.message}")
                 }
         }
+        job.start()
+    }
+
+    fun leaveEvent() {
+        val job = viewModelScope.launch {
+                kotlin.runCatching { eventUseCase.leaveEvent(eventId) }
+                    .onSuccess {
+                        message.value = "参加を取り消しました"
+                        Log.d("tsemb012", "参加を取り消しました")
+                        fetchEventDetail()
+                    }
+                    .onFailure {
+                        message.value = it.message
+                        Log.d("tsemb012", "${it.message}")
+                    }
+            }
         job.start()
     }
 
