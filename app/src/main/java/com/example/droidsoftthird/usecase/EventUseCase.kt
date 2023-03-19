@@ -7,4 +7,5 @@ import javax.inject.Inject
 class EventUseCase @Inject constructor(private val repository: BaseRepositoryImpl) {
     suspend fun submitEvent(event: CreateEvent) = repository.createEvent(event)
     suspend fun fetchEvents() = repository.fetchEvents()
+    suspend fun fetchEventDetail(eventId: String) = repository.fetchEventDetail(eventId)
 }

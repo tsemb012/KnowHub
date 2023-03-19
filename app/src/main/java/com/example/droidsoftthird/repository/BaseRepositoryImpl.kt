@@ -39,7 +39,7 @@ class BaseRepositoryImpl @Inject constructor(
 ): RailsApiRepository, FirebaseRepository, DataStoreRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
+    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
     private val localDateAdapter = moshi.adapter(LocalDate::class.java)
     private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
 
@@ -187,6 +187,7 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
+    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity()
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(

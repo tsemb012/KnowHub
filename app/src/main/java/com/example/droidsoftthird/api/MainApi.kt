@@ -1,14 +1,8 @@
 package com.example.droidsoftthird.api
 
-import com.example.droidsoftthird.model.infra_model.json.response.GetPlaceDetailJson
-import com.example.droidsoftthird.model.infra_model.json.response.GetPlaceJson
-import com.example.droidsoftthird.model.infra_model.json.response.GetItemEventJson
 import com.example.droidsoftthird.model.infra_model.json.UserJson
 import com.example.droidsoftthird.model.infra_model.json.request.*
-import com.example.droidsoftthird.model.infra_model.json.response.GetGroupJson
-import com.example.droidsoftthird.model.infra_model.json.response.GetGroupDetailJson
-import com.example.droidsoftthird.model.infra_model.json.response.GetUserDetailJson
-import com.example.droidsoftthird.model.infra_model.json.response.MessageResponse
+import com.example.droidsoftthird.model.infra_model.json.response.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -96,6 +90,11 @@ interface MainApi {
     suspend fun getEvents(
             @Query("user_id") userId: String
     ) : List<GetItemEventJson>
+
+    @GET("events/{id}")
+    suspend fun getEventDetail(
+            @Path("id") eventId: String
+    ) : GetEventDetailJson
 
     @POST("events")
     suspend fun postEvent(
