@@ -17,7 +17,7 @@ class ScheduleDetailViewModel @AssistedInject constructor(
 ): ViewModel() {
 
     val eventDetail = mutableStateOf<EventDetail?>(null)
-    private val message = mutableStateOf<String?>(null)
+    val message = mutableStateOf<String?>(null)
 
 
     fun initialize() {
@@ -34,6 +34,20 @@ class ScheduleDetailViewModel @AssistedInject constructor(
         }
     }
 
+    fun joinEvent() {
+        val job = viewModelScope.launch {
+            kotlin.runCatching { useCase.joinEvent(eventId) }
+                .onSuccess {
+                    message.value = "参加しました"
+                    Log.d("tsemb012", "参加しました")
+                }
+                .onFailure {
+                    message.value = it.message
+                    Log.d("tsemb012", "${it.message}")
+                }
+        }
+        job.start()
+    }
 
 
     @AssistedFactory

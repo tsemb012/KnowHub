@@ -9,6 +9,7 @@ import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.domain_model.fire_model.Group
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.android.gms.maps.model.LatLng
@@ -188,6 +189,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
     override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
+    override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
