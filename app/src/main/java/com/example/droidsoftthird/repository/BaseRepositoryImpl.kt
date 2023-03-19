@@ -187,7 +187,7 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
-    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity()
+    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
