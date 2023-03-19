@@ -16,7 +16,7 @@ class ScheduleDetailViewModel @AssistedInject constructor(
     @Assisted private val eventId:String,
 ): ViewModel() {
 
-    private val eventDetail = mutableStateOf<EventDetail?>(null)
+    val eventDetail = mutableStateOf<EventDetail?>(null)
     private val message = mutableStateOf<String?>(null)
 
 

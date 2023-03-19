@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.droidsoftthird.composable.event.EventDetailScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -32,20 +32,12 @@ class ScheduleDetailFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                ScheduleDetailScreen(viewModel)
+                EventDetailScreen(viewModel) { findNavController().navigateUp() }
             }
         }
-    }
-
-    @Composable
-    private fun ScheduleDetailScreen(viewModel: ScheduleDetailViewModel) {
-
-
-
-
     }
 
 

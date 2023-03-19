@@ -5,6 +5,9 @@ import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.Location
 import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonAdapter
+import java.time.LocalDate
+import java.time.LocalTime
 
 data class GetEventDetailJson (
         @Json(name = "id")
@@ -26,14 +29,17 @@ data class GetEventDetailJson (
         @Json(name = "registered_user_ids")
         val registeredUserIds: List<String>
 ) {
-        fun toEntity(): EventDetail = EventDetail(
+        fun toEntity(
+            localDateAdapter: JsonAdapter<LocalDate>,
+            localTimeAdapter: JsonAdapter<LocalTime>
+        ): EventDetail = EventDetail(
                 eventId = eventId,
                 hostId = hostId,
                 name = name,
                 comment = comment,
-                date = date,
-                startTime = startTime,
-                endTime = endTime,
+                date = localDateAdapter.fromJson(date) ?: throw IllegalStateException("date is null"),
+                startTime = localTimeAdapter.fromJson(startTime) ?: throw IllegalStateException("startTime is null"),
+                endTime = localTimeAdapter.fromJson(endTime) ?: throw IllegalStateException("endTime is null"),
                 place = place?.toEntity(),
                 groupId = groupId,
                 groupName = groupName,
