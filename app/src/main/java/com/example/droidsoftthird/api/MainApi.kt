@@ -100,4 +100,10 @@ interface MainApi {
     suspend fun postEvent(
             @Body request: PostEventJson
     ): MessageResponse
+
+    @PATCH("events/{id}/register")
+    suspend fun putEvent(
+            @Path("id") eventId: String,
+            @Body request: PutUserToEventJson
+    ): MessageResponse
 }

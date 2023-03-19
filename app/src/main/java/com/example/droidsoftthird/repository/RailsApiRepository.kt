@@ -26,4 +26,5 @@ interface RailsApiRepository {
     suspend fun createEvent(event: CreateEvent): String?
     suspend fun fetchEvents(): List<ItemEvent>
     suspend fun fetchEventDetail(eventId: String):EventDetail
+    suspend fun registerEvent(eventId: String): String?
 }

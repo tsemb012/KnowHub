@@ -23,7 +23,10 @@ import com.example.droidsoftthird.ScheduleDetailViewModel
 import com.example.droidsoftthird.composable.map.MapWithMarker
 
 @Composable
-fun EventDetailScreen(eventViewModel: ScheduleDetailViewModel, onBack: () -> Unit) {
+fun EventDetailScreen(
+        eventViewModel: ScheduleDetailViewModel,
+        onBack: () -> Unit
+) {
     val event = eventViewModel.eventDetail
 
     Scaffold(
@@ -50,7 +53,7 @@ fun EventDetailScreen(eventViewModel: ScheduleDetailViewModel, onBack: () -> Uni
                     MapWithMarker(eventViewModel, Modifier.height(200.dp).fillMaxWidth())
 
                     Button(
-                        onClick = { /*TODO: Implement join event action*/ },
+                        onClick = { eventViewModel.joinEvent() },
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
                         Text("イベントに参加")

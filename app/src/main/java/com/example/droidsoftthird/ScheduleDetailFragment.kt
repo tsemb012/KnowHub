@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -33,6 +34,12 @@ class ScheduleDetailFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.message.let { message ->
+            if (message.value != null) {
+                Toast.makeText(requireContext(), message.value, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         return ComposeView(requireContext()).apply {
             setContent {
                 EventDetailScreen(viewModel) { findNavController().navigateUp() }
