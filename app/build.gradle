@@ -91,6 +91,7 @@ dependencies {
     def mockk_version = '1.13.2'
     testImplementation "io.mockk:mockk:$mockk_version"
 
+    implementation('org.jitsi.react:jitsi-meet-sdk:4.1.0') { transitive = true }
 
     //-----androidx
 
