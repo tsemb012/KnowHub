@@ -42,9 +42,17 @@ class ScheduleDetailFragment: Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                EventDetailScreen(viewModel) { findNavController().navigateUp() }
+                EventDetailScreen(
+                        eventViewModel = viewModel,
+                        startVideoChat = { startVideoChat()},
+                        onBack = { findNavController().navigateUp() }
+                )
             }
         }
+    }
+
+    private fun startVideoChat() {
+        findNavController().navigate(ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToVideoChatFragment(eventId))
     }
 
 

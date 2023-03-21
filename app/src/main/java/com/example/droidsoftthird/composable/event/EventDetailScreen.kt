@@ -25,6 +25,7 @@ import com.example.droidsoftthird.composable.map.MapWithMarker
 @Composable
 fun EventDetailScreen(
         eventViewModel: ScheduleDetailViewModel,
+        startVideoChat: () -> Unit,
         onBack: () -> Unit
 ) {
     val event = eventViewModel.eventDetail
@@ -50,7 +51,13 @@ fun EventDetailScreen(
                     .padding(16.dp)
             ) {
                 event.value?.let { eventDetail ->
-                    MapWithMarker(eventViewModel, Modifier.height(200.dp).fillMaxWidth())
+
+                    if (eventDetail.place == null) {
+                        Button( onClick = { startVideoChat() }, content = { Text("ビデオチャット") } )
+                    } else {
+                        MapWithMarker(eventViewModel, Modifier.height(200.dp).fillMaxWidth())
+                    }
+
 
                     if (eventDetail.registeredUserIds.contains(eventViewModel.userId)) {
                             Button(
