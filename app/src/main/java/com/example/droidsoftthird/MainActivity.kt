@@ -3,6 +3,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -18,11 +19,13 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.example.droidsoftthird.databinding.NavHeaderBinding
+import com.facebook.react.modules.core.PermissionListener
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
+import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 
 @AndroidEntryPoint//has to be on MainActivity
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -150,5 +153,9 @@ class MainActivity : AppCompatActivity() {
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
         toolbar?.inflateMenu(R.menu.home)
+    }
+
+    override fun requestPermissions(p0: Array<out String>?, p1: Int, p2: PermissionListener?) {
+        Log.d("MainActivity","requestPermissions")
     }
 }
