@@ -21,7 +21,7 @@ data class GetItemEventJson (
         @Json(name = "group_id")
         val groupId: String,
         @Json(name = "group_name")
-        val groupName:String,
+        val groupName:String?,
         @Json(name = "place_name")
         val placeName: String?,
 ) {

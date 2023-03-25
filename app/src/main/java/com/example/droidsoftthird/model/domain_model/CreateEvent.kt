@@ -46,6 +46,6 @@ data class ItemEvent(
         override val date: LocalDate,
         override val period: Pair<LocalTime, LocalTime>,
         override val groupId: String,
-        val groupName: String,
+        val groupName: String?,
         val placeName: String?,
 ) :Event()

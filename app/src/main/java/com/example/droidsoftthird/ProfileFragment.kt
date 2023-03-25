@@ -25,6 +25,7 @@ class ProfileFragment:Fragment(R.layout.fragment_profile) {
         binding.viewModel = viewModel
         setupNavAppBar()
         setupClickListeners()
+        viewModel.fetchUserDetail()
     }
 
     private fun setupNavAppBar() {

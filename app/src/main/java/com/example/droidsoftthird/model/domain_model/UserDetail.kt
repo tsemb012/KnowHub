@@ -11,6 +11,7 @@ data class UserDetail (
         val age: Int,
         val area: Area,
         val groups: List<ApiGroup>,
+        val events: List<ItemEvent>,
 ) {
     enum class Gender { MALE, FEMALE, NO_ANSWER }
     fun toJson() =
@@ -34,7 +35,8 @@ internal val initializedUserDetail get() =
                 gender = "",
                 age = -1,
                 area = Area(null, null),
-                groups = listOf()
+                groups = listOf(),
+                events = listOf(),
         )
 
 

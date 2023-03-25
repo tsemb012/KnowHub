@@ -2,7 +2,9 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools"
+    >
 
     <data>
         <variable
@@ -66,7 +68,7 @@
             android:background="@color/primary_light">
 
 
-<!--            <LinearLayout TODO 実際の実装に合わせてレイアウトを追加していく。
+            <LinearLayout
                 android:id="@+id/linearLayout_group_detail"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -85,55 +87,34 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="15dp"
                     android:padding="15dp"
-                    android:text="@{viewModel.profileDetail.groupIntroduction}"
+                    android:text="@{viewModel.userDetail.comment}"
                     android:background="@drawable/radius_rectangular_prime_base_yellow"
                     />
 
                 <include
                     android:id="@+id/include_group_type"
                     layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/group_type}"
+                    bind:title="@{@string/gender}"
                     bind:drawable="@{@drawable/ic_baseline_group_24}"
-                    bind:text="@{viewModel.profileDetail.groupType}"
+                    bind:text="@{viewModel.userDetail.gender}"
                     />
 
                 <include
                     android:id="@+id/include_activity_area"
                     layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/activity_area}"
+                    bind:title="@{@string/age}"
                     bind:drawable="@{@drawable/ic_baseline_location_on_24}"
-                    bind:text="@{viewModel.profileDetail.}"
+                    bind:text="@{viewModel.userAge}"
                     />
                 <include
                     android:id="@+id/include_facility_environment"
                     layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/facility_environment}"
+                    bind:title="@{@string/residential_area}"
                     bind:drawable="@{@drawable/ic_baseline_location_city_24}"
-                    bind:text="@{viewModel.groupDetail.facilityEnvironment}"
-                    />
-                <include
-                    android:id="@+id/include_learning_frequency"
-                    layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/learning_frequency}"
-                    bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                    bind:text="@{viewModel.basisFrequency}"
-                    />
-                <include
-                    android:id="@+id/include_age_range"
-                    layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/age_range}"
-                    bind:drawable="@{@drawable/ic_baseline_elevator_24}"
-                    bind:text="@{viewModel.ageRange}"
-                    />
-                <include
-                    android:id="@+id/include_number_person"
-                    layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/number_persons}"
-                    bind:drawable="@{@drawable/ic_baseline_groups_24}"
-                    bind:text="@{viewModel.numberPerson}"
+                    bind:text="@{viewModel.residentialArea}"
                     />
 
-            </LinearLayout>-->
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
