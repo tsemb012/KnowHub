@@ -185,7 +185,7 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
+    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 

@@ -3,6 +3,9 @@ package com.example.droidsoftthird.model.infra_model.json.response
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.infra_model.json.request.AreaJson
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonAdapter
+import java.time.LocalDate
+import java.time.LocalTime
 
 data class GetUserDetailJson (
     @Json(name = "id")
@@ -16,9 +19,12 @@ data class GetUserDetailJson (
     val age: Int,
     val area: AreaJson,
     val groups: List<GetGroupJson>,
-    //val schedules: List<GetShcedule> TODO スケジュール実装後に追加
+    val events: List<GetItemEventJson>
 ) {
-    fun toEntity() =
+    fun toEntity(
+        localDateAdapter: JsonAdapter<LocalDate>,
+        localTimeAdapter: JsonAdapter<LocalTime>
+    ) =
         UserDetail(
                 userId = userId,
                 userName = userName,
@@ -28,5 +34,6 @@ data class GetUserDetailJson (
                 age = age,
                 area = area.toEntity(),
                 groups = groups.map { it.toEntity() },
+                events = events.map { it.toEntity(localDateAdapter, localTimeAdapter) }
         )
 }
