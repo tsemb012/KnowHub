@@ -7,6 +7,7 @@ buildscript {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven { url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases" }
     }
 
     dependencies {
@@ -18,6 +19,7 @@ buildscript {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
         classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.0"
 
+
         //classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -27,7 +29,11 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+        }
         google()
+        mavenCentral()
         jcenter()
         maven { url "https://jitpack.io" }
     }

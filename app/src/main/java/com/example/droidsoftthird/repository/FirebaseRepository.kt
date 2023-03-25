@@ -28,4 +28,6 @@ interface FirebaseRepository {
 
     suspend fun getSchedules(query: String): Result<List<RawScheduleEvent>>
 
+    suspend fun getUserId(): String
+
 }

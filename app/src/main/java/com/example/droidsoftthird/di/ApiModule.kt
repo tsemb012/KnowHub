@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.repository.AuthenticationRepositoryImpl
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -31,9 +32,10 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        private const val BASE_URL = "http://10.0.2.2:3000/" //エミュレーターで起動する場合
-        //private const val BASE_URL = "http://192.168.10.104:3000/"
+        //private const val BASE_URL = "http://10.0.2.2:3000/" //エミュレーターで起動する場合
+        private const val BASE_URL = "http://192.168.10.104:3000/"
         //private const val BASE_URL = "http://192.168.200.21:3000/"
+        //private const val BASE_URL = "http://192.168.200.68:3000/"
         private const val TOKEN_ID_KEY = "token_id_key"
     }
 

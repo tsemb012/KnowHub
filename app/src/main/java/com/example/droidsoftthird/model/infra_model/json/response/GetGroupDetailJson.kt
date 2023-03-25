@@ -4,7 +4,7 @@ import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
 import com.example.droidsoftthird.model.domain_model.ApiMember
 import com.squareup.moshi.Json
 
-data class GetGroupDetail(
+data class GetGroupDetailJson(
     val id: String,
     @Json(name = "host_id")
         val hostId: String,

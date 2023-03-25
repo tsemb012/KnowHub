@@ -1,32 +1,32 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.LiveData
-import com.example.droidsoftthird.model.domain_model.fire_model.FireScheduleEvent
+import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import java.lang.IllegalStateException
 import java.time.LocalDate
 
 data class ScheduleUiModel (
-    val schedulesLoadState: LoadState = LoadState.Initialized,//TODO ここをMessageに変更
+    val schedulesLoadState: LoadState = LoadState.Initialized,//TODO State情報
+    val allEvents: List<ItemEvent> = emptyList(), //TODO ここにAllを追加する。
     val selectedDate: LocalDate = LocalDate.now(),
-    val allEvents: List<FireScheduleEvent> = emptyList(),
-    val selectedEvents: List<FireScheduleEvent> = emptyList(),//TODO ここにAllを追加する。
+    val selectedEvents: List<ItemEvent> = emptyList(),//TODO ここにAllを追加する。
 ) {
     companion object {
         operator fun invoke(
             current: ScheduleUiModel,
             schedulesLoadState: LoadState,
             selectedDate:LocalDate,
-            selectedEvents: List<FireScheduleEvent>
+            selectedEvents: List<ItemEvent>
         ) = ScheduleUiModel(
                 schedulesLoadState = schedulesLoadState,
+                allEvents = schedulesLoadState.getValueOrNull() ?: current.allEvents,
                 selectedDate = selectedDate,
-                allEvents = schedulesLoadState.getValueOrNull() ?: emptyList(),
                 selectedEvents = selectedEvents
         )
     }
 }
 
-val LiveData<ScheduleUiModel>.eventDates get() = value?.schedulesLoadState?.getValueOrNull<List<FireScheduleEvent>>()?.map { scheduleEvent -> scheduleEvent.date } ?: emptyList()
+val LiveData<ScheduleUiModel>.eventDates get() = value?.allEvents?.map { scheduleEvent -> scheduleEvent.date } ?: emptyList()
 val LiveData<ScheduleUiModel>.selectedDate get() = value?.selectedDate ?: throw IllegalStateException()
 

@@ -15,7 +15,7 @@ data class GetUserDetailJson (
     val gender: String,
     val age: Int,
     val area: AreaJson,
-    val groups: List<GetGroup>,
+    val groups: List<GetGroupJson>,
     //val schedules: List<GetShcedule> TODO スケジュール実装後に追加
 ) {
     fun toEntity() =
