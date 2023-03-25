@@ -1,19 +1,18 @@
-package com.example.droidsoftthird.model.infra_model.json
+package com.example.droidsoftthird.model.infra_model.json.response
 
 import com.example.droidsoftthird.model.domain_model.*
-import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 
-data class PlaceDetailJson(
+data class GetPlaceDetailJson(
         @Json(name = "place_id")
         val placeId: String,
         val name: String,
         val types: List<String>,
-        val geometry: PlaceJson.GeometryJson,
+        val geometry: GetPlaceJson.GeometryJson,
         @Json(name = "formatted_address")
         val formattedAddress: String,
         @Json(name = "plus_code")
-        val plusCode: PlaceJson.PlusCodeJson,
+        val plusCode: GetPlaceJson.PlusCodeJson,
         val photos: List<LocationPhotoJson>?,
         @Json(name = "icon_background_color")
         val color: String?,

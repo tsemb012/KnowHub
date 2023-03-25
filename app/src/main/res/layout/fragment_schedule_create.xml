@@ -65,7 +65,13 @@
                 android:background="@drawable/radius_rectangular_prime_base_yellow"
                 />
         </com.google.android.material.textfield.TextInputLayout>
-
+        <include
+            android:id="@+id/include_schedule_create_group"
+            layout="@layout/include_item_schedule_create"
+            bind:title="@{@string/schedule_create_group}"
+            bind:drawable="@{@drawable/ic_baseline_group_24}"
+            bind:text="@{viewModel.uiModel.uiGroup}"
+            />
         <include
             android:id="@+id/include_schedule_create_date"
             layout="@layout/include_item_schedule_create"
@@ -88,13 +94,40 @@
             bind:drawable="@{@drawable/ic_baseline_location_on_24}"
             bind:text="@{viewModel.uiModel.uiPlace}"
             />
-        <include
-            android:id="@+id/include_schedule_create_group"
-            layout="@layout/include_item_schedule_create"
-            bind:title="@{@string/schedule_create_group}"
-            bind:drawable="@{@drawable/ic_baseline_group_24}"
-            bind:text="@{viewModel.uiModel.uiGroup}"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/is_online"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/is_online_title"
+                android:text="@string/online"
+                android:drawableStart="@drawable/ic_baseline_wifi_24"
+                android:drawablePadding="3dp"
+                android:layout_height="0dp"
+                style="@style/item_schedule_create_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/is_online_switch"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/is_online_switch"
+                style="@style/item_schedule_create_text"
+                android:clickable="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
             />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

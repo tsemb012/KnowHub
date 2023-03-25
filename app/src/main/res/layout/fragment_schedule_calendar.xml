@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!--<data>
-        <variable
-            name="viewModel"
-            type="com.example.droidsoftthird.ui.schedule.ApprovedScheduleViewModel" />
-    </data>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,8 +22,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:orientation="horizontal"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/exOneYearText"
@@ -38,6 +31,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary_text_grey"
                     android:textSize="24sp"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingRight="8dp"
                     android:text="2019" />
                 <!--TODO リスナーと連動させる？-->
 
@@ -47,15 +42,15 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/primary_text_grey_dark"
-                    android:textSize="38sp"
+                    android:textSize="24sp"
                     android:text="April" />
                 <!--TODO リスナーと連動させる。-->
 
             </LinearLayout>
 
             <include
-                android:id="@id/legendLayout"
-                layout="@layout/calendar_day_legend"
+                android:id="@id/day_of_week_label"
+                layout="@layout/day_of_week_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -75,7 +70,7 @@
             android:orientation="vertical">
 
             <com.kizitonwose.calendarview.CalendarView
-                android:id="@+id/oneCalendar"
+                android:id="@+id/calendarMatrix"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cv_dayViewResource="@layout/calendar_day"
@@ -84,16 +79,6 @@
                 app:cv_inDateStyle="allMonths"
                 app:cv_scrollMode="paged" />
             <!--TODO このカレンダービューがコアな部分ということを意識する。-->
-
-            <CheckBox
-                android:id="@+id/weekModeCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:padding="2dp"
-                android:text="@string/week_mode"
-                android:textSize="18sp"
-                android:layout_gravity="bottom|center_horizontal" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"

@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.droidsoftthird"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -91,6 +91,8 @@ dependencies {
     def mockk_version = '1.13.2'
     testImplementation "io.mockk:mockk:$mockk_version"
 
+    //-----Jitsi meet
+    implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
 
     //-----androidx
 

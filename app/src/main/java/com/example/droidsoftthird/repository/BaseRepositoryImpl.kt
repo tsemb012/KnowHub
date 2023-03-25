@@ -9,7 +9,9 @@ import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.domain_model.fire_model.Group
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
 import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
-import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroup
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
+import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
+import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -39,9 +41,11 @@ class BaseRepositoryImpl @Inject constructor(
 ): RailsApiRepository, FirebaseRepository, DataStoreRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser.uid }
+    private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
     private val localDateAdapter = moshi.adapter(LocalDate::class.java)
     private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
+
+    override suspend fun getUserId() = userId
 
     override suspend fun saveTokenId(tokenId: String) {
         dataStore.edit { preferences ->
@@ -173,7 +177,7 @@ class BaseRepositoryImpl @Inject constructor(
         mainApi.fetchGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun userJoinGroup(groupId: String): String? {
-        val response = mainApi.putUserToGroup(groupId, PutUserToGroup(userId))
+        val response = mainApi.putUserToGroup(groupId, PutUserToGroupJson(userId))
         return if (response.isSuccessful) {
             return response.body()?.message
         } else {
@@ -185,7 +189,11 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
 
-    override suspend fun createEvent(event: ScheduleEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
+    override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
+    override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
+    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
+    override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
+    override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
@@ -319,12 +327,6 @@ class BaseRepositoryImpl @Inject constructor(
                     .whereArrayContains("members",userId)
                     .orderBy("timeStamp",Query.Direction.DESCENDING)
                     .limit(LIMIT)
-            SCHEDULE_REGISTERED_ALL ->
-                fireStore
-                    .collection("schedules")
-                    .whereArrayContains("registered_member",userId)
-                    .orderBy("timeStamp",Query.Direction.DESCENDING)
-                    .limit(LIMIT)
             else -> throw IllegalStateException()
         }
     }
@@ -335,6 +337,5 @@ class BaseRepositoryImpl @Inject constructor(
         private const val REGION_JP = "jp"//設定する際に、直接Preferenceから取得するようにする。
         const val GROUP_ALL = "group_all"
         const val GROUP_MY_PAGE = "group_my_page"
-        const val SCHEDULE_REGISTERED_ALL = "schedule_registered_all"
     }
 }

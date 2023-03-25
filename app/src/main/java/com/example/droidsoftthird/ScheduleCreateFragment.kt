@@ -51,6 +51,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
             setupPeriodDialog()
             setupMapNav()
             setupGroupDialog()
+            setupSwitch()
         }
     }
 
@@ -62,12 +63,6 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                     viewModel?.postSelectedGroup(which)
                 }
                 .show()
-        }
-    }
-
-    private fun FragmentScheduleCreateBinding.setupMapNav() {
-        includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener {
-            findNavController().navigate(R.id.action_scheduleCreateFragment_to_mapFragment)
         }
     }
 
@@ -125,6 +120,28 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                     addOnCancelListener { requireActivity().setTheme(R.style.AppTheme) }
                 }
             childFragmentManager.let { dialog.show(it, "schedule_date") }
+        }
+    }
+
+    private fun FragmentScheduleCreateBinding.setupMapNav() {
+        includeScheduleCreateLocation.itemScheduleCreate.setOnClickListener {
+            findNavController().navigate(R.id.action_scheduleCreateFragment_to_mapFragment)
+        }
+    }
+
+    private fun FragmentScheduleCreateBinding.setupSwitch() {
+        isOnline.setOnClickListener {
+            isOnlineSwitch.toggle()
+            viewModel?.postIsOnline(isOnlineSwitch.isChecked)
+            if (isOnlineSwitch.isChecked) {
+                includeScheduleCreateLocation.itemScheduleCreateText.text = "オンライン"
+                includeScheduleCreateLocation.itemScheduleCreate.isEnabled = false
+                includeScheduleCreateLocation.itemScheduleCreateText.setTextColor(resources.getColor(R.color.primary_text_grey))
+            } else {
+                includeScheduleCreateLocation.itemScheduleCreateText.text = viewModel?.uiModel?.value?.uiPlace
+                includeScheduleCreateLocation.itemScheduleCreate.isEnabled = true
+                includeScheduleCreateLocation.itemScheduleCreateText.setTextColor(resources.getColor(R.color.primary_dark))
+            }
         }
     }
 }

@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_ScheduleHomeFragment_to_scheduleCreateFragment"
             app:destination="@id/schedule_graph" />
+        <action
+            android:id="@+id/action_ScheduleHomeFragment_to_scheduleDetailFragment"
+            app:destination="@id/scheduleDetailFragment" />
     </fragment>
 
     <fragment
@@ -163,4 +166,26 @@
                 app:destination="@id/scheduleCreateFragment" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/scheduleDetailFragment"
+        android:name="com.example.droidsoftthird.ScheduleDetailFragment"
+        android:label="ScheduleDetailFragment" >
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_scheduleDetailFragment_to_videoChatFragment"
+            app:destination="@id/videoChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoChatFragment"
+        android:name="com.example.droidsoftthird.VideoChatActivity"
+        android:label="VideoChatFragment" >
+        <action
+            android:id="@+id/action_videoChatFragment_to_scheduleDetailFragment"
+            app:destination="@id/scheduleDetailFragment" />
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+    </fragment>
 </navigation>
