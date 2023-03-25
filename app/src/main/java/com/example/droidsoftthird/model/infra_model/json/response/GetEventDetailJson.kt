@@ -14,6 +14,8 @@ data class GetEventDetailJson (
         val eventId: String,
         @Json(name = "host_id")
         val hostId: String,
+        @Json(name = "video_chat_room_id")
+        val roomId: String,
         val name: String,
         val comment: String,
         val date: String,
@@ -35,6 +37,7 @@ data class GetEventDetailJson (
         ): EventDetail = EventDetail(
                 eventId = eventId,
                 hostId = hostId,
+                roomId = roomId,
                 name = name,
                 comment = comment,
                 date = localDateAdapter.fromJson(date) ?: throw IllegalStateException("date is null"),

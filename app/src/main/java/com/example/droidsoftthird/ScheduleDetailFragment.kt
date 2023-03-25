@@ -53,8 +53,11 @@ class ScheduleDetailFragment: Fragment() {
     }
 
     private fun startVideoChat() {
-        val intent = Intent(requireActivity(), VideoChatActivity::class.java)
-        startActivity(intent)
+        viewModel.eventDetail.value?.let {
+            val intent = Intent(requireActivity(), VideoChatActivity::class.java)
+            intent.putExtra("roomId", it.roomId)
+            startActivity(intent)
+        }
     }
 
 

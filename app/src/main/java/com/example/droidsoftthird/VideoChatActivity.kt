@@ -26,6 +26,7 @@ class VideoChatActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         private const val PERMISSION_REQUEST_CODE = 1
     }
     private var jitsiMeetView: JitsiMeetView? = null
+    private val roomId: String by lazy { intent.getStringExtra("roomId") ?: throw IllegalStateException() }
     private val broadcastReceiver by lazy {
         object : BroadcastReceiver(this) {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -84,9 +85,8 @@ class VideoChatActivity : AppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     private fun setupVideoChat() {
-        val roomName = "test111111111111" //UUID.randomUUID().toString()
         val options = JitsiMeetConferenceOptions.Builder()
-            .setRoom(roomName)
+            .setRoom(roomId)
             .build()
         jitsiMeetView?.join(options)
     }
