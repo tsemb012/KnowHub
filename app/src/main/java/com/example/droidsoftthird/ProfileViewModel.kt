@@ -21,8 +21,6 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
     private val _userDetail = mutableStateOf(initializedUserDetail)
     val userDetail: MutableState<UserDetail> = _userDetail
     val downloadUrl1: MutableState<String> = mutableStateOf("")
-    val userAge: String = ""//Transformations.map(userDetail) { it?.age?.toString() }
-    val residentialArea: String = ""//Transformations.map(userDetail) { it?.area?.prefecture?.name + ", " + it?.area?.city?.name }
 
     init { fetchUserDetail() }
 
@@ -42,7 +40,7 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
         }
     }
 
-    suspend fun StorageReference.getDownloadUrlOrNull() {
+    fun StorageReference.getDownloadUrlOrNull() {
         try {
             downloadUrl.addOnSuccessListener {
                 downloadUrl1.value = it.toString()
