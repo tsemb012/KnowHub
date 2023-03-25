@@ -12,6 +12,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 class ScheduleDetailViewModel @AssistedInject constructor(
     private val eventUseCase: EventUseCase,
@@ -22,6 +23,11 @@ class ScheduleDetailViewModel @AssistedInject constructor(
     val eventDetail = mutableStateOf<EventDetail?>(null)
     val message = mutableStateOf<String?>(null)
     val userId by lazy { runBlocking { settingUseCase.getUserId() } }
+    private val startDateTime get() = LocalDateTime.of(eventDetail.value?.date, eventDetail.value?.startTime)
+    private val endDateTime get() = LocalDateTime.of(eventDetail.value?.date, eventDetail.value?.endTime)
+    val isVideoChatAvailable get () = LocalDateTime.now().isAfter(startDateTime) && LocalDateTime.now().isBefore(endDateTime)
+    val isNotStarted get () = LocalDateTime.now().isBefore(startDateTime)
+    val isFinished get () = LocalDateTime.now().isAfter(endDateTime)
 
     fun fetchEventDetail() {
         viewModelScope.launch {

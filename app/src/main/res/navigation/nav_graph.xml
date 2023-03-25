@@ -179,7 +179,7 @@
     </fragment>
     <fragment
         android:id="@+id/videoChatFragment"
-        android:name="com.example.droidsoftthird.VideoChatFragment"
+        android:name="com.example.droidsoftthird.VideoChatActivity"
         android:label="VideoChatFragment" >
         <action
             android:id="@+id/action_videoChatFragment_to_scheduleDetailFragment"
