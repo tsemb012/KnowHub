@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,18 +53,19 @@ class ScheduleDetailFragment: Fragment() {
     }
 
     private fun startVideoChat() {
-        findNavController().navigate(ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToVideoChatFragment(eventId))
+        val intent = Intent(requireActivity(), VideoChatActivity::class.java)
+        startActivity(intent)
     }
 
 
     //DONE データクラスを修正 + 統合できるように　+ Idを取得できるように
     //DONE 画面遷移 scheduleIdを取得できるように
     //DONE ViewModelの作成
-    //TODO ユースケケースにメソッドを追加
-    //TODO Repositoryの作成
+    //DONE ユースケケースにメソッドを追加
+    //DONE Repositoryの作成
     //TODO idを渡してFetchできるように修正　→　関連するロケーションも取得
     //TODO viewModelまで値が持ってこれることを確認する。
-    //TODO 基本的には会社で作った箇所を参考にするように jetpackComposeで描画　→　地図とオンラインで条件分岐をするようにする。
+    //DONE 基本的には会社で作った箇所を参考にするように jetpackComposeで描画　→　地図とオンラインで条件分岐をするようにする。
 }
 
 

@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 
 @AndroidEntryPoint//has to be on MainActivity
-class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -155,7 +155,4 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         toolbar?.inflateMenu(R.menu.home)
     }
 
-    override fun requestPermissions(p0: Array<out String>?, p1: Int, p2: PermissionListener?) {
-        Log.d("MainActivity","requestPermissions")
-    }
 }
