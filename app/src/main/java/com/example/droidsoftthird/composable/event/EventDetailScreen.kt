@@ -53,7 +53,18 @@ fun EventDetailScreen(
                 event.value?.let { eventDetail ->
 
                     if (eventDetail.place == null) {
-                        Button( onClick = { startVideoChat() }, content = { Text("ビデオチャット") } )
+                        Button(
+                            enabled = eventViewModel.isVideoChatAvailable,
+                            onClick = { startVideoChat() },
+                            content = {
+                                Text(
+                                    if (eventViewModel.isVideoChatAvailable) "ビデオチャット"
+                                    else if (eventViewModel.isFinished) "ビデオチャットは終了しました"
+                                    else if (eventViewModel.isNotStarted) "開始時間までお待ちください"
+                                    else "ビデオチャットは準備中です"
+                                    )
+                            }
+                        )
                     } else {
                         MapWithMarker(eventViewModel, Modifier.height(200.dp).fillMaxWidth())
                     }
