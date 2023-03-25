@@ -13,12 +13,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.droidsoftthird.ProfileViewModel
+import com.example.droidsoftthird.R
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -27,10 +29,8 @@ fun ProfileScreen(
     toProfileEdit: () -> Unit
 ) {
     val userDetail = viewModel.userDetail
-    val userAge = viewModel.userAge
-    val residentialArea = viewModel.residentialArea
+    val residentialArea = userDetail.value.area.prefecture?.name + ", " + userDetail.value.area.city?.name
     val context = LocalContext.current
-    val userImage = userDetail.value.userImage
 
     Scaffold(
         floatingActionButton = {
@@ -67,18 +67,18 @@ fun ProfileScreen(
                     style = MaterialTheme.typography.h6
                 )
                 ProfileInfoItem(
-                    title = "Gender",
+                    title = stringResource(id = R.string.gender),
                     value = userDetail.value.gender ?:"",
                     icon = Icons.Filled.Group
                 )
                 ProfileInfoItem(
-                    title = "Age",
+                    title = stringResource(id = R.string.age),
                     value = userDetail.value.age.toString(),
                     icon = Icons.Filled.LocationOn
                 )
                 ProfileInfoItem(
-                    title = "Residential Area",
-                    value = "",
+                    title = stringResource(id = R.string.residential_area),
+                    value = residentialArea,
                     icon = Icons.Filled.LocationCity
                 )
             }

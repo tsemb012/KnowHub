@@ -13,7 +13,7 @@ import com.example.droidsoftthird.composable.profile.ProfileScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileFragment:Fragment(R.layout.fragment_profile) {
+class ProfileFragment:Fragment() {
 
     private val viewModel: ProfileViewModel by viewModels()
     private val navController by lazy { NavHostFragment.findNavController(this) }
