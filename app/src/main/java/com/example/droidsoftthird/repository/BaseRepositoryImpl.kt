@@ -194,6 +194,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
+    override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
