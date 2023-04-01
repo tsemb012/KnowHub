@@ -45,7 +45,8 @@ class ScheduleDetailFragment: Fragment() {
             setContent {
                 EventDetailScreen(
                         eventViewModel = viewModel,
-                        startVideoChat = { startVideoChat()},
+                        startVideoChat = { startVideoChat() },
+                        deleteEvent = { viewModel.deleteEvent() },
                         onBack = { findNavController().navigateUp() }
                 )
             }
@@ -59,16 +60,6 @@ class ScheduleDetailFragment: Fragment() {
             startActivity(intent)
         }
     }
-
-
-    //DONE データクラスを修正 + 統合できるように　+ Idを取得できるように
-    //DONE 画面遷移 scheduleIdを取得できるように
-    //DONE ViewModelの作成
-    //DONE ユースケケースにメソッドを追加
-    //DONE Repositoryの作成
-    //TODO idを渡してFetchできるように修正　→　関連するロケーションも取得
-    //TODO viewModelまで値が持ってこれることを確認する。
-    //DONE 基本的には会社で作った箇所を参考にするように jetpackComposeで描画　→　地図とオンラインで条件分岐をするようにする。
 }
 
 

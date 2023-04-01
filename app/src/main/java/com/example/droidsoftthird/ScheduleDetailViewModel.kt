@@ -75,7 +75,21 @@ class ScheduleDetailViewModel @AssistedInject constructor(
         job.start()
     }
 
-
+    fun deleteEvent() {
+        val job = viewModelScope.launch {
+            kotlin.runCatching { eventUseCase.deleteEvent(eventId) }
+                .onSuccess {
+                    message.value = "イベントを削除しました"
+                    Log.d("tsemb012", "イベントを削除しました")
+                    //TODO 削除したあとの導線も検討するようにする。
+                }
+                .onFailure {
+                    message.value = it.message
+                    Log.d("tsemb012", "${it.message}")
+                }
+        }
+        job.start()
+    }
     @AssistedFactory
     interface Factory {
         fun create(eventId: String): ScheduleDetailViewModel

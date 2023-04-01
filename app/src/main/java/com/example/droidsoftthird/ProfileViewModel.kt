@@ -1,11 +1,16 @@
 package com.example.droidsoftthird
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.UserDetail
+import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.usecase.ProfileUseCase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,12 +18,36 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
 
     //TODO 基本的に個人情報はRailsAPIにしまう。ユーザー名とユーザー画像だけはFirebaseとRailsAPIどちらにも入れる。
 
-    private val _userDetail = MutableLiveData<UserDetail?>()
-    val userDetail: LiveData<UserDetail?>
-        get() = _userDetail
+    private val _userDetail = mutableStateOf(initializedUserDetail)
+    val userDetail: MutableState<UserDetail> = _userDetail
+    val downloadUrl1: MutableState<String> = mutableStateOf("")
 
-    private suspend fun fetchUserDetail() = useCase.fetchUserDetail()
+    init { fetchUserDetail() }
+
+    fun fetchUserDetail() {
+        viewModelScope.launch {
+            kotlin.runCatching { useCase.fetchUserDetail() }
+                .onSuccess {
+                    _userDetail.value = it
+                    val imageReference = FirebaseStorage.getInstance().getReference(userDetail.value.userImage)
+                    imageReference.getDownloadUrlOrNull()
+                    //imageUrl?.let { url -> downloadUrl.value = imageUrl }
+                    _userDetail.value = it
+                }
+                .onFailure {
+                    Log.d("tsemb012", "${it.message}")
+                }
+        }
+    }
+
+    fun StorageReference.getDownloadUrlOrNull() {
+        try {
+            downloadUrl.addOnSuccessListener {
+                downloadUrl1.value = it.toString()
+            }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 
 }
-
-
