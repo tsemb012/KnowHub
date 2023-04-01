@@ -112,4 +112,9 @@ interface MainApi {
         @Path("id") eventId: String,
         @Body request: RemoveUserFromEventJson
     ): MessageResponse
+
+    @DELETE("events/{id}")
+    suspend fun deleteEvent(
+        @Path("id") eventId: String
+    ): MessageResponse
 }

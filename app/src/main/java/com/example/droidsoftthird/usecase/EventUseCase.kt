@@ -10,4 +10,5 @@ class EventUseCase @Inject constructor(private val repository: BaseRepositoryImp
     suspend fun fetchEventDetail(eventId: String) = repository.fetchEventDetail(eventId)
     suspend fun joinEvent(eventId: String) = repository.registerEvent(eventId)
     suspend fun leaveEvent(eventId: String) = repository.unregisterEvent(eventId)
+    suspend fun deleteEvent(eventId: String) = repository.deleteEvent(eventId)
 }
