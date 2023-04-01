@@ -1,6 +1,5 @@
 package com.example.droidsoftthird
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import java.lang.IndexOutOfBoundsException
@@ -17,7 +16,7 @@ class HomeViewPagerAdapter(fragment:Fragment): FragmentStateAdapter(fragment){
     }
 
     private val tabFragmentCreators: Map<Int, () -> Fragment> = mapOf(
-        RECOMMEND_PAGE_INDEX to { RecommendPagerFragment() },
+        RECOMMEND_PAGE_INDEX to { RecommendGroupsFragment() },
         MAP_PAGE_INDEX to { MapPagerFragment() }
     )
 

@@ -10,23 +10,23 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.droidsoftthird.databinding.FragmentPagerRecommendBinding
+import com.example.droidsoftthird.databinding.FragmentGroupsRecommendBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint//Enable this class to receive dependency from Hilt
-class RecommendPagerFragment:Fragment() {
+class RecommendGroupsFragment:Fragment() {
 
-    private val viewModel:RecommendPagerViewModel by viewModels()
+    private val viewModel:RecommendGroupsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: FragmentPagerRecommendBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_pager_recommend, container, false)
+        val binding: FragmentGroupsRecommendBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_groups_recommend, container, false)
 
-        binding.recommendPagerViewModel = viewModel
+        binding.recommendGroupsViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         val adapter = GroupAdapter(GroupListener{ groupId,_ ->
