@@ -1,0 +1,3 @@
+[submodule "app/src/main/assets/submodule-directory"]
+	path = app/src/main/assets/submodule-directory
+	url = https://github.com/tsemb012/LocationCsv.git
