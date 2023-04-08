@@ -1,7 +1,7 @@
 package com.example.droidsoftthird
 
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
+import com.example.droidsoftthird.model.domain_model.fire_model.FireUserProfile
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,8 +26,8 @@ class HomeViewModel @Inject constructor(private val repository: BaseRepositoryIm
         }
     }
 
-    private val _userProfile = MutableLiveData<UserProfile?>()
-    val userProfile: LiveData<UserProfile?>
+    private val _userProfile = MutableLiveData<FireUserProfile?>()
+    val userProfile: LiveData<FireUserProfile?>
         get() = _userProfile
 
 

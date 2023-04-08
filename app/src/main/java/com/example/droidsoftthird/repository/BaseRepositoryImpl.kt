@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.domain_model.*
-import com.example.droidsoftthird.model.domain_model.fire_model.Group
+import com.example.droidsoftthird.model.domain_model.fire_model.FireGroup
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
-import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
+import com.example.droidsoftthird.model.domain_model.fire_model.FireUserProfile
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
@@ -63,7 +63,7 @@ class BaseRepositoryImpl @Inject constructor(
         mainApi.postNewUser(PostSignUp.Request(signup)).body()?.toEntity()
         //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。*/
 
-    override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
+    override suspend fun getGroups(query: String): Result<List<FireGroup>> = getListResult(query, FireGroup::class.java)
 
     override suspend fun certifyAndRegister(tokenID: String) {
         mapOf("Authorization" to "Bearer $tokenID").let {
@@ -120,7 +120,7 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }//TODO 要リファクタリング
 
-    override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
+    override suspend fun getGroup(groupId: String): Result<FireGroup?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){suspendCoroutine { continuation ->
         fireStore.collection("groups")
             .document(groupId)
@@ -236,7 +236,7 @@ class BaseRepositoryImpl @Inject constructor(
                 language = LANGUAGE_JP
         ).body()?.toEntity()
 
-    override suspend fun getUserProfile(): Result<UserProfile?> =
+    override suspend fun getUserProfile(): Result<FireUserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
@@ -259,7 +259,7 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun createUserProfile(userProfile: UserProfile): Result<Int> {
+    override suspend fun createUserProfile(userProfile: FireUserProfile): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")

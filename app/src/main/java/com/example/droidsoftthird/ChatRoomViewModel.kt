@@ -30,15 +30,15 @@ class ChatRoomViewModel @AssistedInject constructor(
     }
 
     //======MessageListの受け取り
-    private val _messages = MutableLiveData<List<Message>?>()
-    val messages: LiveData<List<Message>?>
+    private val _messages = MutableLiveData<List<FireMessage>?>()
+    val messages: LiveData<List<FireMessage>?>
         get() = _messages
 
     init {
         viewModelScope.launch {
             repository.getChatEvents(groupId).collect{
 
-                val messageList = ArrayList<Message>()
+                val messageList = ArrayList<FireMessage>()
                 for(doc in it){
                     val message = when(doc.get("messageType")){
                         0.0 -> {doc.toObject(TextMessage::class.java)}
@@ -47,7 +47,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                         3.0 -> {doc.toObject(RecordMessage::class.java)}
                         else -> {}
                     }
-                    messageList.add(message as Message)
+                    messageList.add(message as FireMessage)
                     _messages.postValue(messageList)
                 }
             }
@@ -101,7 +101,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                 authUser.photoUrl.toString(),
                 0.0,
                 editMessage.value,
-                Date()) as Message
+                Date()) as FireMessage
         editMessage.postValue("")
         viewModelScope.launch {
             val result:Result<Int> = repository.createMessage(message,groupId)
@@ -126,7 +126,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                     1.0,
                                     storageImageRef,
                                     Date()
-                                ) as Message
+                                ) as FireMessage
                             val result:Result<Int> = repository.createMessage(message,groupId)
                             /*when(result){
                               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
@@ -154,7 +154,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 2.0,
                                 fileUri.lastPathSegment.toString(),
                                 fileDownloadUrl,
-                                Date()) as Message
+                                Date()) as FireMessage
                         val result:Result<Int> = repository.createMessage(message,groupId)
                         /*when(result){
                           is Result.Success ->  //TODO アップロード成功時の処理を記述する。
@@ -184,7 +184,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 duration,
                                 null,
                                 null,
-                                Date()) as Message
+                                Date()) as FireMessage
                         val result:Result<Int> = repository.createMessage(message,groupId)
                         /*when(result){
                           is Result.Success ->  //TODO アップロード成功時の処理を記述する。

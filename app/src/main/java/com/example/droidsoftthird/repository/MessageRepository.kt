@@ -3,7 +3,7 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.Result
-import com.example.droidsoftthird.model.domain_model.fire_model.Message
+import com.example.droidsoftthird.model.domain_model.fire_model.FireMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
@@ -103,7 +103,7 @@ class MessageRepository  @Inject constructor(){
         }
     }
 
-    suspend fun createMessage(message: Message, groupId:String): Result<Int> {
+    suspend fun createMessage(message: FireMessage, groupId:String): Result<Int> {
 
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
