@@ -13,5 +13,6 @@ class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImp
     suspend fun userJoinGroup(groupId: String) = repository.userJoinGroup(groupId)
     suspend fun fetchJoinedGroups() = repository.fetchJoinedGroups()
     suspend fun uploadPhoto(value: Uri) = repository.uploadPhoto(value)
+    //suspend fun fetchGroupLocations() = repository.fetchGroupLocations()
 
 }
