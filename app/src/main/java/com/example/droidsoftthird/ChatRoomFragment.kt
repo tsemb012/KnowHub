@@ -59,7 +59,7 @@ class ChatRoomFragment : Fragment() {
     private lateinit var binding: ChatRoomFragmentBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
     private lateinit var adapter: ChatAdapter
-    private var messageList = mutableListOf<Message>()
+    private var messageList = mutableListOf<FireMessage>()
     private var recorder: MediaRecorder? = null
     private var isRecording = false
     private var recordStart = 0L
@@ -91,15 +91,15 @@ class ChatRoomFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         adapter = ChatAdapter(context, object: MessageClickListener{
-            override fun onMessageClicked(position: Int, message: Message) {
+            override fun onMessageClicked(position: Int, message: FireMessage) {
                 when(message.messageType) {
 
                     1.0 -> {
                         binding.fullSizeImageView.visibility = View.VISIBLE
-                        StfalconImageViewer.Builder<MyImage>(
+                        StfalconImageViewer.Builder<FireMyImage>(
                             requireActivity(),
-                            listOf(MyImage((message as ImageMessage).imageRef!!)),
-                            ImageLoader<MyImage> { imageView, myImage ->
+                            listOf(FireMyImage((message as ImageMessage).imageRef!!)),
+                            ImageLoader<FireMyImage> { imageView, myImage ->
                                 Glide.with(requireActivity())
                                     .load(FirebaseStorage.getInstance().getReference(myImage.url))
                                     .apply(RequestOptions().error(R.drawable.ic_broken_image_white_24dp))
@@ -125,7 +125,7 @@ class ChatRoomFragment : Fragment() {
         binding.messageRecycler.adapter = adapter
 
         viewModel.messages.observe(viewLifecycleOwner, Observer{
-            messageList = it as MutableList<Message>
+            messageList = it as MutableList<FireMessage>
             ChatAdapter.messageList = messageList
             it.let{adapter.submitList(it)}
 
@@ -349,7 +349,7 @@ class ChatRoomFragment : Fragment() {
         }
     }
 
-    private fun downloadFile(message: Message) {
+    private fun downloadFile(message: FireMessage) {
 
         //check for storage permission then download if granted
         Dexter.withActivity(requireActivity())

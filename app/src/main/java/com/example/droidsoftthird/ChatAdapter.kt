@@ -47,7 +47,7 @@ var positionDelegate: Int by Delegates.observable(-1){prop,old,new ->
 }
 
 class ChatAdapter(private val context: Context?, private val clickListener: MessageClickListener):
-    ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback()) {
+    ListAdapter<FireMessage, RecyclerView.ViewHolder>(MessageDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
 
@@ -157,7 +157,7 @@ class ChatAdapter(private val context: Context?, private val clickListener: Mess
         private const val TYPE_SENT_RECORD = 6
         private const val TYPE_RECEIVED_RECORD = 7
         private const val TYPE_SENT_RECORD_PLACEHOLDER = 8
-        lateinit var messageList: MutableList<Message>
+        lateinit var messageList: MutableList<FireMessage>
     }
 
 
@@ -359,7 +359,7 @@ class SentRecordPlaceHolderViewHolder private constructor(val binding: SentRecor
     RecyclerView.ViewHolder(binding.root) {
 
 
-    fun bind(clickListener: MessageClickListener, item: Message) {
+    fun bind(clickListener: MessageClickListener, item: FireMessage) {
         binding.message = item
         binding.clickListener = clickListener
         binding.position = adapterPosition
@@ -444,16 +444,16 @@ private fun stopPlaying(){
     player.reset()
 }
 
-class MessageDiffCallback : DiffUtil.ItemCallback<Message>() {
-    override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
+class MessageDiffCallback : DiffUtil.ItemCallback<FireMessage>() {
+    override fun areItemsTheSame(oldItem: FireMessage, newItem: FireMessage): Boolean {
         return oldItem.toString() == newItem.toString()
     }
 
-    override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+    override fun areContentsTheSame(oldItem: FireMessage, newItem: FireMessage): Boolean {
         return oldItem.equals(newItem)
     }
 }
 
 interface MessageClickListener {
-    fun onMessageClicked(position: Int, message: Message)
+    fun onMessageClicked(position: Int, message: FireMessage)
 }

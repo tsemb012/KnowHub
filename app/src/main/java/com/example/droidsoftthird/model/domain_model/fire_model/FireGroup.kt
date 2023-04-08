@@ -4,7 +4,7 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
-data class Group (//FireStoreで使用する場合は、Nullableかつ初期値にNullを入れる必要がある。
+data class FireGroup (//FireStoreで使用する場合は、Nullableかつ初期値にNullを入れる必要がある。
         val hostUserId: String? = null,
         val storageRef: String? = null,
         val groupName: String? = null,
