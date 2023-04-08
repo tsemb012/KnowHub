@@ -17,7 +17,7 @@ class HomeViewPagerAdapter(fragment:Fragment): FragmentStateAdapter(fragment){
 
     private val tabFragmentCreators: Map<Int, () -> Fragment> = mapOf(
         RECOMMEND_PAGE_INDEX to { RecommendGroupsFragment() },
-        MAP_PAGE_INDEX to { MapPagerFragment() }
+        MAP_PAGE_INDEX to { GroupLocationsFragment() }
     )
 
     override fun createFragment(position: Int): Fragment {
