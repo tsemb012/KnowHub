@@ -61,7 +61,7 @@ class LocalAreaDialogFragment(private val prefectureCode: Int, private val onCon
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.activity_area)
             .setIcon(R.drawable.ic_baseline_location_on_24)
-            .setSingleChoiceItems(cityArray, 0) { _, which -> selectedCityCode = which }
+            .setSingleChoiceItems(cityArray, 0) { _, which -> selectedCityCode = which } //TODO whichにマイナス1をする必要があると思われる。　2023/04/02
             .setPositiveButton(R.string.done) { _, _ ->
                 val cityCode = cityMap.keys.elementAt(selectedCityCode)
                 val area = buildArea(prefectureCode, cityCode)
@@ -98,7 +98,7 @@ class LocalAreaDialogFragment(private val prefectureCode: Int, private val onCon
             .split(",")[JAPAN_CITY_SPELL].drop(1).dropLast(1)
             .capitalize()
 
-        val rawCity = requireContext().assets.open(CITY_ADDRESS_CSV)
+        val rawCity = requireContext().assets.open(CITY_ADDRESS_CSV) //TODO
             .bufferedReader()
             .readLines()
             .first{ it.split(",")[CITY_CODE].toIntOrNull() == cityCode }
