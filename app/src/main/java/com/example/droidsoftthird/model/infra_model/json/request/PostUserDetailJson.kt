@@ -12,20 +12,23 @@ import com.squareup.moshi.Json
 
 class PostUserDetailJson(
     @Json(name = "user_id")
-        val userId: String,
+    val userId: String,
     @Json(name = "user_name")
-        val userName: String? = null,
+    val userName: String? = null,
     @Json(name = "user_image")
-        val userImage: String,
+    val userImage: String,
     val comment:String,
     val gender: String,
     val age: Int,
-    val area: AreaJson?,
+    @Json(name = "prefecture_code")
+    val prefectureCode: Int,
+    @Json(name = "city_code")
+    val cityCode: Int,
 )
 
 class AreaJson(
     @Json(name = "prefecture")
-        val prefecture: PrefectureJson?,
+    val prefecture: PrefectureJson?,
     @Json(name = "city")
         val city: CityJson? = null
 ) {

@@ -158,7 +158,7 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createGroup(group: ApiGroup): String? =
+    override suspend fun createGroup(group: EditedGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
     override suspend fun fetchGroupDetail(groupId: String): ApiGroupDetail {//TODO エラーハンドリングをまとめる
@@ -192,7 +192,6 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
-
     override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
     override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
