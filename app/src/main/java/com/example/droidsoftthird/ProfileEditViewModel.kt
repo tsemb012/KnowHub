@@ -14,7 +14,8 @@ class ProfileEditViewModel @Inject constructor(private val useCase: ProfileUseCa
 
     fun fetchUserDetail() {
         val job = viewModelScope.launch {
-            runCatching { useCase.fetchUserDetail() }
+            runCatching {
+                useCase.fetchUserDetail() }
                 .onSuccess { initializeUiModel(it) }
                 .onFailure { loadState.value = LoadState.Error(it) }
         }

@@ -75,6 +75,7 @@ class GroupAddFragment:Fragment(),View.OnClickListener {
                         { area ->
                             viewModel.postPrefecture(area?.prefecture?.name ?: getString(R.string.non_selected))
                             viewModel.postCity(area.city?.name ?: getString(R.string.non_selected))
+                            viewModel.postCodes(area.prefecture?.prefectureCode to area.city?.cityCode)
                         }
                 )
                 childFragmentManager?.let { dialog.show(it, "activity_area") }

@@ -26,7 +26,8 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
 
     fun fetchUserDetail() {
         viewModelScope.launch {
-            kotlin.runCatching { useCase.fetchUserDetail() }
+            kotlin.runCatching {
+                useCase.fetchUserDetail() }
                 .onSuccess {
                     _userDetail.value = it
                     val imageReference = FirebaseStorage.getInstance().getReference(userDetail.value.userImage)
