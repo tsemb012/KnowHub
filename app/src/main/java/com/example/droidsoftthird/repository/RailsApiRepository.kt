@@ -30,4 +30,6 @@ interface RailsApiRepository {
     suspend fun registerEvent(eventId: String): String?
     suspend fun unregisterEvent(eventId: String): String?
     suspend fun deleteEvent(eventId: String): String?
+    suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup>
+    suspend fun fetchGroupsByCity(code: Int): List<ApiGroup>
 }

@@ -53,6 +53,12 @@ interface MainApi {
             @Body request: PutUserToGroupJson
     ): Response<MessageResponse>
 
+    @GET("groups/locations/prefecture")
+    suspend fun fetchGroupsByPrefecture(code: Int): List<GetGroupJson>
+
+    @GET("groups/locations/city")
+    suspend fun fetchGroupsByCity(code: Int): List<GetGroupJson>
+
     @GET("maps/search_individual")
     suspend fun getIndividualPlace(
             @Query("input") query: String,
