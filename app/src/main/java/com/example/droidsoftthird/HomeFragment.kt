@@ -53,6 +53,7 @@ class HomeFragment: Fragment() {
         val homeViewPagerAdapter = HomeViewPagerAdapter(this)
         val viewPager = binding.pager
         viewPager.adapter = homeViewPagerAdapter
+        viewPager.isUserInputEnabled = false
 
         //-----TabLayout&ViewPager Linking
         val tabLayout: TabLayout = binding.tabLayout
