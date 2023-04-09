@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.droidsoftthird.model.domain_model.GroupCountByArea
 import dagger.hilt.android.AndroidEntryPoint
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -32,8 +33,6 @@ class GroupLocationsFragment:Fragment() {
         super.onCreate(savedInstanceState)
         viewModel.getGroupCountByArea()
         Configuration.getInstance().load(requireContext(), requireContext().getSharedPreferences("osmdroid", 0))
-        // osmdroid configuration
-        //Configuration.getInstance().load(context, context?.getSharedPreferences("osm_prefs", Context.MODE_PRIVATE))
     }
 
     override fun onCreateView(
@@ -43,30 +42,37 @@ class GroupLocationsFragment:Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                OSMMapView(viewModel)
+                SubComposeView(viewModel)
             }
         }
     }
 
 }
 
+@Composable
+fun SubComposeView(viewModel: GroupLocationsViewModel) {
+    viewModel.groupCountByArea.observeAsState().let { state ->
+        if (state.value != null) {
+            OSMMapView(state.value as List<GroupCountByArea>)
+        } else {
+            Text(text = "Loading...")
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OSMMapView(viewModel: GroupLocationsViewModel) {
-    val context = LocalContext.current
+fun OSMMapView(groupCountByAreas: List<GroupCountByArea>) {
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    //val selectedCityGroups = remember { mutableStateListOf<StudyGroup>() }
 
-    val groupCountByCity = viewModel.groupCountByArea.value?.filter { it.category == "city" }
-    val groupCountByPrefecture = viewModel.groupCountByArea.value?.filter { it.category == "prefecture" }
+    val groupCountByCity = groupCountByAreas.filter { it.category == "city" }
+    val groupCountByPrefecture = groupCountByAreas.filter { it.category == "prefecture" }
 
 
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
-            // Show the list of groups for the selected city in the bottom sheet
-            //GroupList(groups = selectedCityGroups)
             Button(onClick = { Unit }) {
                 Text(text = "Create a new group")
             }
@@ -104,15 +110,13 @@ fun OSMMapView(viewModel: GroupLocationsViewModel) {
                         }
                     }
 
-
-
-                    val cityMarkers = groupCountByCity?.mapNotNull { groupCount ->
+                    val cityMarkers = groupCountByCity.mapNotNull { groupCount ->
                         val city = groupCount.cityName ?: return@mapNotNull null
                         val location = GeoPoint(groupCount.latitude, groupCount.longitude)
                         val item = OverlayItem(city, "${city}: ${groupCount.groupCount} groups", location)
                         item.setMarker(ContextCompat.getDrawable(context, R.drawable.marker_default_focused_base))
                         item
-                    } ?: mutableListOf()
+                    }
 
 
                     val markerOverlay = ItemizedIconOverlay(context, cityMarkers, markerClickListener)
@@ -123,13 +127,3 @@ fun OSMMapView(viewModel: GroupLocationsViewModel) {
         }
     }
 }
-
-/*@Composable
-fun GroupList(groups: List<StudyGroup>) {
-    // Display the list of groups in the selected city
-    LazyColumn {
-        items(groups) { group ->
-            Text(text = "Group ${group.id}: ${group.cityName}")
-        }
-    }
-}*/
