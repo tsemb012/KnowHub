@@ -12,7 +12,7 @@ interface RailsApiRepository {
     suspend fun fetchGroups(page: Int) : List<ApiGroup>
     suspend fun fetchJoinedGroups() : List<ApiGroup>
     suspend fun userJoinGroup(groupId: String): String?
-    /*suspend fun fetchGroupLocations(): List<GroupLocation>*/
+    suspend fun fetchGroupCountByArea(): List<GroupCountByArea>
 
     suspend fun fetchUser(): UserDetail
     suspend fun updateUserDetail(userDetail: UserDetail): String?

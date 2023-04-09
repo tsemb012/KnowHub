@@ -44,8 +44,8 @@ interface MainApi {
             @Query("user_id") userId: String? = null
     ): Response<List<GetGroupJson>>
 
-    @GET("groups/locations")
-    suspend fun fetchGroupLocations(): List<GetGroupLocationJson>
+    @GET("groups/locations/count")
+    suspend fun fetchGroupCountByArea(): List<GetGroupCountByAreaJson>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
