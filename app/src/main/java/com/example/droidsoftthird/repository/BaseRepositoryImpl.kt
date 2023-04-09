@@ -195,6 +195,8 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
+    override suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup> = mainApi.fetchGroupsByPrefecture(code).map { it.toEntity() }
+    override suspend fun fetchGroupsByCity(code: Int): List<ApiGroup> = mainApi.fetchGroupsByCity(code).map { it.toEntity() }
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(

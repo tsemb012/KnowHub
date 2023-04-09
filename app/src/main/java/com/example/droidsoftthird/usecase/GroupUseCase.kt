@@ -13,6 +13,15 @@ class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImp
     suspend fun userJoinGroup(groupId: String) = repository.userJoinGroup(groupId)
     suspend fun fetchJoinedGroups() = repository.fetchJoinedGroups()
     suspend fun uploadPhoto(value: Uri) = repository.uploadPhoto(value)
-    suspend fun fetchGroupCountByArea() = repository.fetchGroupCountByArea()
+    suspend fun fetchCountByArea() = repository.fetchGroupCountByArea()
+    suspend fun fetchGroupsByArea(code: Int, category: String) = if (category == "prefecture") {
+        fetchGroupsByPrefecture(code)
+    } else {
+        fetchGroupsByCity(code)
+    }
+
+    private suspend fun fetchGroupsByPrefecture(code: Int) = repository.fetchGroupsByPrefecture(code)
+    private suspend fun fetchGroupsByCity(code: Int) = repository.fetchGroupsByCity(code)
+
 
 }
