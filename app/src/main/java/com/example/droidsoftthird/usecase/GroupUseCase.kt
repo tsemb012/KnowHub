@@ -1,7 +1,6 @@
 package com.example.droidsoftthird.usecase
 
 import android.net.Uri
-import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedGroup
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import javax.inject.Inject
@@ -14,6 +13,6 @@ class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImp
     suspend fun userJoinGroup(groupId: String) = repository.userJoinGroup(groupId)
     suspend fun fetchJoinedGroups() = repository.fetchJoinedGroups()
     suspend fun uploadPhoto(value: Uri) = repository.uploadPhoto(value)
-    //suspend fun fetchGroupLocations() = repository.fetchGroupLocations()
+    suspend fun fetchGroupCountByArea() = repository.fetchGroupCountByArea()
 
 }
