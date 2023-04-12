@@ -22,7 +22,8 @@ data class UserDetail (
                 comment = comment,
                 gender = gender,
                 age = age,
-                area = area.toJson()
+                prefectureCode = area.prefecture?.prefectureCode ?: -1,
+                cityCode = area.city?.cityCode ?: -1,
         )
 }
 

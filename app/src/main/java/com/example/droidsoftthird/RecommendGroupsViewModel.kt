@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RecommendPagerViewModel @Inject constructor(private val useCase: GroupUseCase):ViewModel() {
+class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUseCase):ViewModel() {
 
     private val _groups = MutableLiveData<List<ApiGroup>?>()
     val groups: LiveData<List<ApiGroup>?>
