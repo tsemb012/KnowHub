@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -32,9 +30,18 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.location.LocationManager
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
+import coil.compose.rememberImagePainter
+import com.example.droidsoftthird.model.domain_model.ApiGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -78,19 +85,21 @@ class GroupLocationsFragment:Fragment() {
 @Composable
 fun OSMMapView(viewModel: GroupLocationsViewModel, fragment: GroupLocationsFragment) {
 
+    val uiModel = viewModel.uiModel.observeAsState()
+
+
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
-            Button(onClick = { Unit }) {
-                Text(text = "Create a new group")
-            }
+            val groups = uiModel.value?.groupsBySelectedArea ?: listOf()
+            GroupList(groups)
         }
     ) {
         MainScreenContent(
-            viewModel,
+            uiModel,
             fragment,
             bottomSheetState,
             scope
@@ -101,14 +110,13 @@ fun OSMMapView(viewModel: GroupLocationsViewModel, fragment: GroupLocationsFragm
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainScreenContent(
-    viewModel: GroupLocationsViewModel,
-    fragment: GroupLocationsFragment,
-    bottomSheetState: ModalBottomSheetState,
-    scope: CoroutineScope,
-    getGroups: (Int, String) -> Unit
+        uiModel: State<GroupLocationsUiModel?>,
+        fragment: GroupLocationsFragment,
+        bottomSheetState: ModalBottomSheetState,
+        scope: CoroutineScope,
+        getGroups: (Int, String) -> Unit
 ) {
 
-    val uiModel = viewModel.uiModel.observeAsState()
 
     val groupCountByCity = uiModel.groupCountByArea?.filter { it.category == "city" }
     val groupCountByPrefecture = mutableListOf(uiModel.groupCountByArea?.filter { it.category == "prefecture" })
@@ -173,6 +181,51 @@ fun MainScreenContent(
                 }
             }
         }, modifier = Modifier.fillMaxSize())
+    }
+}
+
+@Composable
+fun GroupList(groups: List<ApiGroup>) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+    ) {
+        items(groups) { group ->
+            GroupListItem(group = group)
+        }
+    }
+}
+
+@Composable
+fun GroupListItem(group: ApiGroup) {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        elevation = 8.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Image(
+                painter = rememberImagePainter(group.storageRef),
+                contentDescription = null,
+                modifier = Modifier.size(72.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(text = group.groupName, style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = group.groupIntroduction, style = MaterialTheme.typography.body1)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "${group.prefecture} ${group.city}",
+                    style = MaterialTheme.typography.caption,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+        }
     }
 }
 
