@@ -19,12 +19,16 @@ interface MainApi {
             @Path("user_id") userId: String
     ): GetUserDetailJson
 
+    @GET("users/{user_id}/groups")
+    suspend fun fetchUserJoinedGroups(
+            @Path("user_id") userId: String
+    ): Response<List<GetGroupJson>>
+
     @PATCH("users/{user_id}")
     suspend fun putUserDetail(
             @Path("user_id") userId: String,
             @Body user: PostUserDetailJson
     ): MessageResponse
-
 
     fun postNewUser(@Body request: PostSignUpJson.Request): Response<UserJson>
 
@@ -41,8 +45,12 @@ interface MainApi {
     @GET("groups")
     suspend fun fetchGroups(
             @Query("page") page: Int? = null,
-            @Query("user_id") userId: String? = null
+            @Query("area_code") code: Int? = null,
+            @Query("area_category") type: String? = null
     ): Response<List<GetGroupJson>>
+
+    @GET("groups/locations/count")
+    suspend fun fetchGroupCountByArea(): List<GetGroupCountByAreaJson>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(

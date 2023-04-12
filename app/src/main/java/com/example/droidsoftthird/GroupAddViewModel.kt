@@ -3,7 +3,7 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
-import com.example.droidsoftthird.model.domain_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.EditedGroup
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +36,8 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     private val _city = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val city: LiveData<String>
         get() = _city
+
+    private var areaCodes: Pair<Int?, Int?>? = null
 
     private val _facilityEnvironment = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val facilityEnvironment: LiveData<String>
@@ -137,15 +139,15 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                     when(it){
                         is Result.Success -> {
                             val storageRef = it.data.path.plus(IMAGE_SIZE)//FirebaseExtinctionで画像加工及びファイル名を変更ししているため、ファイル名を修正する。
-                            val group = ApiGroup(
+                            val group = EditedGroup(
                                 null,
                                 FirebaseAuth.getInstance().uid ?: throw IllegalStateException(),
                                 storageRef,
                                 groupName.value.toString(),
                                 groupIntroduction.value.toString(),
                                 groupType.value.toString(),
-                                prefecture.value.toString(),
-                                city.value.toString(),
+                                areaCodes?.first ?: -1,
+                                areaCodes?.second ?: -1,
                                 facilityEnvironment.value.toString(),
                                 basis.value.toString(),
                                 frequency.value!!,
@@ -174,6 +176,10 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val navigationToHome = MutableLiveData<Event<String>>()
     fun onHomeClicked(){
         navigationToHome.value = Event("navigation")
+    }
+
+    fun postCodes(pair: Pair<Int?, Int?>) {
+        areaCodes = pair
     }
 
     companion object {

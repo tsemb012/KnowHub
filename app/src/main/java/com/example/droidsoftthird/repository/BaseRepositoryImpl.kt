@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.*
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.domain_model.*
-import com.example.droidsoftthird.model.domain_model.fire_model.Group
+import com.example.droidsoftthird.model.domain_model.fire_model.FireGroup
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
-import com.example.droidsoftthird.model.domain_model.fire_model.UserProfile
+import com.example.droidsoftthird.model.domain_model.fire_model.FireUserProfile
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
@@ -63,7 +63,7 @@ class BaseRepositoryImpl @Inject constructor(
         mainApi.postNewUser(PostSignUp.Request(signup)).body()?.toEntity()
         //TODO Resultを付けて返した方が良いかを検討する。→ Jsonを戻す時の構造体を再検討する。*/
 
-    override suspend fun getGroups(query: String): Result<List<Group>> = getListResult(query, Group::class.java)
+    override suspend fun getGroups(query: String): Result<List<FireGroup>> = getListResult(query, FireGroup::class.java)
 
     override suspend fun certifyAndRegister(tokenID: String) {
         mapOf("Authorization" to "Bearer $tokenID").let {
@@ -120,7 +120,7 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }//TODO 要リファクタリング
 
-    override suspend fun getGroup(groupId: String): Result<Group?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
+    override suspend fun getGroup(groupId: String): Result<FireGroup?> = //TODO GroupがNullである可能性のリスクをどこかで回収する。
     withContext(Dispatchers.IO){suspendCoroutine { continuation ->
         fireStore.collection("groups")
             .document(groupId)
@@ -158,7 +158,7 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createGroup(group: ApiGroup): String? =
+    override suspend fun createGroup(group: EditedGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
     override suspend fun fetchGroupDetail(groupId: String): ApiGroupDetail {//TODO エラーハンドリングをまとめる
@@ -169,12 +169,20 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("fetchGroupDetail is failed")
         }
     }
-
     override suspend fun fetchGroups(page: Int) : List<ApiGroup> = //TODO ドメイン層を作り、ビジネスロジックを詰め込む必要がある。
         mainApi.fetchGroups(page = page).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
-        mainApi.fetchGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup> =
+        mainApi.fetchGroups(
+            code = code,
+            type = "prefecture"
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun fetchGroupsByCity(code: Int): List<ApiGroup> =
+        mainApi.fetchGroups(
+            code = code,
+            type = "city"
+        ).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun userJoinGroup(groupId: String): String? {
         val response = mainApi.putUserToGroup(groupId, PutUserToGroupJson(userId))
@@ -184,11 +192,12 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("userJoinGroup is failed")
         }
     }
-
+    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
+        mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea().map { it.toEntity() }
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
-
     override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
     override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
@@ -232,7 +241,7 @@ class BaseRepositoryImpl @Inject constructor(
                 language = LANGUAGE_JP
         ).body()?.toEntity()
 
-    override suspend fun getUserProfile(): Result<UserProfile?> =
+    override suspend fun getUserProfile(): Result<FireUserProfile?> =
         withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")
@@ -255,7 +264,7 @@ class BaseRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun createUserProfile(userProfile: UserProfile): Result<Int> {
+    override suspend fun createUserProfile(userProfile: FireUserProfile): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 fireStore.collection("users")

@@ -13,7 +13,7 @@ import kotlin.collections.HashMap
 data class FireScheduleEvent(//空欄にして良い場所はNullableにしておく。
     val title: String,
     val date: LocalDate,
-    val place: Place?,
+    val place: FirePlace?,
     val startTime: LocalTime?,
     val endTime: LocalTime?,
     val groupId: String,
@@ -46,7 +46,7 @@ data class RawScheduleEvent(
 fun RawScheduleEvent.toEntity() = FireScheduleEvent(
     title = title ?: throw IllegalStateException(),
     date = date ?: throw IllegalStateException(),
-    place = Place(
+    place = FirePlace(
         place["isOnline"] as Boolean,
         place["prefecture"] as String,
         place["city"] as String,

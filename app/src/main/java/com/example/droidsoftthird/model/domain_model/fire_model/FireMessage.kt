@@ -2,7 +2,7 @@ package com.example.droidsoftthird.model.domain_model.fire_model
 import com.google.firebase.firestore.DocumentId
 import java.util.*
 
-interface Message{
+interface FireMessage{
     val userId:String?
     val userName:String?
     val userImageUrl:String?
@@ -22,7 +22,7 @@ data class TextMessage(
     @DocumentId
     override val messageId: String? = null,
 
-): Message
+): FireMessage
 
 //1.0
 data class ImageMessage(
@@ -34,7 +34,7 @@ data class ImageMessage(
     override val timestamp: Date? = null,
     @DocumentId
     override val messageId: String? = null,
-): Message
+): FireMessage
 
 //2.0
 data class FileMessage(
@@ -48,7 +48,7 @@ data class FileMessage(
     @DocumentId
     override val messageId: String? = null,
 
-): Message
+): FireMessage
 
 //3.0
 data class RecordMessage(
@@ -64,5 +64,5 @@ data class RecordMessage(
     @DocumentId
     override val messageId: String? = null,
 
-): Message
+): FireMessage
 

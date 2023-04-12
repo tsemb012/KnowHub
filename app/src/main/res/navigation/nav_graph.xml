@@ -74,11 +74,11 @@
             app:destination="@id/myPageFragment" />
     </fragment>
     <fragment
-        android:id="@+id/recommendPagerFragment"
-        android:name="com.example.droidsoftthird.RecommendPagerFragment"
+        android:id="@+id/recommendGroupsFragment"
+        android:name="com.example.droidsoftthird.RecommendGroupsFragment"
         android:label="RecommendPagerFragment" >
         <action
-            android:id="@+id/action_recommendPagerFragment_to_groupDetailFragment"
+            android:id="@+id/action_recommendGroupsFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
     </fragment>
 

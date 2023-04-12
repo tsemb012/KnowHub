@@ -7,11 +7,12 @@ interface RailsApiRepository {
 
     suspend fun certifyAndRegister(tokenID: String)
 
-    suspend fun createGroup(group: ApiGroup): String?
+    suspend fun createGroup(group: EditedGroup): String?
     suspend fun fetchGroupDetail(groupId: String) : ApiGroupDetail
     suspend fun fetchGroups(page: Int) : List<ApiGroup>
     suspend fun fetchJoinedGroups() : List<ApiGroup>
     suspend fun userJoinGroup(groupId: String): String?
+    suspend fun fetchGroupCountByArea(): List<GroupCountByArea>
 
     suspend fun fetchUser(): UserDetail
     suspend fun updateUserDetail(userDetail: UserDetail): String?
@@ -29,4 +30,6 @@ interface RailsApiRepository {
     suspend fun registerEvent(eventId: String): String?
     suspend fun unregisterEvent(eventId: String): String?
     suspend fun deleteEvent(eventId: String): String?
+    suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup>
+    suspend fun fetchGroupsByCity(code: Int): List<ApiGroup>
 }
