@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.viewinterop.AndroidView
@@ -34,6 +33,7 @@ import android.graphics.drawable.shapes.OvalShape
 import android.location.LocationManager
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -57,11 +57,7 @@ class GroupLocationsFragment:Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                val uiModel = viewModel.uiModel.observeAsState()
-                uiModel.value?.let {
-                    Log.d("GroupLocationsFragment", "uiModel.value: ${uiModel.value}")
-                    OSMMapView(uiModel, this@GroupLocationsFragment)
-                }
+                OSMMapView(viewModel, this@GroupLocationsFragment)
             }
         }
     }
@@ -80,7 +76,7 @@ class GroupLocationsFragment:Fragment() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OSMMapView(uiModel: State<GroupLocationsUiModel?>, fragment: GroupLocationsFragment) {
+fun OSMMapView(viewModel: GroupLocationsViewModel, fragment: GroupLocationsFragment) {
 
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
@@ -93,18 +89,26 @@ fun OSMMapView(uiModel: State<GroupLocationsUiModel?>, fragment: GroupLocationsF
             }
         }
     ) {
-        BottomSheetContent(uiModel, fragment, bottomSheetState, scope)
+        MainScreenContent(
+            viewModel,
+            fragment,
+            bottomSheetState,
+            scope
+        ) { code:Int, category:String ->  viewModel.getGroupsByArea(code, category) }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheetContent(
-    uiModel: State<GroupLocationsUiModel?>,
+fun MainScreenContent(
+    viewModel: GroupLocationsViewModel,
     fragment: GroupLocationsFragment,
     bottomSheetState: ModalBottomSheetState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    getGroups: (Int, String) -> Unit
 ) {
+
+    val uiModel = viewModel.uiModel.observeAsState()
 
     val groupCountByCity = uiModel.groupCountByArea?.filter { it.category == "city" }
     val groupCountByPrefecture = mutableListOf(uiModel.groupCountByArea?.filter { it.category == "prefecture" })
@@ -133,7 +137,9 @@ fun BottomSheetContent(
                                 setZoom(15.0)
                             }
                             showInfoWindow()
+                            getGroups(groupCount.code.toInt(), groupCount.category)
                             scope.launch { bottomSheetState.show() }
+
                             true
                         }
                     }

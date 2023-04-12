@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,9 +55,13 @@ class GroupLocationsViewModel @Inject constructor(private val useCase: GroupUseC
                 useCase.fetchGroupsByArea(code, type)
             }
                 .onSuccess {
-                    _groupsBySelectedArea.value = LoadState.Loaded(it) }
+                    _groupsBySelectedArea.value = LoadState.Loaded(it)
+                    Log.d("GroupLocationsViewModel", "getGroupsByArea: $it")
+                }
                 .onFailure {
-                    _message.value = it.message }
+                    _message.value = it.message
+                    Log.d("GroupLocationsViewModel", "getGroupsByArea: $it")
+                }
         }
     }
 }
