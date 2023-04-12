@@ -40,6 +40,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.findNavController
 import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +58,8 @@ class GroupLocationsFragment:Fragment() {
         Configuration.getInstance().load(requireContext(), requireContext().getSharedPreferences("osmdroid", 0))
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,9 +67,19 @@ class GroupLocationsFragment:Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                OSMMapView(viewModel, this@GroupLocationsFragment)
+                OSMMapView(
+                    viewModel,
+                    this@GroupLocationsFragment,
+                    ::navigateToGroupDetail
+                )
             }
         }
+    }
+
+    fun navigateToGroupDetail(groupId: String) {
+        this.findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToGroupDetailFragment(groupId)
+        )
     }
 
     private fun requestLocationPermission() {
@@ -83,7 +96,11 @@ class GroupLocationsFragment:Fragment() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OSMMapView(viewModel: GroupLocationsViewModel, fragment: GroupLocationsFragment) {
+fun OSMMapView(
+    viewModel: GroupLocationsViewModel,
+    fragment: GroupLocationsFragment,
+    navigateToDetail: (String) -> Unit
+) {
 
     val uiModel = viewModel.uiModel.observeAsState()
 
@@ -91,11 +108,13 @@ fun OSMMapView(viewModel: GroupLocationsViewModel, fragment: GroupLocationsFragm
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
+
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
             val groups = uiModel.value?.groupsBySelectedArea ?: listOf()
-            GroupList(groups)
+            GroupList(groups, navigateToDetail)
         }
     ) {
         MainScreenContent(
@@ -185,23 +204,28 @@ fun MainScreenContent(
 }
 
 @Composable
-fun GroupList(groups: List<ApiGroup>) {
+fun GroupList(groups: List<ApiGroup>, navigateToDetail: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
     ) {
         items(groups) { group ->
-            GroupListItem(group = group)
+            GroupListItem(
+                group = group,
+                navigateToDetail = navigateToDetail
+            )
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun GroupListItem(group: ApiGroup) {
+fun GroupListItem(group: ApiGroup, navigateToDetail: (String) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-        elevation = 8.dp
+        elevation = 8.dp,
+        onClick = { group.groupId?.let { navigateToDetail(it) } }
     ) {
         Row(
             modifier = Modifier
