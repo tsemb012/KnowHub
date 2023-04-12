@@ -169,12 +169,20 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("fetchGroupDetail is failed")
         }
     }
-
     override suspend fun fetchGroups(page: Int) : List<ApiGroup> = //TODO ドメイン層を作り、ビジネスロジックを詰め込む必要がある。
         mainApi.fetchGroups(page = page).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
-        mainApi.fetchGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup> =
+        mainApi.fetchGroups(
+            code = code,
+            type = "prefecture"
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun fetchGroupsByCity(code: Int): List<ApiGroup> =
+        mainApi.fetchGroups(
+            code = code,
+            type = "city"
+        ).body()?.map { it.toEntity() } ?: listOf()
 
     override suspend fun userJoinGroup(groupId: String): String? {
         val response = mainApi.putUserToGroup(groupId, PutUserToGroupJson(userId))
@@ -184,7 +192,8 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("userJoinGroup is failed")
         }
     }
-
+    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
+        mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
     override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea().map { it.toEntity() }
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
@@ -195,8 +204,6 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
-    override suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup> = mainApi.fetchGroupsByPrefecture(code).map { it.toEntity() }
-    override suspend fun fetchGroupsByCity(code: Int): List<ApiGroup> = mainApi.fetchGroupsByCity(code).map { it.toEntity() }
 
     override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
         mainApi.getIndividualPlace(
