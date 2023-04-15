@@ -29,6 +29,7 @@ class ProfileEditFragment :ProfileSubmitFragment() {
                     binding.submitProfileBtn.isEnabled = false
                     Toast.makeText(requireContext(), "Error: ${uiModel.loadState.error}", Toast.LENGTH_SHORT).show()
                 }
+                else -> {}
             }
         }
     }
