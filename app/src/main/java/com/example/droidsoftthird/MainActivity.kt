@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                                 })
                             }
                             MainViewModel.AuthenticationState.UNAUTHENTICATED -> {  }
+                            else -> {}
                         }
                     })
                 }
