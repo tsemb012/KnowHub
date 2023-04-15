@@ -134,6 +134,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                             }*/
                         }
                         //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                        else -> {}
                     }
                 }
             }
@@ -162,6 +163,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                         }*/
                     }
                     //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                    else -> {}
                 }
             }
         }
@@ -192,6 +194,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                         }*/
                     }
                     //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                    else -> {}
                 }
             }
         }
