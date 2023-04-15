@@ -3,6 +3,9 @@ package com.example.droidsoftthird.repository
 import android.net.Uri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.domain_model.*
@@ -13,6 +16,7 @@ import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJ
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
+import com.example.droidsoftthird.repository.paging.GroupPagingSource
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -25,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
 import java.time.LocalDate
@@ -169,20 +174,19 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("fetchGroupDetail is failed")
         }
     }
-    override suspend fun fetchGroups(page: Int) : List<ApiGroup> = //TODO ドメイン層を作り、ビジネスロジックを詰め込む必要がある。
-        mainApi.fetchGroups(page = page).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup> =
-        mainApi.fetchGroups(
-            code = code,
-            type = "prefecture"
-        ).body()?.map { it.toEntity() } ?: listOf()
-
-    override suspend fun fetchGroupsByCity(code: Int): List<ApiGroup> =
-        mainApi.fetchGroups(
-            code = code,
-            type = "city"
-        ).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchGroups(  //.cachedIn(viewModelScope).first()
+        areaCode: Int?,//TODO paramsデータクラスにまとめるように修正する。
+        areaCategory: String?,
+    ) : Flow<PagingData<ApiGroup>> = //TODO ここに追加するようにする。
+        Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true
+            )
+        ) {
+            GroupPagingSource(mainApi, areaCode, areaCategory)
+        }.flow
 
     override suspend fun userJoinGroup(groupId: String): String? {
         val response = mainApi.putUserToGroup(groupId, PutUserToGroupJson(userId))

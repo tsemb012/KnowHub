@@ -33,7 +33,6 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -41,9 +40,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -113,8 +116,8 @@ fun OSMMapView(
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
-            val groups = uiModel.value?.groupsBySelectedArea ?: listOf()
-            GroupList(groups, navigateToDetail)
+            val lazyPagingGroups = (uiModel.value?.groupsBySelectedArea ?: emptyFlow()).collectAsLazyPagingItems()
+            GroupList(lazyPagingGroups, navigateToDetail)
         }
     ) {
         MainScreenContent(
@@ -204,16 +207,13 @@ fun MainScreenContent(
 }
 
 @Composable
-fun GroupList(groups: List<ApiGroup>, navigateToDetail: (String) -> Unit) {
+fun GroupList(groups: LazyPagingItems<ApiGroup>, navigateToDetail: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
     ) {
-        items(groups) { group ->
-            GroupListItem(
-                group = group,
-                navigateToDetail = navigateToDetail
-            )
+        items(groups) {
+            it?.let { group -> GroupListItem(group, navigateToDetail) }
         }
     }
 }
@@ -223,7 +223,9 @@ fun GroupList(groups: List<ApiGroup>, navigateToDetail: (String) -> Unit) {
 fun GroupListItem(group: ApiGroup, navigateToDetail: (String) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
         elevation = 8.dp,
         onClick = { group.groupId?.let { navigateToDetail(it) } }
     ) {
