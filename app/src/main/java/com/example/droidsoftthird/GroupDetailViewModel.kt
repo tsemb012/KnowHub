@@ -17,7 +17,7 @@ class GroupDetailViewModel @AssistedInject constructor(
     val groupDetail: LiveData<ApiGroupDetail?>
         get() = _groupDetail
 
-    val prefectureAndCity: LiveData<String> = Transformations.map(groupDetail){ group ->
+    val prefectureAndCity: LiveData<String> = groupDetail.map{ group ->
         if (group?.prefecture != "未設定" ) {
             "${group?.prefecture}, ${group?.city}"
         } else {
@@ -25,7 +25,7 @@ class GroupDetailViewModel @AssistedInject constructor(
         }
     }
 
-    val ageRange: LiveData<String> = Transformations.map(groupDetail) { group ->
+    val ageRange: LiveData<String> = groupDetail.map{ group ->
 
             if (group?.minAge != -1 || group?.maxAge != -1) {
                 "${group?.minAge} ~ ${group?.maxAge}才"
@@ -34,7 +34,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             }
     }
 
-    val numberPerson: LiveData<String> = Transformations.map(groupDetail) { group ->
+    val numberPerson: LiveData<String> = groupDetail.map{ group ->
 
             if (group?.minNumberPerson != -1 || group?.maxNumberPerson != -1) {
                 "${group?.minNumberPerson} ~ ${group?.maxNumberPerson}人"
@@ -43,7 +43,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             }
     }
 
-    val basisFrequency: LiveData<String> = Transformations.map(groupDetail){ group ->
+    val basisFrequency: LiveData<String> = groupDetail.map{ group ->
         if (group?.basis != "未設定" ) {
             "${group?.basis}${group?.frequency}回"
         } else {
