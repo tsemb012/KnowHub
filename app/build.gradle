@@ -263,4 +263,6 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.15'
     implementation 'com.github.MKergall:osmbonuspack:6.9.0'
 
+    //-----Paging
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
 }

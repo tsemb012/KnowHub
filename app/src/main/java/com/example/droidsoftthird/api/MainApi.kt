@@ -47,7 +47,7 @@ interface MainApi {
             @Query("page") page: Int? = null,
             @Query("area_code") code: Int? = null,
             @Query("area_category") type: String? = null
-    ): Response<List<GetGroupJson>>
+    ): List<GetGroupJson>
 
     @GET("groups/locations/count")
     suspend fun fetchGroupCountByArea(): List<GetGroupCountByAreaJson>
