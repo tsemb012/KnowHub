@@ -113,6 +113,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                 Toast.makeText(requireContext(), schedulesLoadState.error.toString(), Toast.LENGTH_SHORT).show()
                 viewModel.initializeSchedulesState()
             }
+            else -> {}
         }
     }
 

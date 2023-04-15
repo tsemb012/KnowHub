@@ -58,6 +58,7 @@ class SignUpFragment: Fragment() {
                                 SignUpEvent.NavigateBack -> {
                                     activity?.onBackPressedDispatcher?.onBackPressed()
                                 }
+                                else -> {}
                             }
                         }
 
