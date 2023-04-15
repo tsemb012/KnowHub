@@ -11,7 +11,7 @@ import javax.inject.Inject
 class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImpl, ) {
 
     suspend fun createGroup(group: EditedGroup) = repository.createGroup(group)
-    suspend fun fetchGroups(page: Int) = repository.fetchGroups(page)
+    suspend fun fetchGroups() = repository.fetchGroups()
     suspend fun fetchGroupDetail(groupId: String) = repository.fetchGroupDetail(groupId)
     suspend fun userJoinGroup(groupId: String) = repository.userJoinGroup(groupId)
     suspend fun fetchJoinedGroups() = repository.fetchJoinedGroups()
@@ -23,7 +23,11 @@ class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImp
         fetchGroupsByCity(code)
     }
 
-    private suspend fun fetchGroupsByPrefecture(code: Int) = repository.fetchGroups(code)
-    private suspend fun fetchGroupsByCity(code: Int) = repository.fetchGroups(code)
+    private suspend fun fetchGroupsByPrefecture(code: Int) = repository.fetchGroups(
+        code,
+    )
+    private suspend fun fetchGroupsByCity(code: Int) = repository.fetchGroups(
+        code,
+    )
 
 }

@@ -181,7 +181,7 @@ class BaseRepositoryImpl @Inject constructor(
     ) : Flow<PagingData<ApiGroup>> = //TODO ここに追加するようにする。
         Pager(
             config = PagingConfig(
-                pageSize = 10,
+                pageSize = 5,
                 enablePlaceholders = true
             )
         ) {
