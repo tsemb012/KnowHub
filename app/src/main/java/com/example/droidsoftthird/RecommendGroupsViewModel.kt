@@ -23,7 +23,7 @@ class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUse
             runCatching {
                 useCase.fetchGroups(0)
             }.onSuccess {
-                _groups.postValue(it)
+                //_groups.postValue(it)
             }.onFailure {
                 throw it
             }
@@ -54,7 +54,7 @@ class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUse
                 useCase.fetchGroups(nextPage)
             }.onSuccess { nextGroups ->
                 groups.value?.let { currentGroups ->
-                    _groups.postValue(currentGroups + nextGroups)
+                    //_groups.postValue(currentGroups + nextGroups)
                 }
             }.onFailure {
                 Result.Failure(Exception("Network request failed"))
