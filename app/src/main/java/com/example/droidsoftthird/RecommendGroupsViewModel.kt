@@ -4,63 +4,47 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUseCase):ViewModel() {
 
-    private val _groups = MutableLiveData<List<ApiGroup>?>()
-    val groups: LiveData<List<ApiGroup>?>
-        get() = _groups
+    private val _groupsFlow = MutableStateFlow<PagingData<ApiGroup>>(PagingData.empty())
+    val groupsFlow get() = _groupsFlow
+
+    private val error = MutableLiveData<String?>()
+    val errorLiveData: LiveData<String?>
+        get() = error
+
 
     fun initialize() {
-        clearGroups()
+        loadGroups()
+    }
+
+    fun cancel() {
+        viewModelScope.coroutineContext.cancelChildren()
+    }
+
+    private fun loadGroups() {
         viewModelScope.launch {
-            runCatching {
-                useCase.fetchGroups(0)
-            }.onSuccess {
-                //_groups.postValue(it)
-            }.onFailure {
-                throw it
-            }
-        }
-    }
-
-    private fun clearGroups() {
-        _groups.value = listOf()
-    }
-
-
-    private val _navigateToGroupDetail = MutableLiveData<String?>()
-    val navigateToGroupDetail
-        get()=_navigateToGroupDetail
-
-    fun onGroupClicked(id:String){
-        _navigateToGroupDetail.value = id
-    }
-
-    fun onGroupDetailNavigated(){
-        _navigateToGroupDetail.value = null
-    }
-
-    fun loadMore(currentPage: Int) {
-        val nextPage = currentPage.inc()
-        viewModelScope.launch {
-            runCatching {
-                useCase.fetchGroups(nextPage)
-            }.onSuccess { nextGroups ->
-                groups.value?.let { currentGroups ->
-                    //_groups.postValue(currentGroups + nextGroups)
+            useCase.fetchGroups()
+                .cachedIn(viewModelScope)
+                .catch { e ->
+                    error.value = e.message
                 }
-            }.onFailure {
-                Result.Failure(Exception("Network request failed"))
-            }
+                .collect {
+                    _groupsFlow.value = it
+                }
         }
     }
-
 }
 

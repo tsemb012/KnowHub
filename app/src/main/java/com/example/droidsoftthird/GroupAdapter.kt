@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemGroupBinding
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 
+//TODO マイページを置き換えた後で実装を修正するようにする。
 class GroupAdapter(val clickListener: GroupListener): ListAdapter<ApiGroup, GroupAdapter.ViewHolder>(GroupDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder.from(parent)

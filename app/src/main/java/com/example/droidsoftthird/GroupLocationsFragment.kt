@@ -34,6 +34,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -117,7 +120,10 @@ fun OSMMapView(
         sheetState = bottomSheetState,
         sheetContent = {
             val lazyPagingGroups = (uiModel.value?.groupsBySelectedArea ?: emptyFlow()).collectAsLazyPagingItems()
-            GroupList(lazyPagingGroups, navigateToDetail)
+            GroupList(
+                lazyPagingGroups,
+                navigateToDetail,
+            )
         }
     ) {
         MainScreenContent(
@@ -188,13 +194,14 @@ fun MainScreenContent(
                 val locationManager = fragment.requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
                 if (ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     val currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    val defaultTokyoLocation = GeoPoint(35.681236, 139.767125)
                     currentLocation.let {
                         controller.apply {
                             setZoom(12)
-                            setCenter(GeoPoint(it?.latitude!!, it.longitude))
+                            setCenter(GeoPoint(it?.latitude ?: defaultTokyoLocation.latitude, it?.longitude ?: defaultTokyoLocation.longitude))
                         }
                         val currentLocationMarker = Marker(this).apply {
-                            position = GeoPoint(it?.latitude!!, it.longitude)
+                            position = GeoPoint(it?.latitude ?: defaultTokyoLocation.latitude, it?.longitude  ?: defaultTokyoLocation.longitude)
                             icon = createBlueDotDrawable(fragment.requireContext())
                             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                         }
@@ -206,15 +213,23 @@ fun MainScreenContent(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun GroupList(groups: LazyPagingItems<ApiGroup>, navigateToDetail: (String) -> Unit) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
-    ) {
-        items(groups) {
-            it?.let { group -> GroupListItem(group, navigateToDetail) }
+fun GroupList(groups: LazyPagingItems<ApiGroup>, navigateToDetail: (String) -> Unit, ) {
+    var refreshing by remember { mutableStateOf(false) }
+    fun refresh () {groups.refresh()}
+
+    val state = rememberPullRefreshState(refreshing, ::refresh)
+    Box(modifier = Modifier.pullRefresh(state)) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+        ) {
+            items(groups) {
+                it?.let { group -> GroupListItem(group, navigateToDetail) }
+            }
         }
+        PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
     }
 }
 
