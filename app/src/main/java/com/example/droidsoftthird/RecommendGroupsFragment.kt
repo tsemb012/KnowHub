@@ -8,8 +8,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.composable.group.RecommendGroupsScreen
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -7,9 +7,8 @@ import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.usecase.ProfileUseCase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,31 +23,16 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
 
     init { fetchUserDetail() }
 
-    fun fetchUserDetail() {
+    private fun fetchUserDetail() {
         viewModelScope.launch {
-            kotlin.runCatching {
-                useCase.fetchUserDetail() }
-                .onSuccess {
-                    _userDetail.value = it
-                    val imageReference = FirebaseStorage.getInstance().getReference(userDetail.value.userImage)
-                    imageReference.getDownloadUrlOrNull()
-                    //imageUrl?.let { url -> downloadUrl.value = imageUrl }
-                    _userDetail.value = it
-                }
-                .onFailure {
-                    Log.d("tsemb012", "${it.message}")
-                }
-        }
-    }
-
-    fun StorageReference.getDownloadUrlOrNull() {
-        try {
-            downloadUrl.addOnSuccessListener {
-                downloadUrl1.value = it.toString()
+            
+            try {
+                val userDetail = async { useCase.fetchUserDetail() }
+                _userDetail.value = userDetail.await()
+                downloadUrl1.value = useCase.fetchUserImage(_userDetail.value.userImage)
+            } catch (e: Exception) {
+                Log.d("tsemb012", "${e.message}")
             }
-        } catch (e: Exception) {
-            throw e
         }
     }
-
 }

@@ -22,5 +22,7 @@ class ProfileUseCase @Inject constructor(private val repository: BaseRepositoryI
     }
     suspend fun updateAuthProfile(authUserDetail: UserProfileChangeRequest) = repository.updateAuthProfile(authUserDetail)
 
+    suspend fun fetchUserImage(imagePath: String): String = repository.fetchStorageImage(imagePath)
+
 
 }
