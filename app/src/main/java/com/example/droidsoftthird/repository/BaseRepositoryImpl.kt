@@ -51,6 +51,14 @@ class BaseRepositoryImpl @Inject constructor(
     private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
 
     override suspend fun getUserId() = userId
+    override suspend fun fetchStorageImage(imagePath: String): String = suspendCoroutine { continuation ->
+        val imageReference = FirebaseStorage.getInstance().getReference(imagePath)
+        imageReference.downloadUrl.addOnSuccessListener {
+            continuation.resume(it.toString())
+        }.addOnFailureListener {
+            throw it
+        }
+    }
 
     override suspend fun saveTokenId(tokenId: String) {
         dataStore.edit { preferences ->
