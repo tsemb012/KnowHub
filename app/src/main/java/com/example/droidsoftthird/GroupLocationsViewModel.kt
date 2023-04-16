@@ -53,7 +53,7 @@ class GroupLocationsViewModel @Inject constructor(private val useCase: GroupUseC
     fun getGroupsByArea(code: Int, type: String) {
         viewModelScope.launch {
             runCatching {
-                useCase.fetchGroupsByArea(code, type).cachedIn(viewModelScope)
+                useCase.fetchGroups(code, type).cachedIn(viewModelScope)
             }
                 .onSuccess {
                     _groupsBySelectedArea.value = LoadState.Loaded(it)
