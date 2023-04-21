@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +26,8 @@ class GroupAddFragment:Fragment(),View.OnClickListener {
 
     private lateinit var binding: FragmentGroupAddBinding
     private val viewModel:GroupAddViewModel by viewModels()
+    private val imagePickerLauncher = registerImagePickerLauncher()
+    private val imageCropLauncher = registerImageCropLauncher()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,29 +115,41 @@ class GroupAddFragment:Fragment(),View.OnClickListener {
     }
 
     private fun launchUploader() {
-        Log.d(ContentValues.TAG, "launchUploader")
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "image/*"
             addCategory(Intent.CATEGORY_OPENABLE)}
-        startActivityForResult(
-            intent,
-            REQUEST_IMAGE_OPEN
-        )
+
+        imagePickerLauncher.launch(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_OPEN && resultCode == Activity.RESULT_OK) {
-            val fullPhotoUri: Uri = requireNotNull(data?.data, { "requireNotNull" })
-            viewModel.postImageUri(fullPhotoUri)
+    private fun registerImagePickerLauncher() =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val sourceUri = it.data?.data
+                if (sourceUri != null) {
+                    val destinationUri = Uri.fromFile(createTempFile("ucrop", ".jpg"))
+                    val maxWidth = 1920
+                    val maxHeight = 1080
+                    val intent = UCrop.of(sourceUri, destinationUri)
+                        .withAspectRatio(16F, 9F)
+                        .withMaxResultSize(maxWidth, maxHeight)
+                        .getIntent(requireActivity())
+                    imageCropLauncher.launch(intent)
+                } else {
+                    Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
-
-
-    companion object {
-        private const val REQUEST_IMAGE_OPEN = 101
-    }
-
+    private fun registerImageCropLauncher() =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                val resultUri = UCrop.getOutput(result.data!!)
+                if (resultUri != null) {
+                    viewModel.postImageUri(resultUri)
+                }
+            } else if (result.resultCode == UCrop.RESULT_ERROR) {
+                Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+            }
+        }
 }
