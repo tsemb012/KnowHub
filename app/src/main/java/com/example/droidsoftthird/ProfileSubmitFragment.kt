@@ -2,9 +2,7 @@ package com.example.droidsoftthird
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -15,12 +13,6 @@ import com.example.droidsoftthird.dialogs.AreaDialogFragment
 import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
-import com.lyrebirdstudio.aspectratiorecyclerviewlib.aspectratio.model.AspectRatio
-import com.lyrebirdstudio.croppylib.Croppy
-import com.lyrebirdstudio.croppylib.main.CropRequest
-import com.lyrebirdstudio.croppylib.main.CroppyActivity
-import com.lyrebirdstudio.croppylib.main.CroppyActivity.Companion.newIntent
-import com.lyrebirdstudio.croppylib.main.StorageType
 import com.wada811.databinding.dataBinding
 
 abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
@@ -34,7 +26,6 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
     abstract val viewModel: ProfileSubmitViewModel
     protected val binding: FragmentProfileEditBinding by dataBinding()
     private val launcher = registerLauncher()
-    private val cropLancer = registerLauncherForCrop()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,19 +86,6 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val uri = it.data?.data
-                if (uri != null) {
-                    val intent = cropIntent(uri)
-                    cropLancer.launch(intent) //viewModel.storeTemporalUserImage(uri) }
-                } else {
-                    Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-    private fun registerLauncherForCrop() =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data
                 if (uri != null) { viewModel.storeTemporalUserImage(uri) }
             } else {
                 Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
@@ -128,27 +106,4 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         }
     }
 
-    fun cropIntent(uri: Uri): Intent {
-        val excludeAspectRatiosCropRequest = CropRequest.Auto(
-            sourceUri = uri,
-            requestCode = 12345,
-            excludedAspectRatios = AspectRatio.values().filter { it != AspectRatio.ASPECT_INS_1_1 },
-            storageType = StorageType.CACHE
-        )
-        val intent = newIntent(requireContext(), excludeAspectRatiosCropRequest)
-        return intent
-    }
-
-    private val KEY_CROP_REQUEST = "KEY_CROP_REQUEST"
-
-    fun newIntent(context: Context, cropRequest: CropRequest): Intent {
-        return Intent(context, CroppyActivity::class.java)
-            .apply {
-                Bundle()
-                    .apply { putParcelable(KEY_CROP_REQUEST, cropRequest) }
-                    .also { this.putExtras(it) }
-            }
-    }
-
 }
-
