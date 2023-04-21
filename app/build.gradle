@@ -151,9 +151,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
-    //-----Cropper
-    implementation 'com.github.lyrebirdstudio:Croppy:0.2'
-
     //-----Hilt
     def hilt_version = '2.45'
     implementation "com.google.dagger:hilt-android:$hilt_version"
