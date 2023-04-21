@@ -124,7 +124,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics'
@@ -142,7 +142,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
 
     //-----Coil
-    def coil_version = '2.2.2'
+    def coil_version = '2.3.0'
     implementation "io.coil-kt:coil:$coil_version"
     implementation "io.coil-kt:coil-compose:$coil_version"
 
@@ -263,4 +263,9 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.15'
     implementation 'com.github.MKergall:osmbonuspack:6.9.0'
 
+    //-----UCrop
+    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+
+    //-----Paging
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
 }

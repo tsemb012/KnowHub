@@ -1,8 +1,11 @@
 package com.example.droidsoftthird
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -14,6 +17,7 @@ import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.wada811.databinding.dataBinding
+import com.yalantis.ucrop.UCrop
 
 abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
 
@@ -26,6 +30,8 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
     abstract val viewModel: ProfileSubmitViewModel
     protected val binding: FragmentProfileEditBinding by dataBinding()
     private val launcher = registerLauncher()
+    private val ucropLauncher = registerUcrop()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,14 +90,34 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
 
     private fun registerLauncher() =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data
-                if (uri != null) { viewModel.storeTemporalUserImage(uri) }
-            } else {
-                Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+            if (it.resultCode == RESULT_OK) {
+                val sourceUri = it.data?.data
+                if (sourceUri != null) {
+                    val destinationUri = Uri.fromFile(createTempFile("ucrop", ".jpg"))
+                    val maxHeight = 1080
+                    val maxWidth = 1080
+                    val intent = UCrop.of(sourceUri, destinationUri)
+                        .withAspectRatio(16F, 9F)
+                        .withMaxResultSize(maxWidth, maxHeight)
+                        .getIntent(requireActivity())
+                    ucropLauncher.launch(intent)
+                       /* .start(this.requireContext(), this, UCrop.REQUEST_CROP)*/
+                } else {
+                    Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
+    private fun registerUcrop () =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK && result.data != null) {
+            val resultUri = UCrop.getOutput(result.data!!)
+            if (resultUri != null) {
+                viewModel.storeTemporalUserImage(resultUri)
+            }
+        } else if (result.resultCode == UCrop.RESULT_ERROR) {
+            Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+        } }
     private fun bindLoadState() { //TODO エラーハンドリングを共通化する。
         viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             when (uiModel.loadState) {
@@ -105,5 +131,4 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
             }
         }
     }
-
 }
