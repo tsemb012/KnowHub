@@ -1,7 +1,9 @@
 package com.example.droidsoftthird.repository
 
+import androidx.paging.PagingData
 import com.example.droidsoftthird.model.domain_model.*
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.flow.Flow
 
 interface RailsApiRepository {
 
@@ -9,7 +11,7 @@ interface RailsApiRepository {
 
     suspend fun createGroup(group: EditedGroup): String?
     suspend fun fetchGroupDetail(groupId: String) : ApiGroupDetail
-    suspend fun fetchGroups(page: Int) : List<ApiGroup>
+    suspend fun fetchGroups(areaCode: Int? = null, areaCategory: String? = null) : Flow<PagingData<ApiGroup>>
     suspend fun fetchJoinedGroups() : List<ApiGroup>
     suspend fun userJoinGroup(groupId: String): String?
     suspend fun fetchGroupCountByArea(): List<GroupCountByArea>
@@ -30,6 +32,4 @@ interface RailsApiRepository {
     suspend fun registerEvent(eventId: String): String?
     suspend fun unregisterEvent(eventId: String): String?
     suspend fun deleteEvent(eventId: String): String?
-    suspend fun fetchGroupsByPrefecture(code: Int): List<ApiGroup>
-    suspend fun fetchGroupsByCity(code: Int): List<ApiGroup>
 }
