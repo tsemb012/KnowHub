@@ -1,11 +1,9 @@
-package com.example.droidsoftthird.composable.group
+package com.example.droidsoftthird.composable.group.screen
 
 import androidx.compose.runtime.Composable
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.droidsoftthird.GroupList
 import com.example.droidsoftthird.RecommendGroupsViewModel
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
+import com.example.droidsoftthird.composable.group.content.PagingGroupList
 
 @Composable
 fun RecommendGroupsScreen(viewModel: RecommendGroupsViewModel, navigateToGroupDetail: (String) -> Unit) {
@@ -13,6 +11,6 @@ fun RecommendGroupsScreen(viewModel: RecommendGroupsViewModel, navigateToGroupDe
     val error = viewModel.errorLiveData
 
     val lazyPagingGroups = viewModel.groupsFlow.collectAsLazyPagingItems()
-    GroupList(lazyPagingGroups, navigateToGroupDetail)
+    PagingGroupList(lazyPagingGroups, navigateToGroupDetail)
 
 }
