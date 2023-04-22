@@ -137,16 +137,15 @@ fun TextView.bindAgeRange(minAge: Int, maxAge: Int){
         resources.getString(R.string.no_set)
     } else{
         String.format("%d〜%d才", minAge, maxAge)
-
     }
 }
 
-@BindingAdapter("minNumberPerson", "maxNumberPerson")
+@BindingAdapter("maxNumberPerson")
 fun TextView.bindNumberPerson(minNumberPerson: Int, maxNumberPerson: Int){//TODO DST-520 消す
-    text = if (minNumberPerson == -1  && maxNumberPerson == -1) {
+    text = if (maxNumberPerson == -1) {
         resources.getString(R.string.no_set)
     } else{
-        String.format("%d〜%d人", minNumberPerson, maxNumberPerson)
+        String.format("最大参加人数 %d人", maxNumberPerson)
     }
 }
 

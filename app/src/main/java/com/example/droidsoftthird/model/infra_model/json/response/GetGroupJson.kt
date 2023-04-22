@@ -25,8 +25,6 @@ data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡し�
         val minAge: Int,
         @Json(name = "max_number")
         val maxNumber: Int,
-        @Json(name = "min_number")
-        val minNumber: Int,
         @Json(name = "is_same_sexuality")
         val isSameSexuality: Boolean,
         @Json(name = "image_url")
@@ -47,7 +45,6 @@ data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡し�
                 frequency = frequencyTimes,
                 minAge = minAge,
                 maxAge = maxAge,
-                minNumberPerson = minNumber,//TODO DST-520 消す
                 maxNumberPerson = maxNumber,
                 isChecked = isSameSexuality,
         )
