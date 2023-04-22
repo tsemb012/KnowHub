@@ -59,10 +59,6 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val maxAge: LiveData<Int>
         get() = _maxAge
 
-    private val _minNumberPerson = MutableLiveData<Int>(-1)
-    val minNumberPerson: LiveData<Int>
-        get() = _minNumberPerson
-
     private val _maxNumberPerson = MutableLiveData<Int>(-1)
     val maxNumberPerson: LiveData<Int>
         get() = _maxNumberPerson
@@ -119,10 +115,6 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
         _maxAge.postValue(i)
     }
 
-    fun postMinNumberPerson(i: Int) {
-        _minNumberPerson.postValue(i)
-    }
-
     fun postMaxNumberPerson(i: Int) {
         _maxNumberPerson.postValue(i)
     }
@@ -153,7 +145,6 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 frequency.value!!,
                                 minAge.value!!,
                                 maxAge.value!!,
-                                minNumberPerson.value!!,
                                 maxNumberPerson.value!!,
                                 isChecked.value!!
                             )

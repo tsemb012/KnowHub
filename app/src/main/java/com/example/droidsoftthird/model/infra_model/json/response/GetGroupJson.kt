@@ -47,7 +47,7 @@ data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡し�
                 frequency = frequencyTimes,
                 minAge = minAge,
                 maxAge = maxAge,
-                minNumberPerson = minNumber,
+                minNumberPerson = minNumber,//TODO DST-520 消す
                 maxNumberPerson = maxNumber,
                 isChecked = isSameSexuality,
         )

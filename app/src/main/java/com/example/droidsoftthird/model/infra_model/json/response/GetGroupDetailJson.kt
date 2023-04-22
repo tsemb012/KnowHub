@@ -54,7 +54,7 @@ data class GetGroupDetailJson(
                 frequency = frequencyTimes,
                 minAge = minAge,
                 maxAge = maxAge,
-                minNumberPerson = minNumber,
+                minNumberPerson = minNumber,//TODO DST-520 消す
                 maxNumberPerson = maxNumber,
                 isChecked = isSameSexuality,
                 members = members.map { ApiMember(it.userId) }

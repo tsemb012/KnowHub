@@ -16,7 +16,6 @@ data class EditedGroup (
         val frequency:Int,
         val minAge:Int,
         val maxAge:Int,
-        val minNumberPerson:Int,
         val maxNumberPerson :Int,
         val isChecked:Boolean,
 ) {
@@ -34,7 +33,6 @@ data class EditedGroup (
                         maxAge = maxAge,
                         minAge = minAge,
                         maxNumber = maxNumberPerson,
-                        minNumber = maxNumberPerson,
                         isSameSexuality = isChecked,
                         imageUrl = storageRef,
                 )
@@ -54,7 +52,7 @@ data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebas
     val frequency:Int,
     val minAge:Int,
     val maxAge:Int,
-    val minNumberPerson:Int,
+    val minNumberPerson:Int,//TODO DST-520 消す
     val maxNumberPerson :Int,
     val isChecked:Boolean,
 )

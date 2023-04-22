@@ -61,7 +61,8 @@
                 app:minNumberPerson="@{group.minNumberPerson}"
                 app:maxNumberPerson="@{group.maxNumberPerson}"/>
             <!--TODO UIを考慮に入れ、現在の人数と最大人数のみ記述する。
-                     それに伴い、AddGroupの入力についても最小人数を消し、最大人数のみにする。-->
+                     それに伴い、AddGroupの入力についても最小人数を消し、最大人数のみにする。
+                     //TODO DST-520 消す-->
 
             <TextView
                 android:id="@+id/group_schedule"

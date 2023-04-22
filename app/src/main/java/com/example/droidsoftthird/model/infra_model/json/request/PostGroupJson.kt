@@ -23,8 +23,6 @@ data class PostGroupJson(
         val minAge: Int,
         @Json(name = "max_number")
         val maxNumber: Int,
-        @Json(name = "min_number")
-        val minNumber: Int,
         @Json(name = "is_same_sexuality")
         val isSameSexuality: Boolean,
         @Json(name = "image_url")

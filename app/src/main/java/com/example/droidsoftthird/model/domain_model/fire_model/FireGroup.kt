@@ -17,7 +17,7 @@ data class FireGroup (//FireStoreで使用する場合は、Nullableかつ初期
         val frequency:Int? = null,
         val minAge:Int? = null,
         val maxAge:Int? = null,
-        val minNumberPerson:Int? = null,
+        val minNumberPerson:Int? = null,//TODO DST-520 消す
         val maxNumberPerson :Int? = null,
         @field:JvmField
         val isChecked:Boolean? = null,
