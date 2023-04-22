@@ -374,8 +374,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintVertical_bias="0.0"
-                                    app:text="最大参加数 @{addGroupViewModel.maxNumberPerson} 人"/>
-                                <!--//TODO DST-520 消す-->
+                                    app:maxNumberPerson="@{addGroupViewModel.maxNumberPerson}"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>

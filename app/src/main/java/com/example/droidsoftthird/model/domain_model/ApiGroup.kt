@@ -52,7 +52,6 @@ data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebas
     val frequency:Int,
     val minAge:Int,
     val maxAge:Int,
-    val minNumberPerson:Int,//TODO DST-520 消す
     val maxNumberPerson :Int,
     val isChecked:Boolean,
 )

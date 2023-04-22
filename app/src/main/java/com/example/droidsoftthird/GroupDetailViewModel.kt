@@ -34,10 +34,9 @@ class GroupDetailViewModel @AssistedInject constructor(
             }
     }
 
-    val numberPerson: LiveData<String> = groupDetail.map{ group -> //TODO DST-520 消す
-
-            if (group?.minNumberPerson != -1 || group?.maxNumberPerson != -1) {
-                "${group?.minNumberPerson} ~ ${group?.maxNumberPerson}人"
+    val numberPerson: LiveData<String> = groupDetail.map{ group ->
+            if (group?.maxNumberPerson != -1) {
+                "最大参加人数 ${group?.maxNumberPerson}人"
             } else {
                 "未設定"
             }

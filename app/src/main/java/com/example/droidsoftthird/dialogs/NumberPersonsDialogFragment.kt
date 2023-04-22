@@ -26,6 +26,7 @@ class NumberPersonsDialogFragment:DialogFragment() {
 
         slider.stepSize = 1f
         slider.thumbTintList = AppCompatResources.getColorStateList(requireContext(), R.color.range_slider)
+        slider.value = 10f // 初期位置を10に設定
 
         var maxNumberPerson = slider.value.roundToInt()
         slider.addOnChangeListener(Slider.OnChangeListener { _, value, _ ->
