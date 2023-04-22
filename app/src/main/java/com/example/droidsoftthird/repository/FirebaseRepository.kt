@@ -30,4 +30,6 @@ interface FirebaseRepository {
 
     suspend fun getUserId(): String
 
+    suspend fun fetchStorageImage(userImagePath: String): String
+
 }

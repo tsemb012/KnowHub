@@ -80,6 +80,12 @@
                 app:cv_scrollMode="paged" />
             <!--TODO このカレンダービューがコアな部分ということを意識する。-->
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"/>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"

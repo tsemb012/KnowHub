@@ -71,7 +71,7 @@ class MapFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View { //TODO 要リファクタリング
 
         return ComposeView(requireContext()).apply {
             setContent {
