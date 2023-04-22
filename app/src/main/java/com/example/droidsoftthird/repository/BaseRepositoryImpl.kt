@@ -204,8 +204,7 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("userJoinGroup is failed")
         }
     }
-    override suspend fun fetchJoinedGroups() : List<ApiGroup> = //TODO ユーザーIDを渡す位置を再検討する
-        mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
+    override suspend fun fetchJoinedGroups() : List<ApiGroup> = mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
     override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea().map { it.toEntity() }
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(localDateAdapter, localTimeAdapter)
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
