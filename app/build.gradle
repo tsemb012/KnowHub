@@ -263,6 +263,9 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.15'
     implementation 'com.github.MKergall:osmbonuspack:6.9.0'
 
+    //-----UCrop
+    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+
     //-----Paging
     implementation "androidx.paging:paging-compose:1.0.0-alpha17"
 }

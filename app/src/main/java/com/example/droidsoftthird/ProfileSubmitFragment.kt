@@ -1,8 +1,9 @@
 package com.example.droidsoftthird
 
-import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -14,8 +15,9 @@ import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.wada811.databinding.dataBinding
+import com.yalantis.ucrop.UCrop
 
-abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
+abstract class ProfileSubmitFragment : Fragment(R.layout.fragment_profile_edit) {
 
     companion object {
         private const val DEFAULT_AGE = 30
@@ -25,7 +27,8 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
 
     abstract val viewModel: ProfileSubmitViewModel
     protected val binding: FragmentProfileEditBinding by dataBinding()
-    private val launcher = registerLauncher()
+    private val imagePickerLauncher = registerImagePickerLauncher()
+    private val imageCropLauncher = registerImageCropLauncher()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,9 +37,27 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
         setupListeners()
     }
 
+    private fun bindLoadState() {
+        viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            when (uiModel.loadState) {
+                is LoadState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                is LoadState.Loaded<*> -> binding.progressBar.visibility = View.GONE
+                is LoadState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        uiModel.loadState.error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> Unit
+            }
+        }
+    }
+
     private fun setupListeners() {
         with(binding) {
-            userImageBtn.setOnClickListener { launchUploader(REQUEST_CODE_USER_IMAGE) }
+            userImageBtn.setOnClickListener { launchImagePicker(REQUEST_CODE_USER_IMAGE) }
             genderItem.itemProfileEdit.setOnClickListener { showGenderDialog() }
             ageItem.itemProfileEdit.setOnClickListener { showAgeDialog() }
             areaItem.itemProfileEdit.setOnClickListener { showAreaDialog() }
@@ -46,13 +67,13 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
 
     abstract fun setupSubmitListeners()
 
-    private fun launchUploader(typeCode: String) {
+    private fun launchImagePicker(typeCode: String) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "image/*"
             putExtra(REQUEST_CODE, typeCode)
         }
-        launcher.launch(intent)
+        imagePickerLauncher.launch(intent)
     }
 
     private fun showGenderDialog() =
@@ -81,29 +102,34 @@ abstract class ProfileSubmitFragment: Fragment(R.layout.fragment_profile_edit) {
             onConfirmListener = { viewModel.postArea(it) }
         ).show(childFragmentManager, "area")
 
-
-    private fun registerLauncher() =
+    private fun registerImagePickerLauncher() =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data
-                if (uri != null) { viewModel.storeTemporalUserImage(uri) }
-            } else {
+            if (it.resultCode == RESULT_OK) {
+                val sourceUri = it.data?.data
+                if (sourceUri != null) {
+                    val destinationUri = Uri.fromFile(createTempFile("ucrop", ".jpg"))
+                    val maxHeight = 1080
+                    val maxWidth = 1080
+                    val intent = UCrop.of(sourceUri, destinationUri)
+                        .withAspectRatio(9F, 9F)
+                        .withMaxResultSize(maxWidth, maxHeight)
+                        .getIntent(requireActivity())
+                    imageCropLauncher.launch(intent)
+                } else {
+                    Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    private fun registerImageCropLauncher() =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val resultUri = UCrop.getOutput(result.data!!)
+                if (resultUri != null) {
+                    viewModel.storeTemporalUserImage(resultUri)
+                }
+            } else if (result.resultCode == UCrop.RESULT_ERROR) {
                 Toast.makeText(requireContext(), "画像の取得に失敗しました。", Toast.LENGTH_SHORT).show()
             }
         }
-
-    private fun bindLoadState() { //TODO エラーハンドリングを共通化する。
-        viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            when (uiModel.loadState) {
-                is LoadState.Loading -> binding.progressBar.visibility = View.VISIBLE
-                is LoadState.Loaded<*> -> binding.progressBar.visibility = View.GONE
-                is LoadState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), uiModel.loadState.error.message, Toast.LENGTH_SHORT).show()
-                }
-                else -> Unit
-            }
-        }
-    }
-
 }
