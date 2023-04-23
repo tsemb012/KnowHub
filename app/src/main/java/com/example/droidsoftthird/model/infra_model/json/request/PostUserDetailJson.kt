@@ -4,6 +4,7 @@ import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.City
 import com.example.droidsoftthird.model.domain_model.Prefecture
 import com.squareup.moshi.Json
+import java.time.LocalDate
 
 /***
  * 基本方針として、モデルの１つは１つのテーブルに対応するようにする。
@@ -19,7 +20,7 @@ class PostUserDetailJson(
     val userImage: String,
     val comment:String,
     val gender: String,
-    val age: Int,
+    val birthday: String,
     @Json(name = "prefecture_code")
     val prefectureCode: Int,
     @Json(name = "city_code")

@@ -20,6 +20,7 @@ class ProfileEditFragment :ProfileSubmitFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        disableItems()
         editViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             when (uiModel.loadState) {
                 is LoadState.Loading -> binding.progressBar.visibility = View.VISIBLE
@@ -32,6 +33,11 @@ class ProfileEditFragment :ProfileSubmitFragment() {
                 else -> {}
             }
         }
+    }
+
+    private fun disableItems() {
+        binding.ageItem.itemProfileEdit.isEnabled = false
+        binding.genderItem.itemProfileEdit.isEnabled = false
     }
 
     override fun setupSubmitListeners() = binding.submitProfileBtn.setOnClickListener { editViewModel.submitEditedUserProfile() }

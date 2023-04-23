@@ -4,6 +4,7 @@ import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.infra_model.json.request.AreaJson
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
+import java.time.LocalDate
 import java.time.ZonedDateTime
 
 data class GetUserDetailJson (
@@ -15,13 +16,13 @@ data class GetUserDetailJson (
     val userImage: String,
     val comment:String,
     val gender: String,
-    val age: Int,
+    val birthday: String,
     val area: AreaJson,
     val groups: List<GetGroupJson>,
     val events: List<GetItemEventJson>
 ) {
     fun toEntity(
-        localDateTimeAdapter: JsonAdapter<ZonedDateTime>,
+        localDateTimeAdapter: JsonAdapter<ZonedDateTime>, LocalDateAdapter: JsonAdapter<LocalDate>
     ) =
         UserDetail(
                 userId = userId,
@@ -29,7 +30,7 @@ data class GetUserDetailJson (
                 userImage = userImage,
                 comment = comment,
                 gender = gender,
-                age = age,
+                birthday = LocalDateAdapter.fromJson(birthday) ?: LocalDate.now(),
                 area = area.toEntity(),
                 groups = groups.map { it.toEntity() },
                 events = events.map { it.toEntity(localDateTimeAdapter) }

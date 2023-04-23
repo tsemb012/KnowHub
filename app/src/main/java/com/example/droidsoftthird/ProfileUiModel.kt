@@ -3,6 +3,8 @@ package com.example.droidsoftthird
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import java.time.LocalDate
+import java.time.Period
 
 data class ProfileUiModel (
     val rawUserDetail: UserDetail = initializedUserDetail,
@@ -12,11 +14,16 @@ data class ProfileUiModel (
     val loadState: LoadState = LoadState.Initialized,
 ) {
     val gender = editedUserDetail.gender.let { it.ifBlank { NO_SETTING } }
-    val age = editedUserDetail.age.toString().let { if(it == "-1") NO_SETTING else  it }
+    val age =
+        if (editedUserDetail.birthday == LocalDate.now()) NO_SETTING
+        else {
+            val age = Period.between(editedUserDetail.birthday, LocalDate.now()).years
+            val yearMonth = "${editedUserDetail.birthday.year}年${editedUserDetail.birthday.monthValue}月"
+            "$yearMonth ($age 歳)"
+        }
     val area = editedUserDetail.area.let {
-        if (it == null)  NO_SETTING
-        else if (it.city == null) it.prefecture?.name ?: NO_SETTING
-        else it?.prefecture?.name + ", " + it?.city?.name
+        if (it.city == null) it.prefecture?.name ?: NO_SETTING
+        else it.prefecture?.name + ", " + it.city.name
     }
 
     companion object {
@@ -53,7 +60,7 @@ data class ProfileUiModel (
         private fun isNotEmptyUserDetail(edited: UserDetail) =
                 edited.gender.isNotBlank() &&
                 edited.area != null &&
-                edited.age != -1
+                edited.birthday != LocalDate.now()
         }
 
     }
