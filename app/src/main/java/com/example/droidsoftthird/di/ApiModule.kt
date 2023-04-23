@@ -19,6 +19,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
@@ -133,5 +134,17 @@ object ZonedDateTimeAdapter {
     @FromJson
     fun fromJson(value: String): ZonedDateTime {
         return ZonedDateTime.parse(value)
+    }
+}
+
+object LocalDateAdapter {
+    @ToJson
+    fun toJson(value: LocalDate): String {
+        return value.format(DateTimeFormatter.ISO_LOCAL_DATE)
+    }
+
+    @FromJson
+    fun fromJson(value: String): LocalDate {
+        return LocalDate.parse(value)
     }
 }

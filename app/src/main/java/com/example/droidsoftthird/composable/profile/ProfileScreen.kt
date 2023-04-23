@@ -100,7 +100,7 @@ fun ProfileScreen(
                     Divider()
                     ProfileInfoItem(
                         title = stringResource(id = R.string.age),
-                        value = userDetail.value.age.toString(),
+                        value = userDetail.value.birthday.toString(),
                         icon = Icons.Filled.Cake
                     )
                     Divider()

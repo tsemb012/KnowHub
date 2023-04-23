@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
 import com.example.droidsoftthird.dialogs.AreaDialogFragment
-import com.example.droidsoftthird.dialogs.SeekBarDialogFragment
+import com.example.droidsoftthird.dialogs.BirthdayDialogFragment
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.wada811.databinding.dataBinding
@@ -89,12 +89,9 @@ abstract class ProfileSubmitFragment : Fragment(R.layout.fragment_profile_edit) 
             .show()
 
     private fun showAgeDialog() =
-        SeekBarDialogFragment(
-            title = getString(R.string.profile_input_age_dialog_title),
-            initNumber = DEFAULT_AGE,
-            unit = getString(R.string.age_unit),
-            onPositiveClickListener = { viewModel.postAge(it) }
-        ).show(childFragmentManager, "age")
+        BirthdayDialogFragment(
+            onPositiveClickListener = { viewModel.postBirthday(it) }
+        ).show(childFragmentManager, "birthday")
 
     private fun showAreaDialog() =
         AreaDialogFragment(
