@@ -27,8 +27,8 @@ class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAd
         fun bind(item: ItemEvent, onSelectEvent: (String) -> Unit) {
             with(binding){
                 scheduleEventItem.setOnClickListener { onSelectEvent(item.eventId) }
-                eventDayOfWeek.text = item.date.dayOfWeek.toString().substring(0,3)
-                eventDate.text = item.date.toString()
+                eventDayOfWeek.text = item.period.first.dayOfWeek.toString().substring(0,3)
+                eventDate.text = item.period.first.toString()
                 eventTitle.text = item.name
                 eventTime.text = binding.root.gs(R.string.event_time,item.period.first.hour,item.period.second.hour)
                 eventPlace.text = item?.placeName

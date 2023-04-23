@@ -46,7 +46,7 @@ fun EventCard(event: ItemEvent, onSelectEvent: (String) -> Unit) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 ListItem(title = "イベント名", content = event.name)
-                ListItem(title = "日付", content = event.date.dayOfMonth.toString())
+                ListItem(title = "日付", content = event.period.first.dayOfMonth.toString())
                 ListItem(title = "コメント", content = event.comment)
                 ListItem(title = "期間", content = event.period.toString())
                 ListItem(title = "グループ名", content = event.groupName ?: "なし")

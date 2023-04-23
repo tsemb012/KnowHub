@@ -5,6 +5,7 @@ package com.example.droidsoftthird
 import android.app.Application
 import com.example.droidsoftthird.BuildConfig.MAPS_API_KEY
 import com.google.android.libraries.places.api.Places
+import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -14,17 +15,8 @@ class DroidSoftThird: Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(DebugTree())
-
-        // Initialize the SDK
+        AndroidThreeTen.init(this)//APIレベル23のデバイスでもjava.timeパッケージの機能を利用できるようにする
         Places.initialize(applicationContext, MAPS_API_KEY)
     }
-/*    // Resource Provider
-    private var mResourceProvider: ResourceProvider? = null
-
-    val resourceProvider: ResourceProvider?
-        get() {
-            if (mResourceProvider == null) mResourceProvider = ResourceProvider(this)
-            return mResourceProvider
-        }*/
 }
 
