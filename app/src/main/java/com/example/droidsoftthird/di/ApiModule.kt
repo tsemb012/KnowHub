@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.repository.AuthenticationRepositoryImpl
-import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -20,8 +19,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -33,9 +31,9 @@ class ApiModule {
 
     companion object {
         //private const val BASE_URL = "http://10.0.2.2:3000/" //エミュレーターで起動する場合
-        //private const val BASE_URL = "http://192.168.10.104:3000/"
+        private const val BASE_URL = "http://192.168.10.104:3000/"
         //private const val BASE_URL = "http://192.168.200.21:3000/"
-        private const val BASE_URL = "http://192.168.200.39:3000/"
+        //private const val BASE_URL = "http://192.168.200.39:3000/"
         //private const val BASE_URL = "http://192.168.102.72:3000/"
         private const val TOKEN_ID_KEY = "token_id_key"
     }
@@ -67,8 +65,7 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder()
-        .add(LocalTimeAdapter)
-        .add(LocalDateAdapter)
+        .add(ZonedDateTimeAdapter)
         .addLast(KotlinJsonAdapterFactory()).build()
 
     @Singleton
@@ -127,26 +124,14 @@ class ApiModule {
 }
 
 //TODO 適切な場所に移動するように
-object LocalTimeAdapter {
+object ZonedDateTimeAdapter {
     @ToJson
-    fun toJson(value: LocalTime): String {
-        return value.format(DateTimeFormatter.ISO_LOCAL_TIME)
+    fun toJson(value: ZonedDateTime): String {
+        return value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     }
 
     @FromJson
-    fun fromJson(value: String): LocalTime {
-        return LocalTime.parse(value, DateTimeFormatter.ISO_LOCAL_TIME)
-    }
-}
-
-object LocalDateAdapter {
-    @ToJson
-    fun toJson(value: LocalDate): String {
-        return value.toString()
-    }
-
-    @FromJson
-    fun fromJson(value: String): LocalDate {
-        return LocalDate.parse(value)
+    fun fromJson(value: String): ZonedDateTime {
+        return ZonedDateTime.parse(value)
     }
 }

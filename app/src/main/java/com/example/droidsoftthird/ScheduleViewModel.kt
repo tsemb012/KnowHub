@@ -26,7 +26,7 @@ open class ScheduleViewModel : ViewModel() {
     fun setSelectedDate(selectedDate: LocalDate) {
         this.selectedDate.value = selectedDate
         selectedEvents.value = uiModel.value?.allEvents?.mapNotNull { scheduleEventForHome ->
-            if (scheduleEventForHome.date == selectedDate) { scheduleEventForHome }
+            if (scheduleEventForHome.period.first.toLocalDate() == selectedDate) { scheduleEventForHome }
             else null
         }
         sacheduleLoadState.value = LoadState.Processed

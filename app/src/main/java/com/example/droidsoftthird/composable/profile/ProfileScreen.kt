@@ -196,8 +196,8 @@ fun EventCard(event: ItemEvent) {
             Text(text = event.name, fontWeight = FontWeight.Bold)
             Text(text = event.groupName ?: "")
             Text(text = event.placeName ?: "")
-            Text(text = "${event.date}")
-            Text(text = "${event.period.first} - ${event.period.second}")
+            Text(text = "${event.period.first.toLocalDate()}")
+            Text(text = "${event.period.first.hour} - ${event.period.second.hour}")
         }
     }
 }

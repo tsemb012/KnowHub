@@ -115,13 +115,13 @@
     <!--ScheduleCreate-->
     <string name="schedule_event_name_hint">イベント名(15字以内)</string>
     <string name="schedule_event_comment_hint">コメント(100字以内)</string>
-    <string name="schedule_create_date">日時</string>
+    <string name="schedule_create_date">日付</string>
     <string name="schedule_create_time">時間</string>
     <string name="schedule_create_location">場所</string>
     <string name="schedule_create_group">グループ</string>
     <string name="schedule_create_date_hint">イベントの日付を入力してください</string>
-    <string name="schedule_create_time_start">開始時間</string>
-    <string name="schedule_create_time_end">終了時間</string>
+    <string name="schedule_create_time_start">開始時刻</string>
+    <string name="schedule_create_time_end">終了時刻</string>
 
     <!-- ログイン画面 -->
     <string name="email">Email</string>
