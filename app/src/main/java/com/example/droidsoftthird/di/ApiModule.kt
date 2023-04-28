@@ -66,7 +66,6 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder()
-        .add(ZonedDateTimeAdapter)
         .addLast(KotlinJsonAdapterFactory()).build()
 
     @Singleton
@@ -121,30 +120,5 @@ class ApiModule {
                 response.request
             }
         }
-    }
-}
-
-//TODO 適切な場所に移動するように
-object ZonedDateTimeAdapter {
-    @ToJson
-    fun toJson(value: ZonedDateTime): String {
-        return value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-    }
-
-    @FromJson
-    fun fromJson(value: String): ZonedDateTime {
-        return ZonedDateTime.parse(value)
-    }
-}
-
-object LocalDateAdapter {
-    @ToJson
-    fun toJson(value: LocalDate): String {
-        return value.format(DateTimeFormatter.ISO_LOCAL_DATE)
-    }
-
-    @FromJson
-    fun fromJson(value: String): LocalDate {
-        return LocalDate.parse(value)
     }
 }

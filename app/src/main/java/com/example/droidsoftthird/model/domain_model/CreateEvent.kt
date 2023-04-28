@@ -1,8 +1,8 @@
 package com.example.droidsoftthird.model.domain_model
 
 import com.example.droidsoftthird.model.infra_model.json.request.PostEventJson
-import com.squareup.moshi.JsonAdapter
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 abstract class Event {
         abstract val hostId: String?
@@ -20,13 +20,13 @@ data class CreateEvent(
         val place: EditedPlace? = null,
         override val groupId: String,
 ): Event() {
-        fun toJson(localDateAdapter: JsonAdapter<ZonedDateTime>): PostEventJson {
+        fun toJson(): PostEventJson {
                 return PostEventJson(
                         hostId = hostId ?: throw IllegalStateException("hostId is null"),
                         name = name,
                         comment = comment,
-                        startDateTime = localDateAdapter.toJson(period.first),
-                        endDateTime = localDateAdapter.toJson(period.second),
+                        startDateTime = period.first.format(DateTimeFormatter.ISO_INSTANT),
+                        endDateTime = period.second.format(DateTimeFormatter.ISO_INSTANT),
                         place = place?.toJson(),
                         groupId = groupId
                 )
