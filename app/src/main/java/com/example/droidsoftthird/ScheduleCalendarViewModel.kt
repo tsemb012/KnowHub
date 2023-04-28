@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.EventUseCase
@@ -23,6 +24,7 @@ class ScheduleCalendarViewModel @Inject constructor(
                 }
                 .onFailure {
                         e -> sacheduleLoadState.value = LoadState.Error(e)
+                        Log.d("ScheduleCalendarViewModel", "fetchAllEvents: ${e.message}")
                 }
         }
         sacheduleLoadState.value = LoadState.Loading(job)

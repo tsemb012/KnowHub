@@ -47,8 +47,6 @@ class BaseRepositoryImpl @Inject constructor(
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
-    private val zonedDateTimeAdapter = moshi.adapter(ZonedDateTime::class.java)
-    private val localDateAdapter = moshi.adapter(LocalDate::class.java)
 
     override suspend fun getUserId() = userId
     override suspend fun fetchStorageImage(imagePath: String): String = suspendCoroutine { continuation ->
@@ -206,12 +204,12 @@ class BaseRepositoryImpl @Inject constructor(
     }
     override suspend fun fetchJoinedGroups() : List<ApiGroup> = mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
     override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea().map { it.toEntity() }
-    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(zonedDateTimeAdapter, localDateAdapter)
-    override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson(localDateAdapter)).message
-    override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson(localDateAdapter)).message
-    override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(zonedDateTimeAdapter)).message
-    override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(zonedDateTimeAdapter) }
-    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(zonedDateTimeAdapter)
+    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
+    override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
+    override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
+    override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson()).message
+    override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity() }
+    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity()
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
