@@ -8,6 +8,7 @@ import com.example.droidsoftthird.model.domain_model.ApiGroup
 //GroupPagingSourceでテストを行う必要性が感じられないため、レポジトリー層で都度インスタンス化するように
 class GroupPagingSource(
         private val api: MainApi,
+        private val userId: String?,
         private val areaCode: Int?,
         private val areaCategory: String?
 ): PagingSource<Int, ApiGroup>() {
@@ -23,7 +24,7 @@ class GroupPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ApiGroup> {
         return try {
             val nextPage = params.key ?: 1
-            val groups = api.fetchGroups(nextPage, areaCode, areaCategory).map { it.toEntity() }
+            val groups = api.fetchGroups(nextPage, userId, areaCode, areaCategory).map { it.toEntity() }
 
             LoadResult.Page(
                 data = groups,
