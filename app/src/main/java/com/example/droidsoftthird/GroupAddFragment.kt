@@ -59,7 +59,14 @@ class GroupAddFragment : Fragment() {
             btnToGroupDetailBarLearningFrequency.setOnClickListener { showLearningFrequencyDialog() }
             btnToGroupDetailBarAgeRange.setOnClickListener { showAgeRangeDialog() }
             btnToGroupDetailBarNumberPersons.setOnClickListener { showNumberPersonsDialog() }
-            btnToGroupDetailBarGenderRestriction.setOnClickListener { toggleGenderRestriction() }
+            btnToGroupDetailBarGenderRestriction.setOnClickListener {
+                viewModel.postIsChecked(binding.genderRestrictionSwitch.isChecked)
+                showToast(if (binding.genderRestrictionSwitch.isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
+            }
+            binding.genderRestrictionSwitch.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.postIsChecked(isChecked)
+                showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
+            }
         }
     }
 
@@ -98,14 +105,6 @@ class GroupAddFragment : Fragment() {
     private fun showNumberPersonsDialog() {
         val dialog = NumberPersonsDialogFragment()
         childFragmentManager.let { dialog.show(it, "number_persons") }
-    }
-
-    private fun toggleGenderRestriction() {
-        val sm: SwitchMaterial = binding.genderRestrictionSwitch
-        sm.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.postIsChecked(isChecked)
-                showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
-            }
     }
 
     private fun launchUploader() {
