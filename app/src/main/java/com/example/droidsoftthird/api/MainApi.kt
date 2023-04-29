@@ -45,6 +45,7 @@ interface MainApi {
     @GET("groups")
     suspend fun fetchGroups(
             @Query("page") page: Int? = null,
+            @Query("user_id") userId:String? = null,
             @Query("area_code") code: Int? = null,
             @Query("area_category") type: String? = null
     ): List<GetGroupJson>

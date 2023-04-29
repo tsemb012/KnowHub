@@ -191,7 +191,7 @@ class BaseRepositoryImpl @Inject constructor(
                 enablePlaceholders = true
             )
         ) {
-            GroupPagingSource(mainApi, areaCode, areaCategory)
+            GroupPagingSource(mainApi, userId, areaCode, areaCategory)
         }.flow
 
     override suspend fun userJoinGroup(groupId: String): String? {
