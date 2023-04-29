@@ -36,4 +36,9 @@ class RecommendGroupsFragment:Fragment() {
            HomeFragmentDirections.actionHomeFragmentToGroupDetailFragment(groupId)
         )
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.initialize()
+    }
 }

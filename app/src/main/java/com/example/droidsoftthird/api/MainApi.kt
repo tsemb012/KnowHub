@@ -51,7 +51,9 @@ interface MainApi {
     ): List<GetGroupJson>
 
     @GET("groups/locations/count")
-    suspend fun fetchGroupCountByArea(): List<GetGroupCountByAreaJson>
+    suspend fun fetchGroupCountByArea(
+        @Query("user_id") userId: String
+    ): List<GetGroupCountByAreaJson>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
