@@ -29,7 +29,6 @@ class HomeFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         //-----Enable Menu
         setHasOptionsMenu(true);
     }
@@ -95,13 +94,14 @@ class HomeFragment: Fragment() {
                         if (userProfile == null) {
                             //TODO ユーザープロフィールの処理についてどうするか検討する。
                             //TODO データクラスごとひとまとめにして、nullを作らない方針の方がよくない？
-                            //AuthUI.getInstance().signOut(requireActivity())
-                            //navigate(Screen.Welcome, Screen.Home)
+                            /*AuthUI.getInstance().signOut(requireActivity())
+                            navigate(Screen.Welcome, Screen.Home)*/
                             //navController.navigate(R.id.createProfileFragment)
                         }
                     })
                 }
                 HomeViewModel.AuthenticationState.UNAUTHENTICATED -> {
+                    //AuthUI.getInstance().signOut(requireActivity())
                     backToWelcome()
                 }
             }
