@@ -65,14 +65,14 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.title = getString(R.string.search)
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.toolbar.visibility = View.VISIBLE
-                    viewModel.authenticationState.removeObservers(this)
+                    viewModel.authenticationState.removeObservers(this)//TODO ここも削除
                     viewModel.authenticationState.observe(this, Observer { authenticationState ->
                         when (authenticationState) {
                             MainViewModel.AuthenticationState.AUTHENTICATED -> {
                                 viewModel.getUser()
                                 viewModel.userProfile.observe(this, Observer { userProfile ->
                                     if (userProfile != null) {
-                                        navHeaderBinding.viewModel = viewModel
+                                        navHeaderBinding.viewModel = viewModel//TODO 削除
                                     }
                                 })
                             }
@@ -114,6 +114,17 @@ class MainActivity : AppCompatActivity() {
                 else -> " "
             }
         }
+
+        viewModel.loginState.observe(this, Observer { loginState ->
+            when (loginState) {
+                MainViewModel.LoginState.LOGGED_IN -> { }
+                MainViewModel.LoginState.LOGGED_OUT -> {
+                    clearCache()
+                    signOut()
+                }
+                else -> {}
+            }
+        })
 
         binding.navView.setNavigationItemSelectedListener{
             if (it.itemId == R.id.log_out){
