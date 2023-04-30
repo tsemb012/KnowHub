@@ -45,29 +45,30 @@ class HomeFragment : Fragment() {
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewPager()
+        setupNavigator()
+    }
 
+    private fun setupNavigator() {
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        binding.floatingActionButton.setOnClickListener { v ->
+            val action = HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
+            navHostFragment.navController.navigate(action)
+        }
+    }
 
-        // ViewPager Objects
-        val homeViewPagerAdapter = HomeViewPagerAdapter(this)
+    private fun setupViewPager() {
         binding.pager.apply {
-            adapter = homeViewPagerAdapter
+            adapter =  HomeViewPagerAdapter(this@HomeFragment)
             isUserInputEnabled = false
         }
 
-        // TabLayout & ViewPager Linking
-        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position -> tab.text = "OBJECT${position + 1}" }.attach()
+        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+            tab.text = "OBJECT${position + 1}"
+        }.attach()
 
-        // Setting Tab
         binding.tabLayout.getTabAt(0)?.setText(R.string.recommendation)
         binding.tabLayout.getTabAt(1)?.setText(R.string.map)
-
-        // Navigation to AddGroupFragment by FloatingActionButton
-        binding.floatingActionButton.setOnClickListener { v ->
-            val action = HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
-            navController.navigate(action)
-        }
     }
 
     private fun backToWelcome() {
