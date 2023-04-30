@@ -28,6 +28,8 @@ import com.example.droidsoftthird.vm.entrance.WelcomeViewModel
 import com.example.droidsoftthird.ui.entrance.composable.WelcomeEvent
 import com.example.droidsoftthird.ui.entrance.composable.WelcomeScreen
 import com.example.droidsoftthird.ui.entrance.navigate
+import com.example.droidsoftthird.vm.entrance.Event
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,6 +47,8 @@ class WelcomeFragment: Fragment() {
                 navigate(navigateTo, Screen.Welcome)
             }//レイアウトを設定する作業みたい。
         }
+
+        if (FirebaseAuth.getInstance().currentUser != null) viewModel.alreadySignedIn()
 
         return ComposeView(requireContext()).apply {
             setContent {
