@@ -16,6 +16,7 @@ import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.ui.entrance.navigate
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -31,6 +32,15 @@ class HomeFragment: Fragment() {
 
         //-----Enable Menu
         setHasOptionsMenu(true);
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            /* TODO ホーム画面でユーザーのログイン状況をチェックして、ログインしていなければログイン画面に遷移させる
+            clearCache()
+            signOut()*/
+        }
     }
 
     override fun onCreateView(
