@@ -1,4 +1,5 @@
 package com.example.droidsoftthird
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -21,8 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private val viewModel:MainViewModel by viewModels()
-    private val binding:ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
+    private val viewModel: MainViewModel by viewModels()
+    private val binding: ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,52 +31,32 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment,R.id.myPageFragment,R.id.ScheduleHomeFragment,R.id.profileCreateFragment, R.id.profileFragment))
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.myPageFragment, R.id.ScheduleHomeFragment, R.id.profileCreateFragment, R.id.profileFragment))
 
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
-        navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
-            when(navDestination.id){
+        navController.addOnDestinationChangedListener { _: NavController, navDestination: NavDestination, _: Bundle? ->
+            binding.bottomNav.visibility = when (navDestination.id) {
                 R.id.welcomeFragment,
                 R.id.signUpFragment,
-                R.id.signInFragment -> {
-                    binding.bottomNav.visibility = View.GONE
-                }
-                R.id.profileCreateFragment -> {
-                    binding.bottomNav.visibility = View.GONE
-                }
-                R.id.homeFragment -> {
-                    binding.bottomNav.visibility = View.VISIBLE
-                }
-                R.id.myPageFragment -> {
-                    binding.bottomNav.visibility = View.VISIBLE
-                }
-                R.id.ScheduleHomeFragment -> {
-                    binding.bottomNav.visibility = View.VISIBLE
-                }
-                R.id.addGroupFragment -> {
-                    binding.bottomNav.visibility = View.GONE
-                }
-                R.id.groupDetailFragment-> {
-                    binding.bottomNav.visibility = View.GONE
-                }
-                R.id.chatRoomFragment -> {
-                    binding.bottomNav.visibility = View.GONE
-                }
-                R.id.profileFragment -> {
-                    binding.bottomNav.visibility = View.VISIBLE
-                }
-                else -> " "
+                R.id.signInFragment,
+                R.id.profileCreateFragment,
+                R.id.addGroupFragment,
+                R.id.groupDetailFragment,
+                R.id.chatRoomFragment -> View.GONE
+                else -> View.VISIBLE
             }
         }
 
         viewModel.loginState.observe(this, Observer { loginState ->
             when (loginState) {
-                MainViewModel.LoginState.LOGGED_IN -> { }
+                MainViewModel.LoginState.LOGGED_IN -> {
+                }
                 MainViewModel.LoginState.LOGGED_OUT -> {
                     clearCache()
                     signOut()
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
     }
