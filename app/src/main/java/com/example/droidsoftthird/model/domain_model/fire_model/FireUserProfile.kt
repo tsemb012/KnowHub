@@ -4,7 +4,7 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
-data class FireUserProfile (
+data class FireUserProfile (//TODO 削除予定
     val userImageRef: String? = null,
     val backgroundImageRef:String? = null,
     val userName: String? = null,
