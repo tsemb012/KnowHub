@@ -10,17 +10,22 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {
+class MainViewModel @Inject constructor(private val repository: BaseRepositoryImpl): ViewModel() {//TODO ライフサイクルの問題っぽい。
 
-    private val _userProfile = MutableLiveData<FireUserProfile?>()
+    private val _userProfile = MutableLiveData<FireUserProfile?>() //TODO 削除予定
     val userProfile: LiveData<FireUserProfile?>
         get() = _userProfile
 
-    enum class AuthenticationState {
+    private val _loginState = MutableLiveData(LoginState.LOGGED_IN)
+    val loginState: LiveData<LoginState>
+        get() = _loginState
+    enum class LoginState { LOGGED_IN, LOGGED_OUT }
+
+    enum class AuthenticationState { //TODO 削除予定
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
-    val authenticationState = FirebaseUserLiveData().map { user ->
+    val authenticationState = FirebaseUserLiveData().map { user -> //TODO 削除予定
         if (user != null) {
             AuthenticationState.AUTHENTICATED
         } else {
@@ -28,11 +33,13 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
         }
     }
 
-    fun clearUserProfile() {
+    fun logout() { _loginState.postValue(LoginState.LOGGED_OUT) }
+
+    fun clearUserProfile() {//TODO 削除予定　ユーザーの情報はAPIに渡すので、
         _userProfile.postValue(null)
     }
 
-    fun getUser(){
+    fun getUser(){//TODO 削除予定
         viewModelScope.launch {
             val result = try{
                 repository.getUserProfile()

@@ -33,7 +33,8 @@ import com.example.droidsoftthird.model.domain_model.ItemEvent
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
-    toProfileEdit: () -> Unit
+    toProfileEdit: () -> Unit,
+    onLogOut: () -> Unit,
 ) {
     val userDetail = viewModel.userDetail
     val residentialArea = userDetail.value.area.prefecture?.name + ", " + userDetail.value.area.city?.name
@@ -138,9 +139,25 @@ fun ProfileScreen(
                         }
                     }
                 }
+                item {
+                    SignOutButton(onLogOut = onLogOut)
+                }
             }
         }
     )
+}
+
+@Composable
+fun SignOutButton (onLogOut: () -> Unit) {
+    Button(
+        onClick = { onLogOut() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+    ) {
+        Text(text = "Sign Out")
+    }
 }
 
 @Composable
