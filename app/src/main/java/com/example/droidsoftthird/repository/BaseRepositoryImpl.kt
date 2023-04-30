@@ -11,7 +11,6 @@ import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.domain_model.fire_model.FireGroup
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
-import com.example.droidsoftthird.model.domain_model.fire_model.FireUserProfile
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
@@ -32,8 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
-import java.time.LocalDate
-import java.time.ZonedDateTime
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -249,49 +246,6 @@ class BaseRepositoryImpl @Inject constructor(
                 placeId = placeId,
                 language = LANGUAGE_JP
         ).body()?.toEntity()
-
-    override suspend fun getUserProfile(): Result<FireUserProfile?> =
-        withContext(Dispatchers.IO){
-            suspendCoroutine { continuation ->
-                fireStore.collection("users")
-                    .document(userId)
-                    .get()
-                    .addOnSuccessListener {
-                        try {
-                            if (it != null){
-                                continuation.resume(Result.Success(it.toObject()))
-                            }else{
-                                continuation.resume(Result.Success(null))
-                            }
-                        } catch (e: Exception) {
-                            continuation.resume(Result.Failure(e))
-                        }
-                    }
-                    .addOnFailureListener {
-                        continuation.resume(Result.Failure(it))
-                    }
-            }
-        }
-
-    override suspend fun createUserProfile(userProfile: FireUserProfile): Result<Int> {
-        return withContext(Dispatchers.IO){
-            suspendCoroutine { continuation ->
-                fireStore.collection("users")
-                    .document(userId)
-                    .set(userProfile)
-                    .addOnSuccessListener {
-                        try {
-                            continuation.resume(Result.Success(R.string.upload_success))
-                        } catch (e: Exception) {
-                            continuation.resume(Result.Failure(e))
-                        }
-                    }
-                    .addOnFailureListener {
-                        continuation.resume(Result.Failure(it))
-                    }
-            }
-        }
-    }
 
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){

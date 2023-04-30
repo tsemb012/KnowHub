@@ -45,20 +45,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.homeFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
-                    viewModel.authenticationState.removeObservers(this)//TODO ここも削除
-                    viewModel.authenticationState.observe(this, Observer { authenticationState ->
-                        when (authenticationState) {
-                            MainViewModel.AuthenticationState.AUTHENTICATED -> {
-                                viewModel.getUser()
-                                viewModel.userProfile.observe(this, Observer { userProfile ->
-                                    if (userProfile != null) {
-                                    }
-                                })
-                            }
-                            MainViewModel.AuthenticationState.UNAUTHENTICATED -> {  }
-                            else -> {}
-                        }
-                    })
                 }
                 R.id.myPageFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
@@ -96,7 +82,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun clearCache() {
         viewModel.also {
-            it.clearUserProfile()
             it.clearTokenCache()
         }
     }

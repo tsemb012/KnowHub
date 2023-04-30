@@ -36,6 +36,7 @@ class HomeFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         if (FirebaseAuth.getInstance().currentUser == null) {
+            backToWelcome()
             /* TODO ホーム画面でユーザーのログイン状況をチェックして、ログインしていなければログイン画面に遷移させる
             clearCache()
             signOut()*/
@@ -80,32 +81,6 @@ class HomeFragment: Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
             Navigation.findNavController(v).navigate(action)
         })//TODO 関心の分離のため、Eventクラスを用いてクリックイベントをViewModelに移行する。
-
-        observeAuthenticationState()
-    }
-
-    private fun observeAuthenticationState() {
-
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState) {
-                HomeViewModel.AuthenticationState.AUTHENTICATED -> {
-                    viewModel.getUser()
-                    viewModel.userProfile.observe(viewLifecycleOwner, Observer { userProfile ->
-                        if (userProfile == null) {
-                            //TODO ユーザープロフィールの処理についてどうするか検討する。
-                            //TODO データクラスごとひとまとめにして、nullを作らない方針の方がよくない？
-                            /*AuthUI.getInstance().signOut(requireActivity())
-                            navigate(Screen.Welcome, Screen.Home)*/
-                            //navController.navigate(R.id.createProfileFragment)
-                        }
-                    })
-                }
-                HomeViewModel.AuthenticationState.UNAUTHENTICATED -> {
-                    //AuthUI.getInstance().signOut(requireActivity())
-                    backToWelcome()
-                }
-            }
-        })
     }
 
     private fun backToWelcome() { navigate(Screen.Welcome, Screen.Home) }
