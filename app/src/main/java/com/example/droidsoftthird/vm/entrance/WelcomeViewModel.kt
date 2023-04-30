@@ -33,6 +33,7 @@ class WelcomeViewModel @Inject constructor (private val userRepository: UserRepo
 
     fun signIn() { _navigateTo.value = Event(Screen.SignIn) }
     fun signUp() { _navigateTo.value = Event(Screen.SignUp) }
+    fun alreadySignedIn() { _navigateTo.value = Event(Screen.Home) }
 }
 
 data class Event<out T>(private val content: T) {
