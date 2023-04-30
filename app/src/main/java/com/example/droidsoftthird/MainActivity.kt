@@ -1,9 +1,7 @@
 package com.example.droidsoftthird
-import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -19,10 +17,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.example.droidsoftthird.databinding.NavHeaderBinding
-import com.facebook.react.modules.core.PermissionListener
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
-import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 
 @AndroidEntryPoint//has to be on MainActivity
 class MainActivity : AppCompatActivity() {
@@ -142,8 +138,8 @@ class MainActivity : AppCompatActivity() {
     private fun signOut() {
         binding.drawerLayout.close()
         AuthUI.getInstance().signOut(this)
-        val action = HomeFragmentDirections.actionHomeFragmentToWelcomeFragment()//TODO Navigationのコードを綺麗にする
-        navController.navigate(action)
+        finish()
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     override fun onSupportNavigateUp(): Boolean {
