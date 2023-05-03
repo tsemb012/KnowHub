@@ -113,9 +113,8 @@ fun ImageView.imageUserUrlString(url: String) {
 fun TextView.bindArea(prefecture: String, city: String){
     text =
         if(prefecture == resources.getStringArray(R.array.online_and_prefectures)[0].toString()) { prefecture }
-        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(
-                R.string.no_set
-            )) { String.format("%s、%s", prefecture, city) }
+        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(R.string.no_set)) { String.format("%s、%s", prefecture, city) }
+        else if ( prefecture != resources.getString(R.string.no_set) && city == resources.getString(R.string.no_set)) { prefecture }
         else{ resources.getString(R.string.no_set)
     }
 }
