@@ -288,7 +288,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintVertical_bias="0.0"
-                                    app:basis="@{addGroupViewModel.basis}"
+                                    app:basis="@{context.getString(addGroupViewModel.frequencyBasisStringId)}"
                                     app:frequency="@{addGroupViewModel.frequency}" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>

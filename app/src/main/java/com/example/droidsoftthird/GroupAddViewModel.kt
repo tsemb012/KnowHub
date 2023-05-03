@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.EditedGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
+import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
@@ -42,12 +43,12 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     private var areaCodes: Pair<Int?, Int?>? = null
 
     private val _facilityEnvironment = MutableLiveData(FacilityEnvironment.NONE)
+    private val facilityEnvironment: LiveData<FacilityEnvironment> get() = _facilityEnvironment
     val facilityEnvironmentStringId: LiveData<Int> get() = _facilityEnvironment.map { it.displayNameId }
-    val facilityEnvironment: LiveData<FacilityEnvironment> get() = _facilityEnvironment
 
-    private val _basis = MutableLiveData<String>("未設定")//R.string.no_set.toString()
-    val basis: LiveData<String>
-        get() = _basis
+    private val _frequencyBasis = MutableLiveData(FrequencyBasis.NONE)
+    private val frequencyBasis: LiveData<FrequencyBasis> get() = _frequencyBasis
+    val frequencyBasisStringId: LiveData<Int> get() = _frequencyBasis.map { it.displayNameId }
 
     private val _frequency = MutableLiveData<Int>(-1)//R.string.no_set.toString()
     val frequency: LiveData<Int>
@@ -100,8 +101,8 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
         _facilityEnvironment.postValue(facilityEnvironment)
     }
 
-    fun postBasis(s: String) {
-        _basis.postValue(s)
+    fun postBasis(frequencyBasis: FrequencyBasis) {
+        _frequencyBasis.postValue(frequencyBasis)
     }
 
     fun postFrequency(i: Int) {
@@ -142,7 +143,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 areaCodes?.first ?: -1,
                                 areaCodes?.second ?: -1,
                                 facilityEnvironment.value ?: FacilityEnvironment.NONE,
-                                basis.value.toString(),//TODO　ここで小文字にする。
+                                frequencyBasis.value ?: FrequencyBasis.NONE,
                                 frequency.value!!,
                                 minAge.value!!,
                                 maxAge.value!!,
