@@ -75,8 +75,13 @@ class GroupAddFragment : Fragment() {
     }
 
     private fun showAreaDialog() {
+        val online = Pair (0, 0)
         val dialog = AreaDialogFragment(
-            onExceptionListener = { TODO("オンラインを選択した時の処理を記述する。") },
+            onExceptionListener = {
+                viewModel.postPrefecture(getString(R.string.online))
+                viewModel.postCity(getString(R.string.no_set))
+                viewModel.postCodes(online)
+            },
             onConfirmListener = { area ->
                 viewModel.postPrefecture(area.prefecture?.name ?: getString(R.string.non_selected))
                 viewModel.postCity(area.city?.name ?: getString(R.string.no_set))
