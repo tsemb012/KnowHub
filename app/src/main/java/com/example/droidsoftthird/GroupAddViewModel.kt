@@ -4,6 +4,7 @@ package com.example.droidsoftthird
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.EditedGroup
+import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,9 +26,9 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
 
     val groupIntroduction = MutableLiveData<String>()
 
-    private val _groupType = MutableLiveData<String>("未設定")//R.string.no_set.toString()
-    val groupType: LiveData<String>
-        get() = _groupType
+    private val _groupType = MutableLiveData(GroupType.NONE)
+    val groupTypeStringId: LiveData<Int> get() = _groupType.map { it.displayNameId }
+    val groupType: LiveData<GroupType> get() = _groupType
 
     private val _prefecture = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val prefecture: LiveData<String>
@@ -81,9 +82,8 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
         _imageUri.postValue(uri)
     }
 
-    fun postGroupType(s: String) {
-        _groupType.postValue(s)
-        Timber.tag("check_postGroupType").d(s.toString())
+    fun postGroupType(type: GroupType) {
+        _groupType.postValue(type)
     }
 
     fun postPrefecture(s: String) {
@@ -137,11 +137,11 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 storageRef,
                                 groupName.value.toString(),
                                 groupIntroduction.value.toString(),
-                                groupType.value.toString(),
+                                groupType.value ?: GroupType.NONE,
                                 areaCodes?.first ?: -1,
                                 areaCodes?.second ?: -1,
-                                facilityEnvironment.value.toString(),
-                                basis.value.toString(),
+                                facilityEnvironment.value.toString(),//TODO ここで小文字にする。
+                                basis.value.toString(),//TODO　ここで小文字にする。
                                 frequency.value!!,
                                 minAge.value!!,
                                 maxAge.value!!,
