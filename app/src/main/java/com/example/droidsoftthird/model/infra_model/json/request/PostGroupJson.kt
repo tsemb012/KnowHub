@@ -11,6 +11,8 @@ data class PostGroupJson(
         val groupType: String,
         val prefecture_code: Int,
         val city_code: Int,
+        @Json(name = "is_online")
+        val isOnline: Boolean,
         @Json(name = "facility_environment")
         val facilityEnvironment: String,
         @Json(name = "frequency_basis")

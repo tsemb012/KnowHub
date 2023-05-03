@@ -39,6 +39,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val city: LiveData<String> get() = _city
 
     private var areaCodes: Pair<Int?, Int?>? = null
+    private var isOnline: Boolean = areaCodes?.first == 0 && areaCodes?.second == 0
 
     private val _facilityEnvironment = MutableLiveData(FacilityEnvironment.NONE)
     private val facilityEnvironment: LiveData<FacilityEnvironment> get() = _facilityEnvironment
@@ -140,13 +141,14 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 groupType.value ?: GroupType.NONE,
                                 areaCodes?.first ?: -1,
                                 areaCodes?.second ?: -1,
+                                isOnline,
                                 facilityEnvironment.value ?: FacilityEnvironment.NONE,
                                 frequencyBasis.value ?: FrequencyBasis.NONE,
-                                frequency.value!!,
-                                minAge.value!!,
-                                maxAge.value!!,
-                                maxNumberPerson.value!!,
-                                isChecked.value!!
+                                frequency.value ?: -1,
+                                minAge.value ?: -1,
+                                maxAge.value ?: -1,
+                                maxNumberPerson.value ?: -1,
+                                isChecked.value ?: false
                             )
                             runCatching { useCase.createGroup(group) }
                                 .onSuccess { onHomeClicked() }
