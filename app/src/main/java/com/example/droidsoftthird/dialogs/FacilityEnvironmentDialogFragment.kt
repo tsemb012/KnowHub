@@ -14,7 +14,7 @@ class FacilityEnvironmentDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val items = FacilityEnvironment.values().map { getString(it.displayNameId) }.toTypedArray()
+        val items = FacilityEnvironment.toArrayForDisplay().map { getString(it.displayNameId) }.toTypedArray()
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder
@@ -22,7 +22,7 @@ class FacilityEnvironmentDialogFragment : DialogFragment() {
                 .setIcon(R.drawable.ic_baseline_location_city_24)
                 .setSingleChoiceItems(items, selected) { _, which -> selected = which }
                 .setPositiveButton(getString(R.string.done)) { _, _ -> viewModel.postFacilityEnvironment(FacilityEnvironment.values()[selected]) }
-                .setNeutralButton(R.string.cancel) { _, _ -> Unit }
+                .setNeutralButton(R.string.cancel) { _, _ -> }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
