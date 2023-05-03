@@ -12,7 +12,7 @@ data class EditedGroup(
     val groupType: GroupType,
     val prefecture_code: Int,
     val city_code: Int,
-    val facilityEnvironment: String,
+    val facilityEnvironment: FacilityEnvironment,
     val basis: String,
     val frequency:Int,
     val minAge:Int,
@@ -28,7 +28,7 @@ data class EditedGroup(
                         groupType = groupType.name.lowercase(),
                         prefecture_code = prefecture_code,
                         city_code = city_code,
-                        facilityEnvironment = facilityEnvironment,
+                        facilityEnvironment = facilityEnvironment.name.lowercase(),
                         frequencyBasis = basis,
                         frequencyTimes = frequency,
                         maxAge = maxAge,
@@ -65,12 +65,22 @@ enum class GroupType(val displayNameId : Int) {
     OTHER(R.string.other)
 }
 
-enum class FacilityEnvironment {
-    LIBRARY,
-    CAFE_RESTAURANT,
-    CO_WORKING_SPACE,
-    PAID_STUDY_SPACE,
-    PARK,
-    ONLINE,
-    OTHER
+enum class FacilityEnvironment(val displayNameId : Int) {
+    NONE(R.string.no_set),
+    LIBRARY(R.string.library),
+    CAFE_RESTAURANT(R.string.cafe_restaurant),
+    RENTAL_SPACE(R.string.rental_space),
+    CO_WORKING_SPACE(R.string.co_working_space),
+    PAID_STUDY_SPACE(R.string.paid_study_space),
+    PARK(R.string.park),
+    ONLINE(R.string.online),
+    OTHER(R.string.other)
 }
+
+/*enum class Basis(val displayNameId : Int) {
+    NONE(R.string.no_set),
+    DAILY(R.string.daily),
+    WEEKLY(R.string.weekly),
+    MONTHLY(R.string.monthly),
+    OTHER(R.string.other)
+}*/
