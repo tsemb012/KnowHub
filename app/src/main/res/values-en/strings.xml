@@ -165,6 +165,9 @@
     <string name="select_birthday">Select Birthday</string>
     <string name="co_working_space">Co-working Space</string>
     <string name="paid_study_space">Paid Study Space</string>
+    <string name="daily">Everyday</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
 
 
 </resources>
