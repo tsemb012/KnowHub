@@ -46,8 +46,8 @@ data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebas
     val groupName: String,
     val groupIntroduction: String,
     val groupType: String,
-    val prefecture: String,//TODO Areaに変更する。
-    val city: String,
+    val prefecture: String?,//TODO Areaに変更する。
+    val city: String?,
     val facilityEnvironment: String,
     val basis: String,
     val frequency:Int,
