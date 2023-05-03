@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -80,7 +79,7 @@ class GroupAddFragment : Fragment() {
             onExceptionListener = { TODO("オンラインを選択した時の処理を記述する。") },
             onConfirmListener = { area ->
                 viewModel.postPrefecture(area.prefecture?.name ?: getString(R.string.non_selected))
-                viewModel.postCity(area.city?.name ?: getString(R.string.non_selected))
+                viewModel.postCity(area.city?.name ?: getString(R.string.no_set))
                 viewModel.postCodes(area.prefecture?.prefectureCode to area.city?.cityCode)
             }
         )
