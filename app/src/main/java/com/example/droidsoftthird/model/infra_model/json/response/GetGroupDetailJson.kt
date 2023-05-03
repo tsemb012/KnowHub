@@ -12,8 +12,8 @@ data class GetGroupDetailJson(
     val introduction: String,//TODO descriptionに変更した方が良い。
     @Json(name = "group_type")
         val groupType: String,
-    val prefecture: String,
-    val city: String,
+    val prefecture: String?,
+    val city: String?,
     @Json(name = "facility_environment")
         val facilityEnvironment: String,
     @Json(name = "frequency_basis")
