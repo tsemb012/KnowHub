@@ -163,6 +163,8 @@
 
     <string name="general_confirm">Confirm</string>
     <string name="select_birthday">Select Birthday</string>
+    <string name="co_working_space">Co-working Space</string>
+    <string name="paid_study_space">Paid Study Space</string>
 
 
 </resources>

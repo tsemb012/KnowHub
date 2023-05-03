@@ -4,6 +4,7 @@ package com.example.droidsoftthird
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.EditedGroup
+import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
@@ -40,9 +41,9 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
 
     private var areaCodes: Pair<Int?, Int?>? = null
 
-    private val _facilityEnvironment = MutableLiveData<String>("未設定")//R.string.no_set.toString()
-    val facilityEnvironment: LiveData<String>
-        get() = _facilityEnvironment
+    private val _facilityEnvironment = MutableLiveData(FacilityEnvironment.NONE)
+    val facilityEnvironmentStringId: LiveData<Int> get() = _facilityEnvironment.map { it.displayNameId }
+    val facilityEnvironment: LiveData<FacilityEnvironment> get() = _facilityEnvironment
 
     private val _basis = MutableLiveData<String>("未設定")//R.string.no_set.toString()
     val basis: LiveData<String>
@@ -95,8 +96,8 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
         _city.postValue(s)
     }
 
-    fun postFacilityEnvironment(s: String) {
-        _facilityEnvironment.postValue(s)
+    fun postFacilityEnvironment(facilityEnvironment: FacilityEnvironment) {
+        _facilityEnvironment.postValue(facilityEnvironment)
     }
 
     fun postBasis(s: String) {
@@ -140,7 +141,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 groupType.value ?: GroupType.NONE,
                                 areaCodes?.first ?: -1,
                                 areaCodes?.second ?: -1,
-                                facilityEnvironment.value.toString(),//TODO ここで小文字にする。
+                                facilityEnvironment.value ?: FacilityEnvironment.NONE,
                                 basis.value.toString(),//TODO　ここで小文字にする。
                                 frequency.value!!,
                                 minAge.value!!,

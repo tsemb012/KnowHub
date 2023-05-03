@@ -166,5 +166,7 @@
     <string name="map_cancel" translatable="false">キャンセル</string>
     <string name="general_confirm">確定</string>
     <string name="select_birthday">誕生日を入力してください</string>
+    <string name="co_working_space">コーワキングスペース</string>
+    <string name="paid_study_space">有料自習室</string>
 
 </resources>
