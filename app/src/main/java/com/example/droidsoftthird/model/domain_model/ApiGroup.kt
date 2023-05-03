@@ -69,7 +69,6 @@ enum class GroupType(val displayNameId: Int) {
 }
 
 enum class FacilityEnvironment(val displayNameId : Int) {
-    NONE(R.string.no_set),
     LIBRARY(R.string.library),
     CAFE_RESTAURANT(R.string.cafe_restaurant),
     RENTAL_SPACE(R.string.rental_space),
@@ -77,7 +76,12 @@ enum class FacilityEnvironment(val displayNameId : Int) {
     PAID_STUDY_SPACE(R.string.paid_study_space),
     PARK(R.string.park),
     ONLINE(R.string.online),
-    OTHER(R.string.other)
+    OTHER(R.string.other),
+    NONE(R.string.no_set), ;
+
+    companion object {
+        fun toArrayForDisplay() = FacilityEnvironment.values().filter { it != FacilityEnvironment.NONE }
+    }
 }
 
 enum class FrequencyBasis(val displayNameId : Int) {
