@@ -12,14 +12,12 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): ViewModel() {
 
-    //TODO ResourceProvider/ApplicationClass/Hilt等を用いて、ViewModelないでR.stringを使用する方法を検討する。
     private val _imageUri = MutableLiveData<Uri>(null)
     val imageUri: LiveData<Uri>
         get() = _imageUri
@@ -28,7 +26,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
 
     val groupIntroduction = MutableLiveData<String>()
 
-    private val _groupType = MutableLiveData(GroupType.NONE)
+    private val _groupType = MutableLiveData(GroupType.NONE_GROUP_TYPE)
     val groupTypeStringId: LiveData<Int> get() = _groupType.map { it.displayNameId }
     val groupType: LiveData<GroupType> get() = _groupType
 
@@ -41,31 +39,31 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     private var areaCodes: Pair<Int?, Int?>? = null
     private var isOnline: Boolean = areaCodes?.first == 0 && areaCodes?.second == 0
 
-    private val _facilityEnvironment = MutableLiveData(FacilityEnvironment.NONE)
+    private val _facilityEnvironment = MutableLiveData(FacilityEnvironment.NONE_FACILITY_ENVIRONMENT)
     private val facilityEnvironment: LiveData<FacilityEnvironment> get() = _facilityEnvironment
     val facilityEnvironmentStringId: LiveData<Int> get() = _facilityEnvironment.map { it.displayNameId }
 
-    private val _frequencyBasis = MutableLiveData(FrequencyBasis.NONE)
+    private val _frequencyBasis = MutableLiveData(FrequencyBasis.NONE_FREQUENCY_BASIS)
     private val frequencyBasis: LiveData<FrequencyBasis> get() = _frequencyBasis
     val frequencyBasisStringId: LiveData<Int> get() = _frequencyBasis.map { it.displayNameId }
 
-    private val _frequency = MutableLiveData<Int>(-1)//R.string.no_set.toString()
+    private val _frequency = MutableLiveData(-1)
     val frequency: LiveData<Int>
         get() = _frequency
 
-    private val _minAge = MutableLiveData<Int>(-1)
+    private val _minAge = MutableLiveData(-1)
     val minAge: LiveData<Int>
         get() = _minAge
 
-    private val _maxAge = MutableLiveData<Int>(-1)
+    private val _maxAge = MutableLiveData(-1)
     val maxAge: LiveData<Int>
         get() = _maxAge
 
-    private val _maxNumberPerson = MutableLiveData<Int>(-1)
+    private val _maxNumberPerson = MutableLiveData(-1)
     val maxNumberPerson: LiveData<Int>
         get() = _maxNumberPerson
 
-    private val _isChecked = MutableLiveData<Boolean>(false)
+    private val _isChecked = MutableLiveData(false)
     val isChecked: LiveData<Boolean>
         get() = _isChecked
 
@@ -79,50 +77,17 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     }
 
 
-    fun postImageUri(uri: Uri) {
-        _imageUri.postValue(uri)
-    }
-
-    fun postGroupType(type: GroupType) {
-        _groupType.postValue(type)
-    }
-
-    fun postPrefecture(s: String) {
-        _prefecture.postValue(s)
-        Timber.tag("check_postPrefecture").d(s.toString())
-    }
-
-    fun postCity(s: String) {
-        _city.postValue(s)
-    }
-
-    fun postFacilityEnvironment(facilityEnvironment: FacilityEnvironment) {
-        _facilityEnvironment.postValue(facilityEnvironment)
-    }
-
-    fun postBasis(frequencyBasis: FrequencyBasis) {
-        _frequencyBasis.postValue(frequencyBasis)
-    }
-
-    fun postFrequency(i: Int) {
-        _frequency.postValue(i)
-    }
-
-    fun postMinAge(i: Int) {
-        _minAge.postValue(i)
-    }
-
-    fun postMaxAge(i: Int) {
-        _maxAge.postValue(i)
-    }
-
-    fun postMaxNumberPerson(i: Int) {
-        _maxNumberPerson.postValue(i)
-    }
-
-    fun postIsChecked(boolean: Boolean) {
-        _isChecked.postValue(boolean)
-    }
+    fun postImageUri(uri: Uri) { _imageUri.postValue(uri) }
+    fun postGroupType(type: GroupType) { _groupType.postValue(type) }
+    fun postPrefecture(s: String) { _prefecture.postValue(s) }
+    fun postCity(s: String) { _city.postValue(s) }
+    fun postFacilityEnvironment(facilityEnvironment: FacilityEnvironment) { _facilityEnvironment.postValue(facilityEnvironment) }
+    fun postBasis(frequencyBasis: FrequencyBasis) { _frequencyBasis.postValue(frequencyBasis) }
+    fun postFrequency(i: Int) { _frequency.postValue(i) }
+    fun postMinAge(i: Int) { _minAge.postValue(i) }
+    fun postMaxAge(i: Int) { _maxAge.postValue(i) }
+    fun postMaxNumberPerson(i: Int) { _maxNumberPerson.postValue(i) }
+    fun postIsChecked(boolean: Boolean) { _isChecked.postValue(boolean) }
 
     fun createGroup() {
         activateProgressBar()
@@ -138,12 +103,12 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 storageRef,
                                 groupName.value.toString(),
                                 groupIntroduction.value.toString(),
-                                groupType.value ?: GroupType.NONE,
+                                groupType.value ?: GroupType.NONE_GROUP_TYPE,
                                 areaCodes?.first ?: -1,
                                 areaCodes?.second ?: -1,
                                 isOnline,
-                                facilityEnvironment.value ?: FacilityEnvironment.NONE,
-                                frequencyBasis.value ?: FrequencyBasis.NONE,
+                                facilityEnvironment.value ?: FacilityEnvironment.NONE_FACILITY_ENVIRONMENT,
+                                frequencyBasis.value ?: FrequencyBasis.NONE_FREQUENCY_BASIS,
                                 frequency.value ?: -1,
                                 minAge.value ?: -1,
                                 maxAge.value ?: -1,
@@ -178,8 +143,6 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     companion object {
         private const val IMAGE_SIZE = "_200x200"
     }
-
-
 }
 
 

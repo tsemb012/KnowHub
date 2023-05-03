@@ -62,11 +62,11 @@ enum class GroupType(val displayNameId: Int) {
     SEMINAR(R.string.seminar),
     WORKSHOP(R.string.workshop),
     MOKUMOKU(R.string.mokumoku),
-    OTHER(R.string.other),
-    NONE(R.string.no_set);
+    OTHER_GROUP_TYPE(R.string.other),
+    NONE_GROUP_TYPE(R.string.no_set);
 
     companion object {
-        fun toArrayForDisplay() = values().filter { it != NONE }
+        fun toArrayForDisplay() = values().filter { it != NONE_GROUP_TYPE }
     }
 }
 
@@ -78,11 +78,11 @@ enum class FacilityEnvironment(val displayNameId : Int) {
     PAID_STUDY_SPACE(R.string.paid_study_space),
     PARK(R.string.park),
     ONLINE(R.string.online),
-    OTHER(R.string.other),
-    NONE(R.string.no_set), ;
+    OTHER_FACILITY_ENVIRONMENT(R.string.other),
+    NONE_FACILITY_ENVIRONMENT(R.string.no_set), ;
 
     companion object {
-        fun toArrayForDisplay() = FacilityEnvironment.values().filter { it != FacilityEnvironment.NONE }
+        fun toArrayForDisplay() = FacilityEnvironment.values().filter { it != NONE_FACILITY_ENVIRONMENT }
     }
 }
 
@@ -90,9 +90,9 @@ enum class FrequencyBasis(val displayNameId : Int) {
     DAILY(R.string.daily),
     WEEKLY(R.string.weekly),
     MONTHLY(R.string.monthly),
-    NONE(R.string.no_set);
+    NONE_FREQUENCY_BASIS(R.string.no_set);
 
     companion object {
-        fun toArrayForDisplay() = FrequencyBasis.values().filter { it != FrequencyBasis.NONE }
+        fun toArrayForDisplay() = FrequencyBasis.values().filter { it != NONE_FREQUENCY_BASIS }
     }
 }
