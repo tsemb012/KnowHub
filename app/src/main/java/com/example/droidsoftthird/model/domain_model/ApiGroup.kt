@@ -56,13 +56,16 @@ data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebas
     val maxNumberPerson :Int,
     val isChecked:Boolean,
 )
-
-enum class GroupType(val displayNameId : Int) {
-    NONE(R.string.no_set),
+enum class GroupType(val displayNameId: Int) {
     SEMINAR(R.string.seminar),
     WORKSHOP(R.string.workshop),
     MOKUMOKU(R.string.mokumoku),
-    OTHER(R.string.other)
+    OTHER(R.string.other),
+    NONE(R.string.no_set);
+
+    companion object {
+        fun toArrayForDisplay() = values().filter { it != NONE }
+    }
 }
 
 enum class FacilityEnvironment(val displayNameId : Int) {
