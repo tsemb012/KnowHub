@@ -24,12 +24,12 @@ class LeaningFrequencyDialogFragmentNext:DialogFragment() {
         previousSelected = arguments?.getInt("learning_frequency")
         when (previousSelected) {
             1 -> {
-                tv.setText(FrequencyBasis.WEEKLY.displayNameId)
+                tv.text = getString(R.string.week)
                 np.minValue = 1
                 np.maxValue = 7
             }
             2 -> {
-                tv.setText(FrequencyBasis.MONTHLY.displayNameId)
+                tv.text = getString(R.string.month)
                 np.minValue = 1
                 np.maxValue = 31
             }
