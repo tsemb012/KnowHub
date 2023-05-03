@@ -32,13 +32,11 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val groupTypeStringId: LiveData<Int> get() = _groupType.map { it.displayNameId }
     val groupType: LiveData<GroupType> get() = _groupType
 
-    private val _prefecture = MutableLiveData<String>("未設定")//R.string.no_set.toString()
-    val prefecture: LiveData<String>
-        get() = _prefecture
+    private val _prefecture = MutableLiveData("未設定")
+    val prefecture: LiveData<String> get() = _prefecture
 
-    private val _city = MutableLiveData<String>("未設定")//R.string.no_set.toString()
-    val city: LiveData<String>
-        get() = _city
+    private val _city = MutableLiveData("未設定")
+    val city: LiveData<String> get() = _city
 
     private var areaCodes: Pair<Int?, Int?>? = null
 
