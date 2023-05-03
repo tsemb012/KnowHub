@@ -88,5 +88,9 @@ enum class FrequencyBasis(val displayNameId : Int) {
     DAILY(R.string.daily),
     WEEKLY(R.string.weekly),
     MONTHLY(R.string.monthly),
-    NONE(R.string.no_set),
+    NONE(R.string.no_set);
+
+    companion object {
+        fun toArrayForDisplay() = FrequencyBasis.values().filter { it != FrequencyBasis.NONE }
+    }
 }

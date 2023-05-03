@@ -18,7 +18,7 @@ class LeaningFrequencyDialogFragment:DialogFragment() {
 
         return activity?.let{
             val builder = AlertDialog.Builder(it)
-            val items = FrequencyBasis.values().map { basis -> getString(basis.displayNameId) }.toTypedArray()
+            val items = FrequencyBasis.toArrayForDisplay().map { basis -> getString(basis.displayNameId) }.toTypedArray()
             builder
                 .setTitle(R.string.learning_frequency)
                 .setIcon(R.drawable.ic_baseline_date_range_24)
