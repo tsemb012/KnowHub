@@ -42,26 +42,26 @@ class AreaDialogFragment(
 class LocalAreaDialogFragment(private val prefectureCode: Int, private val onConfirmListener: (Area) -> Unit) :DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val cityMap = getCityMap(prefectureCode)
-        val cityArray = cityMap.values.toMutableList().also { it.add(0, "指定しない") }.toTypedArray()
+        val cityMap: Map<Int, String> = mapOf(0 to "指定しない") + getCityMap(prefectureCode)
+        val cityArray = cityMap.values.toMutableList().toTypedArray()
 
         return buildCityDialog(prefectureCode, cityArray, cityMap)
     }
 
-    private fun getCityMap(prefectureCode: Int): Map<Int, String> =
+    private fun getCityMap(prefectureCode: Int): MutableMap<Int, String> =
         requireContext().assets.open(JAPAN_ALL_ADDRESS_CSV).bufferedReader().readLines()
             .filter { it.split(",")[JAPAN_PREFECTURE_CODE].drop(1).dropLast(1).toInt() == prefectureCode }
             .associateBy(
                 { it.split(",")[JAPAN_CITY_CODE].drop(1).dropLast(1).toInt() },
                 { it.split(",")[JAPAN_CITY_NAME].drop(1).dropLast(1) }
-            )
+            ).toMutableMap()
 
-    private fun buildCityDialog(prefectureCode: Int, cityArray: Array<String>, cityMap: Map<Int, String>, ): AlertDialog {
-        var selectedCityCode = -1
+    private fun buildCityDialog(prefectureCode: Int, cityArray: Array<String>, cityMap: Map<Int, String>): AlertDialog {
+        var selectedCityCode = 0
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.activity_area)
             .setIcon(R.drawable.ic_baseline_location_on_24)
-            .setSingleChoiceItems(cityArray, 0) { _, which -> selectedCityCode = which } //TODO whichにマイナス1をする必要があると思われる。　2023/04/02
+            .setSingleChoiceItems(cityArray, 0) { _, which -> selectedCityCode = which }
             .setPositiveButton(R.string.done) { _, _ ->
                 val cityCode = cityMap.keys.elementAt(selectedCityCode)
                 val area = buildArea(prefectureCode, cityCode)
