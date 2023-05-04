@@ -195,7 +195,7 @@ fun GroupCard(group: ApiGroup) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = group.groupName, fontWeight = FontWeight.Bold)
             Text(text = group.groupIntroduction)
-            Text(text = group.groupType)
+            Text(text = stringResource(group.groupType.displayNameId))
         }
     }
 }
