@@ -1,35 +1,36 @@
 package com.example.droidsoftthird.model.infra_model.json.response
 
-import com.example.droidsoftthird.model.domain_model.ApiGroupDetail
-import com.example.droidsoftthird.model.domain_model.ApiMember
+import com.example.droidsoftthird.model.domain_model.*
 import com.squareup.moshi.Json
 
 data class GetGroupDetailJson(
     val id: String,
     @Json(name = "host_id")
-        val hostId: String,
+    val hostId: String,
     val name: String,
     val introduction: String,//TODO descriptionに変更した方が良い。
     @Json(name = "group_type")
-        val groupType: String,
+    val groupType: String,
     val prefecture: String?,
     val city: String?,
+    @Json(name = "is_online")
+    val isOnline: Boolean,
     @Json(name = "facility_environment")
-        val facilityEnvironment: String,
+    val facilityEnvironment: String,
     @Json(name = "frequency_basis")
-        val frequencyBasis: String,
+    val frequencyBasis: String,
     @Json(name = "frequency_times")
-        val frequencyTimes: Int,
+    val frequencyTimes: Int,
     @Json(name = "max_age")
-        val maxAge: Int,
+    val maxAge: Int,
     @Json(name = "min_age")
-        val minAge: Int,
+    val minAge: Int,
     @Json(name = "max_number")
-        val maxNumber: Int,
+    val maxNumber: Int,
     @Json(name = "is_same_sexuality")
-        val isSameSexuality: Boolean,
+    val isSameSexuality: Boolean,
     @Json(name = "image_url")
-        val imageUrl: String,
+    val imageUrl: String,
     val members: List<Member>,
 ) {
     class Member (
@@ -44,11 +45,12 @@ data class GetGroupDetailJson(
                 storageRef = imageUrl,
                 groupName = name,
                 groupIntroduction = introduction,
-                groupType = groupType,
+                groupType = GroupType.valueOf(groupType.uppercase()),
                 prefecture = prefecture,
                 city = city,
-                facilityEnvironment = facilityEnvironment,
-                basis = frequencyBasis,
+                isOnline = isOnline,
+                facilityEnvironment = FacilityEnvironment.valueOf(facilityEnvironment.uppercase()),
+                basis = FrequencyBasis.valueOf(frequencyBasis.uppercase()),
                 frequency = frequencyTimes,
                 minAge = minAge,
                 maxAge = maxAge,
