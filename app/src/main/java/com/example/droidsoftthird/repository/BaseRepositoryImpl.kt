@@ -15,6 +15,9 @@ import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJ
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
+import com.example.droidsoftthird.repository.csvloader.AssetLoader
+import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
+import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
 import com.example.droidsoftthird.repository.paging.GroupPagingSource
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +29,6 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -39,8 +41,8 @@ import kotlin.coroutines.suspendCoroutine
 class BaseRepositoryImpl @Inject constructor(
         private val mainApi: MainApi,
         private val dataStore: DataStore<Preferences>,
-        private val moshi: Moshi
-): RailsApiRepository, FirebaseRepository, DataStoreRepository {
+        private val assetLoader: AssetLoader
+): RailsApiRepository, FirebaseRepository, DataStoreRepository, AssetRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
@@ -178,17 +180,16 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchGroups(  //.cachedIn(viewModelScope).first()
-        areaCode: Int?,//TODO paramsデータクラスにまとめるように修正する。
-        areaCategory: String?,
-    ) : Flow<PagingData<ApiGroup>> = //TODO ここに追加するようにする。
+    override suspend fun fetchGroups(
+            groupFilterCondition: ApiGroup.FilterCondition
+    ) : Flow<PagingData<ApiGroup>> =
         Pager(
             config = PagingConfig(
                 pageSize = 5,
                 enablePlaceholders = true
             )
         ) {
-            GroupPagingSource(mainApi, userId, areaCode, areaCategory)
+            GroupPagingSource(mainApi, userId, groupFilterCondition)
         }.flow
 
     override suspend fun userJoinGroup(groupId: String): String? {
@@ -303,6 +304,12 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
+
+    override suspend fun loadPrefectureCsv(): List<PrefectureCsvLoader.PrefectureLocalItem> =
+        assetLoader.prefectureCsvLoader.prefectureLocalItems
+
+    override suspend fun loadCityCsv(): List<CityCsvLoader.CityLocalItem> =
+        assetLoader.cityCsvLoader.cityLocalItems
 
     companion object {
         private const val LIMIT = 50L

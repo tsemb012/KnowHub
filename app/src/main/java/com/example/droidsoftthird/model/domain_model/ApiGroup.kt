@@ -58,7 +58,16 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
     val maxAge:Int,
     val maxNumberPerson:Int,
     val isChecked:Boolean,
-)
+) {
+     data class FilterCondition(
+         val areaCode: Int? = null,
+         val areaCategory: String? = null,
+         val groupTypes: Set<GroupType> = setOf(),
+         val facilityEnvironments: Set<FacilityEnvironment> = setOf(),
+         val frequencyBasis: FrequencyBasis? = null,
+     )
+}
+
 enum class GroupType(val displayNameId: Int) {
     SEMINAR(R.string.seminar),
     WORKSHOP(R.string.workshop),
