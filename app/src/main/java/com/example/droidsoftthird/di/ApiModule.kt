@@ -1,15 +1,19 @@
 package com.example.droidsoftthird.di
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.repository.AuthenticationRepositoryImpl
+import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
+import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
@@ -19,9 +23,6 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.time.LocalDate
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -81,6 +82,18 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideMainApi(retrofit: Retrofit): MainApi = retrofit.create(MainApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext context: Context): Context = context
+
+    @Provides
+    @Singleton
+    fun providePrefectureCsvLoader(context: Context) = PrefectureCsvLoader(context)
+
+    @Provides
+    @Singleton
+    fun provideCityCsvLoader(context: Context) = CityCsvLoader(context)
 
     class HeaderInterceptor(private val dataStore: DataStore<Preferences>) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response = chain.run {

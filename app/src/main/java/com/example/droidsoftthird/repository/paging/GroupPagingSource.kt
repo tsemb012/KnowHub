@@ -9,10 +9,8 @@ import com.example.droidsoftthird.model.domain_model.ApiGroup
 class GroupPagingSource(
         private val api: MainApi,
         private val userId: String?,
-        private val areaCode: Int?,
-        private val areaCategory: String?
+        private val groupFilterCondition: ApiGroup.FilterCondition
 ): PagingSource<Int, ApiGroup>() {
-
 
     override fun getRefreshKey(state: PagingState<Int, ApiGroup>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -24,7 +22,15 @@ class GroupPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ApiGroup> {
         return try {
             val nextPage = params.key ?: 1
-            val groups = api.fetchGroups(nextPage, userId, areaCode, areaCategory).map { it.toEntity() }
+            val groups = api.fetchGroups(
+                page = nextPage,
+                userId = userId,
+                areaCode = groupFilterCondition.areaCode,
+                areaCategory = groupFilterCondition.areaCategory,
+                groupTypes = groupFilterCondition.groupTypes.map { it.name.lowercase() },
+                facilityEnvironments = groupFilterCondition.facilityEnvironments.map { it.name.lowercase() },
+                frequency_bases = groupFilterCondition.frequencyBasis?.name?.lowercase(),
+            ).map { it.toEntity() }
 
             LoadResult.Page(
                 data = groups,
