@@ -41,21 +41,22 @@ data class EditedGroup(
                 )
 }
 
-data class ApiGroup (//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
+data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
     val groupId: String?,
     val hostUserId: String,
     val storageRef: String,
     val groupName: String,
     val groupIntroduction: String,
-    val groupType: String,
+    val groupType: GroupType,
     val prefecture: String?,//TODO Areaに変更する。
     val city: String?,
-    val facilityEnvironment: String,
-    val basis: String,
+    val isOnline: Boolean,
+    val facilityEnvironment: FacilityEnvironment,
+    val basis: FrequencyBasis,
     val frequency:Int,
     val minAge:Int,
     val maxAge:Int,
-    val maxNumberPerson :Int,
+    val maxNumberPerson:Int,
     val isChecked:Boolean,
 )
 enum class GroupType(val displayNameId: Int) {
