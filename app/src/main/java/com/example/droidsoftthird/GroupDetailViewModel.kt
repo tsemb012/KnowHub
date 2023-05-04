@@ -19,9 +19,13 @@ class GroupDetailViewModel @AssistedInject constructor(
         get() = _groupDetail
 
     val prefectureAndCity: LiveData<String> = groupDetail.map{ group ->
-        if (group?.prefecture != "未設定" ) {
+        if (group?.prefecture == null && group?.city == null && group?.isOnline == true) {
+            "オンライン"
+    } else if (group?.prefecture != null && group?.city != null) {
             "${group?.prefecture}, ${group?.city}"
-        } else {
+        } else if (group?.prefecture != null && group?.city == null) {
+            "${group?.prefecture}"
+        }  else {
             "未設定"
         }
     }
