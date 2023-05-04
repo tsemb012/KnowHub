@@ -108,7 +108,7 @@
                     layout="@layout/include_item_group_detail"
                     bind:title="@{@string/group_type}"
                     bind:drawable="@{@drawable/ic_baseline_group_24}"
-                    bind:text="@{viewModel.groupDetail.groupType}"
+                    bind:text="@{viewModel.groupTypeString}"
                     />
 
                 <include
@@ -123,7 +123,7 @@
                     layout="@layout/include_item_group_detail"
                     bind:title="@{@string/facility_environment}"
                     bind:drawable="@{@drawable/ic_baseline_location_city_24}"
-                    bind:text="@{viewModel.groupDetail.facilityEnvironment}"
+                    bind:text="@{viewModel.facilityEnvironmentString}"
                     />
                 <include
                     android:id="@+id/include_learning_frequency"

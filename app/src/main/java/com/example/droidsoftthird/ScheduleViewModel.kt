@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.ScheduleUiModel
 import com.example.droidsoftthird.utils.combine
 import java.time.LocalDate
 

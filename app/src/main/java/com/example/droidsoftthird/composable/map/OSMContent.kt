@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.droidsoftthird.*
+import com.example.droidsoftthird.model.presentation_model.GroupLocationsUiModel
+import com.example.droidsoftthird.model.presentation_model.groupCountByArea
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
