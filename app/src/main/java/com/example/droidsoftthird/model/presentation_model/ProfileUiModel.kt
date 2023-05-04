@@ -1,8 +1,7 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.model.presentation_model
 
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
-import com.example.droidsoftthird.model.presentation_model.LoadState
 import java.time.LocalDate
 import java.time.Period
 

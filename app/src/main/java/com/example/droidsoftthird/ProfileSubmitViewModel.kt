@@ -10,6 +10,7 @@ import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.ProfileUiModel
 import com.example.droidsoftthird.usecase.ProfileUseCase
 import com.example.droidsoftthird.utils.combine
 import com.google.firebase.auth.ktx.userProfileChangeRequest

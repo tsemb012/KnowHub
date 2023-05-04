@@ -1,4 +1,4 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.model.presentation_model
 
 import androidx.lifecycle.LiveData
 import com.example.droidsoftthird.model.domain_model.ItemEvent
