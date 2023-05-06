@@ -74,8 +74,6 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
                  return number / divisor
              }
          }
-
-         enum class AreaCategory { PREFECTURE, CITY, }
      }
 }
 
