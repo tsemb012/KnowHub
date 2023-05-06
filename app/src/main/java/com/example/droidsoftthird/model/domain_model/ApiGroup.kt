@@ -68,7 +68,8 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
      )
 }
 
-enum class GroupType(val displayNameId: Int) {
+interface GroupOption { val displayNameId: Int }
+enum class GroupType(override val displayNameId: Int): GroupOption {
     SEMINAR(R.string.seminar),
     WORKSHOP(R.string.workshop),
     MOKUMOKU(R.string.mokumoku),
@@ -80,7 +81,7 @@ enum class GroupType(val displayNameId: Int) {
     }
 }
 
-enum class FacilityEnvironment(val displayNameId : Int) {
+enum class FacilityEnvironment(override val displayNameId: Int): GroupOption {
     LIBRARY(R.string.library),
     CAFE_RESTAURANT(R.string.cafe_restaurant),
     RENTAL_SPACE(R.string.rental_space),
@@ -96,7 +97,7 @@ enum class FacilityEnvironment(val displayNameId : Int) {
     }
 }
 
-enum class FrequencyBasis(val displayNameId : Int) {
+enum class FrequencyBasis(override val displayNameId: Int): GroupOption {
     DAILY(R.string.daily),
     WEEKLY(R.string.weekly),
     MONTHLY(R.string.monthly),

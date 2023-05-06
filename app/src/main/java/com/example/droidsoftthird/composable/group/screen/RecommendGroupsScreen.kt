@@ -1,6 +1,5 @@
 package com.example.droidsoftthird.composable.group.screen
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -120,7 +119,10 @@ fun FilterConditionDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
-            modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(top = 50.dp),
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .padding(top = 50.dp),
             shape = MaterialTheme.shapes.medium
         ) { FilterConditionContent(title, areaMap, filterCondition, onCancel, onConfirm) }
     }
@@ -336,51 +338,48 @@ private fun filterHomeContent(
         activityAreaSection(areaMap, temporalCondition, destination)
         Spacer(modifier = Modifier.height(8.dp))
 
-        val groupTypeTitle = stringResource(R.string.group_type)
-        val groupTypeIcon = Icons.Default.Group
-        val groupTypeList = GroupType.toArrayForDisplay()
-        val selectedType = temporalCondition.value.groupTypes
+        MultiSelectSection(temporalCondition)
+        SingleSelectSection(temporalCondition)
 
-        ChipFlow(
-            groupTypeTitle,
-            groupTypeIcon,
-            groupTypeList,
-            selectedType,
-            { stringResource(id = it.displayNameId) },
-            { temporalCondition.value = temporalCondition.value.copy(groupTypes = it) }
-        )
-
-        val facilityEnvironmentTitle = stringResource(R.string.facility_environment)
-        val facilityEnvironmentIcon = Icons.Default.Build
-        val facilityEnvironmentList = FacilityEnvironment.toArrayForDisplay()
-        val facilityEnvironmentSelectedType = temporalCondition.value.facilityEnvironments
-
-        ChipFlow(
-            facilityEnvironmentTitle,
-            facilityEnvironmentIcon,
-            facilityEnvironmentList,
-            facilityEnvironmentSelectedType,
-            { stringResource(id = it.displayNameId) },
-            { temporalCondition.value = temporalCondition.value.copy(facilityEnvironments = it) }
-        )
-
-        val aTitle = stringResource(R.string.learning_frequency)
-        val aIcon = Icons.Default.AcUnit
-        val alist = FrequencyBasis.toArrayForDisplay()
-        val atype = temporalCondition.value.frequencyBasis
-
-        ChipFlowA(
-            aTitle,
-            aIcon,
-            alist,
-            atype,
-            { stringResource(id = it?.displayNameId!!) },
-            { temporalCondition.value = temporalCondition.value.copy(frequencyBasis = it) }
-        )
         Spacer(modifier = Modifier.height(24.dp))
         decisionButton(temporalCondition, onConfirm)
         Spacer(modifier = Modifier.height(16.dp))
     }
+}
+
+@Composable
+private fun SingleSelectSection(temporalCondition: MutableState<ApiGroup.FilterCondition>) {
+
+    SingleSelectChipFlow(
+        stringResource(R.string.learning_frequency),
+        Icons.Default.AcUnit,
+        FrequencyBasis.toArrayForDisplay(),
+        temporalCondition.value.frequencyBasis,
+        { stringResource(id = it?.displayNameId!!) },
+        { temporalCondition.value = temporalCondition.value.copy(frequencyBasis = it) }
+    )
+
+}
+
+@Composable
+private fun MultiSelectSection(temporalCondition: MutableState<ApiGroup.FilterCondition>) {
+    MultiSelectChipFlow(
+        title = stringResource(id = R.string.group_type),
+        icon = Icons.Default.Group,
+        items = GroupType.toArrayForDisplay(),
+        stringProvider = { stringResource(id = it.displayNameId) },
+        selectedItems = temporalCondition.value.groupTypes,
+        onSelected = { temporalCondition.value = temporalCondition.value.copy(groupTypes = it) }
+
+    )
+    MultiSelectChipFlow(
+        title = stringResource(R.string.facility_environment),
+        icon = Icons.Default.Build,
+        items = FacilityEnvironment.toArrayForDisplay(),
+        stringProvider = { stringResource(id = it.displayNameId) },
+        selectedItems = temporalCondition.value.facilityEnvironments,
+        onSelected = { temporalCondition.value = temporalCondition.value.copy(facilityEnvironments = it) }
+    )
 }
 
 @Composable
@@ -421,7 +420,7 @@ private fun activityAreaSection(
     temporalCondition: MutableState<ApiGroup.FilterCondition>,
     destination: MutableState<FilterContentDestination>
 ) {
-    ProfileInfoItem(
+    LabelItem(
         title = stringResource(id = R.string.activity_area),
         icon = Icons.Default.LocationOn,
     )
@@ -451,17 +450,9 @@ private fun decisionButton(
     }
 }
 
-data class ChipFlowData<T>(
-    @StringRes val titleResId: Int,
-    val icon: ImageVector,
-    val items: List<T>,
-    val selectedItems: Set<T>,
-    val onSelected: (Set<T>) -> Unit
-)
-
-        @Composable
+@Composable
 @OptIn(ExperimentalLayoutApi::class)
-private fun <T> ChipFlow(
+private fun <T> MultiSelectChipFlow(
     title: String,
     icon: ImageVector,
     items: List<T>,
@@ -470,7 +461,7 @@ private fun <T> ChipFlow(
     onSelected: (Set<T>) -> Unit
 ) {
     val rememberSelectedItems = remember(selectedItems) { mutableStateOf(selectedItems) }
-    ProfileInfoItem(
+    LabelItem(
         title = title,
         icon = icon
     )
@@ -501,7 +492,7 @@ private fun <T> ChipFlow(
 
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
-private fun <T> ChipFlowA(
+private fun <T> SingleSelectChipFlow(
     title: String,
     icon: ImageVector,
     items: List<T>,
@@ -510,7 +501,7 @@ private fun <T> ChipFlowA(
     onSelected: (T) -> Unit
 ) {
     val rememberSelectedItem = remember(selectedItem) { mutableStateOf(selectedItem) }
-    ProfileInfoItem(
+    LabelItem(
         title = title,
         icon = icon
     )
@@ -555,7 +546,7 @@ fun ChipItem(label: String, isSelected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ProfileInfoItem(title: String, icon: ImageVector) {
+fun LabelItem(title: String, icon: ImageVector) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
