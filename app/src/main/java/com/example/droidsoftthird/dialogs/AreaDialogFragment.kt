@@ -94,7 +94,7 @@ class LocalAreaDialogFragment(private val prefectureCode: Int, private val onCon
         val spell = requireContext().assets.open(JAPAN_ALL_ADDRESS_CSV)
             .bufferedReader()
             .readLines()
-            .first { it.split(",")[JAPAN_CITY_CODE].drop(1).dropLast(1).toInt() == cityCode }
+        .first { it.split(",")[JAPAN_CITY_CODE].drop(1).dropLast(1).toInt() == cityCode }
             .split(",")[JAPAN_CITY_SPELL].drop(1).dropLast(1)
             .capitalize()
 
