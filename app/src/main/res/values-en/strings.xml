@@ -168,6 +168,6 @@
     <string name="daily">Everyday</string>
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
-
-
+    <string name="clear_filter">Clear</string>
+    <string name="group_condition">Filter Condition</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.composable.group.screen
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -33,11 +34,12 @@ import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
 import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
 
+enum class FilterContentDestination { HOME, PREFECTURE, CITY }
+
 @Composable
 fun RecommendGroupsScreen(
     viewModel: RecommendGroupsViewModel,
     navigateToGroupDetail: (String) -> Unit,
-    onConfirm: (ApiGroup.FilterCondition?) -> Unit
 ) {
 
     val error = viewModel.errorLiveData
@@ -45,16 +47,19 @@ fun RecommendGroupsScreen(
     val filterCondition = viewModel.groupFilterCondition
     val showDialog = remember { mutableStateOf(false) }
     val areaMap = viewModel.prefectureList to viewModel.cityList
+    val onConfirm: (ApiGroup.FilterCondition?) -> Unit = {
+            condition -> viewModel.updateFilterCondition(condition ?: ApiGroup.FilterCondition())
+    }
 
-    DisplayGroupListWithFab(lazyPagingGroups, navigateToGroupDetail, showDialog)
-    DisplayFullScreenDialog(areaMap, filterCondition, showDialog, onConfirm)
+    DisplayGroupListWithFab(showDialog, lazyPagingGroups, navigateToGroupDetail)
+    AnimatedFilterConditionDialog(showDialog, areaMap, filterCondition, onConfirm)
 }
 
 @Composable
 fun DisplayGroupListWithFab(
+    showDialog: MutableState<Boolean>,
     lazyPagingGroups: LazyPagingItems<ApiGroup>,
-    navigateToGroupDetail: (String) -> Unit,
-    showDialog: MutableState<Boolean>
+    navigateToGroupDetail: (String) -> Unit
 ) {
     Box {
         PagingGroupList(lazyPagingGroups, navigateToGroupDetail)
@@ -71,108 +76,103 @@ fun DisplayGroupListWithFab(
 }
 
 @Composable
-fun DisplayFullScreenDialog(
+fun AnimatedFilterConditionDialog(
+    showDialog: MutableState<Boolean>,
     areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     filterCondition: State<ApiGroup.FilterCondition?>,
-    showDialog: MutableState<Boolean>,
     onConfirm: (ApiGroup.FilterCondition?) -> Unit
 ) {
     if (showDialog.value) {
-        FullScreenDialog(
-            areaMap,
-            visible = showDialog.value,
-            title = "フィルター",
-            filterCondition = filterCondition.value ?: ApiGroup.FilterCondition(),
-            onCancel = { showDialog.value = false }
+        val animatedVisibility = remember { mutableStateOf(showDialog.value) }
+        val enterTransition = slideInVertically(initialOffsetY = { it })
+        val exitTransition = slideOutVertically(targetOffsetY = { it })
+
+        AnimatedVisibility(
+            visible = animatedVisibility.value,
+            enter = enterTransition + slideIn(animationSpec = tween(300), initialOffset = { IntOffset.Zero }),
+            exit = exitTransition + slideOut(animationSpec = tween(300), targetOffset = { IntOffset.Zero }),
         ) {
-            onConfirm(it)
-            showDialog.value = false
+
+            FilterConditionDialog(
+                title = stringResource(id = R.string.group_condition),
+                areaMap,
+                filterCondition = filterCondition.value ?: ApiGroup.FilterCondition(),
+                onCancel = { showDialog.value = false }
+            ) { temporalCondition ->
+                onConfirm(temporalCondition)
+                showDialog.value = false
+            }
+
         }
     }
 }
 
-
 @Composable
-fun FullScreenDialog(
-    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
-    visible: Boolean,
+fun FilterConditionDialog(
     title: String,
-    filterCondition: ApiGroup.FilterCondition,
-    onCancel: () -> Unit,
-    onConfirm: (ApiGroup.FilterCondition) -> Unit,
-) {
-    val animatedVisibility = remember { mutableStateOf(visible) }
-    val enterTransition = slideInVertically(initialOffsetY = { it })
-    val exitTransition = slideOutVertically(targetOffsetY = { it })
-    AnimatedVisibility(
-        visible = animatedVisibility.value,
-        enter = enterTransition + slideIn(animationSpec = tween(300), initialOffset = { IntOffset.Zero }),
-        exit = exitTransition + slideOut(animationSpec = tween(300), targetOffset = { IntOffset.Zero }),
-    ) {
-        DisplayFullScreenDialogContent(areaMap, filterCondition, onCancel, onConfirm, title)
-    }
-}
-
-@Composable
-fun DisplayFullScreenDialogContent(
     areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     filterCondition: ApiGroup.FilterCondition,
     onCancel: () -> Unit,
-    onConfirm: (ApiGroup.FilterCondition) -> Unit,
-    title: String
+    onConfirm: (ApiGroup.FilterCondition) -> Unit
 ) {
     Dialog(
         onDismissRequest = onCancel,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .padding(top = 50.dp),
+            modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(top = 50.dp),
             shape = MaterialTheme.shapes.medium
-        ) {
-            val destination = remember { mutableStateOf(DialogDestination.REGULAR) }
-            val temporalCondition = remember { mutableStateOf(filterCondition) }
-            when (destination.value) {
-                DialogDestination.REGULAR -> regularDialog(
-                    temporalCondition,
-                    onCancel,
-                    title,
-                    destination,
-                    areaMap,
-                    onConfirm
-                )
-                DialogDestination.PREFECTURE -> displayPrefectureListDialog(temporalCondition, destination, areaMap.first)
-                DialogDestination.CITY -> displayCityListDialog(temporalCondition, destination, areaMap.second)
-            }
+        ) { FilterConditionContent(title, areaMap, filterCondition, onCancel, onConfirm) }
+    }
+}
+
+@Composable
+private fun FilterConditionContent(
+    title: String,
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
+    filterCondition: ApiGroup.FilterCondition,
+    onCancel: () -> Unit,
+    onConfirm: (ApiGroup.FilterCondition) -> Unit,
+) {
+    val destination = remember { mutableStateOf(FilterContentDestination.HOME) }
+    val temporalCondition = remember { mutableStateOf(filterCondition) }
+    when (destination.value) {
+        FilterContentDestination.HOME -> filterHomeContent(title, destination, areaMap, temporalCondition, onCancel, onConfirm)
+        FilterContentDestination.PREFECTURE -> displayPrefectureListContent(destination, areaMap.first, temporalCondition)
+        FilterContentDestination.CITY -> displayCityListContent(destination, areaMap.second, temporalCondition)
+    }
+}
+
+
+@Composable
+fun displayPrefectureListContent(
+    destination: MutableState<FilterContentDestination>,
+    prefectureList: List<PrefectureCsvLoader.PrefectureLocalItem>,
+    temporalCondition: MutableState<ApiGroup.FilterCondition>
+) {
+    listDialog(
+        "活動地域を選択してください",
+        prefectureList,
+        { destination.value = FilterContentDestination.HOME },
+        {
+            temporalCondition.value = temporalCondition.value.copy(areaCode = null, areaCategory = null)
+            destination.value = FilterContentDestination.HOME
         }
-    }
-}
-
-enum class DialogDestination { REGULAR, PREFECTURE, CITY }
-
-@Composable
-fun displayPrefectureListDialog(
-    temporalCondition: MutableState<ApiGroup.FilterCondition>,
-    destination: MutableState<DialogDestination>,
-    prefectureList: List<PrefectureCsvLoader.PrefectureLocalItem>
-) {
-    listDialog("活動地域を選択してください", prefectureList, { destination.value = DialogDestination.REGULAR }) {
+    ) {
         temporalCondition.value = temporalCondition.value.copy(areaCode = it.code, areaCategory = "prefecture")
-        destination.value = DialogDestination.CITY
+        destination.value = FilterContentDestination.CITY
     }
 }
 
 @Composable
-fun displayCityListDialog(
-    temporalCondition: MutableState<ApiGroup.FilterCondition>,
-    destination: MutableState<DialogDestination>,
-    cityList: List<CityCsvLoader.CityLocalItem>
+fun displayCityListContent(
+    destination: MutableState<FilterContentDestination>,
+    cityList: List<CityCsvLoader.CityLocalItem>,
+    temporalCondition: MutableState<ApiGroup.FilterCondition>
 ) {
-    listDialog2("活動地域を選択してください", cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = DialogDestination.PREFECTURE }, { destination.value = DialogDestination.REGULAR }) {
+    listDialog2("活動地域を選択してください", cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = FilterContentDestination.PREFECTURE }, { destination.value = FilterContentDestination.HOME }) {
         temporalCondition.value = temporalCondition.value.copy(areaCode = it.cityCode, areaCategory = "city")
-        destination.value = DialogDestination.REGULAR
+        destination.value = FilterContentDestination.HOME
     }
 }
 
@@ -251,6 +251,7 @@ fun listDialog(
     label: String,
     items: List<PrefectureCsvLoader.PrefectureLocalItem>,
     onBack: () -> Unit,
+    onNonSelected: () -> Unit,
     onSelected: (PrefectureCsvLoader.PrefectureLocalItem) -> Unit
 ) {
     Column {
@@ -289,7 +290,7 @@ fun listDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(onClick = {
-                            onBack()
+                            onNonSelected()
                         })
                         .padding(16.dp),
                     style = MaterialTheme.typography.h6,
@@ -315,12 +316,12 @@ fun listDialog(
 }
 
 @Composable
-private fun regularDialog(
+private fun filterHomeContent(
+    title: String,
+    destination: MutableState<FilterContentDestination>,
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     temporalCondition: MutableState<ApiGroup.FilterCondition>,
     onCancel: () -> Unit,
-    title: String,
-    destination: MutableState<DialogDestination>,
-    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     onConfirm: (ApiGroup.FilterCondition) -> Unit,
 ) {
     Column(
@@ -329,37 +330,10 @@ private fun regularDialog(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onCancel) {
-                Icon(Icons.Default.Cancel, contentDescription = "キャンセル")
-            }
-            Text(
-                text = title,
-                style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-            Spacer(modifier = Modifier.size(48.dp)) // IconButtonと同じサイズのスペーサー
-        }
-
+        headerRow(title, onCancel, temporalCondition)
         Spacer(modifier = Modifier.height(24.dp))
 
-        ProfileInfoItem(
-            title = "活動地域",
-            icon = Icons.Default.LocationOn,
-        )
-        val activityAreaLabel = if (temporalCondition.value.areaCategory == "prefecture") {
-            areaMap.first.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
-        } else {
-            areaMap.second.firstOrNull { it.cityCode == temporalCondition.value.areaCode }?.name
-        }
-        Text(text = activityAreaLabel ?: "選択してください", Modifier.clickable(onClick = {
-            destination.value = DialogDestination.PREFECTURE
-        }))
+        activityAreaSection(areaMap, temporalCondition, destination)
         Spacer(modifier = Modifier.height(8.dp))
 
         val groupTypeTitle = stringResource(R.string.group_type)
@@ -403,22 +377,89 @@ private fun regularDialog(
             { stringResource(id = it?.displayNameId!!) },
             { temporalCondition.value = temporalCondition.value.copy(frequencyBasis = it) }
         )
-
         Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = {
-            onConfirm(temporalCondition.value)
-
-        }, modifier = Modifier.fillMaxWidth()) {
-            Text("決定")
-        }
-
-
+        decisionButton(temporalCondition, onConfirm)
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 @Composable
+private fun headerRow(
+    title: String,
+    onCancel: () -> Unit,
+    temporalCondition: MutableState<ApiGroup.FilterCondition>
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = onCancel) {
+            Icon(Icons.Filled.Close, contentDescription = "キャンセル")
+        }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+
+        Text(
+            text = stringResource(id = R.string.clear_filter),
+            color = MaterialTheme.colors.primary,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .clickable(onClick = {
+                    temporalCondition.value = ApiGroup.FilterCondition()
+                })
+        )
+    }
+}
+
+@Composable
+private fun activityAreaSection(
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
+    temporalCondition: MutableState<ApiGroup.FilterCondition>,
+    destination: MutableState<FilterContentDestination>
+) {
+    ProfileInfoItem(
+        title = stringResource(id = R.string.activity_area),
+        icon = Icons.Default.LocationOn,
+    )
+
+    val activityAreaLabel = when (temporalCondition.value.areaCategory) {
+        "prefecture" -> areaMap.first.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
+        "city" -> {
+            val prefectureCode = temporalCondition.value.areaCode?.let { removeLastNDigits(it, 3) }
+            areaMap.first.firstOrNull { it.code == prefectureCode }?.name + " , " +
+                areaMap.second.firstOrNull { it.cityCode == temporalCondition.value.areaCode }?.name
+        }
+        else -> null
+    }
+
+    Text(text = activityAreaLabel ?: "選択してください", Modifier.clickable(onClick = {
+        destination.value = FilterContentDestination.PREFECTURE
+    }))
+}
+
+@Composable
+private fun decisionButton(
+    temporalCondition: MutableState<ApiGroup.FilterCondition>,
+    onConfirm: (ApiGroup.FilterCondition) -> Unit
+) {
+    Button(onClick = { onConfirm(temporalCondition.value) }, modifier = Modifier.fillMaxWidth()) {
+        Text("決定")
+    }
+}
+
+data class ChipFlowData<T>(
+    @StringRes val titleResId: Int,
+    val icon: ImageVector,
+    val items: List<T>,
+    val selectedItems: Set<T>,
+    val onSelected: (Set<T>) -> Unit
+)
+
+        @Composable
 @OptIn(ExperimentalLayoutApi::class)
 private fun <T> ChipFlow(
     title: String,
@@ -428,7 +469,7 @@ private fun <T> ChipFlow(
     stringProvider: @Composable (T) -> String,
     onSelected: (Set<T>) -> Unit
 ) {
-    val rememberSelectedItems = remember { mutableStateOf(selectedItems) }
+    val rememberSelectedItems = remember(selectedItems) { mutableStateOf(selectedItems) }
     ProfileInfoItem(
         title = title,
         icon = icon
@@ -468,7 +509,7 @@ private fun <T> ChipFlowA(
     stringProvider: @Composable (T) -> String,
     onSelected: (T) -> Unit
 ) {
-    val rememberSelectedItem = remember { mutableStateOf(selectedItem) }
+    val rememberSelectedItem = remember(selectedItem) { mutableStateOf(selectedItem) }
     ProfileInfoItem(
         title = title,
         icon = icon
@@ -526,4 +567,8 @@ fun ProfileInfoItem(title: String, icon: ImageVector) {
             Text(text = title, fontWeight = FontWeight.Bold)
         }
     }
+}
+fun removeLastNDigits(number: Int, n: Int): Int {
+    val divisor = Math.pow(10.0, n.toDouble()).toInt()
+    return number / divisor
 }

@@ -171,5 +171,6 @@
     <string name="daily">毎日</string>
     <string name="weekly">週ごと</string>
     <string name="monthly">月ごと</string>
-
+    <string name="clear_filter">クリア</string>
+    <string name="group_condition">条件</string>
 </resources>
