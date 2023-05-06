@@ -18,7 +18,7 @@ data class GetGroupCountByAreaJson (
     val groupCount : Int
 ) {
     fun toEntity() = GroupCountByArea(
-        category = AreaCategory.valueOf(category),
+        category = AreaCategory.valueOf(category.uppercase()),
         code = code,
         prefectureName = prefectureName,
         cityName = cityName,

@@ -48,8 +48,7 @@ class GroupLocationsViewModel @Inject constructor(private val useCase: GroupUseC
                 .onSuccess {
                     _groupCountByArea.value = LoadState.Loaded(it)
                 }
-                .onFailure {
-                    _message.value = it.message }
+                .onFailure { _message.value = it.message }
         }
     }
 
