@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.RecommendGroupsViewModel
@@ -40,13 +41,21 @@ fun RecommendGroupsScreen(
 ) {
 
     val error = viewModel.errorLiveData
-
     val lazyPagingGroups = viewModel.groupsFlow.collectAsLazyPagingItems()
-
     val filterCondition = viewModel.groupFilterCondition
-
     val showDialog = remember { mutableStateOf(false) }
+    val areaMap = viewModel.prefectureList to viewModel.cityList
 
+    DisplayGroupListWithFab(lazyPagingGroups, navigateToGroupDetail, showDialog)
+    DisplayFullScreenDialog(areaMap, filterCondition, showDialog, onConfirm)
+}
+
+@Composable
+fun DisplayGroupListWithFab(
+    lazyPagingGroups: LazyPagingItems<ApiGroup>,
+    navigateToGroupDetail: (String) -> Unit,
+    showDialog: MutableState<Boolean>
+) {
     Box {
         PagingGroupList(lazyPagingGroups, navigateToGroupDetail)
         FloatingActionButton(
@@ -59,30 +68,33 @@ fun RecommendGroupsScreen(
             Icon(Icons.Filled.FilterList, contentDescription = "Filter")
         }
     }
+}
 
-
-
+@Composable
+fun DisplayFullScreenDialog(
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
+    filterCondition: State<ApiGroup.FilterCondition?>,
+    showDialog: MutableState<Boolean>,
+    onConfirm: (ApiGroup.FilterCondition?) -> Unit
+) {
     if (showDialog.value) {
-
-
         FullScreenDialog(
-            viewModel,
+            areaMap,
             visible = showDialog.value,
-            title = "フルスクリーンダイアログ",
-            filterCondition = filterCondition.value,
-            onCancel = { showDialog.value = false },
-            onConfirm = {
-                onConfirm(it)
-                showDialog.value = false
-            }
-        )
+            title = "フィルター",
+            filterCondition = filterCondition.value ?: ApiGroup.FilterCondition(),
+            onCancel = { showDialog.value = false }
+        ) {
+            onConfirm(it)
+            showDialog.value = false
+        }
     }
 }
 
 
 @Composable
 fun FullScreenDialog(
-    viewModel: RecommendGroupsViewModel,
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     visible: Boolean,
     title: String,
     filterCondition: ApiGroup.FilterCondition,
@@ -92,50 +104,79 @@ fun FullScreenDialog(
     val animatedVisibility = remember { mutableStateOf(visible) }
     val enterTransition = slideInVertically(initialOffsetY = { it })
     val exitTransition = slideOutVertically(targetOffsetY = { it })
-
     AnimatedVisibility(
         visible = animatedVisibility.value,
-        enter = enterTransition + slideIn(animationSpec = tween(300), initialOffset = { IntOffset.Zero}),
-        exit = exitTransition + slideOut(animationSpec = tween(300), targetOffset = { IntOffset.Zero}),
+        enter = enterTransition + slideIn(animationSpec = tween(300), initialOffset = { IntOffset.Zero }),
+        exit = exitTransition + slideOut(animationSpec = tween(300), targetOffset = { IntOffset.Zero }),
     ) {
+        DisplayFullScreenDialogContent(areaMap, filterCondition, onCancel, onConfirm, title)
+    }
+}
 
-
-        Dialog(
-            onDismissRequest = onCancel,
-            properties = DialogProperties(usePlatformDefaultWidth = false)
+@Composable
+fun DisplayFullScreenDialogContent(
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
+    filterCondition: ApiGroup.FilterCondition,
+    onCancel: () -> Unit,
+    onConfirm: (ApiGroup.FilterCondition) -> Unit,
+    title: String
+) {
+    Dialog(
+        onDismissRequest = onCancel,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .padding(top = 50.dp),
+            shape = MaterialTheme.shapes.medium
         ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-                    .padding(top = 50.dp),
-                shape = MaterialTheme.shapes.medium
-            ) {
-
-                val destination = remember { mutableStateOf("regular") }
-                val temporalCondition = remember { mutableStateOf(filterCondition) }
-
-                when (destination.value) {
-                    "regular" -> regularDialog(temporalCondition, onCancel, title, destination, viewModel, onConfirm)
-                    "prefecture" -> { listDialog("活動地域を選択してください", viewModel.prefectureList, { destination.value = "regular" }) {
-                        temporalCondition.value = temporalCondition.value.copy(areaCode = it.code, areaCategory = "prefecture")
-                        destination.value = "city" }
-                    }
-                    "city" -> {
-                        listDialog2("活動地域を選択してください", viewModel.cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = "prefecture" }, { destination.value = "regular" }) {
-                            temporalCondition.value = temporalCondition.value.copy(areaCode = it.cityCode, areaCategory = "city")
-                            destination.value = "regular"
-                        }
-                    }
-                }
-
-
+            val destination = remember { mutableStateOf(DialogDestination.REGULAR) }
+            val temporalCondition = remember { mutableStateOf(filterCondition) }
+            when (destination.value) {
+                DialogDestination.REGULAR -> regularDialog(
+                    temporalCondition,
+                    onCancel,
+                    title,
+                    destination,
+                    areaMap,
+                    onConfirm
+                )
+                DialogDestination.PREFECTURE -> displayPrefectureListDialog(temporalCondition, destination, areaMap.first)
+                DialogDestination.CITY -> displayCityListDialog(temporalCondition, destination, areaMap.second)
             }
         }
     }
 }
 
+enum class DialogDestination { REGULAR, PREFECTURE, CITY }
+
 @Composable
+fun displayPrefectureListDialog(
+    temporalCondition: MutableState<ApiGroup.FilterCondition>,
+    destination: MutableState<DialogDestination>,
+    prefectureList: List<PrefectureCsvLoader.PrefectureLocalItem>
+) {
+    listDialog("活動地域を選択してください", prefectureList, { destination.value = DialogDestination.REGULAR }) {
+        temporalCondition.value = temporalCondition.value.copy(areaCode = it.code, areaCategory = "prefecture")
+        destination.value = DialogDestination.CITY
+    }
+}
+
+@Composable
+fun displayCityListDialog(
+    temporalCondition: MutableState<ApiGroup.FilterCondition>,
+    destination: MutableState<DialogDestination>,
+    cityList: List<CityCsvLoader.CityLocalItem>
+) {
+    listDialog2("活動地域を選択してください", cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = DialogDestination.PREFECTURE }, { destination.value = DialogDestination.REGULAR }) {
+        temporalCondition.value = temporalCondition.value.copy(areaCode = it.cityCode, areaCategory = "city")
+        destination.value = DialogDestination.REGULAR
+    }
+}
+
+    @Composable
 fun listDialog2(
     label: String,
     items: List<CityCsvLoader.CityLocalItem>,
@@ -278,8 +319,8 @@ private fun regularDialog(
     temporalCondition: MutableState<ApiGroup.FilterCondition>,
     onCancel: () -> Unit,
     title: String,
-    destination: MutableState<String>,
-    viewModel: RecommendGroupsViewModel,
+    destination: MutableState<DialogDestination>,
+    areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     onConfirm: (ApiGroup.FilterCondition) -> Unit,
 ) {
     Column(
@@ -312,12 +353,12 @@ private fun regularDialog(
             icon = Icons.Default.LocationOn,
         )
         val activityAreaLabel = if (temporalCondition.value.areaCategory == "prefecture") {
-            viewModel.prefectureList.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
+            areaMap.first.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
         } else {
-            viewModel.cityList.firstOrNull { it.cityCode == temporalCondition.value.areaCode }?.name
+            areaMap.second.firstOrNull { it.cityCode == temporalCondition.value.areaCode }?.name
         }
         Text(text = activityAreaLabel ?: "選択してください", Modifier.clickable(onClick = {
-            destination.value = "prefecture"
+            destination.value = DialogDestination.PREFECTURE
         }))
         Spacer(modifier = Modifier.height(8.dp))
 
