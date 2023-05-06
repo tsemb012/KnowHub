@@ -11,6 +11,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.GroupLocationsFragment
 import com.example.droidsoftthird.GroupLocationsViewModel
 import com.example.droidsoftthird.composable.group.content.PagingGroupList
+import com.example.droidsoftthird.model.domain_model.AreaCategory
 import kotlinx.coroutines.flow.emptyFlow
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,6 +40,6 @@ fun OSMBottomSheetScreen(
             fragment,
             bottomSheetState,
             scope
-        ) { code:Int, category:String ->  viewModel.getGroupsByArea(code, category) }
+        ) { code:Int, category:AreaCategory ->  viewModel.getGroupsByArea(code, category) }
     }
 }

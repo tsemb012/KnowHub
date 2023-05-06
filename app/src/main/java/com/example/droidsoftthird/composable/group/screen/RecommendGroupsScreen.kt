@@ -340,9 +340,8 @@ private fun filterHomeContent(
         MultiSelectSection(temporalCondition)
         SingleSelectSection(temporalCondition)
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(48.dp))
         decisionButton(temporalCondition, onConfirm)
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
@@ -351,7 +350,7 @@ private fun SingleSelectSection(temporalCondition: MutableState<ApiGroup.FilterC
 
     SingleSelectChipFlow(
         stringResource(R.string.learning_frequency),
-        Icons.Default.AcUnit,
+        Icons.Default.DateRange,
         FrequencyBasis.toArrayForDisplay(),
         temporalCondition.value.frequencyBasis,
         { stringResource(id = it?.displayNameId!!) },
@@ -373,7 +372,7 @@ private fun MultiSelectSection(temporalCondition: MutableState<ApiGroup.FilterCo
     )
     MultiSelectChipFlow(
         title = stringResource(R.string.facility_environment),
-        icon = Icons.Default.Build,
+        icon = Icons.Default.LocationCity,
         items = FacilityEnvironment.toArrayForDisplay(),
         stringProvider = { stringResource(id = it.displayNameId) },
         selectedItems = temporalCondition.value.facilityEnvironments,
@@ -424,9 +423,9 @@ private fun activityAreaSection(
         icon = Icons.Default.LocationOn,
     )
     val activityAreaLabel = when (temporalCondition.value.areaCategory) {
-        ApiGroup.FilterCondition.AreaCategory.PREFECTURE ->
+        AreaCategory.PREFECTURE ->
             areaMap.first.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
-        ApiGroup.FilterCondition.AreaCategory.CITY -> {
+        AreaCategory.CITY -> {
             val prefectureCode = temporalCondition.value.areaCode?.let { getPrefectureCode(it) }
             areaMap.first.firstOrNull { it.code == prefectureCode }?.name + " , " +
                 areaMap.second.firstOrNull { it.cityCode == temporalCondition.value.areaCode }?.name
@@ -449,12 +448,23 @@ private fun TransparentButton(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
         contentPadding = PaddingValues(0.dp),
-        elevation = ButtonDefaults.elevation(0.dp)
+        elevation = ButtonDefaults.elevation(0.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
     ) {
         Text(
             text = text,
             color = MaterialTheme.colors.primary,
-            style = MaterialTheme.typography.button
+            style = MaterialTheme.typography.button,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            Icons.Default.ArrowForward,
+            contentDescription = "ArrowRight",
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .align(Alignment.CenterVertically)
         )
     }
 }
