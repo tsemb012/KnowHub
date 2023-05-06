@@ -27,11 +27,7 @@ class RecommendGroupsFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            RecommendGroupsScreen(viewModel, ::navigateToGroupDetail) { condition ->
-                viewModel.updateFilterCondition(
-                    condition!!
-                )
-            }
+            RecommendGroupsScreen(viewModel, ::navigateToGroupDetail)
         }
     }
 
