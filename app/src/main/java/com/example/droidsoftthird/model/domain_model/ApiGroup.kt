@@ -2,6 +2,7 @@ package com.example.droidsoftthird.model.domain_model
 
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.model.infra_model.json.request.PostGroupJson
+import kotlin.math.pow
 
 data class EditedGroup(
     val groupId: String?,
@@ -61,11 +62,21 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
 ) {
      data class FilterCondition(
          val areaCode: Int? = null,
-         val areaCategory: String? = null,
+         val areaCategory: AreaCategory? = null,
          val groupTypes: Set<GroupType> = setOf(),
          val facilityEnvironments: Set<FacilityEnvironment> = setOf(),
          val frequencyBasis: FrequencyBasis? = null,
-     )
+     ) {
+         companion object {
+             fun getPrefectureCode(number: Int): Int {
+                 if (number <= 47) return number
+                 val divisor = 10.0.pow(3.toDouble()).toInt()
+                 return number / divisor
+             }
+         }
+
+         enum class AreaCategory { PREFECTURE, CITY, }
+     }
 }
 
 interface GroupOption { val displayNameId: Int }
