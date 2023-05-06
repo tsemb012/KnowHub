@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,10 +27,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.RecommendGroupsViewModel
 import com.example.droidsoftthird.composable.group.content.PagingGroupList
-import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
-import com.example.droidsoftthird.model.domain_model.FrequencyBasis
-import com.example.droidsoftthird.model.domain_model.GroupType
+import com.example.droidsoftthird.model.domain_model.*
+import com.example.droidsoftthird.model.domain_model.ApiGroup.FilterCondition.Companion.getPrefectureCode
 import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
 import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
 
@@ -161,7 +160,7 @@ fun displayPrefectureListContent(
             destination.value = FilterContentDestination.HOME
         }
     ) {
-        temporalCondition.value = temporalCondition.value.copy(areaCode = it.code, areaCategory = "prefecture")
+        temporalCondition.value = temporalCondition.value.copy(areaCode = it.code, areaCategory = AreaCategory.PREFECTURE)
         destination.value = FilterContentDestination.CITY
     }
 }
@@ -173,7 +172,7 @@ fun displayCityListContent(
     temporalCondition: MutableState<ApiGroup.FilterCondition>
 ) {
     listDialog2("活動地域を選択してください", cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = FilterContentDestination.PREFECTURE }, { destination.value = FilterContentDestination.HOME }) {
-        temporalCondition.value = temporalCondition.value.copy(areaCode = it.cityCode, areaCategory = "city")
+        temporalCondition.value = temporalCondition.value.copy(areaCode = it.cityCode, areaCategory = AreaCategory.CITY)
         destination.value = FilterContentDestination.HOME
     }
 }
@@ -424,23 +423,43 @@ private fun activityAreaSection(
         title = stringResource(id = R.string.activity_area),
         icon = Icons.Default.LocationOn,
     )
-
     val activityAreaLabel = when (temporalCondition.value.areaCategory) {
-        "prefecture" -> areaMap.first.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
-        "city" -> {
-            val prefectureCode = temporalCondition.value.areaCode?.let { removeLastNDigits(it, 3) }
+        ApiGroup.FilterCondition.AreaCategory.PREFECTURE ->
+            areaMap.first.firstOrNull { it.code == temporalCondition.value.areaCode }?.name
+        ApiGroup.FilterCondition.AreaCategory.CITY -> {
+            val prefectureCode = temporalCondition.value.areaCode?.let { getPrefectureCode(it) }
             areaMap.first.firstOrNull { it.code == prefectureCode }?.name + " , " +
                 areaMap.second.firstOrNull { it.cityCode == temporalCondition.value.areaCode }?.name
         }
         else -> null
     }
 
-    Text(text = activityAreaLabel ?: "選択してください", Modifier.clickable(onClick = {
-        destination.value = FilterContentDestination.PREFECTURE
-    }))
+    TransparentButton(
+        text = activityAreaLabel ?: stringResource(id = R.string.select_area),
+        onClick = { destination.value = FilterContentDestination.PREFECTURE }
+    )
 }
 
 @Composable
+private fun TransparentButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        contentPadding = PaddingValues(0.dp),
+        elevation = ButtonDefaults.elevation(0.dp)
+    ) {
+        Text(
+            text = text,
+            color = MaterialTheme.colors.primary,
+            style = MaterialTheme.typography.button
+        )
+    }
+}
+
+    @Composable
 private fun decisionButton(
     temporalCondition: MutableState<ApiGroup.FilterCondition>,
     onConfirm: (ApiGroup.FilterCondition) -> Unit
@@ -558,8 +577,4 @@ fun LabelItem(title: String, icon: ImageVector) {
             Text(text = title, fontWeight = FontWeight.Bold)
         }
     }
-}
-fun removeLastNDigits(number: Int, n: Int): Int {
-    val divisor = Math.pow(10.0, n.toDouble()).toInt()
-    return number / divisor
 }

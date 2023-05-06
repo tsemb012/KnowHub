@@ -26,7 +26,7 @@ class GroupPagingSource(
                 page = nextPage,
                 userId = userId,
                 areaCode = groupFilterCondition.areaCode,
-                areaCategory = groupFilterCondition.areaCategory,
+                areaCategory = groupFilterCondition.areaCategory?.name?.lowercase(),
                 groupTypes = groupFilterCondition.groupTypes.map { it.name.lowercase() },
                 facilityEnvironments = groupFilterCondition.facilityEnvironments.map { it.name.lowercase() },
                 frequency_bases = groupFilterCondition.frequencyBasis?.name?.lowercase(),
