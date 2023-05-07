@@ -22,6 +22,7 @@ open class ScheduleViewModel(
     private val _selectedDate: MutableLiveData<LocalDate> by lazy { MutableLiveData(LocalDate.now()) }
     private val _selectedEvents: MutableLiveData<List<ItemEvent>> by lazy { MutableLiveData(emptyList())}
     private val _simpleGroupsLoadState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
+    private val _selectedGroup: MutableLiveData<String> by lazy { MutableLiveData("") }
     val uiModel by lazy {
         combine(
                 ScheduleUiModel(),
@@ -29,8 +30,9 @@ open class ScheduleViewModel(
                 _selectedDate,
                 _selectedEvents,
                 _simpleGroupsLoadState,
-        ) { current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState ->
-            ScheduleUiModel(current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState)
+                _selectedGroup
+        ) { current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState, _selectedGroup ->
+            ScheduleUiModel(current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState, _selectedGroup)
         }
     }
 
@@ -47,16 +49,19 @@ open class ScheduleViewModel(
         _scheduleLoadState.value = LoadState.Loading(job)
         job.start()
     }
-    fun initializeSchedulesState() {
-        _scheduleLoadState.value = LoadState.Initialized
-    }
+
+
     fun setSelectedDate(selectedDate: LocalDate) {
         this._selectedDate.value = selectedDate
-        _selectedEvents.value = uiModel.value?.allEvents?.mapNotNull { scheduleEventForHome ->
+        _selectedEvents.value = uiModel.value?.groupFilteredEvents?.mapNotNull { scheduleEventForHome ->
             if (scheduleEventForHome.period.first.toLocalDate() == selectedDate) { scheduleEventForHome }
             else null
         }
         _scheduleLoadState.value = LoadState.Processed
+    }
+
+    fun setSelectedGroupId(selectedGroupId: String) {
+        _selectedGroup.value = selectedGroupId
     }
 
     fun fetchSimpleGroups() {
