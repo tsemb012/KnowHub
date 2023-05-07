@@ -24,6 +24,11 @@ interface MainApi {
             @Path("user_id") userId: String
     ): Response<List<GetGroupJson>>
 
+    @GET("users/{user_id}/groups/ids")
+    suspend fun fetchUserJoinedGroupIds(
+        @Path("user_id") userId: String
+    ): List<String>
+
     @PATCH("users/{user_id}")
     suspend fun putUserDetail(
             @Path("user_id") userId: String,

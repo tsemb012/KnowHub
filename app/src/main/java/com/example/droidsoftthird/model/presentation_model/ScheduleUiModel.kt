@@ -11,18 +11,21 @@ data class ScheduleUiModel (
     val allEvents: List<ItemEvent> = emptyList(), //TODO ここにAllを追加する。
     val selectedDate: LocalDate = LocalDate.now(),
     val selectedEvents: List<ItemEvent> = emptyList(),//TODO ここにAllを追加する。
+    val groupIdsLoadState: LoadState = LoadState.Initialized,
 ) {
     companion object {
         operator fun invoke(
             current: ScheduleUiModel,
             schedulesLoadState: LoadState,
             selectedDate:LocalDate,
-            selectedEvents: List<ItemEvent>
+            selectedEvents: List<ItemEvent>,
+            groupIdsLoadState: LoadState,
         ) = ScheduleUiModel(
                 schedulesLoadState = schedulesLoadState,
                 allEvents = schedulesLoadState.getValueOrNull() ?: current.allEvents,
                 selectedDate = selectedDate,
-                selectedEvents = selectedEvents
+                selectedEvents = selectedEvents,
+                groupIdsLoadState = groupIdsLoadState,
         )
     }
 }

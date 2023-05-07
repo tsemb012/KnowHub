@@ -57,6 +57,8 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun fetchUserJoinedGroupIds(): List<String> = mainApi.fetchUserJoinedGroupIds(userId)
+
     override suspend fun saveTokenId(tokenId: String) {
         dataStore.edit { preferences ->
             preferences[stringPreferencesKey(TOKEN_ID_KEY)] = tokenId
