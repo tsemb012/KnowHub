@@ -46,10 +46,20 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
+        bindUiModel()
+    }
+
+    private fun bindUiModel() {
         viewModel.uiModel.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = it.isLoading
             binding.progressBarSpace.isVisible = !it.isLoading
-            it.error?.let { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+            it.error?.let { error ->
+                Toast.makeText(
+                    requireContext(),
+                    error.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
             adapter.submitList(it.selectedEvents)
             when (it.notifyType) {
