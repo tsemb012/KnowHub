@@ -147,11 +147,11 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun FragmentScheduleCalendarBinding.setupGroupDialog() {
         selectGroupButton.setOnClickListener {
             val simpleGroups = viewModel.uiModel.value?.simpleGroups ?: emptyList()
-            val groups = listOf(SimpleGroup("", "指定しない")) + simpleGroups
+            val groups = listOf(SimpleGroup("", getString(R.string.non_selected))) + simpleGroups
             val groupNames = groups.map { it.groupName }
 
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("グループを選択してください。")
+                .setTitle(getString(R.string.show_group_asscociated_events))
                 .setItems(groupNames.toTypedArray()) { _, which ->
                     val selectedGroupId = groups[which].groupId ?: ""
                     viewModel.setSelectedGroupId(selectedGroupId)
