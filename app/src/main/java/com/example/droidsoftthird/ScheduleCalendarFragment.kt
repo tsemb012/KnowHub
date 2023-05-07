@@ -2,6 +2,7 @@ package com.example.droidsoftthird
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -12,6 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -44,9 +47,19 @@ import java.util.*
 @AndroidEntryPoint
 class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
-    private val viewModel: ScheduleCalendarViewModel by viewModels()
+    private val viewModel: ScheduleCalendarViewModel by activityViewModels()
     private val binding: FragmentScheduleCalendarBinding by dataBinding()
     private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::selectEvent) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setFragmentResultListener("key") { _, bundle ->
+            val result = bundle.getString("result")
+            viewModel.setSelectedGroupId(result ?: "")
+            Log.d("groupId_tsemb012", bundle.getString("groupId") ?: "")
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +67,10 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         viewModel.fetchSimpleGroups()
         setupView()
         bindUiModel()
+
+
     }
+
 
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
