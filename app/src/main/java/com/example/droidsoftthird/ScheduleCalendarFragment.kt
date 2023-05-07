@@ -2,25 +2,34 @@ package com.example.droidsoftthird
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContentProviderCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
+import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
+import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
 import com.example.droidsoftthird.model.presentation_model.selectedDate
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -38,29 +47,62 @@ import java.util.*
 @AndroidEntryPoint
 class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
-    private val viewModel: ScheduleCalendarViewModel by viewModels()
+    private val viewModel: ScheduleCalendarViewModel by activityViewModels()
     private val binding: FragmentScheduleCalendarBinding by dataBinding()
     private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::selectEvent) }
-    private val progressDialog by lazy { //TODO Linearに変更する。
-        ProgressDialog(requireActivity()).apply {
-            setMessage(getString(R.string.on_progress))
-            setCancelable(false)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setFragmentResultListener("key") { _, bundle ->
+            val result = bundle.getString("result")
+            viewModel.setSelectedGroupId(result ?: "")
+            Log.d("groupId_tsemb012", bundle.getString("groupId") ?: "")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupView()
-        viewModel.uiModel.observe(viewLifecycleOwner) { observeSchedulesState(it.schedulesLoadState) }
         viewModel.fetchAllEvents()
+        viewModel.fetchSimpleGroups()
+        setupView()
+        bindUiModel()
+
+
     }
+
 
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.setupGroupDialog()
         setupWeekLabel()
         setupCalendarMatrix()
         setupEventList()
     }
+
+    private fun bindUiModel() {
+        viewModel.uiModel.observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = it.isLoading
+            binding.progressBarSpace.isVisible = !it.isLoading
+            it.error?.let { error ->
+                Toast.makeText(
+                    requireContext(),
+                    error.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            adapter.submitList(it.selectedEvents)
+            when (it.notifyType) {
+                NotifyType.ALL -> binding.calendarMatrix.notifyCalendarChanged()
+                NotifyType.SELECTED -> binding.calendarMatrix.notifyMonthChanged(it.selectedDate.yearMonth)
+                NotifyType.NONE -> Unit
+            }
+
+            binding.selectGroupButton.text = it.selectedSimpleGroup?.groupName ?: getString(R.string.select_group)
+        }
+    }
+
 
     private fun setupWeekLabel() {
         binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
@@ -97,28 +139,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleDetailFragment(eventId))
     }
 
-    private fun observeSchedulesState(schedulesLoadState: LoadState) {
-        when (schedulesLoadState) {
-            is LoadState.Loading -> progressDialog.show()
-            is LoadState.Loaded<*> -> { //TODO ここで受け取る型をジェネリクスで特定する。
-                progressDialog.dismiss()
-                adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                viewModel.initializeSchedulesState()
-                binding.calendarMatrix.notifyCalendarChanged()
-            }
-            is LoadState.Processed -> {
-                adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                binding.calendarMatrix.notifyMonthChanged(viewModel.uiModel.value?.selectedDate?.yearMonth ?: YearMonth.now())
-            }
-            is LoadState.Error -> {
-                progressDialog.dismiss()
-                Toast.makeText(requireContext(), schedulesLoadState.error.toString(), Toast.LENGTH_SHORT).show()
-                viewModel.initializeSchedulesState()
-            }
-            else -> {}
-        }
-    }
-
     private fun scrollMonth(it: CalendarMonth) {//スクロール時のロジック
         val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
         if (binding.calendarMatrix.maxRowCount == 6) {//Monthモード
@@ -138,6 +158,21 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                     binding.exOneYearText.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
                 }
             }
+        }
+    }
+    private fun FragmentScheduleCalendarBinding.setupGroupDialog() {
+        selectGroupButton.setOnClickListener {
+            val simpleGroups = viewModel.uiModel.value?.simpleGroups ?: emptyList()
+            val groups = listOf(SimpleGroup("", getString(R.string.non_selected))) + simpleGroups
+            val groupNames = groups.map { it.groupName }
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.show_group_asscociated_events))
+                .setItems(groupNames.toTypedArray()) { _, which ->
+                    val selectedGroupId = groups[which].groupId ?: ""
+                    viewModel.setSelectedGroupId(selectedGroupId)
+                }
+                .show()
         }
     }
 }
