@@ -49,6 +49,13 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         bindUiModel()
     }
 
+    private fun setupView() {
+        binding.lifecycleOwner = viewLifecycleOwner
+        setupWeekLabel()
+        setupCalendarMatrix()
+        setupEventList()
+    }
+
     private fun bindUiModel() {
         viewModel.uiModel.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = it.isLoading
@@ -72,12 +79,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         viewModel.fetchSimpleGroups()
     }
 
-    private fun setupView() {
-        binding.lifecycleOwner = viewLifecycleOwner
-        setupWeekLabel()
-        setupCalendarMatrix()
-        setupEventList()
-    }
 
     private fun setupWeekLabel() {
         binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
