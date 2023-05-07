@@ -53,7 +53,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         setupView()
         viewModel.uiModel.observe(viewLifecycleOwner) { observeSchedulesState(it.schedulesLoadState) }
         viewModel.fetchAllEvents()
-        viewModel.fetchGroupIds()
+        viewModel.fetchSimpleGroups()
     }
 
     private fun setupView() {
