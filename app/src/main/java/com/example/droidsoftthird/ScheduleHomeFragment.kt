@@ -2,6 +2,7 @@ package com.example.droidsoftthird
 
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -20,6 +21,8 @@ class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        val groupId = arguments?.getString("groupId")
+        Log.d("groupId", groupId.toString())
     }
 
 
