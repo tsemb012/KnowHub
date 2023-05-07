@@ -16,7 +16,7 @@ import com.example.droidsoftthird.model.domain_model.ItemEvent
 fun EventListScreen(viewModel: ScheduleListViewModel, onSelectEvent: (String) -> Unit) {
 
     viewModel.uiModel.observeAsState().value?.let { uiModel ->
-        EventList(uiModel.allEvents, onSelectEvent)
+        EventList(uiModel.groupFilteredEvents, onSelectEvent)
     }
 }
 

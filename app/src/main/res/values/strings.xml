@@ -174,4 +174,6 @@
     <string name="clear_filter">クリア</string>
     <string name="group_condition">条件</string>
     <string name="select_area">活動地域を選択してください</string>
+    <string name="select_group">グループ選択</string>
+    <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
 </resources>

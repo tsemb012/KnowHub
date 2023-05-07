@@ -2,31 +2,49 @@ package com.example.droidsoftthird.model.presentation_model
 
 import androidx.lifecycle.LiveData
 import com.example.droidsoftthird.model.domain_model.ItemEvent
-import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import java.lang.IllegalStateException
 import java.time.LocalDate
 
 data class ScheduleUiModel (
-    val schedulesLoadState: LoadState = LoadState.Initialized,//TODO State情報
-    val allEvents: List<ItemEvent> = emptyList(), //TODO ここにAllを追加する。
+    val isLoading: Boolean = false,
+    val error : Throwable? = null,
+    val notifyType: NotifyType = NotifyType.NONE,
+    val allEvents: List<ItemEvent> = emptyList(),
+    val groupFilteredEvents: List<ItemEvent> = emptyList(),
     val selectedDate: LocalDate = LocalDate.now(),
-    val selectedEvents: List<ItemEvent> = emptyList(),//TODO ここにAllを追加する。
+    val selectedEvents: List<ItemEvent> = emptyList(),
+    val simpleGroups: List<SimpleGroup> = emptyList(),
+    val selectedSimpleGroup: SimpleGroup? = simpleGroups.firstOrNull(),
 ) {
     companion object {
         operator fun invoke(
             current: ScheduleUiModel,
             schedulesLoadState: LoadState,
             selectedDate:LocalDate,
-            selectedEvents: List<ItemEvent>
+            selectedEvents: List<ItemEvent>,
+            simpleGroupsLoadState: LoadState,
+            selectedGroupId: String,
         ) = ScheduleUiModel(
-                schedulesLoadState = schedulesLoadState,
-                allEvents = schedulesLoadState.getValueOrNull() ?: current.allEvents,
+                isLoading = schedulesLoadState is LoadState.Loading || simpleGroupsLoadState is LoadState.Loading,
+                error = schedulesLoadState.getErrorOrNull() ?: simpleGroupsLoadState.getErrorOrNull(),
+                notifyType = when (schedulesLoadState) {
+                    is LoadState.Loaded<*> -> NotifyType.ALL
+                    is LoadState.Processed -> NotifyType.SELECTED
+                    else -> NotifyType.NONE
+                },
+                allEvents = (schedulesLoadState.getValueOrNull() ?: current.allEvents),
+                groupFilteredEvents = (schedulesLoadState.getValueOrNull() ?: current.allEvents).filter { if(selectedGroupId.isNotBlank()) it.groupId == selectedGroupId else true },
                 selectedDate = selectedDate,
-                selectedEvents = selectedEvents
+                selectedEvents = selectedEvents,
+                simpleGroups = simpleGroupsLoadState.getValueOrNull() ?: current.simpleGroups,
+                selectedSimpleGroup = current.simpleGroups.firstOrNull { it.groupId == selectedGroupId },
         )
     }
 }
 
-val LiveData<ScheduleUiModel>.eventDates get() = value?.allEvents?.map { scheduleEvent -> scheduleEvent.period.first.toLocalDate() } ?: emptyList()
+enum class NotifyType { ALL, SELECTED, NONE }
+
+val LiveData<ScheduleUiModel>.eventDates get() = value?.groupFilteredEvents?.map { scheduleEvent -> scheduleEvent.period.first.toLocalDate() } ?: emptyList()
 val LiveData<ScheduleUiModel>.selectedDate get() = value?.selectedDate ?: throw IllegalStateException()
 
