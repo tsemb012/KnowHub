@@ -50,6 +50,8 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchAllEvents()
+        viewModel.fetchSimpleGroups()
         setupView()
         bindUiModel()
     }
@@ -80,9 +82,9 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                 NotifyType.SELECTED -> binding.calendarMatrix.notifyMonthChanged(it.selectedDate.yearMonth)
                 NotifyType.NONE -> Unit
             }
+
+            binding.selectGroupButton.text = it.selectedSimpleGroup?.groupName ?: getString(R.string.select_group)
         }
-        viewModel.fetchAllEvents()
-        viewModel.fetchSimpleGroups()
     }
 
 

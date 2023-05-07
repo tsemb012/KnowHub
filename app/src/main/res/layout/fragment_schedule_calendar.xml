@@ -66,11 +66,13 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/select_group_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:contentDescription="Select group"
                     android:text="グループ選択"
                     android:textColor="@android:color/white"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     app:cornerRadius="8dp"
                     app:backgroundTint="@color/primary_dark"
                     app:rippleColor="?attr/colorControlHighlight"
