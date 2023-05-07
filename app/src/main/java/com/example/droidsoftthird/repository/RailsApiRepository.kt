@@ -33,4 +33,6 @@ interface RailsApiRepository {
     suspend fun unregisterEvent(eventId: String): String?
     suspend fun deleteEvent(eventId: String): String?
     suspend fun fetchUserJoinedGroupIds(): List<String>
+
+    suspend fun fetchUserJoinedSimpleGroups(): List<SimpleGroup>
 }
