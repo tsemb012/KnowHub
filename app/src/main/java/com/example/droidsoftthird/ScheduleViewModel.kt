@@ -7,15 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.ScheduleUiModel
+import com.example.droidsoftthird.usecase.EventUseCase
 import com.example.droidsoftthird.usecase.ProfileUseCase
 import com.example.droidsoftthird.utils.combine
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-open class ScheduleViewModel(private val userUseCase: ProfileUseCase) : ViewModel() {
-
-    init { fetchGroupIds() }
+open class ScheduleViewModel(
+    private val eventUseCase: EventUseCase,
+    private val userUseCase: ProfileUseCase
+    ) : ViewModel() {
 
     protected val scheduleLoadState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     private val selectedDate: MutableLiveData<LocalDate> by lazy { MutableLiveData(LocalDate.now()) }
@@ -33,6 +35,22 @@ open class ScheduleViewModel(private val userUseCase: ProfileUseCase) : ViewMode
         }
     }
 
+    fun fetchAllEvents(){
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
+            kotlin.runCatching { eventUseCase.fetchEvents() }
+                .onSuccess { events ->
+                    scheduleLoadState.value = LoadState.Loaded(events)
+                }
+                .onFailure {
+                        e -> scheduleLoadState.value = LoadState.Error(e)
+                }
+        }
+        scheduleLoadState.value = LoadState.Loading(job)
+        job.start()
+    }
+    fun initializeSchedulesState() {
+        scheduleLoadState.value = LoadState.Initialized
+    }
     fun setSelectedDate(selectedDate: LocalDate) {
         this.selectedDate.value = selectedDate
         selectedEvents.value = uiModel.value?.allEvents?.mapNotNull { scheduleEventForHome ->
@@ -42,8 +60,7 @@ open class ScheduleViewModel(private val userUseCase: ProfileUseCase) : ViewMode
         scheduleLoadState.value = LoadState.Processed
     }
 
-
-    private fun fetchGroupIds() {
+    fun fetchGroupIds() {
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             kotlin.runCatching { userUseCase.fetchUserJoinedGroupIds() }
                 .onSuccess { groupIds ->
