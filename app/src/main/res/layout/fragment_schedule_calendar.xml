@@ -73,7 +73,10 @@
                     android:textColor="@android:color/white"
                     app:cornerRadius="8dp"
                     app:backgroundTint="@color/primary_dark"
-                    app:rippleColor="?attr/colorControlHighlight" />
+                    app:rippleColor="?attr/colorControlHighlight"
+                    app:icon="@drawable/expand_icon"
+                    app:iconGravity="textEnd"
+                    app:iconPadding="8dp" />
             </LinearLayout>
 
             <include

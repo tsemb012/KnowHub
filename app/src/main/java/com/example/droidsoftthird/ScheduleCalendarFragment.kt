@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContentProviderCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -16,12 +18,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
+import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
+import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
 import com.example.droidsoftthird.model.presentation_model.selectedDate
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -51,6 +56,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.setupGroupDialog()
         setupWeekLabel()
         setupCalendarMatrix()
         setupEventList()
@@ -134,6 +140,21 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                     binding.exOneYearText.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
                 }
             }
+        }
+    }
+    private fun FragmentScheduleCalendarBinding.setupGroupDialog() {
+        selectGroupButton.setOnClickListener {
+            val simpleGroups = viewModel.uiModel.value?.simpleGroups ?: emptyList()
+            val groups = listOf(SimpleGroup("", "指定しない")) + simpleGroups
+            val groupNames = groups.map { it.groupName }
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("グループを選択してください。")
+                .setItems(groupNames.toTypedArray()) { _, which ->
+                    val selectedGroupId = groups[which].groupId ?: ""
+                    viewModel.setSelectedGroupId(selectedGroupId)
+                }
+                .show()
         }
     }
 }
