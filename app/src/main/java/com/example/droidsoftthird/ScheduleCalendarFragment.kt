@@ -42,18 +42,13 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private val viewModel: ScheduleCalendarViewModel by viewModels()
     private val binding: FragmentScheduleCalendarBinding by dataBinding()
     private val adapter: ScheduleEventsAdapter by lazy { ScheduleEventsAdapter(::selectEvent) }
-    private val progressDialog by lazy { //TODO Linearに変更する。
-        ProgressDialog(requireActivity()).apply {
-            setMessage(getString(R.string.on_progress))
-            setCancelable(false)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
         viewModel.uiModel.observe(viewLifecycleOwner) {
-            if (it.isLoading) progressDialog.show() else progressDialog.dismiss()
+            binding.progressBar.isVisible = it.isLoading
+            binding.progressBarSpace.isVisible = !it.isLoading
             it.error?.let { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
 
             adapter.submitList(it.selectedEvents)

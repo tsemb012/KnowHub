@@ -10,6 +10,18 @@
         android:orientation="vertical">
         <!--TODO カレンダーの背景を設定する。-->
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:indeterminate="true" />
+
+        <Space
+            android:id="@+id/progress_bar_space"
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/exOneAppBarLayout"
             android:layout_width="match_parent"
