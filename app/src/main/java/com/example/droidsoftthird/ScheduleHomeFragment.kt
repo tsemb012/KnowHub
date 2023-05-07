@@ -4,7 +4,11 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -16,13 +20,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint //このActivityはHiltが使うと宣言し、依存関係をHiltから引っ張ってくる。
 class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
 
+    private val viewModel: ScheduleCalendarViewModel by activityViewModels() //TODO 生存期間流すぎるので後で短くするように
     private val binding: FragmentScheduleHomeBinding by dataBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         val groupId = arguments?.getString("groupId")
-        Log.d("groupId", groupId.toString())
+        viewModel.setSelectedGroupId(groupId ?: "")
+        setFragmentResult("key", bundleOf("result" to groupId))
     }
 
 
