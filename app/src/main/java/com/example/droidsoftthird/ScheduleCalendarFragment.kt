@@ -71,7 +71,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             adapter.submitList(it.selectedEvents)
             when (it.notifyType) {
                 NotifyType.ALL -> binding.calendarMatrix.notifyCalendarChanged()
-                NotifyType.SELECTED -> binding.calendarMatrix.notifyDateChanged(it.selectedDate)
+                NotifyType.SELECTED -> binding.calendarMatrix.notifyMonthChanged(it.selectedDate.yearMonth)
                 NotifyType.NONE -> Unit
             }
         }
