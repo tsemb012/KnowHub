@@ -139,7 +139,8 @@ class ChatRoomFragment : Fragment() {
 
         viewModel.navigationToSchedule.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
-                ChatRoomFragmentDirections.actionChatRoomFragmentToScheduleFragment(groupId))
+                ChatRoomFragmentDirections.actionChatRoomFragmentToScheduleHomeFragment(groupId)
+            )
         })
 
         viewModel.showBottomSheet.observe(viewLifecycleOwner,EventObserver{
