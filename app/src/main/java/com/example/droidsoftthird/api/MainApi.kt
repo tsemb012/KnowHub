@@ -44,13 +44,19 @@ interface MainApi {
 
     @GET("groups")
     suspend fun fetchGroups(
-            @Query("page") page: Int? = null,
-            @Query("area_code") code: Int? = null,
-            @Query("area_category") type: String? = null
+        @Query("page") page: Int? = null,
+        @Query("user_id") userId: String? = null,
+        @Query("area_code") areaCode: Int? = null,
+        @Query("area_category") areaCategory: String? = null,
+        @Query("group_types[]") groupTypes: List<String> = listOf(),
+        @Query("facility_environments[]") facilityEnvironments: List<String> = listOf(),
+        @Query("frequency_basis") frequency_bases: String? = null,
     ): List<GetGroupJson>
 
     @GET("groups/locations/count")
-    suspend fun fetchGroupCountByArea(): List<GetGroupCountByAreaJson>
+    suspend fun fetchGroupCountByArea(
+        @Query("user_id") userId: String
+    ): List<GetGroupCountByAreaJson>
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(

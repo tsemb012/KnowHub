@@ -2,9 +2,9 @@ package com.example.droidsoftthird.model.infra_model.json.response
 
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 data class GetItemEventJson (
         @Json(name = "id")
@@ -13,11 +13,10 @@ data class GetItemEventJson (
         val hostId: String,
         val name: String,
         val comment: String,
-        val date: String,
-        @Json(name = "start_time")
-        val startTime: String,
-        @Json(name = "end_time")
-        val endTime: String,
+        @Json(name = "start_date_time")
+        val startDateTime: String,
+        @Json(name = "end_date_time")
+        val endDateTime: String,
         @Json(name = "group_id")
         val groupId: String,
         @Json(name = "group_name")
@@ -25,19 +24,15 @@ data class GetItemEventJson (
         @Json(name = "place_name")
         val placeName: String?,
 ) {
-    fun toEntity(
-            localDateAdapter: JsonAdapter<LocalDate>,
-            localTimeAdapter: JsonAdapter<LocalTime>
-    ): ItemEvent {
+    fun toEntity(): ItemEvent {
         return ItemEvent(
                 eventId = eventId,
                 hostId = hostId,
                 name = name,
                 comment = comment,
-                date = localDateAdapter.fromJson(date) ?: throw IllegalStateException("date is null"),
                 period = Pair(
-                        localTimeAdapter.fromJson(startTime) ?: throw IllegalStateException("startTime is null"),
-                        localTimeAdapter.fromJson(endTime) ?: throw IllegalStateException("endTime is null")
+                        ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault()),
+                        ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault())
                 ),
                 groupId = groupId,
                 groupName = groupName,

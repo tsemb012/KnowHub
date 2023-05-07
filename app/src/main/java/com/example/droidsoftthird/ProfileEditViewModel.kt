@@ -31,7 +31,7 @@ class ProfileEditViewModel @Inject constructor(private val useCase: ProfileUseCa
         temporalUserImage.value = mapOf(REF_FOR_INITIALIZE to detail.userImage)
         loadState.value = LoadState.Loaded(detail)
         postGender(UserDetail.Gender.valueOf(detail.gender.uppercase(Locale.ROOT)))
-        postAge(detail.age)
+        postBirthday(detail.birthday)
         postArea(detail.area)
     }
 

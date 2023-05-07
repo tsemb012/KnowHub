@@ -23,8 +23,8 @@ class ScheduleDetailViewModel @AssistedInject constructor(
     val eventDetail = mutableStateOf<EventDetail?>(null)
     val message = mutableStateOf<String?>(null)
     val userId by lazy { runBlocking { settingUseCase.getUserId() } }
-    private val startDateTime get() = LocalDateTime.of(eventDetail.value?.date, eventDetail.value?.startTime)
-    private val endDateTime get() = LocalDateTime.of(eventDetail.value?.date, eventDetail.value?.endTime)
+    private val startDateTime get() = eventDetail.value?.startDateTime?.toLocalDateTime()
+    private val endDateTime get() = eventDetail.value?.endDateTime?.toLocalDateTime()
     val isVideoChatAvailable get () = LocalDateTime.now().isAfter(startDateTime) && LocalDateTime.now().isBefore(endDateTime)
     val isNotStarted get () = LocalDateTime.now().isBefore(startDateTime)
     val isFinished get () = LocalDateTime.now().isAfter(endDateTime)

@@ -11,7 +11,7 @@ interface RailsApiRepository {
 
     suspend fun createGroup(group: EditedGroup): String?
     suspend fun fetchGroupDetail(groupId: String) : ApiGroupDetail
-    suspend fun fetchGroups(areaCode: Int? = null, areaCategory: String? = null) : Flow<PagingData<ApiGroup>>
+    suspend fun fetchGroups(groupFilterCondition: ApiGroup.FilterCondition) : Flow<PagingData<ApiGroup>>
     suspend fun fetchJoinedGroups() : List<ApiGroup>
     suspend fun userJoinGroup(groupId: String): String?
     suspend fun fetchGroupCountByArea(): List<GroupCountByArea>

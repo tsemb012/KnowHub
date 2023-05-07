@@ -11,3 +11,6 @@ data class Area (//居住地情報にプロパティを追加していく可能�
                 city = city?.toJson()
         )
 }
+
+enum class AreaCategory { PREFECTURE, CITY }
+

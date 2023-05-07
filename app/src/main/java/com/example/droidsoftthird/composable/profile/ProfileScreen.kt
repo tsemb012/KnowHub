@@ -33,7 +33,8 @@ import com.example.droidsoftthird.model.domain_model.ItemEvent
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
-    toProfileEdit: () -> Unit
+    toProfileEdit: () -> Unit,
+    onLogOut: () -> Unit,
 ) {
     val userDetail = viewModel.userDetail
     val residentialArea = userDetail.value.area.prefecture?.name + ", " + userDetail.value.area.city?.name
@@ -100,7 +101,7 @@ fun ProfileScreen(
                     Divider()
                     ProfileInfoItem(
                         title = stringResource(id = R.string.age),
-                        value = userDetail.value.age.toString(),
+                        value = userDetail.value.birthday.toString(),
                         icon = Icons.Filled.Cake
                     )
                     Divider()
@@ -138,9 +139,25 @@ fun ProfileScreen(
                         }
                     }
                 }
+                item {
+                    SignOutButton(onLogOut = onLogOut)
+                }
             }
         }
     )
+}
+
+@Composable
+fun SignOutButton (onLogOut: () -> Unit) {
+    Button(
+        onClick = { onLogOut() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+    ) {
+        Text(text = "Sign Out")
+    }
 }
 
 @Composable
@@ -178,7 +195,7 @@ fun GroupCard(group: ApiGroup) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = group.groupName, fontWeight = FontWeight.Bold)
             Text(text = group.groupIntroduction)
-            Text(text = group.groupType)
+            Text(text = stringResource(group.groupType.displayNameId))
         }
     }
 }
@@ -196,8 +213,8 @@ fun EventCard(event: ItemEvent) {
             Text(text = event.name, fontWeight = FontWeight.Bold)
             Text(text = event.groupName ?: "")
             Text(text = event.placeName ?: "")
-            Text(text = "${event.date}")
-            Text(text = "${event.period.first} - ${event.period.second}")
+            Text(text = "${event.period.first.toLocalDate()}")
+            Text(text = "${event.period.first.hour} - ${event.period.second.hour}")
         }
     }
 }

@@ -10,11 +10,10 @@ data class PostEventJson(
         val hostId: String,
         val name: String,
         val comment: String,
-        val date: String,
-        @Json(name = "start_time")
-        val startTime: String,
-        @Json(name = "end_time")
-        val endTime: String,
+        @Json(name = "start_date_time")
+        val startDateTime: String,
+        @Json(name = "end_date_time")
+        val endDateTime: String,
         val place: PostPlaceJson?,
         @Json(name = "group_id")
         val groupId: String

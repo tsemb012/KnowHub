@@ -113,9 +113,8 @@ fun ImageView.imageUserUrlString(url: String) {
 fun TextView.bindArea(prefecture: String, city: String){
     text =
         if(prefecture == resources.getStringArray(R.array.online_and_prefectures)[0].toString()) { prefecture }
-        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(
-                R.string.no_set
-            )) { String.format("%s、%s", prefecture, city) }
+        else if ( prefecture != resources.getString(R.string.no_set) && city != resources.getString(R.string.no_set)) { String.format("%s、%s", prefecture, city) }
+        else if ( prefecture != resources.getString(R.string.no_set) && city == resources.getString(R.string.no_set)) { prefecture }
         else{ resources.getString(R.string.no_set)
     }
 }
@@ -124,10 +123,15 @@ fun TextView.bindArea(prefecture: String, city: String){
 fun TextView.bindBasisFrequency(basis: String, frequency: Int){
     text = if (basis == resources.getString(R.string.no_set) && frequency == -1) {
         resources.getString(R.string.no_set)
-    }else if(frequency == 0) {
+    }else if(basis == resources.getString(R.string.everyday)) {
         resources.getString(R.string.everyday)
     }else {
-        String.format("%s%s回", basis, frequency)
+        val displayBasis = if (basis == resources.getString(R.string.weekly)) {
+            resources.getString(R.string.week)
+        } else {
+            resources.getString(R.string.month)
+        }
+        String.format("%s %s 回", displayBasis, frequency)
     }
 }
 
@@ -137,16 +141,15 @@ fun TextView.bindAgeRange(minAge: Int, maxAge: Int){
         resources.getString(R.string.no_set)
     } else{
         String.format("%d〜%d才", minAge, maxAge)
-
     }
 }
 
-@BindingAdapter("minNumberPerson", "maxNumberPerson")
-fun TextView.bindNumberPerson(minNumberPerson: Int, maxNumberPerson: Int){
-    text = if (minNumberPerson == -1  && maxNumberPerson == -1) {
+@BindingAdapter("maxNumberPerson")
+fun TextView.bindNumberPerson(minNumberPerson: Int, maxNumberPerson: Int){//TODO DST-520 消す
+    text = if (maxNumberPerson == -1) {
         resources.getString(R.string.no_set)
     } else{
-        String.format("%d〜%d人", minNumberPerson, maxNumberPerson)
+        String.format("最大参加人数 %d人", maxNumberPerson)
     }
 }
 

@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.droidsoftthird.model.domain_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.AreaCategory
+import com.example.droidsoftthird.model.presentation_model.GroupLocationsUiModel
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.example.droidsoftthird.utils.combine
@@ -45,15 +48,14 @@ class GroupLocationsViewModel @Inject constructor(private val useCase: GroupUseC
                 .onSuccess {
                     _groupCountByArea.value = LoadState.Loaded(it)
                 }
-                .onFailure {
-                    _message.value = it.message }
+                .onFailure { _message.value = it.message }
         }
     }
 
-    fun getGroupsByArea(code: Int, type: String) {
+    fun getGroupsByArea(code: Int, type: AreaCategory) {
         viewModelScope.launch {
             runCatching {
-                useCase.fetchGroups(code, type).cachedIn(viewModelScope)
+                useCase.fetchGroups(ApiGroup.FilterCondition(code, type)).cachedIn(viewModelScope)
             }
                 .onSuccess {
                     _groupsBySelectedArea.value = LoadState.Loaded(it)

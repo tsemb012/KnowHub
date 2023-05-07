@@ -5,44 +5,40 @@ import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.Location
 import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 data class GetEventDetailJson (
-        @Json(name = "id")
-        val eventId: String,
-        @Json(name = "host_id")
-        val hostId: String,
-        @Json(name = "video_chat_room_id")
-        val roomId: String,
-        val name: String,
-        val comment: String,
-        val date: String,
-        @Json(name = "start_time")
-        val startTime: String,
-        @Json(name = "end_time")
-        val endTime: String,
-        val place: GetEventPlaceJson?,
-        @Json(name = "group_id")
-        val groupId: String,
-        @Json(name = "group_name")
-        val groupName: String,
-        @Json(name = "registered_user_ids")
-        val registeredUserIds: List<String>
+    @Json(name = "id")
+    val eventId: String,
+    @Json(name = "host_id")
+    val hostId: String,
+    @Json(name = "video_chat_room_id")
+    val roomId: String,
+    val name: String,
+    val comment: String,
+    @Json(name = "start_date_time")
+    val startDateTime: String,
+    @Json(name = "end_date_time")
+    val endDateTime: String,
+    val place: GetEventPlaceJson?,
+    @Json(name = "group_id")
+    val groupId: String,
+    @Json(name = "group_name")
+    val groupName: String,
+    @Json(name = "registered_user_ids")
+    val registeredUserIds: List<String>
 ) {
         fun toEntity(
-            localDateAdapter: JsonAdapter<LocalDate>,
-            localTimeAdapter: JsonAdapter<LocalTime>
         ): EventDetail = EventDetail(
                 eventId = eventId,
                 hostId = hostId,
                 roomId = roomId,
                 name = name,
                 comment = comment,
-                date = localDateAdapter.fromJson(date) ?: throw IllegalStateException("date is null"),
-                startTime = localTimeAdapter.fromJson(startTime) ?: throw IllegalStateException("startTime is null"),
-                endTime = localTimeAdapter.fromJson(endTime) ?: throw IllegalStateException("endTime is null"),
+                startDateTime = ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault()),
+                endDateTime = ZonedDateTime.ofInstant(Instant.parse(endDateTime) , ZoneId.systemDefault()),
                 place = place?.toEntity(),
                 groupId = groupId,
                 groupName = groupName,

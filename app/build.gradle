@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.droidsoftthird"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -268,4 +268,7 @@ dependencies {
 
     //-----Paging
     implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+
+    //-----ThreeTenABP
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
 }
