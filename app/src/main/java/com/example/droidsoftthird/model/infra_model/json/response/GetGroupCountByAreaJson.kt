@@ -1,5 +1,7 @@
 package com.example.droidsoftthird.model.infra_model.json.response
 
+import com.example.droidsoftthird.model.domain_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.AreaCategory
 import com.example.droidsoftthird.model.domain_model.GroupCountByArea
 import com.squareup.moshi.Json
 
@@ -16,7 +18,7 @@ data class GetGroupCountByAreaJson (
     val groupCount : Int
 ) {
     fun toEntity() = GroupCountByArea(
-        category = category,
+        category = AreaCategory.valueOf(category.uppercase()),
         code = code,
         prefectureName = prefectureName,
         cityName = cityName,

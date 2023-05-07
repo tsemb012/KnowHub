@@ -2,23 +2,21 @@ package com.example.droidsoftthird
 
 import android.os.Bundle
 import android.view.View
+import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onCancel
-import com.afollestad.materialdialogs.datetime.timePicker
-import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import java.time.*
-import java.util.*
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
@@ -48,7 +46,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             setupDateDialog()
-            setupPeriodDialog()
+            setupTimeDialog()
             setupMapNav()
             setupGroupDialog()
             setupSwitch()
@@ -66,31 +64,46 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         }
     }
 
-    private fun FragmentScheduleCreateBinding.setupPeriodDialog() {
+    private fun FragmentScheduleCreateBinding.setupTimeDialog() {
         includeScheduleCreateTime.itemScheduleCreate.setOnClickListener {
 
-            //Themeを直接変更できないので、ContextからThemeの変更を行う。
-            requireActivity().setTheme(R.style.AppTheme_MaterialDialogTime)
+            var startTime: ZonedDateTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
+            val durationLayout = layoutInflater.inflate(R.layout.dialog_duration_picker, null)
+            val hoursPicker = durationLayout.findViewById<NumberPicker>(R.id.hoursPicker).apply {
+                minValue = 0
+                maxValue = 12
+            }
+            val minutesPicker = durationLayout.findViewById<NumberPicker>(R.id.minutesPicker).apply {
+                minValue = 0
+                maxValue = 3
+                displayedValues = arrayOf("00", "15", "30", "45")
+            }
 
-            var startTime: Calendar = Calendar.getInstance()
-
-            val dialogForEndTime = MaterialDialog(requireContext())
-                .title(R.string.schedule_create_time_end)
-                .timePicker { _, endTime ->
-                    viewModel?.postTimePeriod(startTime, endTime) ?: IllegalStateException()
-                    requireActivity().setTheme(R.style.AppTheme)
+            val durationDialog = MaterialAlertDialogBuilder(requireContext())
+                .setTitle("何時間何分、開催しますか？")
+                .setView(durationLayout)
+                .setPositiveButton("OK") { _, _ ->
+                    val durationHours = hoursPicker.value
+                    val durationMinutes = minutesPicker.value * 15
+                    val duration = Duration.ofHours(durationHours.toLong()).plusMinutes(durationMinutes.toLong())
+                    viewModel?.postTimePeriod(startTime, duration) ?: IllegalStateException()
                 }
-                .onCancel { requireActivity().setTheme(R.style.AppTheme) }
-                .lifecycleOwner(this@ScheduleCreateFragment)
+                .setNegativeButton("キャンセル", null)
+                .create()
 
-            val dialogForStartTime = MaterialDialog(requireContext())
-                .title(R.string.schedule_create_time_start)
-                .timePicker(startTime) { _, time -> startTime = time }
-                .positiveButton { dialogForEndTime.show() }
-                .onCancel { requireActivity().setTheme(R.style.AppTheme) }
-                .lifecycleOwner(this@ScheduleCreateFragment)
+            val dialogForStartTime = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setTitleText(R.string.schedule_create_time_start)
+                .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
+                .build()
+            dialogForStartTime.addOnPositiveButtonClickListener {//TODO カラーを変更する。
+                startTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
+                    .withHour(dialogForStartTime.hour)
+                    .withMinute(dialogForStartTime.minute)
+                durationDialog.show()
+            }
 
-            dialogForStartTime.show()
+            dialogForStartTime.show(childFragmentManager, "schedule_create_time_start")
         }
     }
 

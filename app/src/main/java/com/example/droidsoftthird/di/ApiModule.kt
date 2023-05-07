@@ -1,16 +1,19 @@
 package com.example.droidsoftthird.di
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.repository.AuthenticationRepositoryImpl
-import com.google.firebase.auth.FirebaseAuth
+import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
+import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
@@ -20,9 +23,6 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -34,8 +34,8 @@ class ApiModule {
     companion object {
         //private const val BASE_URL = "http://10.0.2.2:3000/" //エミュレーターで起動する場合
         //private const val BASE_URL = "http://192.168.10.104:3000/"
-        //private const val BASE_URL = "http://192.168.200.21:3000/"
-        private const val BASE_URL = "http://192.168.200.39:3000/"
+        private const val BASE_URL = "http://192.168.200.2:3000/"
+        //private const val BASE_URL = "http://192.168.200.39:3000/"
         //private const val BASE_URL = "http://192.168.102.72:3000/"
         private const val TOKEN_ID_KEY = "token_id_key"
     }
@@ -67,8 +67,6 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder()
-        .add(LocalTimeAdapter)
-        .add(LocalDateAdapter)
         .addLast(KotlinJsonAdapterFactory()).build()
 
     @Singleton
@@ -84,6 +82,18 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideMainApi(retrofit: Retrofit): MainApi = retrofit.create(MainApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext context: Context): Context = context
+
+    @Provides
+    @Singleton
+    fun providePrefectureCsvLoader(context: Context) = PrefectureCsvLoader(context)
+
+    @Provides
+    @Singleton
+    fun provideCityCsvLoader(context: Context) = CityCsvLoader(context)
 
     class HeaderInterceptor(private val dataStore: DataStore<Preferences>) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response = chain.run {
@@ -123,30 +133,5 @@ class ApiModule {
                 response.request
             }
         }
-    }
-}
-
-//TODO 適切な場所に移動するように
-object LocalTimeAdapter {
-    @ToJson
-    fun toJson(value: LocalTime): String {
-        return value.format(DateTimeFormatter.ISO_LOCAL_TIME)
-    }
-
-    @FromJson
-    fun fromJson(value: String): LocalTime {
-        return LocalTime.parse(value, DateTimeFormatter.ISO_LOCAL_TIME)
-    }
-}
-
-object LocalDateAdapter {
-    @ToJson
-    fun toJson(value: LocalDate): String {
-        return value.toString()
-    }
-
-    @FromJson
-    fun fromJson(value: String): LocalDate {
-        return LocalDate.parse(value)
     }
 }

@@ -1,7 +1,7 @@
 package com.example.droidsoftthird.model.domain_model
 
 data class GroupCountByArea (
-    val category : String,
+    val category : AreaCategory,
     val code: String,
     val prefectureName: String,
     val cityName: String?,

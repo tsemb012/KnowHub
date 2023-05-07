@@ -1,21 +1,21 @@
 package com.example.droidsoftthird.model.domain_model
 
-data class ApiGroupDetail (//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
+data class ApiGroupDetail(//TODO ApiGroupからGroupに名前を変更する//Firebaseのモデルが全て置き換わったら
         val groupId: String?,
         val hostUserId: String,
         val storageRef: String,
         val groupName: String,
         val groupIntroduction: String,
-        val groupType: String,
-        val prefecture: String,
-        val city: String,
-        val facilityEnvironment: String,
-        val basis: String,
+        val groupType: GroupType,
+        val prefecture: String?,
+        val city: String?,
+        val isOnline: Boolean,
+        val facilityEnvironment: FacilityEnvironment,
+        val basis: FrequencyBasis,
         val frequency:Int,
         val minAge:Int,
         val maxAge:Int,
-        val minNumberPerson:Int,
-        val maxNumberPerson :Int,
+        val maxNumberPerson:Int,
         val isChecked:Boolean,
         val members: List<ApiMember>
 )

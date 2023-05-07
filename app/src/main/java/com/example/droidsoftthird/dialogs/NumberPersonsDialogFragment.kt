@@ -12,6 +12,8 @@ import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.GroupAddViewModel
 import com.example.droidsoftthird.R
 import com.google.android.material.slider.RangeSlider
+import com.google.android.material.slider.Slider
+import kotlin.math.roundToInt
 
 
 class NumberPersonsDialogFragment:DialogFragment() {
@@ -20,19 +22,17 @@ class NumberPersonsDialogFragment:DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val view: View = layoutInflater.inflate(R.layout.dialog_number_persons, null, false)
-        val rs:RangeSlider = view.findViewById(R.id.rangeSlider_person)
+        val slider: Slider = view.findViewById(R.id.slider_person)
 
-        rs.stepSize = 1f
-        rs.thumbTintList = AppCompatResources.getColorStateList(requireContext(), R.color.range_slider
-        )
+        slider.stepSize = 1f
+        slider.thumbTintList = AppCompatResources.getColorStateList(requireContext(), R.color.range_slider)
+        slider.value = 10f // 初期位置を10に設定
 
-        var minNumberPerson = Math.round(rs.getValues()[0])
-        var maxNumberPerson = Math.round(rs.getValues()[1])
-        rs.addOnChangeListener(RangeSlider.OnChangeListener { _, _, _ ->
-            var tv = view.findViewById<TextView>(R.id.tv_range_slider)
-            tv.text = String.format("%s~%s人", Math.round(rs.values[0]), Math.round(rs.values[1]))
-            minNumberPerson = Math.round(rs.values[0])
-            maxNumberPerson = Math.round(rs.values[1])
+        var maxNumberPerson = slider.value.roundToInt()
+        slider.addOnChangeListener(Slider.OnChangeListener { _, value, _ ->
+            val tv = view.findViewById<TextView>(R.id.tv_slider)
+            tv.text = String.format("%s人", value.roundToInt())
+            maxNumberPerson = value.roundToInt()
         })
         //TODO SliderのOnChangeListenerとBindingAdapterが競合しないか確認する。
 
@@ -43,7 +43,6 @@ class NumberPersonsDialogFragment:DialogFragment() {
                 .setIcon(R.drawable.ic_baseline_groups_24)
                 .setPositiveButton(R.string.done,
                     DialogInterface.OnClickListener { _, _ ->
-                        viewModel.postMinNumberPerson(minNumberPerson)
                         viewModel.postMaxNumberPerson(maxNumberPerson)
                     })
                 .setNeutralButton(R.string.cancel,

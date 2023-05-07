@@ -11,11 +11,13 @@ import com.example.droidsoftthird.api.MainApi
 import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.domain_model.fire_model.FireGroup
 import com.example.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent
-import com.example.droidsoftthird.model.domain_model.fire_model.FireUserProfile
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToEventJson
 import com.example.droidsoftthird.model.infra_model.json.request.PutUserToGroupJson
 import com.example.droidsoftthird.model.infra_model.json.request.RemoveUserFromEventJson
 import com.example.droidsoftthird.repository.DataStoreRepository.Companion.TOKEN_ID_KEY
+import com.example.droidsoftthird.repository.csvloader.AssetLoader
+import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
+import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
 import com.example.droidsoftthird.repository.paging.GroupPagingSource
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -27,13 +29,10 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -42,13 +41,11 @@ import kotlin.coroutines.suspendCoroutine
 class BaseRepositoryImpl @Inject constructor(
         private val mainApi: MainApi,
         private val dataStore: DataStore<Preferences>,
-        private val moshi: Moshi
-): RailsApiRepository, FirebaseRepository, DataStoreRepository {
+        private val assetLoader: AssetLoader
+): RailsApiRepository, FirebaseRepository, DataStoreRepository, AssetRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
-    private val localDateAdapter = moshi.adapter(LocalDate::class.java)
-    private val localTimeAdapter = moshi.adapter(LocalTime::class.java)
 
     override suspend fun getUserId() = userId
     override suspend fun fetchStorageImage(imagePath: String): String = suspendCoroutine { continuation ->
@@ -183,17 +180,16 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchGroups(  //.cachedIn(viewModelScope).first()
-        areaCode: Int?,//TODO paramsデータクラスにまとめるように修正する。
-        areaCategory: String?,
-    ) : Flow<PagingData<ApiGroup>> = //TODO ここに追加するようにする。
+    override suspend fun fetchGroups(
+            groupFilterCondition: ApiGroup.FilterCondition
+    ) : Flow<PagingData<ApiGroup>> =
         Pager(
             config = PagingConfig(
                 pageSize = 5,
                 enablePlaceholders = true
             )
         ) {
-            GroupPagingSource(mainApi, areaCode, areaCategory)
+            GroupPagingSource(mainApi, userId, groupFilterCondition)
         }.flow
 
     override suspend fun userJoinGroup(groupId: String): String? {
@@ -205,13 +201,13 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
     override suspend fun fetchJoinedGroups() : List<ApiGroup> = mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
-    override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea().map { it.toEntity() }
-    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity(localDateAdapter, localTimeAdapter)
+    override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea(userId).map { it.toEntity() }
+    override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
-    override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson(localDateAdapter, localTimeAdapter)).message
-    override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity(localDateAdapter, localTimeAdapter) }
-    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity(localDateAdapter, localTimeAdapter)
+    override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson()).message
+    override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity() }
+    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity()
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
@@ -251,49 +247,6 @@ class BaseRepositoryImpl @Inject constructor(
                 placeId = placeId,
                 language = LANGUAGE_JP
         ).body()?.toEntity()
-
-    override suspend fun getUserProfile(): Result<FireUserProfile?> =
-        withContext(Dispatchers.IO){
-            suspendCoroutine { continuation ->
-                fireStore.collection("users")
-                    .document(userId)
-                    .get()
-                    .addOnSuccessListener {
-                        try {
-                            if (it != null){
-                                continuation.resume(Result.Success(it.toObject()))
-                            }else{
-                                continuation.resume(Result.Success(null))
-                            }
-                        } catch (e: Exception) {
-                            continuation.resume(Result.Failure(e))
-                        }
-                    }
-                    .addOnFailureListener {
-                        continuation.resume(Result.Failure(it))
-                    }
-            }
-        }
-
-    override suspend fun createUserProfile(userProfile: FireUserProfile): Result<Int> {
-        return withContext(Dispatchers.IO){
-            suspendCoroutine { continuation ->
-                fireStore.collection("users")
-                    .document(userId)
-                    .set(userProfile)
-                    .addOnSuccessListener {
-                        try {
-                            continuation.resume(Result.Success(R.string.upload_success))
-                        } catch (e: Exception) {
-                            continuation.resume(Result.Failure(e))
-                        }
-                    }
-                    .addOnFailureListener {
-                        continuation.resume(Result.Failure(it))
-                    }
-            }
-        }
-    }
 
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){
@@ -351,6 +304,12 @@ class BaseRepositoryImpl @Inject constructor(
             else -> throw IllegalStateException()
         }
     }
+
+    override suspend fun loadPrefectureCsv(): List<PrefectureCsvLoader.PrefectureLocalItem> =
+        assetLoader.prefectureCsvLoader.prefectureLocalItems
+
+    override suspend fun loadCityCsv(): List<CityCsvLoader.CityLocalItem> =
+        assetLoader.cityCsvLoader.cityLocalItems
 
     companion object {
         private const val LIMIT = 50L

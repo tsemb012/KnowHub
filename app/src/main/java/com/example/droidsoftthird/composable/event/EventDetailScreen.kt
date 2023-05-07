@@ -98,9 +98,9 @@ fun EventDetailScreen(
 
                     ListItem(title = "イベント名", content = eventDetail.name)
                     ListItem(title = "コメント", content = eventDetail.comment)
-                    ListItem(title = "日付", content = eventDetail.date.toString())
-                    ListItem(title = "開始時間", content = eventDetail.startTime.toString())
-                    ListItem(title = "終了時間", content = eventDetail.endTime.toString())
+                    ListItem(title = "日付", content = eventDetail.startDateTime.toString())
+                    ListItem(title = "開始時間", content = eventDetail.startDateTime.toString())
+                    ListItem(title = "終了時間", content = eventDetail.endDateTime.toString())
 
                     eventDetail.place?.let { place ->
                         ListItem(title = "場所名", content = place.name)

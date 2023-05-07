@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,7 +58,14 @@ class GroupAddFragment : Fragment() {
             btnToGroupDetailBarLearningFrequency.setOnClickListener { showLearningFrequencyDialog() }
             btnToGroupDetailBarAgeRange.setOnClickListener { showAgeRangeDialog() }
             btnToGroupDetailBarNumberPersons.setOnClickListener { showNumberPersonsDialog() }
-            btnToGroupDetailBarGenderRestriction.setOnClickListener { toggleGenderRestriction() }
+            btnToGroupDetailBarGenderRestriction.setOnClickListener {
+                viewModel.postIsChecked(binding.genderRestrictionSwitch.isChecked)
+                showToast(if (binding.genderRestrictionSwitch.isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
+            }
+            binding.genderRestrictionSwitch.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.postIsChecked(isChecked)
+                showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
+            }
         }
     }
 
@@ -69,11 +75,16 @@ class GroupAddFragment : Fragment() {
     }
 
     private fun showAreaDialog() {
+        val online = Pair (0, 0)
         val dialog = AreaDialogFragment(
-            onExceptionListener = { TODO("オンラインを選択した時の処理を記述する。") },
+            onExceptionListener = {
+                viewModel.postPrefecture(getString(R.string.online))
+                viewModel.postCity(getString(R.string.no_set))
+                viewModel.postCodes(online)
+            },
             onConfirmListener = { area ->
                 viewModel.postPrefecture(area.prefecture?.name ?: getString(R.string.non_selected))
-                viewModel.postCity(area.city?.name ?: getString(R.string.non_selected))
+                viewModel.postCity(area.city?.name ?: getString(R.string.no_set))
                 viewModel.postCodes(area.prefecture?.prefectureCode to area.city?.cityCode)
             }
         )
@@ -98,14 +109,6 @@ class GroupAddFragment : Fragment() {
     private fun showNumberPersonsDialog() {
         val dialog = NumberPersonsDialogFragment()
         childFragmentManager.let { dialog.show(it, "number_persons") }
-    }
-
-    private fun toggleGenderRestriction() {
-        val sm: SwitchMaterial = binding.genderRestrictionSwitch
-        sm.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.postIsChecked(isChecked)
-                showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
-            }
     }
 
     private fun launchUploader() {

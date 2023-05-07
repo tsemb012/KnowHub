@@ -17,17 +17,17 @@ class ScheduleListViewModel @Inject constructor(
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             kotlin.runCatching { userCase.fetchEvents() }
                 .onSuccess { events ->
-                    sacheduleLoadState.value = LoadState.Loaded(events)
+                    scheduleLoadState.value = LoadState.Loaded(events)
                 }
                 .onFailure {
-                        e -> sacheduleLoadState.value = LoadState.Error(e)
+                        e -> scheduleLoadState.value = LoadState.Error(e)
                 }
         }
-        sacheduleLoadState.value = LoadState.Loading(job)
+        scheduleLoadState.value = LoadState.Loading(job)
         job.start()
     }
 
     fun initializeSchedulesState() {
-        sacheduleLoadState.value = LoadState.Initialized
+        scheduleLoadState.value = LoadState.Initialized
     }
 }

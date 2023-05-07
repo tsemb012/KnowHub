@@ -1,4 +1,4 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.model.presentation_model
 
 import androidx.compose.runtime.State
 import androidx.paging.PagingData

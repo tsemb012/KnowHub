@@ -10,11 +10,13 @@ import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.domain_model.initializedUserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.ProfileUiModel
 import com.example.droidsoftthird.usecase.ProfileUseCase
 import com.example.droidsoftthird.utils.combine
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 open class ProfileSubmitViewModel (private val useCase: ProfileUseCase): ViewModel() {
 
@@ -89,7 +91,7 @@ open class ProfileSubmitViewModel (private val useCase: ProfileUseCase): ViewMod
 
     val bindingUserName: MutableLiveData<String> by lazy { MutableLiveData<String>("") }
     val bindingComment: MutableLiveData<String> by lazy { MutableLiveData<String>("") }
-    fun postAge(age: Int) { _editedUserDetail.value = _editedUserDetail.value?.copy(age = age) }
+    fun postBirthday(age: LocalDate) { _editedUserDetail.value = _editedUserDetail.value?.copy(birthday = age) }
     fun postArea(area: Area) { _editedUserDetail.value = _editedUserDetail.value?.copy(area = area) }
     fun postGender(gender: UserDetail.Gender) { _editedUserDetail.value = _editedUserDetail.value?.copy(gender = gender.name.lowercase()) }
     fun storeTemporalUserImage(uri: Uri) { temporalUserImage.value = mapOf(URI_FOR_UPDATE to uri.toString())  }

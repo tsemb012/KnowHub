@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.EventUseCase
@@ -19,17 +20,19 @@ class ScheduleCalendarViewModel @Inject constructor(
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             kotlin.runCatching { userCase.fetchEvents() }
                 .onSuccess { events ->
-                    sacheduleLoadState.value = LoadState.Loaded(events)
+                    scheduleLoadState.value = LoadState.Loaded(events)
+
                 }
                 .onFailure {
-                        e -> sacheduleLoadState.value = LoadState.Error(e)
+                        e -> scheduleLoadState.value = LoadState.Error(e)
+                        Log.d("ScheduleCalendarViewModel", "fetchAllEvents: ${e.message}")
                 }
         }
-        sacheduleLoadState.value = LoadState.Loading(job)
+        scheduleLoadState.value = LoadState.Loading(job)
         job.start()
     }
 
     fun initializeSchedulesState() {
-        sacheduleLoadState.value = LoadState.Initialized
+        scheduleLoadState.value = LoadState.Initialized
     }
 }

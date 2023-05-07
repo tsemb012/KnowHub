@@ -13,12 +13,12 @@ import com.example.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
 import com.example.droidsoftthird.usecase.EventUseCase
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.example.droidsoftthird.utils.combine
-import com.example.droidsoftthird.utils.converter.convertToLocalTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.LocalDate
-import java.util.*
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -64,9 +64,8 @@ class ScheduleCreateViewModel @Inject constructor(
         _selectedItems.value = _selectedItems.value?.copy(selectedDate = selectedDate)
     }
 
-    fun postTimePeriod(startTime: Calendar, endTime: Calendar) {
-        val period = Pair(startTime.convertToLocalTime(), endTime.convertToLocalTime())
-        _selectedItems.value = _selectedItems.value?.copy(selectedPeriod = period)
+    fun postTimePeriod(startTime: ZonedDateTime, duration: Duration) { //TODO Editで変革できるように　→　そもそもCalendarじゃなくて別のライブラリを使えたらベスト
+        _selectedItems.value = _selectedItems.value?.copy(startTime = startTime, duration = duration)
     }
 
     fun postPlace(place: EditedPlace?) {

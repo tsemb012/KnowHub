@@ -1,4 +1,4 @@
-package com.example.droidsoftthird
+package com.example.droidsoftthird.model.presentation_model
 
 import androidx.lifecycle.LiveData
 import com.example.droidsoftthird.model.domain_model.ItemEvent
@@ -27,6 +27,6 @@ data class ScheduleUiModel (
     }
 }
 
-val LiveData<ScheduleUiModel>.eventDates get() = value?.allEvents?.map { scheduleEvent -> scheduleEvent.date } ?: emptyList()
+val LiveData<ScheduleUiModel>.eventDates get() = value?.allEvents?.map { scheduleEvent -> scheduleEvent.period.first.toLocalDate() } ?: emptyList()
 val LiveData<ScheduleUiModel>.selectedDate get() = value?.selectedDate ?: throw IllegalStateException()
 
