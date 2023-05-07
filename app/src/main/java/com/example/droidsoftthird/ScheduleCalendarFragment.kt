@@ -19,6 +19,7 @@ import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
 import com.example.droidsoftthird.model.presentation_model.LoadState
+import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
 import com.example.droidsoftthird.model.presentation_model.selectedDate
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -51,7 +52,17 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
-        viewModel.uiModel.observe(viewLifecycleOwner) { observeSchedulesState(it.schedulesLoadState) }
+        viewModel.uiModel.observe(viewLifecycleOwner) {
+            if (it.isLoading) progressDialog.show() else progressDialog.dismiss()
+            it.error?.let { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+
+            adapter.submitList(it.selectedEvents)
+            when (it.notifyType) {
+                NotifyType.ALL -> binding.calendarMatrix.notifyCalendarChanged()
+                NotifyType.SELECTED -> binding.calendarMatrix.notifyDateChanged(it.selectedDate)
+                NotifyType.NONE -> Unit
+            }
+        }
         viewModel.fetchAllEvents()
         viewModel.fetchSimpleGroups()
     }
@@ -96,28 +107,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
     private fun selectEvent(eventId: String) {
         findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleDetailFragment(eventId))
-    }
-
-    private fun observeSchedulesState(schedulesLoadState: LoadState) {
-        when (schedulesLoadState) {
-            is LoadState.Loading -> progressDialog.show()
-            is LoadState.Loaded<*> -> { //TODO ここで受け取る型をジェネリクスで特定する。
-                progressDialog.dismiss()
-                adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                viewModel.initializeSchedulesState()
-                binding.calendarMatrix.notifyCalendarChanged()
-            }
-            is LoadState.Processed -> {
-                adapter.submitList(viewModel.uiModel.value?.selectedEvents)
-                binding.calendarMatrix.notifyMonthChanged(viewModel.uiModel.value?.selectedDate?.yearMonth ?: YearMonth.now())
-            }
-            is LoadState.Error -> {
-                progressDialog.dismiss()
-                Toast.makeText(requireContext(), schedulesLoadState.error.toString(), Toast.LENGTH_SHORT).show()
-                viewModel.initializeSchedulesState()
-            }
-            else -> {}
-        }
     }
 
     private fun scrollMonth(it: CalendarMonth) {//スクロール時のロジック
