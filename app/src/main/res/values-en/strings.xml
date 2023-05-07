@@ -172,4 +172,5 @@
     <string name="group_condition">Filter Condition</string>
     <string name="select_area">Please Select Activity Area</string>
     <string name="select_group">Select Group</string>
+    <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
 </resources>
