@@ -65,7 +65,11 @@ class ScheduleCreateViewModel @Inject constructor(
     }
 
     fun postTimePeriod(startTime: ZonedDateTime, duration: Duration) { //TODO Editで変革できるように　→　そもそもCalendarじゃなくて別のライブラリを使えたらベスト
-        _selectedItems.value = _selectedItems.value?.copy(startTime = startTime, duration = duration)
+        if (uiModel.value?.selectedItems?.selectedDate == null) {
+            _selectedItems.value = _selectedItems.value?.copy(startTime = startTime, duration = duration, selectedDate = LocalDate.now())
+        } else {
+            _selectedItems.value = _selectedItems.value?.copy(startTime = startTime, duration = duration)
+        }
     }
 
     fun postPlace(place: EditedPlace?) {
