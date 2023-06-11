@@ -36,8 +36,6 @@ class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUse
     private val error = MutableLiveData<String?>()
     val errorLiveData: LiveData<String?>
         get() = error
-
-
     fun initialize() {
         loadGroups()
         loadLocalArea()
@@ -54,7 +52,7 @@ class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUse
 
     private fun loadGroups() {
         viewModelScope.launch {
-            useCase.fetchGroups(groupFilterCondition.value ?: ApiGroup.FilterCondition())
+            useCase.fetchGroups(groupFilterCondition.value.copy(allowMaxNumberGroupShow = false)) //人数が最大なグループを表示しないようにする。
                 .cachedIn(viewModelScope)
                 .catch { e ->
                     error.value = e.message

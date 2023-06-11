@@ -66,6 +66,7 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
          val groupTypes: Set<GroupType> = setOf(),
          val facilityEnvironments: Set<FacilityEnvironment> = setOf(),
          val frequencyBasis: FrequencyBasis? = null,
+         val allowMaxNumberGroupShow: Boolean = true,
      ) {
          companion object {
              fun getPrefectureCode(number: Int): Int {
