@@ -39,22 +39,30 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class BaseRepositoryImpl @Inject constructor(
-        private val mainApi: MainApi,
-        private val dataStore: DataStore<Preferences>,
-        private val assetLoader: AssetLoader
+    private val mainApi: MainApi,
+    private val dataStore: DataStore<Preferences>,
+    private val assetLoader: AssetLoader,
 ): RailsApiRepository, FirebaseRepository, DataStoreRepository, AssetRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
+    private val urlCache = mutableMapOf<String, String>()
 
     override suspend fun getUserId() = userId
-    override suspend fun fetchStorageImage(imagePath: String): String = suspendCoroutine { continuation ->
-        val imageReference = FirebaseStorage.getInstance().getReference(imagePath)
-        imageReference.downloadUrl.addOnSuccessListener {
-            continuation.resume(it.toString())
-        }.addOnFailureListener {
-            throw it
+    override suspend fun fetchStorageImage(imagePath: String): String {
+        if (urlCache.containsKey(imagePath)) {
+            return urlCache[imagePath] ?: ""
         }
+        val url = suspendCoroutine { continuation ->
+            val imageReference = FirebaseStorage.getInstance().getReference(imagePath)
+            imageReference.downloadUrl.addOnSuccessListener {
+                urlCache[imagePath] = it.toString()
+                continuation.resume(it.toString())
+            }.addOnFailureListener {
+                throw it
+            }
+        }
+        return url
     }
 
     override suspend fun fetchUserJoinedGroupIds(): List<String> = mainApi.fetchUserJoinedGroupIds(userId)
