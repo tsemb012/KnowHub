@@ -30,6 +30,7 @@ class GroupPagingSource(
                 groupTypes = groupFilterCondition.groupTypes.map { it.name.lowercase() },
                 facilityEnvironments = groupFilterCondition.facilityEnvironments.map { it.name.lowercase() },
                 frequency_bases = groupFilterCondition.frequencyBasis?.name?.lowercase(),
+                allowMaxNumberGroupShow = groupFilterCondition.allowMaxNumberGroupShow,
             ).map { it.toEntity() }
 
             LoadResult.Page(

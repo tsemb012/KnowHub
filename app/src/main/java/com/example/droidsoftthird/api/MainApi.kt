@@ -61,6 +61,7 @@ interface MainApi {
         @Query("group_types[]") groupTypes: List<String> = listOf(),
         @Query("facility_environments[]") facilityEnvironments: List<String> = listOf(),
         @Query("frequency_basis") frequency_bases: String? = null,
+        @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = true,
     ): List<GetGroupJson>
 
     @GET("groups/locations/count")
