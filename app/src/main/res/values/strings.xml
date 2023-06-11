@@ -176,4 +176,5 @@
     <string name="select_area">活動地域を選択してください</string>
     <string name="select_group">グループ選択</string>
     <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
+    <string name="no_groups_found">参加可能なグループがありません。</string>
 </resources>

@@ -173,4 +173,5 @@
     <string name="select_area">Please Select Activity Area</string>
     <string name="select_group">Select Group</string>
     <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
+    <string name="no_groups_found">There are no available groups that I can participate.</string>
 </resources>
