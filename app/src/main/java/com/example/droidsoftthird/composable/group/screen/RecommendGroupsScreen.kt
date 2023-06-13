@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.composable.group.screen
 
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.R
@@ -40,13 +43,25 @@ fun RecommendGroupsScreen(
     navigateToGroupDetail: (String) -> Unit,
 ) {
 
-    val error = viewModel.errorLiveData
     val lazyPagingGroups = viewModel.groupsFlow.collectAsLazyPagingItems()
     val filterCondition = viewModel.groupFilterCondition
     val showDialog = remember { mutableStateOf(false) }
     val areaMap = viewModel.prefectureList to viewModel.cityList
     val onConfirm: (ApiGroup.FilterCondition?) -> Unit = {
             condition -> viewModel.updateFilterCondition(condition ?: ApiGroup.FilterCondition())
+    }
+
+    lazyPagingGroups.apply {
+        when {
+            loadState.refresh is LoadState.Error -> {
+                val error = loadState.refresh as LoadState.Error
+                Toast.makeText(LocalContext.current, error.error.message, Toast.LENGTH_SHORT).show()
+            }
+            loadState.append is LoadState.Error -> {
+                val error = loadState.refresh as LoadState.Error
+                Toast.makeText(LocalContext.current, error.error.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     DisplayGroupListWithFab(showDialog, lazyPagingGroups, navigateToGroupDetail)
