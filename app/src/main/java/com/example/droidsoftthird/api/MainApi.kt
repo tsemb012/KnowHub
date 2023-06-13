@@ -66,7 +66,8 @@ interface MainApi {
 
     @GET("groups/locations/count")
     suspend fun fetchGroupCountByArea(
-        @Query("user_id") userId: String
+        @Query("user_id") userId: String,
+        @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = false,
     ): List<GetGroupCountByAreaJson>
 
     @PATCH("groups/{id}/participate")
