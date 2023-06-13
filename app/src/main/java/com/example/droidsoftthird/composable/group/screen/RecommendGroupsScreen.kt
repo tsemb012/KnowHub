@@ -54,13 +54,20 @@ fun RecommendGroupsScreen(
     lazyPagingGroups.apply {
         when {
             loadState.refresh is LoadState.Error -> {
-                val error = loadState.refresh as LoadState.Error
-                Toast.makeText(LocalContext.current, error.error.message, Toast.LENGTH_SHORT).show()
+                val error = loadState.refresh as? LoadState.Error
+                error?.let {
+                    Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
             loadState.append is LoadState.Error -> {
-                val error = loadState.refresh as LoadState.Error
-                Toast.makeText(LocalContext.current, error.error.message, Toast.LENGTH_SHORT).show()
+                val error = loadState.refresh as? LoadState.Error
+                error?.let {
+                    Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
+            else -> { }
         }
     }
 
