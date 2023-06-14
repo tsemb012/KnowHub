@@ -46,15 +46,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
-        setupNavigator()
-    }
-
-    private fun setupNavigator() {
-        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        binding.floatingActionButton.setOnClickListener { v ->
-            val action = HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
-            navHostFragment.navController.navigate(action)
-        }
     }
 
     private fun setupViewPager() {
