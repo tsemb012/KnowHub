@@ -51,26 +51,6 @@ fun RecommendGroupsScreen(
             condition -> viewModel.updateFilterCondition(condition ?: ApiGroup.FilterCondition())
     }
 
-    lazyPagingGroups.apply {
-        when {
-            loadState.refresh is LoadState.Error -> {
-                val error = loadState.refresh as? LoadState.Error
-                error?.let {
-                    Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-            loadState.append is LoadState.Error -> {
-                val error = loadState.refresh as? LoadState.Error
-                error?.let {
-                    Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-            else -> { }
-        }
-    }
-
     DisplayGroupListWithFab(showDialog, lazyPagingGroups, navigateToGroupDetail)
     AnimatedFilterConditionDialog(showDialog, areaMap, filterCondition, onConfirm)
 }
