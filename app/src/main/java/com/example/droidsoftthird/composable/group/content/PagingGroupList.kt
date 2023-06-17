@@ -1,5 +1,7 @@
 package com.example.droidsoftthird.composable.group.content
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -60,6 +62,7 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
     handleLoadStateErrors(lazyPagingGroups)
 }
 
+@SuppressLint("LogNotTimber")
 @Composable
 fun handleLoadStateErrors(lazyPagingGroups: LazyPagingItems<ApiGroup>) {
     lazyPagingGroups.apply {
@@ -69,6 +72,7 @@ fun handleLoadStateErrors(lazyPagingGroups: LazyPagingItems<ApiGroup>) {
                 error?.let {
                     Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
                         .show()
+                    Log.d("PagingGroupList", "handleLoadStateErrors: ${it.error.message}")
                 }
             }
             loadState.append is LoadState.Error -> {
@@ -76,6 +80,7 @@ fun handleLoadStateErrors(lazyPagingGroups: LazyPagingItems<ApiGroup>) {
                 error?.let {
                     Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
                         .show()
+                    Log.d("PagingGroupList", "handleLoadStateErrors: ${it.error.message}")
                 }
             }
             else -> { }
