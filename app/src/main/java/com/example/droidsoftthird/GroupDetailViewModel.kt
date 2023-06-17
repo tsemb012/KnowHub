@@ -14,8 +14,8 @@ class GroupDetailViewModel @AssistedInject constructor(
 ):ViewModel() {
     //TODO ローカライズも拡張もしにくいひどいコードなので、全面的に書き直す
 
-    private val _groupDetail = MutableLiveData<ApiGroupDetail?>()
-    val groupDetail: LiveData<ApiGroupDetail?>
+    private val _groupDetail = MutableLiveData<ApiGroup?>()
+    val groupDetail: LiveData<ApiGroup?>
         get() = _groupDetail
 
     val prefectureAndCity: LiveData<String> = groupDetail.map{ group ->

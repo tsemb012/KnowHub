@@ -50,7 +50,7 @@ interface MainApi {
     suspend fun createGroup(@Body request: PostGroupJson): Response<MessageResponse>
 
     @GET("groups/{id}")
-    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupDetailJson>
+    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupJson>
 
     @GET("groups")
     suspend fun fetchGroups(

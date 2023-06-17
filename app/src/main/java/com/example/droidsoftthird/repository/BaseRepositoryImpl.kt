@@ -183,7 +183,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createGroup(group: EditedGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
-    override suspend fun fetchGroupDetail(groupId: String): ApiGroupDetail {//TODO エラーハンドリングをまとめる
+    override suspend fun fetchGroupDetail(groupId: String): ApiGroup {
         val response = mainApi.fetchGroup(groupId)
         if (response.isSuccessful) {
             return response.body()?.toEntity() ?: throw Exception("response body is null")
