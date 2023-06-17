@@ -14,7 +14,7 @@ class StyleDialogFragment: DialogFragment() {
     private val viewModel: GroupAddViewModel by viewModels({requireParentFragment()})
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val items = Style.toArrayForDisplay().map { getString(it.displayNameId) }.toTypedArray()
+        val items = Style.values().map { getString(it.displayNameId) }.toTypedArray()
         activity?.let {
             val builder = AlertDialog.Builder(it)
             builder

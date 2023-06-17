@@ -84,9 +84,9 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
 
 interface GroupOption { val displayNameId: Int }
 enum class GroupType(override val displayNameId: Int): GroupOption {
+    NONE_GROUP_TYPE(R.string.no_set),
     INDIVIDUAL_TASK(R.string.individual_task),
-    SHARED_GOAL(R.string.shared_goal),
-    NONE_GROUP_TYPE(R.string.no_set);
+    SHARED_GOAL(R.string.shared_goal);
 
     companion object {
         fun toArrayForDisplay() = values().filter { it != NONE_GROUP_TYPE }
@@ -94,9 +94,9 @@ enum class GroupType(override val displayNameId: Int): GroupOption {
 }
 
 enum class Style (override val displayNameId: Int): GroupOption {
+    NONE_STYLE(R.string.no_set),
     FOCUS(R.string.quiet_focus),
-    ENJOY(R.string.fun_chat),
-    NONE_STYLE(R.string.no_set);
+    ENJOY(R.string.fun_chat);
 
     companion object {
         fun toArrayForDisplay() = Style.values().filter { it != NONE_STYLE }
@@ -104,6 +104,7 @@ enum class Style (override val displayNameId: Int): GroupOption {
 }
 
 enum class FacilityEnvironment(override val displayNameId: Int): GroupOption {
+    NONE_FACILITY_ENVIRONMENT(R.string.no_set),
     LIBRARY(R.string.library),
     CAFE_RESTAURANT(R.string.cafe_restaurant),
     RENTAL_SPACE(R.string.rental_space),
@@ -111,8 +112,7 @@ enum class FacilityEnvironment(override val displayNameId: Int): GroupOption {
     PAID_STUDY_SPACE(R.string.paid_study_space),
     PARK(R.string.park),
     ONLINE(R.string.online),
-    OTHER_FACILITY_ENVIRONMENT(R.string.other),
-    NONE_FACILITY_ENVIRONMENT(R.string.no_set), ;
+    OTHER_FACILITY_ENVIRONMENT(R.string.other), ;
 
     companion object {
         fun toArrayForDisplay() = FacilityEnvironment.values().filter { it != NONE_FACILITY_ENVIRONMENT }
@@ -120,11 +120,11 @@ enum class FacilityEnvironment(override val displayNameId: Int): GroupOption {
 }
 
 enum class FrequencyBasis(override val displayNameId: Int): GroupOption {
+    NONE_FREQUENCY_BASIS(R.string.no_set),
     DAILY(R.string.daily),
     WEEKLY(R.string.weekly),
     MONTHLY(R.string.monthly),
-    IRREGULARLY(R.string.irregularly),
-    NONE_FREQUENCY_BASIS(R.string.no_set);
+    IRREGULARLY(R.string.irregularly), ;
 
     companion object {
         fun toArrayForDisplay() = FrequencyBasis.values().filter { it != NONE_FREQUENCY_BASIS }

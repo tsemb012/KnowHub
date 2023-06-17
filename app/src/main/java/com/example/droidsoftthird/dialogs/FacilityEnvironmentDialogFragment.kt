@@ -14,7 +14,7 @@ class FacilityEnvironmentDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val items = FacilityEnvironment.toArrayForDisplay().map { getString(it.displayNameId) }.toTypedArray()
+        val items = FacilityEnvironment.values().map { getString(it.displayNameId) }.toTypedArray()
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder
