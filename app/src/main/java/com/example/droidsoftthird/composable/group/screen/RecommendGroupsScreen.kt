@@ -1,6 +1,5 @@
 package com.example.droidsoftthird.composable.group.screen
 
-import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -24,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.R
@@ -41,6 +38,7 @@ enum class FilterContentDestination { HOME, PREFECTURE, CITY }
 fun RecommendGroupsScreen(
     viewModel: RecommendGroupsViewModel,
     navigateToGroupDetail: (String) -> Unit,
+    navigateToGroupAdd: () -> Unit,
 ) {
 
     val lazyPagingGroups = viewModel.groupsFlow.collectAsLazyPagingItems()
@@ -51,7 +49,7 @@ fun RecommendGroupsScreen(
             condition -> viewModel.updateFilterCondition(condition ?: ApiGroup.FilterCondition())
     }
 
-    DisplayGroupListWithFab(showDialog, lazyPagingGroups, navigateToGroupDetail)
+    DisplayGroupListWithFab(showDialog, lazyPagingGroups, navigateToGroupDetail, navigateToGroupAdd)
     AnimatedFilterConditionDialog(showDialog, areaMap, filterCondition, onConfirm)
 }
 
@@ -59,18 +57,33 @@ fun RecommendGroupsScreen(
 fun DisplayGroupListWithFab(
     showDialog: MutableState<Boolean>,
     lazyPagingGroups: LazyPagingItems<ApiGroup>,
-    navigateToGroupDetail: (String) -> Unit
+    navigateToGroupDetail: (String) -> Unit,
+    navigateToGroupAdd: () -> Unit
 ) {
     Box {
         PagingGroupList(lazyPagingGroups, navigateToGroupDetail)
+        FloatingActionButtons(showDialog, navigateToGroupAdd)
+    }
+}
+
+@Composable
+private fun BoxScope.FloatingActionButtons(
+    showDialog: MutableState<Boolean>,
+    navigateToGroupAdd: () -> Unit
+) {
+    Column (modifier = Modifier
+        .padding(bottom = 64.dp, end = 16.dp)
+        .align(Alignment.BottomEnd)) {
         FloatingActionButton(
             onClick = { showDialog.value = true },
             backgroundColor = MaterialTheme.colors.primary,
-            modifier = Modifier
-                .padding(bottom = 64.dp)
-                .align(Alignment.BottomEnd),
         ) {
             Icon(Icons.Filled.FilterList, contentDescription = "Filter")
+        }
+        FloatingActionButton(
+            onClick = { navigateToGroupAdd() }
+        ) {
+           Icon(Icons.Filled.Add, contentDescription = "Add")
         }
     }
 }
