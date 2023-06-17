@@ -20,7 +20,7 @@ class LeaningFrequencyDialogFragment:DialogFragment() {
             val builder = AlertDialog.Builder(it)
             val items = FrequencyBasis.toArrayForDisplay().map { basis -> getString(basis.displayNameId) }.toTypedArray()
             builder
-                .setTitle(R.string.learning_frequency)
+                .setTitle(R.string.event_frequency)
                 .setIcon(R.drawable.ic_baseline_date_range_24)
                 .setSingleChoiceItems(items, selected) { _, which -> selected = which }
                 .setPositiveButton(getString(R.string.Next)) { _, _ ->
