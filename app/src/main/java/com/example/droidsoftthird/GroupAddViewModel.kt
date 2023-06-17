@@ -31,6 +31,10 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val groupTypeStringId: LiveData<Int> get() = _groupType.map { it.displayNameId }
     val groupType: LiveData<GroupType> get() = _groupType
 
+    private val _style = MutableLiveData(Style.NONE_STYLE)
+    val styleStringId: LiveData<Int> get() = _style.map { it.displayNameId }
+    val style: LiveData<Style> get() = _style
+
     private val _prefecture = MutableLiveData("未設定")
     val prefecture: LiveData<String> get() = _prefecture
 
@@ -80,6 +84,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
 
     fun postImageUri(uri: Uri) { _imageUri.postValue(uri) }
     fun postGroupType(type: GroupType) { _groupType.postValue(type) }
+    fun postStyle(style: Style) { _style.postValue(style) }
     fun postPrefecture(s: String) { _prefecture.postValue(s) }
     fun postCity(s: String) { _city.postValue(s) }
     fun postFacilityEnvironment(facilityEnvironment: FacilityEnvironment) { _facilityEnvironment.postValue(facilityEnvironment) }
@@ -109,7 +114,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 areaCodes?.second ?: -1,
                                 isOnline,
                                 facilityEnvironment.value ?: FacilityEnvironment.NONE_FACILITY_ENVIRONMENT,
-                                Style.FOCUS,//TODO 後で書き換える
+                                style.value ?: Style.NONE_STYLE,
                                 frequencyBasis.value ?: FrequencyBasis.NONE_FREQUENCY_BASIS,
                                 frequency.value ?: -1,
                                 minAge.value ?: -1,
