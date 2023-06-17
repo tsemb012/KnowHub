@@ -58,9 +58,10 @@ interface MainApi {
         @Query("user_id") userId: String? = null,
         @Query("area_code") areaCode: Int? = null,
         @Query("area_category") areaCategory: String? = null,
-        @Query("group_types[]") groupTypes: List<String> = listOf(),
+        @Query("group_type") groupType: String? = null,
         @Query("facility_environments[]") facilityEnvironments: List<String> = listOf(),
         @Query("frequency_basis") frequency_bases: String? = null,
+        @Query("style") style: String? = null,
         @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = true,
     ): List<GetGroupJson>
 
