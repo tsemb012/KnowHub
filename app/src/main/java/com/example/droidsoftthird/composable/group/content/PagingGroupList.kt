@@ -29,6 +29,7 @@ import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
+import com.example.droidsoftthird.model.domain_model.Style
 import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -88,18 +89,20 @@ fun handleLoadStateErrors(lazyPagingGroups: LazyPagingItems<ApiGroup>) {
 fun GroupListEmptyPreview() {
     val group1 = ApiGroup(
         groupId = "1", hostUserId = "1", groupName = "group1", groupIntroduction = "group1",
-        groupType = GroupType.OTHER_GROUP_TYPE, prefecture = "prefecture", city = "city", isOnline = false,
-        facilityEnvironment = FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT, basis = FrequencyBasis.MONTHLY,
-        frequency = 1, minAge = 10, maxAge = 40, maxNumberPerson = 10, isChecked = false, storageRef = "https://images.pexels.com/photos/9954174/pexels-photo-9954174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
+        groupType = GroupType.INDIVIDUAL_TASK, prefecture = "prefecture", city = "city", isOnline = false,
+        facilityEnvironment = FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT, basis = FrequencyBasis.MONTHLY, style = Style.FOCUS,
+        frequency = 1, minAge = 10, maxAge = 40, maxNumberPerson = 10, isChecked = false, storageRef = "https://images.pexels.com/photos/9954174/pexels-photo-9954174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+
+    )
     val group2 = ApiGroup(
         groupId = "2", hostUserId = "2", groupName = "group2", groupIntroduction = "group2",
-        groupType = GroupType.OTHER_GROUP_TYPE, prefecture = "prefecture", city = "city", isOnline = false,
-        facilityEnvironment = FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT, basis = FrequencyBasis.MONTHLY,
+        groupType = GroupType.SHARED_GOAL, prefecture = "prefecture", city = "city", isOnline = false,
+        facilityEnvironment = FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT, basis = FrequencyBasis.MONTHLY, style = Style.FOCUS,
         frequency = 1, minAge = 10, maxAge = 40, maxNumberPerson = 10, isChecked = false, storageRef = "https://images.pexels.com/photos/17079798/pexels-photo-17079798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
     val group3 = ApiGroup(
         groupId = "3", hostUserId = "3", groupName = "group3", groupIntroduction = "group3",
-        groupType = GroupType.OTHER_GROUP_TYPE, prefecture = "prefecture", city = "city", isOnline = false,
-        facilityEnvironment = FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT, basis = FrequencyBasis.MONTHLY,
+        groupType = GroupType.SHARED_GOAL, prefecture = "prefecture", city = "city", isOnline = false,
+        facilityEnvironment = FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT, basis = FrequencyBasis.MONTHLY, style = Style.FOCUS,
         frequency = 1, minAge = 10, maxAge = 40, maxNumberPerson = 10, isChecked = false, storageRef = "https://images.pexels.com/photos/14880025/pexels-photo-14880025.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
     val pagingData = PagingData.from(listOf(group1, group2, group3))
     val collectAsLazyPagingItems = flowOf(pagingData).collectAsLazyPagingItems()

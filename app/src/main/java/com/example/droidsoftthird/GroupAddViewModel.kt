@@ -7,6 +7,7 @@ import com.example.droidsoftthird.model.domain_model.EditedGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
+import com.example.droidsoftthird.model.domain_model.Style
 import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -108,6 +109,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 areaCodes?.second ?: -1,
                                 isOnline,
                                 facilityEnvironment.value ?: FacilityEnvironment.NONE_FACILITY_ENVIRONMENT,
+                                Style.FOCUS,//TODO 後で書き換える
                                 frequencyBasis.value ?: FrequencyBasis.NONE_FREQUENCY_BASIS,
                                 frequency.value ?: -1,
                                 minAge.value ?: -1,

@@ -15,6 +15,7 @@ data class PostGroupJson(
         val isOnline: Boolean,
         @Json(name = "facility_environment")
         val facilityEnvironment: String,
+        val style: String,
         @Json(name = "frequency_basis")
         val frequencyBasis: String,
         @Json(name = "frequency_times")
