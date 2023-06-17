@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -364,27 +365,35 @@ private fun filterHomeContent(
 private fun SingleSelectSection(temporalCondition: MutableState<ApiGroup.FilterCondition>) {
 
     SingleSelectChipFlow(
-        stringResource(R.string.event_frequency),
-        Icons.Default.DateRange,
-        FrequencyBasis.toArrayForDisplay(),
-        temporalCondition.value.frequencyBasis,
-        { stringResource(id = it?.displayNameId!!) },
-        { temporalCondition.value = temporalCondition.value.copy(frequencyBasis = it) }
+        title = stringResource(R.string.event_frequency),
+        icon = Icons.Default.DateRange,
+        items = FrequencyBasis.toArrayForDisplay(),
+        selectedItem = temporalCondition.value.frequencyBasis,
+        stringProvider = { stringResource(id = it?.displayNameId!!) },
+        onSelected = { temporalCondition.value = temporalCondition.value.copy(frequencyBasis = it) }
     )
 
+    SingleSelectChipFlow(
+        title = stringResource(id = R.string.group_type),
+        icon = Icons.Default.Group,
+        items = GroupType.toArrayForDisplay(),
+        selectedItem = temporalCondition.value.groupType,
+        stringProvider = { stringResource(id = it?.displayNameId!!) },
+        onSelected = { temporalCondition.value = temporalCondition.value.copy(groupType = it) }
+    )
+
+    SingleSelectChipFlow(
+        title = stringResource(id = R.string.style),
+        icon = Icons.Default.SentimentSatisfied,
+        items = Style.toArrayForDisplay(),
+        selectedItem = Style.FOCUS,//temporalCondition.value.style,
+        stringProvider = { stringResource(id = it?.displayNameId!!) },
+        onSelected = { }//temporalCondition.value = temporalCondition.value.copy(syule = it) }
+    )
 }
 
 @Composable
 private fun MultiSelectSection(temporalCondition: MutableState<ApiGroup.FilterCondition>) {
-    MultiSelectChipFlow(
-        title = stringResource(id = R.string.group_type),
-        icon = Icons.Default.Group,
-        items = GroupType.toArrayForDisplay(),
-        stringProvider = { stringResource(id = it.displayNameId) },
-        selectedItems = temporalCondition.value.groupTypes,
-        onSelected = { temporalCondition.value = temporalCondition.value.copy(groupTypes = it) }
-
-    )
     MultiSelectChipFlow(
         title = stringResource(R.string.facility_environment),
         icon = Icons.Default.LocationCity,

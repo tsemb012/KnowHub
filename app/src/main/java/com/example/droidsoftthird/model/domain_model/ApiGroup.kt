@@ -63,9 +63,10 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
      data class FilterCondition(
          val areaCode: Int? = null,
          val areaCategory: AreaCategory? = null,
-         val groupTypes: Set<GroupType> = setOf(),
+         val groupType: GroupType? = null,
          val facilityEnvironments: Set<FacilityEnvironment> = setOf(),
          val frequencyBasis: FrequencyBasis? = null,
+         val style: Style? = null,
          val allowMaxNumberGroupShow: Boolean = true,
      ) {
          companion object {
@@ -80,14 +81,22 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
 
 interface GroupOption { val displayNameId: Int }
 enum class GroupType(override val displayNameId: Int): GroupOption {
-    SEMINAR(R.string.seminar),
-    WORKSHOP(R.string.workshop),
-    MOKUMOKU(R.string.mokumoku),
-    OTHER_GROUP_TYPE(R.string.other),
+    INDIVIDUAL_TASK(R.string.individual_task),
+    SHARED_GOAL(R.string.shared_goal),
     NONE_GROUP_TYPE(R.string.no_set);
 
     companion object {
         fun toArrayForDisplay() = values().filter { it != NONE_GROUP_TYPE }
+    }
+}
+
+enum class Style (override val displayNameId: Int): GroupOption {
+    FOCUS(R.string.quiet_focus),
+    ENJOY(R.string.fun_chat),
+    NONE_STYLE(R.string.no_set);
+
+    companion object {
+        fun toArrayForDisplay() = Style.values().filter { it != NONE_STYLE }
     }
 }
 
@@ -111,6 +120,7 @@ enum class FrequencyBasis(override val displayNameId: Int): GroupOption {
     DAILY(R.string.daily),
     WEEKLY(R.string.weekly),
     MONTHLY(R.string.monthly),
+    IRREGULARLY(R.string.irregularly),
     NONE_FREQUENCY_BASIS(R.string.no_set);
 
     companion object {

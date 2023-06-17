@@ -30,9 +30,10 @@ class GroupPagingSource(
                 userId = userId,
                 areaCode = groupFilterCondition.areaCode,
                 areaCategory = groupFilterCondition.areaCategory?.name?.lowercase(),
-                groupTypes = groupFilterCondition.groupTypes.map { it.name.lowercase() },
+                groupType = groupFilterCondition.groupType?.name?.lowercase(),
                 facilityEnvironments = groupFilterCondition.facilityEnvironments.map { it.name.lowercase() },
                 frequency_bases = groupFilterCondition.frequencyBasis?.name?.lowercase(),
+                style = groupFilterCondition.style?.name?.lowercase(),
                 allowMaxNumberGroupShow = groupFilterCondition.allowMaxNumberGroupShow,
             ).map { it.toEntity() }
 
