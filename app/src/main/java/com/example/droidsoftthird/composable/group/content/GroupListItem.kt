@@ -1,15 +1,11 @@
 package com.example.droidsoftthird.composable.group.content
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.LocationOn
@@ -29,6 +25,7 @@ import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.model.domain_model.Style
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.ItemDescription
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -42,7 +39,6 @@ fun GroupListItem(group: ApiGroup, navigateToDetail: (String) -> Unit) {
         elevation = 4.dp,
         onClick = { group.groupId?.let { navigateToDetail(it) } },
         backgroundColor = colorResource(id = R.color.base_100),
-        //border = BorderStroke(1.dp, Color.Black.copy(alpha = 0.1F))
     ) {
         Row(
             modifier = Modifier
@@ -60,35 +56,13 @@ fun GroupListItem(group: ApiGroup, navigateToDetail: (String) -> Unit) {
 
             )
             Spacer(modifier = Modifier.width(16.dp))
-            //TODO 下記をまとめて再利用できるように
 
-            Column {
-                Text(text = group.groupName, style = MaterialTheme.typography.h6, color = Color.DarkGray, maxLines = 1)
-
-                val itemList = listOf(
-                    Icons.Filled.Group to stringResource(id = R.string.availability, group.availability),
-                    Icons.Filled.LocationOn to group.location,
-                    Icons.Filled.Comment to group.groupIntroduction,
-                )
-
-                Column(modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
-
-                    itemList.forEach { (icon, text) ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            androidx.compose.material.Icon(
-                                imageVector = icon,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .align(Alignment.CenterVertically),
-                                tint = Color.Gray
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = text, style = MaterialTheme.typography.body1, color = Color.DarkGray, maxLines = 2)
-                        }
-                    }
-                }
-            }
+            val itemList = listOf(
+                Icons.Filled.Group to stringResource(id = R.string.availability, group.availability),
+                Icons.Filled.LocationOn to group.location,
+                Icons.Filled.Comment to group.groupIntroduction,
+            )
+            ItemDescription(group.groupName, itemList)
         }
     }
 }
