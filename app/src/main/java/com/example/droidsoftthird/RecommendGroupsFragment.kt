@@ -27,13 +27,23 @@ class RecommendGroupsFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            RecommendGroupsScreen(viewModel, ::navigateToGroupDetail)
+            RecommendGroupsScreen(
+                viewModel,
+                ::navigateToGroupDetail,
+                ::navigateToGroupAdd
+            )
         }
     }
 
     private fun navigateToGroupDetail(groupId: String) {
        findNavController().navigate(
            HomeFragmentDirections.actionHomeFragmentToGroupDetailFragment(groupId)
+        )
+    }
+
+    private fun navigateToGroupAdd() {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
         )
     }
 
