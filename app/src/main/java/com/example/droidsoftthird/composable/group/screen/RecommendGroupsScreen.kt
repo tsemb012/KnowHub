@@ -364,7 +364,7 @@ private fun filterHomeContent(
 private fun SingleSelectSection(temporalCondition: MutableState<ApiGroup.FilterCondition>) {
 
     SingleSelectChipFlow(
-        stringResource(R.string.learning_frequency),
+        stringResource(R.string.event_frequency),
         Icons.Default.DateRange,
         FrequencyBasis.toArrayForDisplay(),
         temporalCondition.value.frequencyBasis,

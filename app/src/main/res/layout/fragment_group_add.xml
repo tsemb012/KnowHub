@@ -273,7 +273,7 @@
 
                                 <TextView
                                     style="@style/group_detail_bar_name"
-                                    android:text="@string/learning_frequency"
+                                    android:text="@string/event_frequency"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/learning_frequency_input"
                                     app:layout_constraintHorizontal_bias="0.0"

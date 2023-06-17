@@ -128,7 +128,7 @@
                 <include
                     android:id="@+id/include_learning_frequency"
                     layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/learning_frequency}"
+                    bind:title="@{@string/event_frequency}"
                     bind:drawable="@{@drawable/ic_baseline_date_range_24}"
                     bind:text="@{viewModel.basisFrequency}"
                     />
