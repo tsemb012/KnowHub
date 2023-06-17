@@ -16,7 +16,7 @@
     <string name="group_introduction">グループ概要(やること、目標など)</string>
     <string name="group_detail">詳細情報</string>
     <string name="group_type">取り組み対象</string>
-    <string name="no_set">未設定</string>
+    <string name="no_set">指定なし</string>
     <string name="activity_area">活動地域</string>
     <string name="facility_environment">利用施設/環境</string>
     <string name="event_frequency">イベント頻度</string>
