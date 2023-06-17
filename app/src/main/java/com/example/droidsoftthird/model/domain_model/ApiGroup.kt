@@ -64,6 +64,8 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
     val isChecked:Boolean,
     val members: List<SimpleUser> = listOf(),
 ) {
+    val availability = "${members.size}/$maxNumberPerson"
+    val location = if (isOnline) "オンライン" else "$prefecture $city"
      data class FilterCondition(
          val areaCode: Int? = null,
          val areaCategory: AreaCategory? = null,
