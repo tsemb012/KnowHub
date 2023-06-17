@@ -17,6 +17,7 @@ data class GetGroupDetailJson(
     val isOnline: Boolean,
     @Json(name = "facility_environment")
     val facilityEnvironment: String,
+    val style: String,
     @Json(name = "frequency_basis")
     val frequencyBasis: String,
     @Json(name = "frequency_times")
@@ -50,6 +51,7 @@ data class GetGroupDetailJson(
                 city = city,
                 isOnline = isOnline,
                 facilityEnvironment = FacilityEnvironment.valueOf(facilityEnvironment.uppercase()),
+                style = Style.valueOf(style.uppercase()),
                 basis = FrequencyBasis.valueOf(frequencyBasis.uppercase()),
                 frequency = frequencyTimes,
                 minAge = minAge,

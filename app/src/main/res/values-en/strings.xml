@@ -175,8 +175,8 @@
     <string name="select_group">Select Group</string>
     <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
     <string name="no_groups_found">There are no available groups that I can participate.</string>
-    <string name="individual_task">個々の学習/作業に取り組む</string>
-    <string name="shared_goal">共通の目標に取り組む</string>
+    <string name="individual_task">個々の課題</string>
+    <string name="shared_goal">共通の目標</string>
     <string name="style">Style</string>
     <string name="quiet_focus">静かに集中</string>
     <string name="fun_chat">楽しくワイワイ</string>

@@ -15,11 +15,11 @@
     <string name="group_name">グループ名</string>
     <string name="group_introduction">グループ概要(やること、目標など)</string>
     <string name="group_detail">詳細情報</string>
-    <string name="group_type">グループタイプ</string>
+    <string name="group_type">取り組み対象</string>
     <string name="no_set">未設定</string>
     <string name="activity_area">活動地域</string>
     <string name="facility_environment">利用施設/環境</string>
-    <string name="event_frequency">イベント開催頻度</string>
+    <string name="event_frequency">イベント頻度</string>
     <string name="age_range">年齢幅</string>
     <string name="number_persons">人数制限</string>
     <string name="gender_restriction">同性のみ</string>
@@ -177,8 +177,8 @@
     <string name="select_group">グループ選択</string>
     <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
     <string name="no_groups_found">参加可能なグループがありません。</string>
-    <string name="individual_task">個々の学習/作業に取り組む</string>
-    <string name="shared_goal">共通の目標に取り組む</string>
+    <string name="individual_task">個々の課題</string>
+    <string name="shared_goal">共通の目標</string>
     <string name="irregularly">不定期</string>
     <string name="style">学習・作業スタイル</string>
     <string name="quiet_focus">静かに集中</string>

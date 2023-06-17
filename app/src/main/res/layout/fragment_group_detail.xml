@@ -104,14 +104,6 @@
                     />
 
                 <include
-                    android:id="@+id/include_group_type"
-                    layout="@layout/include_item_group_detail"
-                    bind:title="@{@string/group_type}"
-                    bind:drawable="@{@drawable/ic_baseline_group_24}"
-                    bind:text="@{viewModel.groupTypeString}"
-                    />
-
-                <include
                     android:id="@+id/include_activity_area"
                     layout="@layout/include_item_group_detail"
                     bind:title="@{@string/activity_area}"
@@ -145,6 +137,20 @@
                     bind:title="@{@string/number_persons}"
                     bind:drawable="@{@drawable/ic_baseline_groups_24}"
                     bind:text="@{viewModel.numberPerson}"
+                    />
+                <include
+                    android:id="@+id/include_group_type"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/group_type}"
+                    bind:drawable="@{@drawable/ic_baseline_group_24}"
+                    bind:text="@{viewModel.groupTypeString}"
+                    />
+                <include
+                    android:id="@+id/include_style"
+                    layout="@layout/include_item_group_detail"
+                    bind:title="@{@string/style}"
+                    bind:drawable="@{@drawable/baseline_emoji_emotions_24}"
+                    bind:text="@{viewModel.styleString}"
                     />
 
             </LinearLayout>

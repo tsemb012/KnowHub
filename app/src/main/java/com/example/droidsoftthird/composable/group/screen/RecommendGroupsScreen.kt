@@ -386,9 +386,9 @@ private fun SingleSelectSection(temporalCondition: MutableState<ApiGroup.FilterC
         title = stringResource(id = R.string.style),
         icon = Icons.Default.SentimentSatisfied,
         items = Style.toArrayForDisplay(),
-        selectedItem = Style.FOCUS,//temporalCondition.value.style,
+        selectedItem = temporalCondition.value.style,
         stringProvider = { stringResource(id = it?.displayNameId!!) },
-        onSelected = { }//temporalCondition.value = temporalCondition.value.copy(syule = it) }
+        onSelected = { temporalCondition.value = temporalCondition.value.copy(style = it) }
     )
 }
 

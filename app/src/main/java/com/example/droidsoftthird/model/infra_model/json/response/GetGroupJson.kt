@@ -4,6 +4,7 @@ import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
+import com.example.droidsoftthird.model.domain_model.Style
 import com.squareup.moshi.Json
 
 data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡して、ただのGroupはシンプルにするべき。
@@ -20,6 +21,7 @@ data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡し�
         val city: String? = null,
         @Json(name = "facility_environment")
         val facilityEnvironment: String,
+        val style: String,
         @Json(name = "frequency_basis")
         val frequencyBasis: String,
         @Json(name = "frequency_times")
@@ -47,6 +49,7 @@ data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡し�
                 city = city,
                 isOnline = isOnline,
                 facilityEnvironment = FacilityEnvironment.valueOf(facilityEnvironment.uppercase()),
+                style = Style.valueOf(style.uppercase()),
                 basis = FrequencyBasis.valueOf(frequencyBasis.uppercase()),
                 frequency = frequencyTimes,
                 minAge = minAge,

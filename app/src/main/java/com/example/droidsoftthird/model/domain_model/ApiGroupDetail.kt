@@ -11,6 +11,7 @@ data class ApiGroupDetail(//TODO ApiGroupからGroupに名前を変更する//Fi
         val city: String?,
         val isOnline: Boolean,
         val facilityEnvironment: FacilityEnvironment,
+        val style: Style,
         val basis: FrequencyBasis,
         val frequency:Int,
         val minAge:Int,
