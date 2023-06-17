@@ -183,4 +183,6 @@
     <string name="style">学習・作業スタイル</string>
     <string name="quiet_focus">静かに集中</string>
     <string name="fun_chat">楽しくワイワイ</string>
+    <string name="availability">%s 人</string>
+
 </resources>

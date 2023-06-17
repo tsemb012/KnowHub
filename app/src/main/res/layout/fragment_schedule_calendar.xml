@@ -28,7 +28,7 @@
             android:id="@+id/exOneAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_base_yellow"
+            android:background="@color/base_100"
             android:theme="@style/ThemeOverlay.MaterialComponents.Light">
 
             <LinearLayout
@@ -94,7 +94,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primary_base_yellow"
+            android:background="@color/base_100"
             >
 
         <LinearLayout

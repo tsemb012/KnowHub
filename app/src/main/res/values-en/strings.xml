@@ -180,4 +180,6 @@
     <string name="style">Style</string>
     <string name="quiet_focus">静かに集中</string>
     <string name="fun_chat">楽しくワイワイ</string>
+    <string name="availability">Availability %s</string>
+
 </resources>
