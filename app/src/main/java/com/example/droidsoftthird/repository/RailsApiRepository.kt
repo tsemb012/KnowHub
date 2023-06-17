@@ -10,7 +10,7 @@ interface RailsApiRepository {
     suspend fun certifyAndRegister(tokenID: String)
 
     suspend fun createGroup(group: EditedGroup): String?
-    suspend fun fetchGroupDetail(groupId: String) : ApiGroupDetail
+    suspend fun fetchGroupDetail(groupId: String) : ApiGroup
     suspend fun fetchGroups(groupFilterCondition: ApiGroup.FilterCondition) : Flow<PagingData<ApiGroup>>
     suspend fun fetchJoinedGroups() : List<ApiGroup>
     suspend fun userJoinGroup(groupId: String): String?

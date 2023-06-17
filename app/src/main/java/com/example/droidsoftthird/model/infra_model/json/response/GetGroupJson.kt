@@ -4,6 +4,7 @@ import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
+import com.example.droidsoftthird.model.domain_model.SimpleUser
 import com.example.droidsoftthird.model.domain_model.Style
 import com.squareup.moshi.Json
 
@@ -36,25 +37,27 @@ data class GetGroupJson(//TODO 複雑なものをGroupDetailに責務を渡し�
         val isSameSexuality: Boolean,
         @Json(name = "image_url")
         val imageUrl: String,
+        val members: List<GetSimpleUserJson>,
 ) {
-    fun toEntity() =
-        ApiGroup(
-                groupId = id,
-                hostUserId = hostId,
-                storageRef = imageUrl,
-                groupName = name,
-                groupIntroduction = introduction,
-                groupType = GroupType.valueOf(groupType.uppercase()),
-                prefecture = prefecture,
-                city = city,
-                isOnline = isOnline,
-                facilityEnvironment = FacilityEnvironment.valueOf(facilityEnvironment.uppercase()),
-                style = Style.valueOf(style.uppercase()),
-                basis = FrequencyBasis.valueOf(frequencyBasis.uppercase()),
-                frequency = frequencyTimes,
-                minAge = minAge,
-                maxAge = maxAge,
-                maxNumberPerson = maxNumber,
-                isChecked = isSameSexuality,
-        )
+        fun toEntity() =
+                ApiGroup(
+                        groupId = id,
+                        hostUserId = hostId,
+                        storageRef = imageUrl,
+                        groupName = name,
+                        groupIntroduction = introduction,
+                        groupType = GroupType.valueOf(groupType.uppercase()),
+                        prefecture = prefecture,
+                        city = city,
+                        isOnline = isOnline,
+                        facilityEnvironment = FacilityEnvironment.valueOf(facilityEnvironment.uppercase()),
+                        style = Style.valueOf(style.uppercase()),
+                        basis = FrequencyBasis.valueOf(frequencyBasis.uppercase()),
+                        frequency = frequencyTimes,
+                        minAge = minAge,
+                        maxAge = maxAge,
+                        maxNumberPerson = maxNumber,
+                        isChecked = isSameSexuality,
+                        members = members.map { it.toEntity() }
+                )
 }

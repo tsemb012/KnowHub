@@ -62,6 +62,7 @@ data class ApiGroup(//TODO ApiGroupからGroupに名前を変更する//Firebase
     val maxAge:Int,
     val maxNumberPerson:Int,
     val isChecked:Boolean,
+    val members: List<SimpleUser> = listOf(),
 ) {
      data class FilterCondition(
          val areaCode: Int? = null,
