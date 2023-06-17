@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -31,6 +33,7 @@ import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.domain_model.ApiGroup.FilterCondition.Companion.getPrefectureCode
 import com.example.droidsoftthird.repository.csvloader.CityCsvLoader
 import com.example.droidsoftthird.repository.csvloader.PrefectureCsvLoader
+import com.google.android.gms.maps.model.SquareCap
 
 enum class FilterContentDestination { HOME, PREFECTURE, CITY }
 
@@ -72,18 +75,30 @@ private fun BoxScope.FloatingActionButtons(
     navigateToGroupAdd: () -> Unit
 ) {
     Column (modifier = Modifier
-        .padding(bottom = 64.dp, end = 16.dp)
-        .align(Alignment.BottomEnd)) {
+        .padding(bottom = 32.dp, end = 16.dp)
+        .align(Alignment.BottomEnd)
+    ) {
         FloatingActionButton(
             onClick = { showDialog.value = true },
-            backgroundColor = MaterialTheme.colors.primary,
+            backgroundColor = colorResource(id = R.color.primary_accent_yellow),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.FilterList, contentDescription = "Filter")
+            Icon(Icons.Filled.FilterList, contentDescription = "Filter", tint = Color.White)
         }
+        Spacer(modifier = Modifier.height(16.dp))
         FloatingActionButton(
-            onClick = { navigateToGroupAdd() }
+            onClick = { navigateToGroupAdd() },
+            backgroundColor = colorResource(id = R.color.primary_dark),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier.align(Alignment.End)
         ) {
-           Icon(Icons.Filled.Add, contentDescription = "Add")
+            Row (
+                modifier = Modifier.padding(horizontal = 8.dp)
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Add", tint = Color.White)
+                Text(text = stringResource(id = R.string.group_add), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }
