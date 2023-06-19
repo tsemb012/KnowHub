@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        tools:background="@color/primary_base_yellow">
+        tools:background="@color/base_100">
 
         <TextView
             android:id="@+id/calendar_day_text"

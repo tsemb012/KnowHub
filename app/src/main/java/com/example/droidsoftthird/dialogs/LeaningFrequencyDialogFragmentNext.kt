@@ -38,7 +38,7 @@ class LeaningFrequencyDialogFragmentNext:DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(activity)
             builder
-                .setTitle(R.string.learning_frequency)
+                .setTitle(R.string.event_frequency)
                 .setIcon(R.drawable.ic_baseline_date_range_24)
                 .setPositiveButton(R.string.done) { _, _ ->
                     viewModel.postBasis(FrequencyBasis.values()[previousSelected ?: 3])

@@ -19,8 +19,8 @@ import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GroupAddFragment : Fragment() {
-
+class
+GroupAddFragment : Fragment() {
     private lateinit var binding: FragmentGroupAddBinding
     private val viewModel: GroupAddViewModel by viewModels()
     private val imagePickerLauncher = registerImagePickerLauncher()
@@ -52,9 +52,10 @@ class GroupAddFragment : Fragment() {
     private fun setupClickListeners() {
         binding.apply {
             btnGroupImage.setOnClickListener { launchUploader() }
-            btnToGroupDetailBarGroupType.setOnClickListener { showGroupTypeDialog() }
             btnToGroupDetailBarActivityArea.setOnClickListener { showAreaDialog() }
             btnToGroupDetailBarFacilityEnvironment.setOnClickListener { showFacilityEnvironmentDialog() }
+            btnToGroupDetailBarStyle.setOnClickListener { showStyleDialog() }
+            btnToGroupDetailBarGroupType.setOnClickListener { showGroupTypeDialog() }
             btnToGroupDetailBarLearningFrequency.setOnClickListener { showLearningFrequencyDialog() }
             btnToGroupDetailBarAgeRange.setOnClickListener { showAgeRangeDialog() }
             btnToGroupDetailBarNumberPersons.setOnClickListener { showNumberPersonsDialog() }
@@ -67,6 +68,11 @@ class GroupAddFragment : Fragment() {
                 showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
             }
         }
+    }
+
+    private fun showStyleDialog() {
+        val dialog = StyleDialogFragment()
+        childFragmentManager.let { dialog.show(it, "style") }
     }
 
     private fun showGroupTypeDialog() {

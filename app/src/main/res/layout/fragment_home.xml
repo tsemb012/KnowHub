@@ -22,7 +22,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:background="@color/primary_base_yellow"
+                    android:background="@color/base_100"
                     app:tabSelectedTextColor="@color/primary_dark"
                     app:tabIndicator="@drawable/indicator"
                     app:tabIndicatorGravity="stretch"
@@ -41,23 +41,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/tab_layout"
                     app:layout_constraintVertical_bias="0.0"
                     tools:layout_editor_absoluteX="0dp"
-                    android:background="@color/primary_base_yellow"
+                    android:background="@color/base_100"
                     />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/floating_action_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/floating_button_margin_end"
-                    android:layout_marginBottom="@dimen/floating_button_margin_bottom"
-                    android:elevation="@dimen/floating_button_elevation"
-                    app:borderWidth="0dp"
-                    android:clickable="true"
-                    android:outlineSpotShadowColor="@color/primary_accent_purple"
-                    android:backgroundTint="@color/primary_accent_purple"
-                    app:layout_constraintBottom_toBottomOf="@+id/pager"
-                    app:layout_constraintEnd_toEndOf="@+id/pager"
-                    app:srcCompat="@drawable/ic_baseline_add_circle_24" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

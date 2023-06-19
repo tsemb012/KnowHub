@@ -97,8 +97,8 @@ class ChatRoomViewModel @AssistedInject constructor(
         val message =
             TextMessage(
                 FirebaseAuth.getInstance().uid,
-                authUser.displayName,
-                authUser.photoUrl.toString(),
+                authUser?.displayName,
+                authUser?.photoUrl.toString(),
                 0.0,
                 editMessage.value,
                 Date()) as FireMessage

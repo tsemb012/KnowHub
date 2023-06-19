@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/primary_base_yellow"
+        android:background="@color/base_100"
         style="@style/AppTheme">
 
         <com.google.android.material.textfield.TextInputLayout

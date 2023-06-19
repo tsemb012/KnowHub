@@ -11,7 +11,7 @@ data class ScheduleCreateUiModel (
     val isLoading: Boolean = false,
     val error: Throwable? = null,
     private val groups: List<ApiGroup>? = null,
-    private val selectedItems: SelectedItemStack = SelectedItemStack(),
+    val selectedItems: SelectedItemStack = SelectedItemStack(),
     private val bindingUiName: String? = null,
     private val bindingUiComment: String? = null,
 ) {

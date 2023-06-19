@@ -11,7 +11,7 @@ import com.example.droidsoftthird.model.domain_model.ApiGroup
 
 @Composable
 fun GroupList(groups: List<ApiGroup>, navigate : (String) -> Unit) {
-    Box() {
+    Box {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
