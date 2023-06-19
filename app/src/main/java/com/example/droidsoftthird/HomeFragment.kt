@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import com.example.droidsoftthird.databinding.FragmentHomeBinding
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.ui.entrance.navigate
@@ -46,15 +45,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
-        setupNavigator()
-    }
-
-    private fun setupNavigator() {
-        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        binding.floatingActionButton.setOnClickListener { v ->
-            val action = HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
-            navHostFragment.navController.navigate(action)
-        }
     }
 
     private fun setupViewPager() {
@@ -67,7 +57,7 @@ class HomeFragment : Fragment() {
             tab.text = "OBJECT${position + 1}"
         }.attach()
 
-        binding.tabLayout.getTabAt(0)?.setText(R.string.recommendation)
+        binding.tabLayout.getTabAt(0)?.setText(R.string.newest_first_order)
         binding.tabLayout.getTabAt(1)?.setText(R.string.map)
     }
 

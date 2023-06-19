@@ -50,7 +50,7 @@ interface MainApi {
     suspend fun createGroup(@Body request: PostGroupJson): Response<MessageResponse>
 
     @GET("groups/{id}")
-    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupDetailJson>
+    suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupJson>
 
     @GET("groups")
     suspend fun fetchGroups(
@@ -58,14 +58,17 @@ interface MainApi {
         @Query("user_id") userId: String? = null,
         @Query("area_code") areaCode: Int? = null,
         @Query("area_category") areaCategory: String? = null,
-        @Query("group_types[]") groupTypes: List<String> = listOf(),
+        @Query("group_type") groupType: String? = null,
         @Query("facility_environments[]") facilityEnvironments: List<String> = listOf(),
         @Query("frequency_basis") frequency_bases: String? = null,
+        @Query("style") style: String? = null,
+        @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = true,
     ): List<GetGroupJson>
 
     @GET("groups/locations/count")
     suspend fun fetchGroupCountByArea(
-        @Query("user_id") userId: String
+        @Query("user_id") userId: String,
+        @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = false,
     ): List<GetGroupCountByAreaJson>
 
     @PATCH("groups/{id}/participate")

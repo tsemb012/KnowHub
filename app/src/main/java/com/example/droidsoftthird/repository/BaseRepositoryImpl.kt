@@ -39,22 +39,30 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class BaseRepositoryImpl @Inject constructor(
-        private val mainApi: MainApi,
-        private val dataStore: DataStore<Preferences>,
-        private val assetLoader: AssetLoader
+    private val mainApi: MainApi,
+    private val dataStore: DataStore<Preferences>,
+    private val assetLoader: AssetLoader,
 ): RailsApiRepository, FirebaseRepository, DataStoreRepository, AssetRepository {
     private val fireStore = FirebaseFirestore.getInstance()//TODO 全てHiltに入れてインジェクトから取得する。
     private val fireStorageRef = FirebaseStorage.getInstance().reference
     private val userId: String by lazy { FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("User is not logged in.") }
+    private val urlCache = mutableMapOf<String, String>()
 
     override suspend fun getUserId() = userId
-    override suspend fun fetchStorageImage(imagePath: String): String = suspendCoroutine { continuation ->
-        val imageReference = FirebaseStorage.getInstance().getReference(imagePath)
-        imageReference.downloadUrl.addOnSuccessListener {
-            continuation.resume(it.toString())
-        }.addOnFailureListener {
-            throw it
+    override suspend fun fetchStorageImage(imagePath: String): String {
+        if (urlCache.containsKey(imagePath)) {
+            return urlCache[imagePath] ?: ""
         }
+        val url = suspendCoroutine { continuation ->
+            val imageReference = FirebaseStorage.getInstance().getReference(imagePath)
+            imageReference.downloadUrl.addOnSuccessListener {
+                urlCache[imagePath] = it.toString()
+                continuation.resume(it.toString())
+            }.addOnFailureListener {
+                throw it
+            }
+        }
+        return url
     }
 
     override suspend fun fetchUserJoinedGroupIds(): List<String> = mainApi.fetchUserJoinedGroupIds(userId)
@@ -175,7 +183,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createGroup(group: EditedGroup): String? =
         mainApi.createGroup(group.toJson()).body()?.message
 
-    override suspend fun fetchGroupDetail(groupId: String): ApiGroupDetail {//TODO エラーハンドリングをまとめる
+    override suspend fun fetchGroupDetail(groupId: String): ApiGroup {
         val response = mainApi.fetchGroup(groupId)
         if (response.isSuccessful) {
             return response.body()?.toEntity() ?: throw Exception("response body is null")
@@ -205,7 +213,7 @@ class BaseRepositoryImpl @Inject constructor(
         }
     }
     override suspend fun fetchJoinedGroups() : List<ApiGroup> = mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
-    override suspend fun fetchGroupCountByArea(): List<GroupCountByArea>  = mainApi.fetchGroupCountByArea(userId).map { it.toEntity() }
+    override suspend fun fetchGroupCountByArea(): List<GroupCountByArea> = mainApi.fetchGroupCountByArea(userId, false).map { it.toEntity() }
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message

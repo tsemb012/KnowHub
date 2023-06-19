@@ -3,8 +3,6 @@ package com.example.droidsoftthird
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -16,7 +14,6 @@ import com.example.droidsoftthird.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,19 +30,12 @@ class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUse
     var prefectureList: List<PrefectureCsvLoader.PrefectureLocalItem> = listOf()
     var cityList: List<CityCsvLoader.CityLocalItem> = listOf()
 
-    private val error = MutableLiveData<String?>()
-    val errorLiveData: LiveData<String?>
-        get() = error
-
-
     fun initialize() {
         loadGroups()
         loadLocalArea()
     }
 
-    fun cancel() {
-        viewModelScope.coroutineContext.cancelChildren()
-    }
+    fun cancel() { viewModelScope.coroutineContext.cancelChildren() }
 
     fun updateFilterCondition(filterCondition: ApiGroup.FilterCondition) {
         _groupFilterCondition.value = filterCondition
@@ -54,11 +44,8 @@ class RecommendGroupsViewModel @Inject constructor(private val useCase: GroupUse
 
     private fun loadGroups() {
         viewModelScope.launch {
-            useCase.fetchGroups(groupFilterCondition.value ?: ApiGroup.FilterCondition())
+            useCase.fetchGroups(groupFilterCondition.value.copy(allowMaxNumberGroupShow = false)) //人数が最大なグループを表示しないようにする。
                 .cachedIn(viewModelScope)
-                .catch { e ->
-                    error.value = e.message
-                }
                 .collect {
                     _groupsFlow.value = it
                 }

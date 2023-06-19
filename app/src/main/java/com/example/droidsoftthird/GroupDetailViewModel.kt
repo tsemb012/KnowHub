@@ -14,8 +14,8 @@ class GroupDetailViewModel @AssistedInject constructor(
 ):ViewModel() {
     //TODO ローカライズも拡張もしにくいひどいコードなので、全面的に書き直す
 
-    private val _groupDetail = MutableLiveData<ApiGroupDetail?>()
-    val groupDetail: LiveData<ApiGroupDetail?>
+    private val _groupDetail = MutableLiveData<ApiGroup?>()
+    val groupDetail: LiveData<ApiGroup?>
         get() = _groupDetail
 
     val prefectureAndCity: LiveData<String> = groupDetail.map{ group ->
@@ -59,10 +59,8 @@ class GroupDetailViewModel @AssistedInject constructor(
 
     val groupTypeString: LiveData<String> get() = _groupDetail.map { group ->
         when (group?.groupType) {
-            GroupType.SEMINAR -> "セミナー"
-            GroupType.WORKSHOP -> "ワークショップ"
-            GroupType.MOKUMOKU -> "もくもく会"
-            GroupType.OTHER_GROUP_TYPE -> "その他"
+            GroupType.INDIVIDUAL_TASK -> "個々の課題"
+            GroupType.SHARED_GOAL -> "共通の目標"
             GroupType.NONE_GROUP_TYPE -> "未設定"
             else -> { "未設定"}
         }
@@ -79,6 +77,15 @@ class GroupDetailViewModel @AssistedInject constructor(
             FacilityEnvironment.PARK -> "公園"
             FacilityEnvironment.RENTAL_SPACE -> "レンタルスペース"
             FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT -> "その他"
+            else -> { "未設定"}
+        }
+    }
+
+    val styleString: LiveData<String> = _groupDetail.map { group ->
+        when (group?.style) {
+            Style.FOCUS -> "静かに集中"
+            Style.ENJOY -> "楽しくワイワイ"
+            Style.NONE_STYLE -> "未設定"
             else -> { "未設定"}
         }
     }

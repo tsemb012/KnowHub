@@ -15,7 +15,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/primary_base_yellow"
+            android:background="@color/base_100"
             app:tabSelectedTextColor="@color/primary_dark"
             app:tabIndicator="@drawable/indicator"
             app:tabIndicatorGravity="stretch"
@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="0dp"
-            android:background="@color/primary_base_yellow"
+            android:background="@color/base_100"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
