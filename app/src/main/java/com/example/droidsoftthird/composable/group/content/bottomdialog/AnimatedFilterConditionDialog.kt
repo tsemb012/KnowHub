@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.composable.group.screen
+package com.example.droidsoftthird.composable.group.content.bottomdialog
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -6,36 +6,33 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOut
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.SentimentSatisfied
@@ -47,8 +44,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,6 +53,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.IconLabelItem
+import com.example.droidsoftthird.composable.group.screen.FilterContentDestination
 import com.example.droidsoftthird.composable.shared.chip_flow.MultiSelectChipFlow
 import com.example.droidsoftthird.composable.shared.chip_flow.SingleSelectChipFlow
 import com.example.droidsoftthird.model.domain_model.ApiGroup
@@ -90,19 +87,15 @@ fun AnimatedFilterConditionDialog(
                 animationSpec = tween(300),
                 targetOffset = { IntOffset.Zero }),
         ) {
-
-            Surface(color = colorResource(id = R.color.base_100)) {
-                FilterConditionDialog(
-                    title = stringResource(id = R.string.group_condition),
-                    areaMap,
-                    filterCondition = filterCondition.value ?: ApiGroup.FilterCondition(),
-                    onCancel = { showDialog.value = false }
-                ) { temporalCondition ->
-                    onConfirm(temporalCondition)
-                    showDialog.value = false
-                }
+            FilterConditionDialog(
+                title = stringResource(id = R.string.group_condition_filter),
+                areaMap,
+                filterCondition = filterCondition.value ?: ApiGroup.FilterCondition(),
+                onCancel = { showDialog.value = false }
+            ) { temporalCondition ->
+                onConfirm(temporalCondition)
+                showDialog.value = false
             }
-
         }
     }
 }
@@ -124,7 +117,8 @@ private fun FilterConditionDialog(
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .padding(top = 50.dp),
-            shape = MaterialTheme.shapes.medium
+            shape = MaterialTheme.shapes.medium,
+            color = colorResource(id = R.color.base_100)
         ) { FilterConditionContent(title, areaMap, filterCondition, onCancel, onConfirm) }
     }
 }
@@ -140,19 +134,19 @@ private fun FilterConditionContent(
     val destination = remember { mutableStateOf(FilterContentDestination.HOME) }
     val temporalCondition = remember { mutableStateOf(filterCondition) }
     when (destination.value) {
-        FilterContentDestination.HOME -> filterHomeContent(title, destination, areaMap, temporalCondition, onCancel, onConfirm)
-        FilterContentDestination.PREFECTURE -> displayPrefectureListContent(destination, areaMap.first, temporalCondition)
-        FilterContentDestination.CITY -> displayCityListContent(destination, areaMap.second, temporalCondition)
+        FilterContentDestination.HOME -> FilterHomeContent(title, destination, areaMap, temporalCondition, onCancel, onConfirm)
+        FilterContentDestination.PREFECTURE -> DisplayPrefectureListContent(destination, areaMap.first, temporalCondition)
+        FilterContentDestination.CITY -> DisplayCityListContent(destination, areaMap.second, temporalCondition)
     }
 }
 
 @Composable
-fun displayPrefectureListContent(
+fun DisplayPrefectureListContent(
     destination: MutableState<FilterContentDestination>,
     prefectureList: List<PrefectureCsvLoader.PrefectureLocalItem>,
     temporalCondition: MutableState<ApiGroup.FilterCondition>
 ) {
-    listDialog(
+    ListDialog(
         "活動地域を選択してください",
         prefectureList,
         { destination.value = FilterContentDestination.HOME },
@@ -167,19 +161,19 @@ fun displayPrefectureListContent(
 }
 
 @Composable
-fun displayCityListContent(
+fun DisplayCityListContent(
     destination: MutableState<FilterContentDestination>,
     cityList: List<CityCsvLoader.CityLocalItem>,
     temporalCondition: MutableState<ApiGroup.FilterCondition>
 ) {
-    listDialog2("活動地域を選択してください", cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = FilterContentDestination.PREFECTURE }, { destination.value = FilterContentDestination.HOME }) {
+    ListDialog2("活動地域を選択してください", cityList.filter { temporalCondition.value.areaCode == it.prefectureCode }, { destination.value = FilterContentDestination.PREFECTURE }, { destination.value = FilterContentDestination.HOME }) {
         temporalCondition.value = temporalCondition.value.copy(areaCode = it.cityCode, areaCategory = AreaCategory.CITY)
         destination.value = FilterContentDestination.HOME
     }
 }
 
 @Composable
-private fun listDialog2(
+private fun ListDialog2(
     label: String,
     items: List<CityCsvLoader.CityLocalItem>,
     onBack: () -> Unit,
@@ -227,7 +221,6 @@ private fun listDialog2(
                         })
                         .padding(16.dp),
                     style = MaterialTheme.typography.h6,
-                    fontWeight = FontWeight.Bold
                 )
             }
             items(items.size) { index ->
@@ -241,7 +234,6 @@ private fun listDialog2(
                         })
                         .padding(16.dp),
                     style = MaterialTheme.typography.h6,
-                    fontWeight = FontWeight.Bold
                 )
             }
         })
@@ -249,7 +241,7 @@ private fun listDialog2(
 }
 
 @Composable
-fun listDialog(
+fun ListDialog(
     label: String,
     items: List<PrefectureCsvLoader.PrefectureLocalItem>,
     onBack: () -> Unit,
@@ -296,7 +288,6 @@ fun listDialog(
                         })
                         .padding(16.dp),
                     style = MaterialTheme.typography.h6,
-                    fontWeight = FontWeight.Bold
                 )
             }
             items(items.size) { index ->
@@ -310,7 +301,6 @@ fun listDialog(
                         })
                         .padding(16.dp),
                     style = MaterialTheme.typography.h6,
-                    fontWeight = FontWeight.Bold
                 )
             }
         })
@@ -318,7 +308,7 @@ fun listDialog(
 }
 
 @Composable
-private fun filterHomeContent(
+private fun FilterHomeContent(
     title: String,
     destination: MutableState<FilterContentDestination>,
     areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
@@ -326,23 +316,34 @@ private fun filterHomeContent(
     onCancel: () -> Unit,
     onConfirm: (ApiGroup.FilterCondition) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        headerRow(title, onCancel, temporalCondition)
-        Spacer(modifier = Modifier.height(24.dp))
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
+                .align(Alignment.TopCenter),
+        ) {
+            headerRow(title, onCancel, temporalCondition)
+            Spacer(modifier = Modifier.height(12.dp))
 
-        activityAreaSection(areaMap, temporalCondition, destination)
-        Spacer(modifier = Modifier.height(8.dp))
+            ActivityAreaSection(areaMap, temporalCondition, destination)
+            Spacer(modifier = Modifier.height(4.dp))
 
-        MultiSelectSection(temporalCondition)
-        SingleSelectSection(temporalCondition)
+            MultiSelectSection(temporalCondition)
+            SingleSelectSection(temporalCondition)
 
-        Spacer(modifier = Modifier.height(48.dp))
-        decisionButton(temporalCondition, onConfirm)
+            Spacer(modifier = Modifier.height(48.dp))
+        }
+        Column(
+            modifier = Modifier
+                .background(color = colorResource(id = R.color.base_100))
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+        ) {
+            Divider()
+            ConfirmButton(stringResource(id = R.string.group_condition_filter_confirm) ,temporalCondition, onConfirm)
+        }
     }
 }
 
@@ -360,7 +361,7 @@ private fun SingleSelectSection(temporalCondition: MutableState<ApiGroup.FilterC
 
     SingleSelectChipFlow(
         title = stringResource(id = R.string.group_type),
-        icon = Icons.Default.Group,
+        icon = Icons.Default.LocalFireDepartment,
         items = GroupType.toArrayForDisplay(),
         selectedItem = temporalCondition.value.groupType,
         stringProvider = { stringResource(id = it?.displayNameId!!) },
@@ -390,44 +391,12 @@ private fun MultiSelectSection(temporalCondition: MutableState<ApiGroup.FilterCo
 }
 
 @Composable
-private fun headerRow(
-    title: String,
-    onCancel: () -> Unit,
-    temporalCondition: MutableState<ApiGroup.FilterCondition>
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(onClick = onCancel) {
-            Icon(Icons.Filled.Close, contentDescription = "キャンセル")
-        }
-        Text(
-            text = title,
-            style = MaterialTheme.typography.h6,
-            modifier = Modifier.padding(top = 16.dp)
-        )
-
-        Text(
-            text = stringResource(id = R.string.clear_filter),
-            color = MaterialTheme.colors.primary,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .clickable(onClick = {
-                    temporalCondition.value = ApiGroup.FilterCondition()
-                })
-        )
-    }
-}
-
-@Composable
-private fun activityAreaSection(
+private fun ActivityAreaSection(
     areaMap: Pair<List<PrefectureCsvLoader.PrefectureLocalItem>, List<CityCsvLoader.CityLocalItem>>,
     temporalCondition: MutableState<ApiGroup.FilterCondition>,
     destination: MutableState<FilterContentDestination>
 ) {
-    LabelItem(
+    IconLabelItem(
         title = stringResource(id = R.string.activity_area),
         icon = Icons.Default.LocationOn,
     )
@@ -446,63 +415,8 @@ private fun activityAreaSection(
         else -> null
     }
 
-    TransparentButton(
+    TransitionButton(
         text = activityAreaLabel ?: stringResource(id = R.string.select_area),
         onClick = { destination.value = FilterContentDestination.PREFECTURE }
     )
-}
-
-@Composable
-private fun TransparentButton(
-    text: String,
-    onClick: () -> Unit
-) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-        contentPadding = PaddingValues(0.dp),
-        elevation = ButtonDefaults.elevation(0.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp)
-    ) {
-        Text(
-            text = text,
-            color = MaterialTheme.colors.primary,
-            style = MaterialTheme.typography.button,
-            modifier = Modifier.weight(1f)
-        )
-        Icon(
-            Icons.Default.ArrowForward,
-            contentDescription = "ArrowRight",
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .align(Alignment.CenterVertically)
-        )
-    }
-}
-
-@Composable
-private fun decisionButton(
-    temporalCondition: MutableState<ApiGroup.FilterCondition>,
-    onConfirm: (ApiGroup.FilterCondition) -> Unit
-) {
-    Button(onClick = { onConfirm(temporalCondition.value) }, modifier = Modifier.fillMaxWidth()) {
-        Text("決定")
-    }
-}
-
-@Composable
-fun LabelItem(title: String, icon: ImageVector) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Icon(icon, contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Text(text = title, fontWeight = FontWeight.Bold)
-        }
-    }
 }

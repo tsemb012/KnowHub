@@ -170,7 +170,7 @@
     <string name="monthly">Monthly</string>
     <string name="irregularly">Irregularly</string>
     <string name="clear_filter">Clear</string>
-    <string name="group_condition">Filter Condition</string>
+    <string name="group_condition_filter">Filter</string>
     <string name="select_area">Please Select Activity Area</string>
     <string name="select_group">Select Group</string>
     <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
@@ -181,5 +181,6 @@
     <string name="quiet_focus">静かに集中</string>
     <string name="fun_chat">楽しくワイワイ</string>
     <string name="availability">Availability %s</string>
+    <string name="group_condition_filter_confirm">グループを検索</string>
 
 </resources>
