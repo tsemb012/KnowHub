@@ -185,5 +185,6 @@
     <string name="fun_chat">楽しくワイワイ</string>
     <string name="availability">%s 人</string>
     <string name="group_condition_filter_confirm">グループを検索</string>
+    <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
 
 </resources>
