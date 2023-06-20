@@ -8,9 +8,9 @@ import com.example.droidsoftthird.composable.group.content.GroupList
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel, navigateToGroupDetail: (String) -> Unit) {
 
-    val message = viewModel.message
 
-    viewModel.groups.observeAsState().value?.let {
+
+    viewModel.groupsLoadState.observeAsState().value?.let {
         GroupList(it, navigateToGroupDetail)
     }
 }
