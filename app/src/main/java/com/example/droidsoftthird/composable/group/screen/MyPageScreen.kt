@@ -8,8 +8,6 @@ import com.example.droidsoftthird.composable.group.content.GroupList
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel, navigateToGroupDetail: (String) -> Unit) {
 
-
-
     viewModel.groupsLoadState.observeAsState().value?.let {
         GroupList(it, navigateToGroupDetail)
     }
