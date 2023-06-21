@@ -62,7 +62,8 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
                     .align(Alignment.TopCenter)
                     .fillMaxWidth(), color = colorResource(id = R.color.primary_dark), trackColor = colorResource(
                     id = R.color.base_100
-                ))
+                )
+            )
         }
     }
     handleLoadStateErrors(lazyPagingGroups)
