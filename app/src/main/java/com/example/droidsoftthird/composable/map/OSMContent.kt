@@ -50,10 +50,10 @@ fun OSMContent(
     val isLoading = uiModel.value?.isLoading ?: false
 
     Box(modifier = Modifier.fillMaxSize()) {
+
         AndroidView(
 
             update = { mapView ->
-
                 val cityMarkers = groupCountByCity?.mapNotNull { groupCount ->
                     val city = groupCount.cityName ?: return@mapNotNull null
                     val location = GeoPoint(groupCount.latitude, groupCount.longitude)
@@ -79,6 +79,7 @@ fun OSMContent(
                     }
                 }
                 cityMarkers?.forEach {mapView.overlays.add(it) }
+                mapView.invalidate()
             },
 
             factory = { context ->
