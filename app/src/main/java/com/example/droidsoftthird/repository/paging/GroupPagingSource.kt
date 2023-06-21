@@ -60,7 +60,7 @@ private fun handleHttpException(e: HttpException): Exception {
         errorMessage = try {
             // JSONをパースしてエラーメッセージを取得する
             val errorJson = JsonParser.parseString(errorJsonString).asJsonObject
-            errorJson.get("error").asString
+            errorJson?.get("error")?.asString ?: "Unknown error occurred. "
         } catch (jsonException: JsonSyntaxException) {
             // JSONのパースに失敗した場合、エラーメッセージをそのまま表示する
             errorJsonString
