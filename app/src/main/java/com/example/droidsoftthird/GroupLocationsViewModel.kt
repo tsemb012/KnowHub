@@ -43,13 +43,17 @@ class GroupLocationsViewModel @Inject constructor(private val useCase: GroupUseC
         get() = _message
 
     fun getCountByArea() {
-        viewModelScope.launch {
+        val job = viewModelScope.launch {
             runCatching { useCase.fetchCountByArea() }
                 .onSuccess {
                     _groupCountByArea.value = LoadState.Loaded(it)
                 }
-                .onFailure { _message.value = it.message }
+                .onFailure {
+                    _groupCountByArea.value = LoadState.Error(it)
+                }
         }
+        _groupCountByArea.value = LoadState.Loading(job)
+        job.start()
     }
 
     fun getGroupsByArea(code: Int, type: AreaCategory) {
