@@ -1,7 +1,11 @@
 package com.example.droidsoftthird.composable.map
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -11,6 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.GroupLocationsFragment
@@ -34,9 +39,12 @@ fun OSMBottomSheetScreen(
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),  // 丸い角を作成
         sheetContent = {
-            val lazyPagingGroups = (uiModel.value?.groupsBySelectedArea ?: emptyFlow()).collectAsLazyPagingItems()
-            PagingGroupList(lazyPagingGroups, navigateToDetail, true)
+            Box(Modifier.heightIn(max = LocalConfiguration.current.screenHeightDp.dp * 0.7f)) {
+                val lazyPagingGroups = (uiModel.value?.groupsBySelectedArea ?: emptyFlow()).collectAsLazyPagingItems()
+                PagingGroupList(lazyPagingGroups, navigateToDetail, true)
+            }
         },
     ) {
         Box {

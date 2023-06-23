@@ -73,7 +73,7 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
                 it?.let { group -> GroupListItem(group, navigate) }
             }
         }
-        PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
+        if (!isLocationGroup) PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
         if (isLoading) {
             LinearProgressIndicator(
                 color = colorResource(id = R.color.primary_dark),
