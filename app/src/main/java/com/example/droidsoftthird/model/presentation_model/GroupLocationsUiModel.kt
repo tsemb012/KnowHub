@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.emptyFlow
 
 data class GroupLocationsUiModel (
         val isLoading: Boolean = false,
-        val isBottomLoading: Boolean = false,
         val error: Throwable? = null,
         val groupCountByArea: List<GroupCountByArea> = listOf(),
         val groupsBySelectedArea: Flow<PagingData<ApiGroup>> = emptyFlow(),
@@ -19,13 +18,12 @@ data class GroupLocationsUiModel (
         operator fun invoke(
             current: GroupLocationsUiModel,
             groupCountByAreaLoadState: LoadState,
-            groupsBySelectedAreaLoadState: LoadState,
+            groupsBySelectedAreaLoadState: Flow<PagingData<ApiGroup>>,
         ) = GroupLocationsUiModel(
             isLoading = groupCountByAreaLoadState is LoadState.Loading,
-            isBottomLoading = groupsBySelectedAreaLoadState is LoadState.Loading,
-            error = groupCountByAreaLoadState.getErrorOrNull() ?: groupsBySelectedAreaLoadState.getErrorOrNull(),
+            error = groupCountByAreaLoadState.getErrorOrNull(),
             groupCountByArea = groupCountByAreaLoadState.getValueOrNull() ?: current.groupCountByArea,
-            groupsBySelectedArea = groupsBySelectedAreaLoadState.getValueOrNull() ?: current.groupsBySelectedArea,
+            groupsBySelectedArea = groupsBySelectedAreaLoadState,
         )
     }
 }

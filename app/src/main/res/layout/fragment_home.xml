@@ -26,6 +26,7 @@
                     app:tabSelectedTextColor="@color/primary_dark"
                     app:tabIndicator="@drawable/indicator"
                     app:tabIndicatorGravity="stretch"
+                    app:tabTextAppearance="@style/MyTabTextAppearance"
                     />
                 <!--
                     app:layout_collapseMode="parallax"
