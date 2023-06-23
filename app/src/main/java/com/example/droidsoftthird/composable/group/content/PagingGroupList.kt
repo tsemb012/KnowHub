@@ -2,12 +2,17 @@ package com.example.droidsoftthird.composable.group.content
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -19,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -37,7 +43,7 @@ import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (String) -> Unit, ) {
+fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (String) -> Unit, isLocationGroup: Boolean = false) {
     var refreshing by remember { mutableStateOf(false) }
     fun refresh () {lazyPagingGroups.refresh()}
 
@@ -51,20 +57,30 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
         ) {
             if (!isLoading && lazyPagingGroups.itemCount == 0) item { EmptyMessage (R.string.no_groups_found) }
+            if (!isLoading && lazyPagingGroups.itemCount != 0 && isLocationGroup) item {
+                lazyPagingGroups[0]?.let {
+                    it.prefecture
+                    androidx.compose.material3.Text(
+                        text = "${it.prefecture}、${it.city}",
+                        color = Color.DarkGray,
+                        style = MaterialTheme.typography.h4,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
             items(lazyPagingGroups) {
                 it?.let { group -> GroupListItem(group, navigate) }
             }
         }
-        PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
+        if (!isLocationGroup) PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
         if (isLoading) {
             LinearProgressIndicator(
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth(), color = colorResource(id = R.color.primary_dark), trackColor = colorResource(
-                    id = R.color.base_100
-                )
+                color = colorResource(id = R.color.primary_dark),
+                trackColor = colorResource(id = R.color.base_100),
+                modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
             )
-        }
+        }  else { Spacer(modifier = Modifier.height(4.dp)) }
     }
     handleLoadStateErrors(lazyPagingGroups)
 }
