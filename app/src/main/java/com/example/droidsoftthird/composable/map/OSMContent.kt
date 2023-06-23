@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -87,7 +88,7 @@ private fun updateMapView(
             position = location
             title = city
             snippet = "${groupCount.groupCount} groups"
-            icon = createCustomMarker(mapView.context, groupCount.groupCount)
+            icon = createGroupMarker(mapView.context, groupCount.groupCount)
             setOnMarkerClickListener { marker, mapView ->
                 val city = marker.title ?: return@setOnMarkerClickListener false
                 //selectedCityGroups.clear()
@@ -139,7 +140,7 @@ private fun mapViewFactory(fragment: GroupLocationsFragment) = { context: Contex
                         it?.latitude ?: defaultTokyoLocation.latitude,
                         it?.longitude ?: defaultTokyoLocation.longitude
                     )
-                    icon = createCurrentLocationDotDrawable(fragment.requireContext())
+                    icon = createCurrentLocationDot(fragment.requireContext())
                     setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                 }
                 overlays.add(currentLocationMarker)
@@ -151,28 +152,57 @@ private fun mapViewFactory(fragment: GroupLocationsFragment) = { context: Contex
     }
 }
 
-private fun createCustomMarker(context: Context, groupCount: Int): Drawable {
-    val markerDrawable = ContextCompat.getDrawable(context, R.drawable.marker_default_focused_base)
+private fun createGroupMarker(context: Context, groupCount: Int): Drawable {
+    val diameter = 80  // Modify this value to change the diameter of the circle
+    val circleStrokeWidth = 2f  // Modify this value to change the stroke width of the circle
 
     val textPaint = Paint().apply {
-        color = Color.WHITE
-        textSize = 40f
+        color = ContextCompat.getColor(context, R.color.base_100)
+        textSize = 50f  // Increased text size
+        typeface = Typeface.DEFAULT_BOLD  // Set text to bold
         textAlign = Paint.Align.CENTER
     }
 
-    val bitmap = Bitmap.createBitmap(markerDrawable?.intrinsicWidth!!, markerDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(bitmap)
-    markerDrawable.setBounds(0, 0, canvas.width, canvas.height)
-    markerDrawable.draw(canvas)
+    val strokePaint = Paint().apply {
+        color = Color.DKGRAY
+        style = Paint.Style.STROKE
+        textSize = 50f
+        typeface = Typeface.DEFAULT_BOLD  // Set text to bold
+        textAlign = Paint.Align.CENTER
+        strokeWidth = 2f  // Modify this value to change the stroke width
+    }
 
+    val circlePaint = Paint().apply {
+        color = ContextCompat.getColor(context, R.color.primary_accent_yellow)
+        style = Paint.Style.FILL
+    }
+
+    val circleStrokePaint = Paint().apply {
+        color = Color.DKGRAY
+        style = Paint.Style.STROKE
+        strokeWidth = circleStrokeWidth  // Modify this value to change the stroke width of the circle
+    }
+
+    val bitmap = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+
+    // Draw the circle
+    val radius = diameter / 2f - circleStrokeWidth / 2
+    canvas.drawCircle(diameter / 2f, diameter / 2f, radius, circlePaint)
+    canvas.drawCircle(diameter / 2f, diameter / 2f, radius, circleStrokePaint)  // Draw the circle stroke
+
+    // Draw the text
     val xPos = canvas.width / 2
     val yPos = (canvas.height / 2 - (textPaint.descent() + textPaint.ascent()) / 2)
-    canvas.drawText(groupCount.toString(), xPos.toFloat(), yPos, textPaint)
+    canvas.drawText(groupCount.toString(), xPos.toFloat(), yPos, strokePaint)  // Draw the text stroke
+    canvas.drawText(groupCount.toString(), xPos.toFloat(), yPos, textPaint)  // Draw the text
 
     return BitmapDrawable(context.resources, bitmap)
 }
 
-private fun createCurrentLocationDotDrawable(context: Context): Drawable {
+
+
+private fun createCurrentLocationDot(context: Context): Drawable {
     val padding = 8 // you can adjust this value as per your needs
     val strokeWidth = 2 // you can adjust this value as per your needs
 
