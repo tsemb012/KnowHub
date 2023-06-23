@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.location.LocationManager
@@ -27,6 +29,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.droidsoftthird.*
 import com.example.droidsoftthird.model.domain_model.AreaCategory
+import com.example.droidsoftthird.model.domain_model.GroupCountByArea
 import com.example.droidsoftthird.model.presentation_model.GroupLocationsUiModel
 import com.example.droidsoftthird.model.presentation_model.groupCountByArea
 import kotlinx.coroutines.CoroutineScope
@@ -52,63 +55,9 @@ fun OSMContent(
     Box(modifier = Modifier.fillMaxSize()) {
 
         AndroidView(
-
-            update = { mapView ->
-                val cityMarkers = groupCountByCity?.mapNotNull { groupCount ->
-                    val city = groupCount.cityName ?: return@mapNotNull null
-                    val location = GeoPoint(groupCount.latitude, groupCount.longitude)
-                    Marker(mapView).apply {
-                        position = location
-                        title = city
-                        snippet = "${groupCount.groupCount} groups"
-                        icon = createCustomMarker(mapView.context, groupCount.groupCount)
-                        setOnMarkerClickListener { marker, mapView ->
-                            val city = marker.title ?: return@setOnMarkerClickListener false
-                            //selectedCityGroups.clear()
-                            val newCenter = GeoPoint(marker.position.latitude - 0.015, marker.position.longitude) // 緯度を少し減らす
-                            mapView.controller.apply {
-                                animateTo(newCenter)
-                                setZoom(15.0)
-                            }
-                            showInfoWindow()
-                            getGroups(groupCount.code.toInt(), groupCount.category)
-                            scope.launch { bottomSheetState.show() }
-
-                            true
-                        }
-                    }
-                }
-                cityMarkers?.forEach {mapView.overlays.add(it) }
-                mapView.invalidate()
-            },
-
-            factory = { context ->
-
-                MapView(context).apply {
-
-                    setTileSource(TileSourceFactory.MAPNIK)
-                    setBuiltInZoomControls(true)
-                    setMultiTouchControls(true)
-
-                    val locationManager = fragment.requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-                    if (ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        val currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                        val defaultTokyoLocation = GeoPoint(35.681236, 139.767125)
-                        currentLocation.let {
-                            controller.apply {
-                                setZoom(12)
-                                setCenter(GeoPoint(it?.latitude ?: defaultTokyoLocation.latitude, it?.longitude ?: defaultTokyoLocation.longitude))
-                            }
-                            val currentLocationMarker = Marker(this).apply {
-                                position = GeoPoint(it?.latitude ?: defaultTokyoLocation.latitude, it?.longitude  ?: defaultTokyoLocation.longitude)
-                                icon = createBlueDotDrawable(fragment.requireContext())
-                                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                            }
-                            overlays.add(currentLocationMarker)
-                        }
-                    }
-                }
-            }, modifier = Modifier.fillMaxSize()
+            update = updateMapView(groupCountByCity, getGroups, scope, bottomSheetState),
+            factory = mapViewFactory(fragment),
+            modifier = Modifier.fillMaxSize()
         )
         if (isLoading) {
             LinearProgressIndicator(
@@ -118,6 +67,82 @@ fun OSMContent(
                     id = R.color.base_100
                 )
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun updateMapView(
+    groupCountByCity: List<GroupCountByArea>?,
+    getGroups: (Int, AreaCategory) -> Unit,
+    scope: CoroutineScope,
+    bottomSheetState: ModalBottomSheetState,
+) = { mapView: MapView ->
+    val cityMarkers = groupCountByCity?.mapNotNull { groupCount ->
+        val city = groupCount.cityName ?: return@mapNotNull null
+        val location = GeoPoint(groupCount.latitude, groupCount.longitude)
+        Marker(mapView).apply {
+            position = location
+            title = city
+            snippet = "${groupCount.groupCount} groups"
+            icon = createCustomMarker(mapView.context, groupCount.groupCount)
+            setOnMarkerClickListener { marker, mapView ->
+                val city = marker.title ?: return@setOnMarkerClickListener false
+                //selectedCityGroups.clear()
+                val newCenter = GeoPoint(
+                    marker.position.latitude - 0.015,
+                    marker.position.longitude
+                ) // 緯度を少し減らす
+                mapView.controller.apply {
+                    animateTo(newCenter)
+                    setZoom(15.0)
+                }
+                showInfoWindow()
+                getGroups(groupCount.code.toInt(), groupCount.category)
+                scope.launch { bottomSheetState.show() }
+
+                true
+            }
+        }
+    }
+    cityMarkers?.forEach { mapView.overlays.add(it) }
+    mapView.invalidate()
+}
+
+@Composable
+private fun mapViewFactory(fragment: GroupLocationsFragment) = { context: Context ->
+
+    MapView(context).apply {
+
+        setTileSource(TileSourceFactory.MAPNIK)
+        setBuiltInZoomControls(true)
+        setMultiTouchControls(true)
+
+        val locationManager = fragment.requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val defaultTokyoLocation = GeoPoint(35.681236, 139.767125)
+            currentLocation.let {
+                controller.apply {
+                    setZoom(13)
+                    setCenter(
+                        GeoPoint(
+                            it?.latitude ?: defaultTokyoLocation.latitude,
+                            it?.longitude ?: defaultTokyoLocation.longitude
+                        )
+                    )
+                }
+                val currentLocationMarker = Marker(this).apply {
+                    position = GeoPoint(
+                        it?.latitude ?: defaultTokyoLocation.latitude,
+                        it?.longitude ?: defaultTokyoLocation.longitude
+                    )
+                    icon = createCurrentLocationDotDrawable(fragment.requireContext())
+                    setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                }
+                overlays.add(currentLocationMarker)
+            }
         }
     }
 }
@@ -143,11 +168,37 @@ private fun createCustomMarker(context: Context, groupCount: Int): Drawable {
     return BitmapDrawable(context.resources, bitmap)
 }
 
-private fun createBlueDotDrawable(context: Context): Drawable {
-    val circleDrawable = ShapeDrawable(OvalShape())
-    circleDrawable.paint.color = Color.BLUE
-    circleDrawable.intrinsicWidth = 24
-    circleDrawable.intrinsicHeight = 24
-    circleDrawable.setBounds(0, 0, circleDrawable.intrinsicWidth, circleDrawable.intrinsicHeight)
-    return circleDrawable
+private fun createCurrentLocationDotDrawable(context: Context): Drawable {
+    val padding = 8 // you can adjust this value as per your needs
+    val strokeWidth = 2 // you can adjust this value as per your needs
+
+    val circleDrawable = ShapeDrawable(OvalShape()).apply {
+        paint.color = context.getColor(R.color.primary_dark)
+        intrinsicWidth = 36
+        intrinsicHeight = 36
+    }
+
+    val paddingColor = Color.WHITE
+    val drawableWithPadding = ShapeDrawable(OvalShape()).apply {
+        paint.color = paddingColor
+        intrinsicWidth = circleDrawable.intrinsicWidth + padding
+        intrinsicHeight = circleDrawable.intrinsicHeight + padding
+    }
+
+    val strokeDrawable = GradientDrawable().apply {
+        shape = GradientDrawable.OVAL
+        setColor(Color.TRANSPARENT)
+        setSize(drawableWithPadding.intrinsicWidth + strokeWidth * 2, drawableWithPadding.intrinsicHeight + strokeWidth * 2)
+        setStroke(strokeWidth, Color.BLACK) // set stroke color here
+    }
+
+    val layers = arrayOf(strokeDrawable, drawableWithPadding, circleDrawable)
+    val layerDrawable = LayerDrawable(layers).apply {
+        setLayerInset(1, strokeWidth, strokeWidth, strokeWidth, strokeWidth) // apply stroke to the drawable with padding
+        setLayerInset(2, padding + strokeWidth, padding + strokeWidth, padding + strokeWidth, padding + strokeWidth) // apply padding to blue dot
+    }
+
+    layerDrawable.setBounds(0, 0, layerDrawable.intrinsicWidth, layerDrawable.intrinsicHeight)
+    return layerDrawable
 }
+
