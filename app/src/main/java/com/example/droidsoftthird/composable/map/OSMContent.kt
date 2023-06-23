@@ -143,6 +143,9 @@ private fun mapViewFactory(fragment: GroupLocationsFragment) = { context: Contex
                 }
                 overlays.add(currentLocationMarker)
             }
+        } else {
+            controller.animateTo(GeoPoint(35.681236, 139.767125))
+            controller.setZoom(7.0)
         }
     }
 }
