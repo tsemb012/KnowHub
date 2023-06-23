@@ -48,7 +48,8 @@ class GroupLocationsFragment:Fragment() {
                 OSMBottomSheetScreen(
                     viewModel,
                     this@GroupLocationsFragment,
-                    ::navigateToGroupDetail
+                    ::navigateToGroupDetail,
+                    ::navigateToGroupAdd
                 )
             }
         }
@@ -57,6 +58,12 @@ class GroupLocationsFragment:Fragment() {
     fun navigateToGroupDetail(groupId: String) {
         this.findNavController().navigate(
             HomeFragmentDirections.actionHomeFragmentToGroupDetailFragment(groupId)
+        )
+    }
+
+    private fun navigateToGroupAdd() {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
         )
     }
 

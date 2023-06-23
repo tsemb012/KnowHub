@@ -36,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
@@ -116,7 +117,7 @@ private fun mapViewFactory(fragment: GroupLocationsFragment) = { context: Contex
     MapView(context).apply {
 
         setTileSource(TileSourceFactory.MAPNIK)
-        setBuiltInZoomControls(true)
+        zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
         setMultiTouchControls(true)
 
         val locationManager = fragment.requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
