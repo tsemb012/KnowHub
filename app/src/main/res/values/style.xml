@@ -20,6 +20,10 @@
         <item name="colorPrimary">@color/primary_dark</item>
     </style>
 
+    <style name="MyTabTextAppearance" parent="Widget.Design.TabLayout">
+        <item name="android:textSize">18sp</item>  <!-- 必要なテキストサイズ -->
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
