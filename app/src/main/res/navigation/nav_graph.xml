@@ -36,7 +36,12 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_addGroupFragment"
-            app:destination="@id/addGroupFragment" />
+            app:destination="@id/addGroupFragment"
+            app:enterAnim="@anim/nav_up_enter_anim"
+            app:exitAnim="@anim/nav_up_exit_anim"
+            app:popEnterAnim="@anim/nav_up_pop_enter_anim"
+            app:popExitAnim="@anim/nav_up_pop_exit_anim"
+        />
         <action
             android:id="@+id/action_homeFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
@@ -101,7 +106,12 @@
             app:argType="string" />
         <action
             android:id="@+id/action_ScheduleHomeFragment_to_scheduleCreateFragment"
-            app:destination="@id/schedule_graph" />
+            app:destination="@id/schedule_graph"
+            app:enterAnim="@anim/nav_up_enter_anim"
+            app:exitAnim="@anim/nav_up_exit_anim"
+            app:popEnterAnim="@anim/nav_up_pop_enter_anim"
+            app:popExitAnim="@anim/nav_up_pop_exit_anim"
+            />
         <action
             android:id="@+id/action_ScheduleHomeFragment_to_scheduleDetailFragment"
             app:destination="@id/scheduleDetailFragment" />
