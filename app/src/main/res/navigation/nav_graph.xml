@@ -44,7 +44,12 @@
         />
         <action
             android:id="@+id/action_homeFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
+            app:destination="@id/groupDetailFragment"
+            app:enterAnim="@anim/nav_zoom_enter_anim"
+            app:exitAnim="@anim/nav_zoom_exit_anim"
+            app:popEnterAnim="@anim/nav_zoom_pop_enter_anim"
+            app:popExitAnim="@anim/nav_zoom_pop_exit_anim"
+            />
         <action
             android:id="@+id/action_homeFragment_to_createProfileFragment"
             app:destination="@id/profileCreateFragment" />
@@ -84,7 +89,11 @@
         android:label="RecommendPagerFragment" >
         <action
             android:id="@+id/action_recommendGroupsFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
+            app:destination="@id/groupDetailFragment"
+            app:enterAnim="@anim/nav_zoom_enter_anim"
+            app:exitAnim="@anim/nav_zoom_exit_anim"
+            app:popEnterAnim="@anim/nav_zoom_pop_enter_anim"
+            app:popExitAnim="@anim/nav_zoom_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -93,7 +102,12 @@
         android:label="MyPageFragment" >
         <action
             android:id="@+id/action_myPageFragment_to_chatRoomFragment"
-            app:destination="@id/chatRoomFragment" />
+            app:destination="@id/chatRoomFragment"
+            app:enterAnim="@anim/nav_zoom_enter_anim"
+            app:exitAnim="@anim/nav_zoom_exit_anim"
+            app:popEnterAnim="@anim/nav_zoom_pop_enter_anim"
+            app:popExitAnim="@anim/nav_zoom_pop_exit_anim"
+            />
     </fragment>
 
     <fragment
@@ -126,7 +140,8 @@
             app:destination="@id/ScheduleHomeFragment" />
         <action
             android:id="@+id/action_chatRoomFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
+            app:destination="@id/groupDetailFragment"
+            />
         <argument
             android:name="groupId"
             app:argType="string" />
