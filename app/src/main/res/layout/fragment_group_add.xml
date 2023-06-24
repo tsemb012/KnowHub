@@ -33,33 +33,55 @@
                 android:textColor="@color/colorAccent"
                 />
 
-
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
 
 
-                    <ImageView
-                        android:id="@+id/btn_group_image"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="247dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
-                        android:scaleX="1"
-                        android:scaleY="1"
+                    >
+
+                    <FrameLayout
+                        android:id="@+id/header_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:imageURI="@{addGroupViewModel.imageUri}"
-                        android:src="@drawable/ic_baseline_image_24"
+                        >
 
+
+                        <ImageView
+                            android:id="@+id/btn_for_group_image"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:clickable="true"
+                            android:layout_width= "match_parent"
+                            android:layout_height="247dp"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:imageURI="@{addGroupViewModel.imageUri}"
+                            android:src="@drawable/ic_baseline_image_24"
+
+                            />
+
+                        <ImageButton
+                            android:id="@+id/btn_for_close"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_baseline_close_24"
+                            android:padding="16dp"
                         />
+
+                    </FrameLayout>
+
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +92,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_group_image"
+                        app:layout_constraintTop_toBottomOf="@+id/header_item"
                         android:hint="@string/group_name"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
