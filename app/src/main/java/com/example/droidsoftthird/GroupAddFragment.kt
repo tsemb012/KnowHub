@@ -51,7 +51,8 @@ GroupAddFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.apply {
-            btnGroupImage.setOnClickListener { launchUploader() }
+            btnForClose.setOnClickListener { findNavController().popBackStack() }
+            btnForGroupImage.setOnClickListener { launchUploader() }
             btnToGroupDetailBarActivityArea.setOnClickListener { showAreaDialog() }
             btnToGroupDetailBarFacilityEnvironment.setOnClickListener { showFacilityEnvironmentDialog() }
             btnToGroupDetailBarStyle.setOnClickListener { showStyleDialog() }
