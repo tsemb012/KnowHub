@@ -10,32 +10,16 @@
                 type="com.example.droidsoftthird.GroupAddViewModel" />
         </data>
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".GroupAddFragment"
-            android:background="@color/base_100">
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:indeterminate="true"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/caption"
-                android:layout_width="398dp"
-                android:layout_height="6dp"
-                android:gravity="center_horizontal"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                />
+            android:background="@color/base_100"
+            android:orientation="vertical">
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -112,6 +96,7 @@
                         android:textSize="15dp"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
+                        android:textColor="@color/dark_gray"
                         android:layout_width="match_parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/header_item" />
@@ -141,6 +126,7 @@
                         android:id="@+id/group_intro"
                         android:layout_margin="20dp"
                         android:text="@string/group_intro"
+                        android:textColor="@color/dark_gray"
                         android:paddingVertical="8dp"
                         android:textSize="15sp"
                         android:layout_height="wrap_content"
@@ -204,6 +190,7 @@
                                 <TextView
                                     style="@style/group_detail_bar_name"
                                     android:text="@string/activity_area"
+                                    android:textColor="@color/dark_gray"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/activity_area_input"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -248,6 +235,7 @@
                                 <TextView
                                     style="@style/group_detail_bar_name"
                                     android:text="@string/facility_environment"
+                                    android:textColor="@color/dark_gray"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/facility_environment_input"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -291,6 +279,8 @@
                                     style="@style/group_detail_bar_name"
                                     android:text="@string/event_frequency"
                                     app:layout_constraintBottom_toBottomOf="parent"
+                                    android:textColor="@color/dark_gray"
+
                                     app:layout_constraintEnd_toStartOf="@+id/learning_frequency_input"
                                     app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -333,6 +323,7 @@
                                     style="@style/group_detail_bar_name"
                                     android:layout_height="0dp"
                                     android:text="@string/style"
+                                    android:textColor="@color/dark_gray"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/style_input"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -376,6 +367,7 @@
                                     style="@style/group_detail_bar_name"
                                     android:layout_height="0dp"
                                     android:text="@string/group_type"
+                                    android:textColor="@color/dark_gray"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/group_type_input"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -419,6 +411,7 @@
                                 <TextView
                                     style="@style/group_detail_bar_name"
                                     android:text="@string/age_range"
+                                    android:textColor="@color/dark_gray"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/age_range_input"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -462,6 +455,7 @@
                                 <TextView
                                     style="@style/group_detail_bar_name"
                                     android:text="@string/number_persons"
+                                    android:textColor="@color/dark_gray"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/number_persons_input"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -504,6 +498,8 @@
                                 <TextView
                                     style="@style/group_detail_bar_name"
                                     android:text="@string/gender_restriction"
+                                    android:textColor="@color/dark_gray"
+
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/gender_restriction_switch"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -529,24 +525,62 @@
                             android:layout_height="1dp"
                             android:background="?android:attr/listDivider" />
 
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"/>
+
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_to_groupPOJO"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/group_register"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-                        android:enabled="@{addGroupViewModel.enableState}"
-                        android:onClick="@{() -> addGroupViewModel.createGroup()}"
-                        android:backgroundTint="@color/primary_dark"
-                        />
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
-        </RelativeLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:background="@color/base_100"
+                android:layout_gravity="bottom"
+                >
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_alpha"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+
+                <Button
+                    android:id="@+id/btn_to_groupPOJO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/group_register"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:enabled="@{addGroupViewModel.enableState}"
+                    android:elevation="2dp"
+                    android:onClick="@{() -> addGroupViewModel.createGroup()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="16dp"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:indeterminate="true"
+                android:visibility="invisible" />
+
+        </FrameLayout>
     </layout>
