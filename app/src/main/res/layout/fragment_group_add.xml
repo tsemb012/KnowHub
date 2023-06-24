@@ -104,61 +104,76 @@
                     </FrameLayout>
 
 
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <TextView
                         android:id="@+id/group_name"
-                        android:layout_width="match_parent"
+                        android:layout_margin="20dp"
+                        android:text="@string/group_name"
+                        android:paddingVertical="8dp"
+                        android:textSize="15dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/header_item"
-                        android:hint="@string/group_name"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:layout_constraintTop_toBottomOf="@+id/header_item" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edit_group_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@={addGroupViewModel.groupName}"
-                            android:inputType="textPersonName"
-                            />
+                    <EditText
+                        android:id="@+id/edit_group_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:background="@null"
+                        android:hint="@string/input_a_group_name"
+                        android:textSize="15dp"
+                        android:layout_marginHorizontal="30dp"
+                        android:maxLength="20"
+                        android:textColorHint="@color/gray"
+                        android:inputType="textPersonName"
+                        android:text="@={addGroupViewModel.groupName}"
+                        app:layout_constraintStart_toStartOf="@+id/group_name"
+                        app:layout_constraintTop_toBottomOf="@+id/group_name" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_group_name" />
 
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <TextView
                         android:id="@+id/group_intro"
+                        android:layout_margin="20dp"
+                        android:text="@string/group_intro"
+                        android:paddingVertical="8dp"
+                        android:textSize="15sp"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_group_name"
+                        />
+
+                    <EditText
+                        android:id="@+id/edit_group_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:minHeight="64dp"
+                        android:background="@null"
                         android:hint="@string/group_introduction"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/group_name"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edit_group_intro"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@={addGroupViewModel.groupIntroduction}"
-                            android:inputType="textMultiLine"
-                            />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                        android:textSize="15sp"
+                        android:maxLength="500"
+                        android:textColorHint="@color/gray"
+                        android:layout_marginHorizontal="30dp"
+                        android:inputType="textMultiLine"
+                        android:text="@={addGroupViewModel.groupIntroduction}"
+                        android:paddingBottom="20dp"
+                        app:layout_constraintStart_toStartOf="@+id/group_intro"
+                        app:layout_constraintTop_toBottomOf="@+id/group_intro" />
 
 
                     <View
                         android:id="@+id/divider_intro"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="5dp"
                         android:background="?android:attr/listDivider"
-                        app:layout_constraintTop_toBottomOf="@+id/group_intro" />
+                        app:layout_constraintTop_toBottomOf="@+id/edit_group_intro" />
 
                     <LinearLayout
                         android:id="@+id/linearLayout1"
@@ -170,12 +185,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider_intro"
                         android:background="@color/base_100">
-
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?android:attr/listDivider" />
 
 
                         <LinearLayout

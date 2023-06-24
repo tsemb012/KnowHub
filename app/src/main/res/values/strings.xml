@@ -13,7 +13,7 @@
     <string name="tab_2nd">スケジュール</string>
     <string name="tab_3rd">マップ</string>
     <string name="group_name">グループ名</string>
-    <string name="group_introduction">グループ概要(やること、目標など)</string>
+    <string name="group_introduction">グループの説明文を入力して下さい(500字以内)\n\n 例) 毎週水曜日に図書館に集まって、それぞれの勉強や作業をしましょう。</string>
     <string name="group_detail">詳細情報</string>
     <string name="group_type">取り組み対象</string>
     <string name="no_set">指定なし</string>
@@ -67,7 +67,7 @@
     <string name="newest_first_order">新着順</string>
     <string name="schedule">スケジュール</string>
     <string name="map">マップ</string>
-    <string name="input_a_group_name">グループ名を記入してください。</string>
+    <string name="input_a_group_name">グループ名を入力(20字以内)</string>
     <string name="input_group_introduction">グループの紹介文を記入してください。</string>
     <string name="register">登録</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -186,5 +186,6 @@
     <string name="availability">%s 人</string>
     <string name="group_condition_filter_confirm">グループを検索</string>
     <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
+    <string name="group_intro">グループ紹介</string>
 
 </resources>

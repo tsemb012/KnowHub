@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#009AA3</item>
         <item name="colorPrimaryDark">#009AA3</item>
-        <item name="colorAccent">#F8B500</item>
+        <item name="colorAccent">#009AA3</item>
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
 
     </style>
