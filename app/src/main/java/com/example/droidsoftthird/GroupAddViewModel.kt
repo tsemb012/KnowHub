@@ -81,7 +81,6 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
         result.addSource(groupIntroduction) { result.value = isValid() }
     }
 
-
     fun postImageUri(uri: Uri) { _imageUri.postValue(uri) }
     fun postGroupType(type: GroupType) { _groupType.postValue(type) }
     fun postStyle(style: Style) { _style.postValue(style) }
