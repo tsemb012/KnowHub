@@ -73,7 +73,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
         get() = _isChecked
 
     private fun isValid(): Boolean {
-        return !groupName.value.isNullOrBlank() && !groupIntroduction.value.isNullOrBlank()
+        return !groupName.value.isNullOrBlank() && !groupIntroduction.value.isNullOrBlank() && imageUri.value != null
     }
 
     val enableState = MediatorLiveData<Boolean>().also { result ->
