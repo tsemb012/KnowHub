@@ -60,10 +60,7 @@ GroupAddFragment : Fragment() {
             btnToGroupDetailBarLearningFrequency.setOnClickListener { showLearningFrequencyDialog() }
             btnToGroupDetailBarAgeRange.setOnClickListener { showAgeRangeDialog() }
             btnToGroupDetailBarNumberPersons.setOnClickListener { showNumberPersonsDialog() }
-            btnToGroupDetailBarGenderRestriction.setOnClickListener {
-                viewModel.postIsChecked(binding.genderRestrictionSwitch.isChecked)
-                showToast(if (binding.genderRestrictionSwitch.isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
-            }
+            btnToGroupDetailBarGenderRestriction.setOnClickListener { binding.genderRestrictionSwitch.isChecked = !binding.genderRestrictionSwitch.isChecked }
             binding.genderRestrictionSwitch.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.postIsChecked(isChecked)
                 showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
