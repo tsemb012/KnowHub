@@ -125,7 +125,9 @@ fun TextView.bindBasisFrequency(basis: String, frequency: Int){
         resources.getString(R.string.no_set)
     }else if(basis == resources.getString(R.string.everyday)) {
         resources.getString(R.string.everyday)
-    }else {
+    }else if(basis == resources.getString(R.string.irregularly) && frequency == -1){
+            resources.getString(R.string.irregularly)
+    } else {
         val displayBasis = if (basis == resources.getString(R.string.weekly)) {
             resources.getString(R.string.week)
         } else {

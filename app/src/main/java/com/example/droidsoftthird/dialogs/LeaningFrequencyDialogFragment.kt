@@ -24,7 +24,7 @@ class LeaningFrequencyDialogFragment:DialogFragment() {
                 .setIcon(R.drawable.ic_baseline_date_range_24)
                 .setSingleChoiceItems(items, selected) { _, which -> selected = which }
                 .setPositiveButton(getString(R.string.Next)) { _, _ ->
-                    if (selected != 0 || selected != 1) {
+                    if (selected == 2 || selected == 3) {
                         val dialogNext = LeaningFrequencyDialogFragmentNext()
                         val args = Bundle()
                         args.putInt("learning_frequency", selected)
