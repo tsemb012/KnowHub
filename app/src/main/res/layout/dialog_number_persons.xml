@@ -16,6 +16,7 @@
             android:padding="25dp"
             android:valueFrom="1"
             android:valueTo="30"
+            app:thumbColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
