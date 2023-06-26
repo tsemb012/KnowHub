@@ -183,5 +183,6 @@
     <string name="availability">Availability %s</string>
     <string name="group_condition_filter_confirm">グループを検索</string>
     <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
+    <string name="group_intro">グループ紹介</string>
 
 </resources>

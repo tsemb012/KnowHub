@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
@@ -46,12 +47,17 @@ GroupAddFragment : Fragment() {
             )
         })
 
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
+
         return binding.root
     }
 
     private fun setupClickListeners() {
         binding.apply {
-            btnGroupImage.setOnClickListener { launchUploader() }
+            btnForClose.setOnClickListener { findNavController().popBackStack() }
+            btnForGroupImage.setOnClickListener { launchUploader() }
             btnToGroupDetailBarActivityArea.setOnClickListener { showAreaDialog() }
             btnToGroupDetailBarFacilityEnvironment.setOnClickListener { showFacilityEnvironmentDialog() }
             btnToGroupDetailBarStyle.setOnClickListener { showStyleDialog() }
@@ -59,10 +65,7 @@ GroupAddFragment : Fragment() {
             btnToGroupDetailBarLearningFrequency.setOnClickListener { showLearningFrequencyDialog() }
             btnToGroupDetailBarAgeRange.setOnClickListener { showAgeRangeDialog() }
             btnToGroupDetailBarNumberPersons.setOnClickListener { showNumberPersonsDialog() }
-            btnToGroupDetailBarGenderRestriction.setOnClickListener {
-                viewModel.postIsChecked(binding.genderRestrictionSwitch.isChecked)
-                showToast(if (binding.genderRestrictionSwitch.isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")
-            }
+            btnToGroupDetailBarGenderRestriction.setOnClickListener { binding.genderRestrictionSwitch.isChecked = !binding.genderRestrictionSwitch.isChecked }
             binding.genderRestrictionSwitch.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.postIsChecked(isChecked)
                 showToast(if (isChecked) "性別設定をOnにしました。" else "性別設定をOffにしました。")

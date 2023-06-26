@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.repository
 
 import android.net.Uri
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.paging.Pager
@@ -59,7 +60,8 @@ class BaseRepositoryImpl @Inject constructor(
                 urlCache[imagePath] = it.toString()
                 continuation.resume(it.toString())
             }.addOnFailureListener {
-                throw it
+                continuation.resume("")
+                Log.d("BaseRepositoryImpl", "fetchStorageImage: $it")
             }
         }
         return url

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecommendGroupsFragment:Fragment() {
 
-    private val viewModel:RecommendGroupsViewModel by viewModels()
+    private val viewModel :RecommendGroupsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,9 @@ class RecommendGroupsFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
+        setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
+        )
         setContent {
             RecommendGroupsScreen(
                 viewModel,
@@ -45,10 +49,5 @@ class RecommendGroupsFragment:Fragment() {
         findNavController().navigate(
             HomeFragmentDirections.actionHomeFragmentToAddGroupFragment()
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.initialize()
     }
 }
