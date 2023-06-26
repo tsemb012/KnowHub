@@ -79,6 +79,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val enableState = MediatorLiveData<Boolean>().also { result ->
         result.addSource(groupName) { result.value = isValid() }
         result.addSource(groupIntroduction) { result.value = isValid() }
+        result.addSource(imageUri) { result.value = isValid() }
     }
 
     fun postImageUri(uri: Uri) { _imageUri.postValue(uri) }
