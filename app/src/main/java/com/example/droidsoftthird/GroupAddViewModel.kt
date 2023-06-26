@@ -147,7 +147,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     }
 
     companion object {
-        private const val IMAGE_SIZE = "_200x200"
+        private const val IMAGE_SIZE = "_400x400"
     }
 }
 
