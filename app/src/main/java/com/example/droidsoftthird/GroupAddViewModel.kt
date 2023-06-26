@@ -44,6 +44,10 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     private var areaCodes: Pair<Int?, Int?>? = null
     private var isOnline: Boolean = areaCodes?.first == 0 && areaCodes?.second == 0
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
+
     private val _facilityEnvironment = MutableLiveData(FacilityEnvironment.NONE_FACILITY_ENVIRONMENT)
     private val facilityEnvironment: LiveData<FacilityEnvironment> get() = _facilityEnvironment
     val facilityEnvironmentStringId: LiveData<Int> get() = _facilityEnvironment.map { it.displayNameId }
@@ -98,7 +102,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     fun createGroup() {
         activateProgressBar()
         viewModelScope.launch {
-            if(imageUri.value != null) {//TODO 画像の処理の仕方を再検討する。
+            if(imageUri.value != null) {
                 async{ useCase.uploadPhoto(imageUri.value!!) }.await().also { it ->
                     when(it){
                         is Result.Success -> {
@@ -124,12 +128,12 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                             )
                             runCatching { useCase.createGroup(group) }
                                 .onSuccess { onHomeClicked() }
-                                .onFailure { throw it }
+                                .onFailure { _errorMessage.postValue("グループの保存に失敗しました。") }
                         }
-                        is Result.Failure -> { TODO("アップロード失敗時の処理を記述する。") }
+                        is Result.Failure -> { _errorMessage.postValue("画像の保存に失敗しました。") }
                     }
                 }
-            }else{ TODO("画像処理がNullだった場合の処理を検討する。") }
+            }else{ throw IllegalStateException() }
         }
     }
 

@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
@@ -45,6 +46,10 @@ GroupAddFragment : Fragment() {
                 GroupAddFragmentDirections.actionAddGroupFragmentToHomeFragment()
             )
         })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
 
         return binding.root
     }
