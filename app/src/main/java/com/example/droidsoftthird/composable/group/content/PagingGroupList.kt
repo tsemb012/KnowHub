@@ -2,7 +2,6 @@ package com.example.droidsoftthird.composable.group.content
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -48,10 +48,17 @@ import kotlinx.coroutines.flow.flowOf
 fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (String) -> Unit, isLocationGroup: Boolean = false) {
     var refreshing by remember { mutableStateOf(false) }
     fun refresh () {lazyPagingGroups.refresh()}
-
+    val listState = rememberLazyListState()
     val state = rememberPullRefreshState(refreshing, ::refresh)
     val isLoading = lazyPagingGroups.loadState.refresh is LoadState.Loading ||
         lazyPagingGroups.loadState.append is LoadState.Loading
+
+    LaunchedEffect(true) {
+        listState.scrollToItem(
+            listState.firstVisibleItemIndex,
+            listState.firstVisibleItemScrollOffset
+        )
+    }
 
     Column(modifier = Modifier.pullRefresh(state)) {
 
@@ -72,7 +79,8 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
         Box {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+                contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp),
+                state = listState,
             ) {
                 if (!isLoading && lazyPagingGroups.itemCount == 0) item { EmptyMessage(R.string.no_groups_found) }
                 items(lazyPagingGroups) {
