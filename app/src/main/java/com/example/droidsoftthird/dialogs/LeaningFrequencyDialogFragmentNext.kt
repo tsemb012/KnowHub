@@ -23,12 +23,12 @@ class LeaningFrequencyDialogFragmentNext:DialogFragment() {
         val tv = view.findViewById<TextView>(R.id.basis)
         previousSelected = arguments?.getInt("learning_frequency")
         when (previousSelected) {
-            1 -> {
+            2 -> {
                 tv.text = getString(R.string.week)
                 np.minValue = 1
                 np.maxValue = 7
             }
-            2 -> {
+            3 -> {
                 tv.text = getString(R.string.month)
                 np.minValue = 1
                 np.maxValue = 31
