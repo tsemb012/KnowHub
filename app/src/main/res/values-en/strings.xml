@@ -98,6 +98,7 @@
     <string name="JoinIn">参加</string>
     <string name="confrimation">確認</string>
     <string name="confrimation_join_group">このグループに参加しますか？</string>
+    <string name="confrimation_leave_group">本当にグループから抜けますか？</string>
     <string name="input_profile">プロフィール入力</string>
     <string name="group">グループ</string>
     <string name="open_drawer">Open Drawer</string>
@@ -184,5 +185,6 @@
     <string name="group_condition_filter_confirm">グループを検索</string>
     <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
     <string name="group_intro">グループ紹介</string>
+    <string name="leave_group">Leave this group</string>
 
 </resources>

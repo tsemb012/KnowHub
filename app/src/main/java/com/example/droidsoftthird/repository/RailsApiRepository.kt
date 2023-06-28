@@ -14,6 +14,7 @@ interface RailsApiRepository {
     suspend fun fetchGroups(groupFilterCondition: ApiGroup.FilterCondition) : Flow<PagingData<ApiGroup>>
     suspend fun fetchJoinedGroups() : List<ApiGroup>
     suspend fun userJoinGroup(groupId: String): String?
+    suspend fun userLeaveGroup(groupId: String): String?
     suspend fun fetchGroupCountByArea(): List<GroupCountByArea>
 
     suspend fun fetchUser(): UserDetail

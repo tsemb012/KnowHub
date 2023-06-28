@@ -116,24 +116,35 @@ class GroupDetailViewModel @AssistedInject constructor(
         }
     }
 
+    fun userLeaveGroup() {
+        viewModelScope.launch {
+            runCatching {
+                useCase.userLeaveGroup(groupId)
+            }.onSuccess {
+                _navigateToMyPage.value = " "
+                //TODO ユーザー削除のトーストを出す
+            }.onFailure {
+                //TODO ユーザー削除失敗のトーストを出す
+            }
+        }
+    }
+
     val confirmJoin = MutableLiveData<Event<String>>()
     fun confirmJoin(){
         confirmJoin.value = Event("activateProgressBar")
+    }
+
+    val confirmLeave = MutableLiveData<Event<String>>()
+    fun confirmLeave(){
+        confirmLeave.value = Event("activateProgressBar")
     }
 
     fun onMyPageNavigated() {
         _navigateToMyPage.value = null
     }
 
-    //TODO onClick時のロジック処理を受け持つ。
-
     @AssistedFactory
     interface Factory{
         fun create(groupId: String): GroupDetailViewModel
     }
-
-    companion object {
-        private val TAG: String? = GroupDetailViewModel::class.simpleName
-    }
-
 }
