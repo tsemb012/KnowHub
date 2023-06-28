@@ -18,8 +18,8 @@ class GroupTypeDialogFragment: DialogFragment() {
         activity?.let {
             val builder = AlertDialog.Builder(it)
             builder
-                .setTitle(R.string.group_name)
-                .setIcon(R.drawable.ic_baseline_group_24)
+                .setTitle(R.string.group_type)
+                .setIcon(R.drawable.baseline_local_fire_department_24)
                 .setItems(items) { _, which -> viewModel.postGroupType(GroupType.values()[which]) }
             return    builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

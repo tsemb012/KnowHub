@@ -42,7 +42,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val city: LiveData<String> get() = _city
 
     private var areaCodes: Pair<Int?, Int?>? = null
-    private var isOnline: Boolean = areaCodes?.first == 0 && areaCodes?.second == 0
+    val isOnline: Boolean get() =  areaCodes?.first == 0 && areaCodes?.second == 0
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
@@ -60,15 +60,15 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val frequency: LiveData<Int>
         get() = _frequency
 
-    private val _minAge = MutableLiveData(-1)
+    private val _minAge = MutableLiveData(18)
     val minAge: LiveData<Int>
         get() = _minAge
 
-    private val _maxAge = MutableLiveData(-1)
+    private val _maxAge = MutableLiveData(100)
     val maxAge: LiveData<Int>
         get() = _maxAge
 
-    private val _maxNumberPerson = MutableLiveData(-1)
+    private val _maxNumberPerson = MutableLiveData(10)
     val maxNumberPerson: LiveData<Int>
         get() = _maxNumberPerson
 
@@ -121,9 +121,9 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                                 style.value ?: Style.NONE_STYLE,
                                 frequencyBasis.value ?: FrequencyBasis.NONE_FREQUENCY_BASIS,
                                 frequency.value ?: -1,
-                                minAge.value ?: -1,
-                                maxAge.value ?: -1,
-                                maxNumberPerson.value ?: -1,
+                                minAge.value ?: 18,
+                                maxAge.value ?: 100,
+                                maxNumberPerson.value ?: 10,
                                 isChecked.value ?: false
                             )
                             runCatching { useCase.createGroup(group) }
