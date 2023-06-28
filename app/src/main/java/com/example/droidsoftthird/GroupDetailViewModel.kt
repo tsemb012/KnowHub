@@ -26,7 +26,7 @@ class GroupDetailViewModel @AssistedInject constructor(
         } else if (group?.prefecture != null && group?.city == null) {
             "${group?.prefecture}"
         }  else {
-            "未設定"
+            "指定なし"
         }
     }
 
@@ -35,7 +35,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             if (group?.minAge != -1 || group?.maxAge != -1) {
                 "${group?.minAge} ~ ${group?.maxAge}才"
             } else {
-                "未設定"
+                "指定なし"
             }
     }
 
@@ -43,16 +43,17 @@ class GroupDetailViewModel @AssistedInject constructor(
             if (group?.maxNumberPerson != -1) {
                 "最大参加人数 ${group?.maxNumberPerson}人"
             } else {
-                "未設定"
+                "指定なし"
             }
     }
 
     val basisFrequency: LiveData<String> = groupDetail.map{ group ->
         when (group?.basis) {
-            FrequencyBasis.NONE_FREQUENCY_BASIS -> "未設定"
+            FrequencyBasis.NONE_FREQUENCY_BASIS -> "指定なし"
             FrequencyBasis.DAILY -> "毎日"
             FrequencyBasis.WEEKLY -> "週 ${group.frequency} 回"
             FrequencyBasis.MONTHLY -> "毎 ${group.frequency} 回"
+            FrequencyBasis.IRREGULARLY -> "不定期"
             else -> { "未設定"}
         }
     }
@@ -61,14 +62,14 @@ class GroupDetailViewModel @AssistedInject constructor(
         when (group?.groupType) {
             GroupType.INDIVIDUAL_TASK -> "個々の課題"
             GroupType.SHARED_GOAL -> "共通の目標"
-            GroupType.NONE_GROUP_TYPE -> "未設定"
+            GroupType.NONE_GROUP_TYPE -> "指定なし"
             else -> { "未設定"}
         }
     }
 
     val facilityEnvironmentString: LiveData<String> = _groupDetail.map { group ->
         when (group?.facilityEnvironment) {
-            FacilityEnvironment.NONE_FACILITY_ENVIRONMENT -> "未設定"
+            FacilityEnvironment.NONE_FACILITY_ENVIRONMENT -> "指定なし"
             FacilityEnvironment.ONLINE -> "オンライン"
             FacilityEnvironment.CAFE_RESTAURANT -> "カフェ・レストラン"
             FacilityEnvironment.CO_WORKING_SPACE -> "コワーキングスペース"
@@ -77,7 +78,7 @@ class GroupDetailViewModel @AssistedInject constructor(
             FacilityEnvironment.PARK -> "公園"
             FacilityEnvironment.RENTAL_SPACE -> "レンタルスペース"
             FacilityEnvironment.OTHER_FACILITY_ENVIRONMENT -> "その他"
-            else -> { "未設定"}
+            else -> { "指定なし"}
         }
     }
 
@@ -85,8 +86,8 @@ class GroupDetailViewModel @AssistedInject constructor(
         when (group?.style) {
             Style.FOCUS -> "静かに集中"
             Style.ENJOY -> "楽しくワイワイ"
-            Style.NONE_STYLE -> "未設定"
-            else -> { "未設定"}
+            Style.NONE_STYLE -> "指定なし"
+            else -> { "指定なし"}
         }
     }
 
