@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
@@ -52,6 +53,11 @@ class GroupDetailFragment : Fragment() {
 
             if (viewModel.isHostGroup) binding.leaveGroupFab.visibility = View.GONE
         }
+
+        viewModel.message.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
+
 
         viewModel.confirmJoin.observe(viewLifecycleOwner, EventObserver{
             AlertDialog.Builder(requireContext())
