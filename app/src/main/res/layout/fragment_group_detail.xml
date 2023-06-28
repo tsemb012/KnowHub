@@ -75,7 +75,7 @@
             android:clipToPadding="false"
             android:paddingBottom="0dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            android:background="@color/primary_light">
+            android:background="@color/base_100">
 
 
             <LinearLayout
@@ -86,7 +86,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="parent"
-                android:background="@color/primary_light"
+                android:background="@color/base_100"
                 style="@style/AppTheme">
 
                 <TextView
