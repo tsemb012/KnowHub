@@ -16,6 +16,7 @@ class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImp
     }
     suspend fun fetchGroupDetail(groupId: String) = repository.fetchGroupDetail(groupId)
     suspend fun userJoinGroup(groupId: String) = repository.userJoinGroup(groupId)
+    suspend fun userLeaveGroup(groupId: String) = repository.userLeaveGroup(groupId)
     suspend fun fetchJoinedGroups() = repository.fetchJoinedGroups().map { group ->
         group.copy(storageRef = fetchGroupImage(group.storageRef)) //TODO グループの画像処理を修正できたらUserUseCaseに持っていく。
     }
