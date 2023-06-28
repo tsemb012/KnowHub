@@ -23,6 +23,10 @@ class GroupDetailViewModel @AssistedInject constructor(
     val groupDetail: LiveData<ApiGroup?>
         get() = _groupDetail
 
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String>
+        get() = _message
+
     val isHostGroup get() = groupDetail.value?.hostUserId == userId.value
 
     val prefectureAndCity: LiveData<String> = groupDetail.map{ group ->
@@ -120,10 +124,10 @@ class GroupDetailViewModel @AssistedInject constructor(
             runCatching {
                 groupUseCase.userJoinGroup(groupId)
             }.onSuccess {
+                _message.value = "グループに参加しました"
                 _navigateToMyPage.value = " "
-                //TODO ユーザー追加のトーストを出す
             }.onFailure {
-                //TODO ユーザー追加失敗のトーストを出す
+                _message.value = it.message
             }
         }
     }
@@ -133,10 +137,10 @@ class GroupDetailViewModel @AssistedInject constructor(
             runCatching {
                 groupUseCase.userLeaveGroup(groupId)
             }.onSuccess {
+                _message.value = "グループを抜けました"
                 _navigateToMyPage.value = " "
-                //TODO ユーザー削除のトーストを出す
             }.onFailure {
-                //TODO ユーザー削除失敗のトーストを出す
+                _message.value = it.message
             }
         }
     }
