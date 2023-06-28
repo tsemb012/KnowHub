@@ -3,20 +3,27 @@ package com.example.droidsoftthird
 import androidx.lifecycle.*
 import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.usecase.GroupUseCase
+import com.example.droidsoftthird.usecase.ProfileUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class GroupDetailViewModel @AssistedInject constructor(
-    private val useCase: GroupUseCase,
+    private val groupUseCase: GroupUseCase,
+    private val userUseCase: ProfileUseCase,
     @Assisted private val groupId:String,
 ):ViewModel() {
     //TODO ローカライズも拡張もしにくいひどいコードなので、全面的に書き直す
 
+    private val _userId = MutableLiveData<String>()
+    val userId: LiveData<String> get() = _userId
+
     private val _groupDetail = MutableLiveData<ApiGroup?>()
     val groupDetail: LiveData<ApiGroup?>
         get() = _groupDetail
+
+    val isHostGroup get() = groupDetail.value?.hostUserId == userId.value
 
     val prefectureAndCity: LiveData<String> = groupDetail.map{ group ->
         if (group?.prefecture == null && group?.city == null && group?.isOnline == true) {
@@ -98,16 +105,20 @@ class GroupDetailViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching { useCase.fetchGroupDetail(groupId) }.
-            onSuccess { _groupDetail.postValue(it) }.
-            onFailure { throw it }
+            runCatching { userUseCase.fetchUserId() }
+                .onSuccess { _userId.postValue(it) }
+                .onFailure { throw it }
+
+            runCatching { groupUseCase.fetchGroupDetail(groupId) }
+                .onSuccess { _groupDetail.postValue(it) }
+                .onFailure { throw it }
         }
     }
 
     fun userJoinGroup() {
         viewModelScope.launch {
             runCatching {
-                useCase.userJoinGroup(groupId)
+                groupUseCase.userJoinGroup(groupId)
             }.onSuccess {
                 _navigateToMyPage.value = " "
                 //TODO ユーザー追加のトーストを出す
@@ -120,7 +131,7 @@ class GroupDetailViewModel @AssistedInject constructor(
     fun userLeaveGroup() {
         viewModelScope.launch {
             runCatching {
-                useCase.userLeaveGroup(groupId)
+                groupUseCase.userLeaveGroup(groupId)
             }.onSuccess {
                 _navigateToMyPage.value = " "
                 //TODO ユーザー削除のトーストを出す

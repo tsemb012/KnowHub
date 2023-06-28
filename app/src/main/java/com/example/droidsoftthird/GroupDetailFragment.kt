@@ -49,6 +49,8 @@ class GroupDetailFragment : Fragment() {
                 binding.joinGroupFab.visibility = View.VISIBLE
                 binding.leaveGroupFab.visibility = View.GONE
             }
+
+            if (viewModel.isHostGroup) binding.leaveGroupFab.visibility = View.GONE
         }
 
         viewModel.confirmJoin.observe(viewLifecycleOwner, EventObserver{
