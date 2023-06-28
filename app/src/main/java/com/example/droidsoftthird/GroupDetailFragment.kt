@@ -43,17 +43,17 @@ class GroupDetailFragment : Fragment() {
         viewModel.groupDetail.observe(viewLifecycleOwner) {
             val isJoined = it?.members?.map { member -> member.userId }?.contains(FirebaseAuth.getInstance().currentUser?.uid)
             if(isJoined == true) {
-                binding.floatingBtnAdd.visibility = View.GONE
+                binding.joinGroupFab.visibility = View.GONE
+                binding.leaveGroupFab.visibility = View.VISIBLE
             } else {
-                binding.floatingBtnAdd.visibility = View.VISIBLE
+                binding.joinGroupFab.visibility = View.VISIBLE
+                binding.leaveGroupFab.visibility = View.GONE
             }
         }
 
-
         viewModel.confirmJoin.observe(viewLifecycleOwner, EventObserver{
             AlertDialog.Builder(requireContext())
-                .setTitle(R.string.confrimation)
-                .setMessage(R.string.confrimation_join_group)
+                .setTitle(R.string.confrimation_join_group)
                 .setPositiveButton(R.string.yes) { _, _ ->
                     viewModel.userJoinGroup()
                 }
@@ -61,6 +61,18 @@ class GroupDetailFragment : Fragment() {
                 }
                 .show()
         })
+
+        viewModel.confirmLeave.observe(viewLifecycleOwner, EventObserver{
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.confrimation_leave_group)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    viewModel.userLeaveGroup()
+                }
+                .setNeutralButton(R.string.cancel) { _, _ ->
+                }
+                .show()
+        })
+
         viewModel.navigateToMyPage.observe(viewLifecycleOwner, Observer { groupId ->
             groupId?.let {
                 this.findNavController().navigate(

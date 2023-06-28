@@ -206,6 +206,15 @@ class BaseRepositoryImpl @Inject constructor(
             GroupPagingSource(mainApi, userId, groupFilterCondition)
         }.flow
 
+    override suspend fun userLeaveGroup(groupId: String): String? {
+        val response = mainApi.removeUserFromGroup(groupId, PutUserToGroupJson(userId))
+        return if (response.isSuccessful) {
+            return response.body()?.message
+        } else {
+            throw Exception("userLeaveGroup is failed")
+        }
+    }
+
     override suspend fun userJoinGroup(groupId: String): String? {
         val response = mainApi.putUserToGroup(groupId, PutUserToGroupJson(userId))
         return if (response.isSuccessful) {
@@ -214,6 +223,7 @@ class BaseRepositoryImpl @Inject constructor(
             throw Exception("userJoinGroup is failed")
         }
     }
+
     override suspend fun fetchJoinedGroups() : List<ApiGroup> = mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
     override suspend fun fetchGroupCountByArea(): List<GroupCountByArea> = mainApi.fetchGroupCountByArea(userId, false).map { it.toEntity() }
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()

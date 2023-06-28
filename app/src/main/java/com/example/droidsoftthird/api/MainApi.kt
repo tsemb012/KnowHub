@@ -77,6 +77,12 @@ interface MainApi {
             @Body request: PutUserToGroupJson
     ): Response<MessageResponse>
 
+    @PATCH("groups/{id}/leave")
+    suspend fun removeUserFromGroup(
+            @Path("id") groupId: String,
+            @Body request: PutUserToGroupJson
+    ): Response<MessageResponse>
+
     @GET("maps/search_individual")
     suspend fun getIndividualPlace(
             @Query("input") query: String,
