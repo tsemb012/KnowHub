@@ -42,7 +42,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
     val city: LiveData<String> get() = _city
 
     private var areaCodes: Pair<Int?, Int?>? = null
-    private var isOnline: Boolean = areaCodes?.first == 0 && areaCodes?.second == 0
+    val isOnline: Boolean get() =  areaCodes?.first == 0 && areaCodes?.second == 0
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
