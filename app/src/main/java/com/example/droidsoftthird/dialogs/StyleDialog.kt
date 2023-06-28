@@ -19,7 +19,7 @@ class StyleDialogFragment: DialogFragment() {
             val builder = AlertDialog.Builder(it)
             builder
                 .setTitle(R.string.style)
-                .setIcon(R.drawable.baseline_emoji_emotions_24)
+                .setIcon(R.drawable.baseline_sentiment_satisfied_24)
                 .setItems(items) { _, which -> viewModel.postStyle(Style.values()[which]) }
             return    builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
