@@ -31,19 +31,29 @@
                 app:toolbarId="@+id/toolbar"
                 app:title="@{viewModel.groupDetail.groupName}"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded2"
-                >
+                app:collapsedTitleTextColor="@android:color/white">
 
-                <ImageView
-                    android:id="@+id/group_image"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:scaleType="centerCrop"
                     app:layout_anchor="@+id/appbar"
                     app:layout_anchorGravity="center"
-                    app:layout_collapseMode="parallax"
-                    app:srcCompat="@drawable/ic_launcher_foreground"
-                    app:imageFireStorage="@{viewModel.groupDetail.storageRef}"
-                    />
+                    app:layout_collapseMode="parallax">
+
+                    <ImageView
+                        android:id="@+id/group_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/ic_launcher_foreground"
+                        app:imageFireStorage="@{viewModel.groupDetail.storageRef}" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_overlay" />
+
+                </FrameLayout>
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/material_toolbar"
@@ -51,20 +61,8 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     android:background="@android:color/transparent"
-                    app:titleTextColor="?attr/colorOnSurface"
+                    app:titleTextColor="@color/white"
                     app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
-
-
-
-                <!--androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerProfiles"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="120dp"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/i002_item_view_profile"
-                    //TODO ログイン及びプロフィールの実装が完成した際-->
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
