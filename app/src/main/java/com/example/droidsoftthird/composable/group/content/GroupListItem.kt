@@ -54,7 +54,6 @@ fun GroupListItem(group: ApiGroup, navigateToDetail: (String) -> Unit) {
                     .align(Alignment.CenterVertically)
                     .border(1.dp, Color.Black.copy(alpha = 0.1F), RoundedCornerShape(24.dp)),
                 contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-
             )
             Spacer(modifier = Modifier.width(16.dp))
 

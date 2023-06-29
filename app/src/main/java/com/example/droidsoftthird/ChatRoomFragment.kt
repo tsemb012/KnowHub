@@ -88,6 +88,7 @@ class ChatRoomFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        binding.chatTitleToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         adapter = ChatAdapter(context, object: MessageClickListener{
@@ -165,7 +166,6 @@ class ChatRoomFragment : Fragment() {
             handleRecord()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
-
     }
 
     override fun onStart() {
