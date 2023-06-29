@@ -2,8 +2,10 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
+import com.example.droidsoftthird.model.domain_model.ChatGroup
 import com.example.droidsoftthird.model.domain_model.fire_model.*
 import com.example.droidsoftthird.repository.MessageRepository
+import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -15,10 +17,18 @@ import kotlin.collections.ArrayList
 
 class ChatRoomViewModel @AssistedInject constructor(
     private val repository: MessageRepository,
+    private val groupUseCase: GroupUseCase,
     @Assisted private val groupId:String
 ) : ViewModel() {
 
     val authUser = FirebaseAuth.getInstance().currentUser
+
+    private val _chatGroup = MutableLiveData<ChatGroup>()
+    val chatGroup: LiveData<ChatGroup> get() = _chatGroup
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> get() = _error
+
 
     //=====EditMessageでの入力処理を管理
     val editMessage = MutableLiveData<String>()//双方向バインディングにより、入力されたデータを保存。
@@ -35,6 +45,18 @@ class ChatRoomViewModel @AssistedInject constructor(
         get() = _messages
 
     init {
+        viewModelScope.launch {
+            runCatching {
+                groupUseCase.fetchChatGroup(groupId)
+            }.
+            onSuccess {
+                _chatGroup.value = it
+            }.
+            onFailure {
+                _error.value = it.message
+            }
+        }
+
         viewModelScope.launch {
             repository.getChatEvents(groupId).collect{
 
@@ -96,9 +118,9 @@ class ChatRoomViewModel @AssistedInject constructor(
     fun createTextMessage(){
         val message =
             TextMessage(
-                FirebaseAuth.getInstance().uid,
-                authUser?.displayName,
-                authUser?.photoUrl.toString(),
+                FirebaseAuth.getInstance().uid,//TODO
+                authUser?.displayName,//TODO
+                authUser?.photoUrl.toString(),//TODO
                 0.0,
                 editMessage.value,
                 Date()) as FireMessage
@@ -120,9 +142,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                             val storageImageRef = it.data.path.plus(IMAGE_SIZE)
                             val message =
                                 ImageMessage(
-                                    FirebaseAuth.getInstance().uid,
-                                    authUser.displayName,
-                                    authUser.photoUrl.toString(),
+                                    FirebaseAuth.getInstance().uid,//TODO
+                                    authUser.displayName,//TODO
+                                    authUser.photoUrl.toString(),//TODO
                                     1.0,
                                     storageImageRef,
                                     Date()
@@ -149,9 +171,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                         val fileDownloadUrl = it.data.toString()//TODO　あまりにも通信量が大きくなるようであれば、コメントアウトする。
                         val message =
                             FileMessage(
-                                FirebaseAuth.getInstance().uid,
-                                authUser.displayName,
-                                authUser.photoUrl.toString(),
+                                FirebaseAuth.getInstance().uid,//TODO
+                                authUser.displayName,//TODO
+                                authUser.photoUrl.toString(),//TODO
                                 2.0,
                                 fileUri.lastPathSegment.toString(),
                                 fileDownloadUrl,
@@ -178,9 +200,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                         val recordDownloadUrl = it.data.toString()
                         val message =
                             RecordMessage(
-                                FirebaseAuth.getInstance().uid,
-                                authUser.displayName,
-                                authUser.photoUrl.toString(),
+                                FirebaseAuth.getInstance().uid,//TODO
+                                authUser.displayName,//TODO
+                                authUser.photoUrl.toString(),//TODO
                                 3.0,
                                 recordDownloadUrl,
                                 duration,
