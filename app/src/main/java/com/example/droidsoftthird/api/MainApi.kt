@@ -52,6 +52,9 @@ interface MainApi {
     @GET("groups/{id}")
     suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupJson>
 
+    @GET("groups/{id}/chat")
+    suspend fun fetchChatGroup(@Path("id") groupId: String): Response<GetChatGroupJson>
+
     @GET("groups")
     suspend fun fetchGroups(
         @Query("page") page: Int? = null,
@@ -70,6 +73,8 @@ interface MainApi {
         @Query("user_id") userId: String,
         @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = false,
     ): List<GetGroupCountByAreaJson>
+
+
 
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
@@ -150,4 +155,5 @@ interface MainApi {
     suspend fun deleteEvent(
         @Path("id") eventId: String
     ): MessageResponse
+
 }

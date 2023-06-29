@@ -36,4 +36,5 @@ interface RailsApiRepository {
     suspend fun fetchUserJoinedGroupIds(): List<String>
 
     suspend fun fetchUserJoinedSimpleGroups(): List<SimpleGroup>
+    suspend fun fetchChatGroup(groupId: String): ChatGroup
 }
