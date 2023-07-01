@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.compose.material.Text
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -67,8 +69,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         viewModel.fetchSimpleGroups()
         setupView()
         bindUiModel()
-
-
     }
 
 
