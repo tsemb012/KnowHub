@@ -29,7 +29,6 @@ class ChatRoomViewModel @AssistedInject constructor(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
-
     //=====EditMessageでの入力処理を管理
     val editMessage = MutableLiveData<String>()//双方向バインディングにより、入力されたデータを保存。
     val enableState = MediatorLiveData<Boolean>().also { result ->

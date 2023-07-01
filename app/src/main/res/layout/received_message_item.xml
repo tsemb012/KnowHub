@@ -50,7 +50,7 @@
             app:layout_constraintTop_toTopOf="@id/user_image_view"
             tools:text="Name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image_view"
             android:layout_width="36dp"
             android:layout_height="36dp"
