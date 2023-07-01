@@ -32,8 +32,8 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        //private const val BASE_URL = "http://192.168.10.104:3000/"
-        private const val BASE_URL = "http://192.168.200.194:3000/"
+        private const val BASE_URL = "http://192.168.10.104:3000/"
+        //private const val BASE_URL = "http://192.168.200.194:3000/"
         //private const val BASE_URL = "https://dst-cloud-heroku.herokuapp.com/"
         private const val TOKEN_ID_KEY = "token_id_key"
     }

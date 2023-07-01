@@ -24,7 +24,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -44,6 +43,8 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.stfalcon.imageviewer.loader.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -125,13 +126,13 @@ class ChatRoomFragment : Fragment() {
 
         binding.messageRecycler.adapter = adapter
 
-        viewModel.messages.observe(viewLifecycleOwner, Observer{
+        viewModel.messages.observe(viewLifecycleOwner) {
             messageList = it as MutableList<FireMessage>
             ChatAdapter.messageList = messageList
-            it.let{adapter.submitList(it)}
+            it.let { adapter.submitList(it) }
 
-            binding.messageRecycler.scrollToPosition(adapter.itemCount-1)
-        })
+            binding.messageRecycler.scrollToPosition(adapter.itemCount - 1)
+        }
 
         viewModel.navigationToGroupDetail.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
@@ -166,6 +167,12 @@ class ChatRoomFragment : Fragment() {
             handleRecord()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
+
+        viewModel.notifier.observe(viewLifecycleOwner) {
+            runBlocking { delay(500L) }
+            binding.messageRecycler.invalidate()
+        }
+
     }
 
     override fun onStart() {

@@ -29,6 +29,9 @@ class ChatRoomViewModel @AssistedInject constructor(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    private val _notifier = MutableLiveData<Boolean>()
+    val notifier: LiveData<Boolean> get() = _notifier
+
     //=====EditMessageでの入力処理を管理
     val editMessage = MutableLiveData<String>()//双方向バインディングにより、入力されたデータを保存。
     val enableState = MediatorLiveData<Boolean>().also { result ->
@@ -135,7 +138,7 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     fun createImageMessage(imageUri:Uri) {
         viewModelScope.launch {
-                async{repository.uploadPhoto(imageUri)}.await().also {
+                async{ repository.uploadPhoto(imageUri)}.await().also {
                     when(it){
                         is Result.Success -> {
                             val storageImageRef = it.data.path.plus(IMAGE_SIZE)
@@ -148,11 +151,11 @@ class ChatRoomViewModel @AssistedInject constructor(
                                     storageImageRef,
                                     Date()
                                 ) as FireMessage
-                            val result:Result<Int> = repository.createMessage(message,groupId)
-                            /*when(result){
-                              is Result.Success ->  //TODO アップロード成功時の処理を記述する。
-                              else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
-                            }*/
+                            val result: Result<Int> = repository.createMessage(message,groupId)
+                            when(result){
+                              is Result.Success ->  _notifier.value = !(notifier.value ?: false)
+                              else -> Unit//TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                            }
                         }
                         //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
                         else -> {}
