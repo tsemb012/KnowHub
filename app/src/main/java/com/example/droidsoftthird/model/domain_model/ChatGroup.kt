@@ -7,4 +7,8 @@ data class ChatGroup(
     val members: List<SimpleUser> = listOf(),
 ) {
     val hostUser: SimpleUser get() = members.first { it.userId == hostUserId }
+
+    fun getLogInUser(userId: String): SimpleUser {
+        return members.filter { it.userId == userId }.first()
+    }
 }

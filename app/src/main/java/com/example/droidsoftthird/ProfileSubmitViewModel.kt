@@ -21,7 +21,7 @@ import java.time.LocalDate
 open class ProfileSubmitViewModel (private val useCase: ProfileUseCase): ViewModel() {
 
     companion object {
-        private const val IMAGE_SIZE = "_200x200"
+        private const val IMAGE_SIZE = "_400x400"
         const val URI_FOR_UPDATE = "URI_FOR_UPDATE"
         const val REF_FOR_INITIALIZE = "REF_FOR_INITIALIZE"
     }
