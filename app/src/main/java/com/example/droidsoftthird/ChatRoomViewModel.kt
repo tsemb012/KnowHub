@@ -118,9 +118,9 @@ class ChatRoomViewModel @AssistedInject constructor(
     fun createTextMessage(){
         val message =
             TextMessage(
-                FirebaseAuth.getInstance().uid,//TODO
-                authUser?.displayName,//TODO
-                authUser?.photoUrl.toString(),//TODO
+                FirebaseAuth.getInstance().uid,//TODO 本来はchatGroup.value?.hostUser?.userIdにしたいけど不具合が出るので下に戻す。
+                chatGroup.value?.hostUser?.userName ?: "",
+                chatGroup.value?.hostUser?.userImage ?: "",
                 0.0,
                 editMessage.value,
                 Date()) as FireMessage
@@ -142,9 +142,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                             val storageImageRef = it.data.path.plus(IMAGE_SIZE)
                             val message =
                                 ImageMessage(
-                                    FirebaseAuth.getInstance().uid,//TODO
-                                    authUser.displayName,//TODO
-                                    authUser.photoUrl.toString(),//TODO
+                                    FirebaseAuth.getInstance().uid,//TODO 本来はchatGroup.value?.hostUser?.userIdにしたいけど不具合が出るので下に戻す。
+                                    chatGroup.value?.hostUser?.userName ?: "",
+                                    chatGroup.value?.hostUser?.userImage ?: "",
                                     1.0,
                                     storageImageRef,
                                     Date()
@@ -171,9 +171,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                         val fileDownloadUrl = it.data.toString()//TODO　あまりにも通信量が大きくなるようであれば、コメントアウトする。
                         val message =
                             FileMessage(
-                                FirebaseAuth.getInstance().uid,//TODO
-                                authUser.displayName,//TODO
-                                authUser.photoUrl.toString(),//TODO
+                                FirebaseAuth.getInstance().uid,//TODO 本来はchatGroup.value?.hostUser?.userIdにしたいけど不具合が出るので下に戻す。
+                                chatGroup.value?.hostUser?.userName ?: "",
+                                chatGroup.value?.hostUser?.userImage ?: "",
                                 2.0,
                                 fileUri.lastPathSegment.toString(),
                                 fileDownloadUrl,
@@ -200,9 +200,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                         val recordDownloadUrl = it.data.toString()
                         val message =
                             RecordMessage(
-                                FirebaseAuth.getInstance().uid,//TODO
-                                authUser.displayName,//TODO
-                                authUser.photoUrl.toString(),//TODO
+                                FirebaseAuth.getInstance().uid,//TODO 本来はchatGroup.value?.hostUser?.userIdにしたいけど不具合が出るので下に戻す。
+                                chatGroup.value?.hostUser?.userName ?: "",
+                                chatGroup.value?.hostUser?.userImage ?: "",
                                 3.0,
                                 recordDownloadUrl,
                                 duration,
