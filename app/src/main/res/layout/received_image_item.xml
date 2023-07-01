@@ -57,7 +57,7 @@
                 app:layout_constraintEnd_toStartOf="@id/text_message_received"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:imageUserUrlString="@{message.userImageUrl}"/>
+                app:imageFireStorage="@{message.userImageUrl}"/>
 
             <ImageView
                 android:id="@+id/text_message_received"

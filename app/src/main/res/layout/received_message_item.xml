@@ -50,7 +50,7 @@
             app:layout_constraintTop_toTopOf="@id/user_image_view"
             tools:text="Name" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/user_image_view"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -59,7 +59,7 @@
             app:layout_constraintEnd_toStartOf="@id/text_message_received"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:imageUserUrlString="@{message.userImageUrl}"
+            app:imageFireStorage="@{message.userImageUrl}"
             />
 
         <TextView
