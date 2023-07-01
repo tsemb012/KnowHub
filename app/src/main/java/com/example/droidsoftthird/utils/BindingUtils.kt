@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.utils
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
@@ -7,11 +8,16 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
 import com.google.android.material.slider.Slider
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,21 +61,42 @@ fun ImageView.imageURI(imageMap: Map<String, String>?) {
 //DONE GlideでStorageのデータを表示する。
 @BindingAdapter("imageFireStorage")
 fun ImageView.imageFireStorage(ref: String?) {
-    if (ref != null){
-        Glide.with(this)
-            .load(FirebaseStorage.getInstance().getReference(ref))//TODO Transformationで画像の加工処理を行う。
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//Changed from AUTOMATIC to RESOURCE
-            .apply(
-                RequestOptions()
-                    .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.ic_broken_image)
-            )
-            .into(this)
-    }else{
-        Glide.with(this)
-            .load(R.drawable.loading_animation)
-            .into(this)
-    }
+    val maxRetries = 3 // 最大再試行回数
+    var retries = 0 // 現在の再試行回数
+
+    val glide = Glide.with(this)
+        .load(if (ref != null) FirebaseStorage.getInstance().getReference(ref) else R.drawable.loading_animation)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        .apply(
+            RequestOptions()
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_baseline_image_24)
+        )
+
+    glide.listener(object : RequestListener<Drawable> {
+        override fun onLoadFailed(
+            e: GlideException?,
+            model: Any?,
+            target: com.bumptech.glide.request.target.Target<Drawable>?,
+            isFirstResource: Boolean,
+        ): Boolean {
+            if (retries < maxRetries) {
+                retries++
+                glide.into(this@imageFireStorage)
+            }
+            return false // falseを返すと、error Drawableが表示されます。
+        }
+
+        override fun onResourceReady(
+            resource: Drawable?,
+            model: Any?,
+            target: com.bumptech.glide.request.target.Target<Drawable>?,
+            dataSource: DataSource?,
+            isFirstResource: Boolean,
+        ): Boolean {
+            return false // falseを返すと、読み込みが成功した画像が表示されます。
+        }
+    }).into(this)
 }
 
 @BindingAdapter("imageURI")

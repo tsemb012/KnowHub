@@ -136,7 +136,6 @@
                 tools:context=".ChatRoomFragment">
 
                 <androidx.recyclerview.widget.RecyclerView
-
                     android:id="@+id/message_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -146,9 +145,7 @@
                     app:layout_constraintVertical_bias="0.0"
                     android:clipToPadding="false"
                     android:paddingTop="110dp"
-                    android:paddingBottom="30dp"
-
-                    />
+                    android:paddingBottom="30dp"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/record_voice_fab"
