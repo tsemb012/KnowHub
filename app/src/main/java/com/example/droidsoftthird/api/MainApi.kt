@@ -74,8 +74,6 @@ interface MainApi {
         @Query("allow_max_number_group_show") allowMaxNumberGroupShow: Boolean = false,
     ): List<GetGroupCountByAreaJson>
 
-
-
     @PATCH("groups/{id}/participate")
     suspend fun putUserToGroup(
             @Path("id") groupId: String,
@@ -155,5 +153,4 @@ interface MainApi {
     suspend fun deleteEvent(
         @Path("id") eventId: String
     ): MessageResponse
-
 }
