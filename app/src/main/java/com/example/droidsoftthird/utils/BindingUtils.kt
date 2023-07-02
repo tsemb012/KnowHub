@@ -71,6 +71,7 @@ fun ImageView.imageFireStorageForChat(ref: String?) {
                     withContext(Dispatchers.Main) {
                         Glide.with(this@imageFireStorageForChat)
                             .load(uri)
+                            .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .apply(
                                 RequestOptions()
