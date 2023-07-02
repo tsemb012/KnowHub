@@ -2,8 +2,10 @@ package com.example.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
+import com.example.droidsoftthird.model.domain_model.ChatGroup
 import com.example.droidsoftthird.model.domain_model.fire_model.*
 import com.example.droidsoftthird.repository.MessageRepository
+import com.example.droidsoftthird.usecase.GroupUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -15,10 +17,20 @@ import kotlin.collections.ArrayList
 
 class ChatRoomViewModel @AssistedInject constructor(
     private val repository: MessageRepository,
+    private val groupUseCase: GroupUseCase,
     @Assisted private val groupId:String
 ) : ViewModel() {
 
     val authUser = FirebaseAuth.getInstance().currentUser
+
+    private val _chatGroup = MutableLiveData<ChatGroup>()
+    val chatGroup: LiveData<ChatGroup> get() = _chatGroup
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> get() = _error
+
+    private val _notifier = MutableLiveData<Boolean>()
+    val notifier: LiveData<Boolean> get() = _notifier
 
     //=====EditMessageでの入力処理を管理
     val editMessage = MutableLiveData<String>()//双方向バインディングにより、入力されたデータを保存。
@@ -36,8 +48,19 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            repository.getChatEvents(groupId).collect{
+            runCatching {
+                groupUseCase.fetchChatGroup(groupId)
+            }.
+            onSuccess {
+                _chatGroup.value = it
+            }.
+            onFailure {
+                _error.value = it.message
+            }
+        }
 
+        viewModelScope.launch {
+            repository.getChatEvents(groupId).collect{
                 val messageList = ArrayList<FireMessage>()
                 for(doc in it){
                     val message = when(doc.get("messageType")){
@@ -48,8 +71,8 @@ class ChatRoomViewModel @AssistedInject constructor(
                         else -> {}
                     }
                     messageList.add(message as FireMessage)
-                    _messages.postValue(messageList)
                 }
+                _messages.postValue(messageList)
             }
         }
     }
@@ -96,9 +119,9 @@ class ChatRoomViewModel @AssistedInject constructor(
     fun createTextMessage(){
         val message =
             TextMessage(
-                FirebaseAuth.getInstance().uid,
-                authUser?.displayName,
-                authUser?.photoUrl.toString(),
+                FirebaseAuth.getInstance().uid,//TODO HostUserではなく、現在ログインしているユーザーを取得する。
+                chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userName,
+                chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userImage,
                 0.0,
                 editMessage.value,
                 Date()) as FireMessage
@@ -114,24 +137,24 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     fun createImageMessage(imageUri:Uri) {
         viewModelScope.launch {
-                async{repository.uploadPhoto(imageUri)}.await().also {
+                async{ repository.uploadPhoto(imageUri)}.await().also {
                     when(it){
                         is Result.Success -> {
                             val storageImageRef = it.data.path.plus(IMAGE_SIZE)
                             val message =
                                 ImageMessage(
-                                    FirebaseAuth.getInstance().uid,
-                                    authUser.displayName,
-                                    authUser.photoUrl.toString(),
+                                    FirebaseAuth.getInstance().uid,//TODO HostUserではなく、現在ログインしているユーザーを取得する。
+                                    chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userName,
+                                    chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userImage,
                                     1.0,
                                     storageImageRef,
                                     Date()
                                 ) as FireMessage
-                            val result:Result<Int> = repository.createMessage(message,groupId)
-                            /*when(result){
-                              is Result.Success ->  //TODO アップロード成功時の処理を記述する。
-                              else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
-                            }*/
+                            val result: Result<Int> = repository.createMessage(message,groupId)
+                            when(result){
+                              is Result.Success ->  _notifier.value = !(notifier.value ?: false)
+                              else -> Unit//TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
+                            }
                         }
                         //else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
                         else -> {}
@@ -149,9 +172,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                         val fileDownloadUrl = it.data.toString()//TODO　あまりにも通信量が大きくなるようであれば、コメントアウトする。
                         val message =
                             FileMessage(
-                                FirebaseAuth.getInstance().uid,
-                                authUser.displayName,
-                                authUser.photoUrl.toString(),
+                                FirebaseAuth.getInstance().uid,//TODO HostUserではなく、現在ログインしているユーザーを取得する。
+                                chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userName,
+                                chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userImage,
                                 2.0,
                                 fileUri.lastPathSegment.toString(),
                                 fileDownloadUrl,
@@ -178,9 +201,9 @@ class ChatRoomViewModel @AssistedInject constructor(
                         val recordDownloadUrl = it.data.toString()
                         val message =
                             RecordMessage(
-                                FirebaseAuth.getInstance().uid,
-                                authUser.displayName,
-                                authUser.photoUrl.toString(),
+                                FirebaseAuth.getInstance().uid,//TODO HostUserではなく、現在ログインしているユーザーを取得する。
+                                chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userName,
+                                chatGroup.value?.getLogInUser(FirebaseAuth.getInstance().uid!!)?.userImage,
                                 3.0,
                                 recordDownloadUrl,
                                 duration,
@@ -209,7 +232,7 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     companion object {
         private val TAG: String? = ChatRoomViewModel::class.simpleName
-        private const val IMAGE_SIZE = "_200x200"
+        private const val IMAGE_SIZE = "_400x400"
     }
 
 }

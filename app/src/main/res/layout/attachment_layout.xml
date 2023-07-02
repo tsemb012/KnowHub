@@ -33,14 +33,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/send_picture"
-        android:backgroundTint="@color/primary_blue"
+        android:backgroundTint="@color/base_100"
         android:padding="10dp"
         android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:textColor="@color/primary_dark"
         android:textSize="18dp"
         android:onClick="@{() -> viewModel.attachImage()}"/>
 
-    <Button
+    <!--<Button
         android:id="@+id/sendFileButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -52,6 +52,6 @@
         android:padding="10dp"
         android:textColor="@color/white"
         android:textSize="18dp"
-        android:onClick="@{() -> viewModel.attachFile()}"/>
+        android:onClick="@{() -> viewModel.attachFile()}"/>-->
 </LinearLayout>
 </layout>

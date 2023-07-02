@@ -57,7 +57,7 @@
                 app:layout_constraintEnd_toStartOf="@id/record_message"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:imageUserUrlString="@{message.userImageUrl}"
+                app:imageFireStorage="@{message.userImageUrl}"
                 />
 
             <androidx.constraintlayout.widget.ConstraintLayout

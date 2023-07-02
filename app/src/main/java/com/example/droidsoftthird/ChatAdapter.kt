@@ -297,7 +297,6 @@ class SentRecordMessageViewHolder private constructor(val binding: SentRecordIte
         recordMessage.isPlaying = false
         binding.playPauseImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
         binding.progressBar.max = 0
-        binding.durationTextView.text = ""
         binding.playPauseImage.setOnClickListener {
             startPlaying(
                 item.voiceRef!!,
@@ -333,7 +332,6 @@ class ReceivedRecordMessageViewHolder private constructor(val binding: ReceivedR
         recordMessage.isPlaying = false
         binding.playPauseImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
         binding.progressBar.max = 0
-        binding.durationTextView.text = ""
         binding.playPauseImage.setOnClickListener {
             startPlaying(
                 item.voiceRef!!,
