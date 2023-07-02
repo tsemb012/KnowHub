@@ -175,7 +175,6 @@ class ChatRoomFragment : Fragment() {
             runBlocking { delay(500L) }
             binding.messageRecycler.invalidate()
         }
-
     }
 
     override fun onStart() {
@@ -411,16 +410,4 @@ class ChatRoomFragment : Fragment() {
     }
 
 }
-
-
-//TODO Permission(requestWritePermissionLauncher)に対して、引数を渡す方法を検討する。
-//TODO PermissionやMediaを使用した際のMVVMを検討する。
-//TODO VoiceのしようとDownLoadの使用によりPermission関連の記述が多くなっている。コードをキレイにする方法はないだろうか。
-
-//TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。
-//TODO Audio再生中にプログレスバーが更新されない不具合を確認する。
-
-//TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
-
-//TODO Permissionの文言を日本語に書き換える。
-//TODO DexterでのPermissionを置き換える。
+//TODO クソコードだけど、問題なく動いているのでリファクタは後回し。
