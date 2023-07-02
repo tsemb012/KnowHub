@@ -256,7 +256,7 @@ class ChatRoomFragment : Fragment() {
         increaser.setTarget(binding.recordVoiceFab)
         increaser.start()
         binding.recordVoiceFab.backgroundTintList =
-            ColorStateList.valueOf(Color.parseColor("#EE4B4B"))
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.primary_accent_yellow))
 
 
         //StartRecording
@@ -287,7 +287,7 @@ class ChatRoomFragment : Fragment() {
         regainer.setTarget(binding.recordVoiceFab)
         regainer.start()
         binding.recordVoiceFab.backgroundTintList =
-            ColorStateList.valueOf(Color.parseColor("#b39ddb"))
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.primary_dark))
 
         //stopRecording
         recorder?.apply {

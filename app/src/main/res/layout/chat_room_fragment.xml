@@ -131,7 +131,7 @@
                     android:layout_marginBottom="10dp"
                     android:backgroundTint="@color/white"
                     android:src="@drawable/ic_baseline_mic_none_24"
-                    app:backgroundTint="@color/primary_white"
+                    app:backgroundTint="@color/primary_dark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:onClick="@{() -> viewModel.recordVoice()}"/>
