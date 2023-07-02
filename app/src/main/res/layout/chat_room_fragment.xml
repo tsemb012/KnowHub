@@ -145,7 +145,7 @@
                     app:layout_constraintVertical_bias="0.0"
                     android:clipToPadding="false"
                     android:paddingTop="110dp"
-                    android:paddingBottom="30dp"/>
+                    android:paddingBottom="90dp"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/record_voice_fab"

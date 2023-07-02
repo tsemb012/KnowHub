@@ -130,8 +130,10 @@ class ChatRoomFragment : Fragment() {
             messageList = it as MutableList<FireMessage>
             ChatAdapter.messageList = messageList
             it.let { adapter.submitList(it) }
-
-            binding.messageRecycler.scrollToPosition(adapter.itemCount - 1)
+            adapter.notifyDataSetChanged()
+            binding.messageRecycler.post {
+                binding.messageRecycler.scrollToPosition(adapter.itemCount - 1)
+            }
         }
 
         viewModel.navigationToGroupDetail.observe(viewLifecycleOwner,EventObserver{
