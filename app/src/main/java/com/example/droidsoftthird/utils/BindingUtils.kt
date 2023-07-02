@@ -21,7 +21,6 @@ import kotlinx.coroutines.withContext
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 
 @BindingAdapter("imageURI")
@@ -60,8 +59,8 @@ fun ImageView.imageURI(imageMap: Map<String, String>?) {
 }
 
 //DONE GlideでStorageのデータを表示する。
-@BindingAdapter("imageFireStorage")
-fun ImageView.imageFireStorage(ref: String?) {
+@BindingAdapter("imageFireStorageForChat")
+fun ImageView.imageFireStorageForChat(ref: String?) {
     if (ref != null) {
         val maxAttempts = 3
         var currentAttempt = 0
@@ -70,7 +69,7 @@ fun ImageView.imageFireStorage(ref: String?) {
                 try {
                     val uri = FirebaseStorage.getInstance().reference.child(ref).downloadUrl.await()
                     withContext(Dispatchers.Main) {
-                        Glide.with(this@imageFireStorage)
+                        Glide.with(this@imageFireStorageForChat)
                             .load(uri)
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .apply(
@@ -78,16 +77,16 @@ fun ImageView.imageFireStorage(ref: String?) {
                                     .placeholder(R.drawable.loading_animation)
                                     .error(R.drawable.ic_baseline_image_24)
                             )
-                            .into(this@imageFireStorage)
+                            .into(this@imageFireStorageForChat)
                     }
                     break
                 } catch (e: Exception) {
                     if (++currentAttempt >= maxAttempts) {
                         withContext(Dispatchers.Main) {
-                            Glide.with(this@imageFireStorage)
+                            Glide.with(this@imageFireStorageForChat)
                             .load(R.drawable.ic_baseline_image_24)
                             .placeholder(R.drawable.ic_broken_image)
-                            .into(this@imageFireStorage)
+                            .into(this@imageFireStorageForChat)
                         }
                     } else {
                         delay(1000) // Wait for 1 second before the next attempt
@@ -95,6 +94,25 @@ fun ImageView.imageFireStorage(ref: String?) {
                 }
             }
         }
+    }
+}
+
+@BindingAdapter("imageFireStorage")
+fun ImageView.imageFireStorage(ref: String?) {
+    if (ref != null){
+        Glide.with(this)
+            .load(FirebaseStorage.getInstance().getReference(ref))//TODO Transformationで画像の加工処理を行う。
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//Changed from AUTOMATIC to RESOURCE
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.ic_broken_image)
+            )
+            .into(this)
+    }else{
+        Glide.with(this)
+            .load(R.drawable.loading_animation)
+            .into(this)
     }
 }
 

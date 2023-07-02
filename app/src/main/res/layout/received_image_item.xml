@@ -72,7 +72,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/user_image_view"
                 app:layout_constraintTop_toBottomOf="@+id/user_name"
-                app:imageFireStorage="@{message.imageRef}"
+                app:imageFireStorageForChat="@{message.imageRef}"
                 android:src="@drawable/ic_baseline_image_24"
                 android:onClick="@{() -> clickListener.onMessageClicked(position,message)}"
                 />
