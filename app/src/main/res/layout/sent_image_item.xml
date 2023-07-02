@@ -48,7 +48,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:imageFireStorage="@{message.imageRef}"
-                android:src="@mipmap/ic_launcher_round"
+                android:src="@drawable/ic_baseline_image_24"
                 android:onClick="@{() -> clickListener.onMessageClicked(position,message)}"/>
 
             <TextView
