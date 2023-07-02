@@ -52,6 +52,9 @@ interface MainApi {
     @GET("groups/{id}")
     suspend fun fetchGroup(@Path("id") groupId: String): Response<GetGroupJson>
 
+    @GET("groups/{id}/chat")
+    suspend fun fetchChatGroup(@Path("id") groupId: String): Response<GetChatGroupJson>
+
     @GET("groups")
     suspend fun fetchGroups(
         @Query("page") page: Int? = null,

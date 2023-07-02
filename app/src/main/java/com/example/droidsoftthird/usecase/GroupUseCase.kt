@@ -26,4 +26,5 @@ class GroupUseCase @Inject constructor(private val repository: BaseRepositoryImp
 
     suspend fun fetchPrefectureList() = repository.loadPrefectureCsv()
     suspend fun fetchCityList() = repository.loadCityCsv()
+    suspend fun fetchChatGroup(groupId: String) = repository.fetchChatGroup(groupId)
 }

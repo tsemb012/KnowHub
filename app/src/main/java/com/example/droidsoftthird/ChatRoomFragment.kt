@@ -24,7 +24,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -44,11 +43,14 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.stfalcon.imageviewer.loader.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -88,6 +90,7 @@ class ChatRoomFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        binding.chatTitleToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         adapter = ChatAdapter(context, object: MessageClickListener{
@@ -124,13 +127,15 @@ class ChatRoomFragment : Fragment() {
 
         binding.messageRecycler.adapter = adapter
 
-        viewModel.messages.observe(viewLifecycleOwner, Observer{
+        viewModel.messages.observe(viewLifecycleOwner) {
             messageList = it as MutableList<FireMessage>
             ChatAdapter.messageList = messageList
-            it.let{adapter.submitList(it)}
-
-            binding.messageRecycler.scrollToPosition(adapter.itemCount-1)
-        })
+            it.let { adapter.submitList(it) }
+            adapter.notifyDataSetChanged()
+            binding.messageRecycler.post {
+                binding.messageRecycler.scrollToPosition(adapter.itemCount - 1)
+            }
+        }
 
         viewModel.navigationToGroupDetail.observe(viewLifecycleOwner,EventObserver{
             findNavController().navigate(
@@ -166,6 +171,10 @@ class ChatRoomFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         })
 
+        viewModel.notifier.observe(viewLifecycleOwner) {
+            runBlocking { delay(500L) }
+            binding.messageRecycler.invalidate()
+        }
     }
 
     override fun onStart() {
@@ -192,7 +201,7 @@ class ChatRoomFragment : Fragment() {
             showPlaceholderRecord()
             viewModel.createRecordMessage(
                 "${requireActivity().externalCacheDir?.absolutePath}/audiorecord.3gp",
-                recordDuration.toString(),
+                recordDuration.toString(),//convertMillisToReadableTime(recordDuration),
                 )
             Toast.makeText(context, "録音が完了しました。", Toast.LENGTH_SHORT).show()
             isRecording = !isRecording
@@ -246,7 +255,7 @@ class ChatRoomFragment : Fragment() {
         increaser.setTarget(binding.recordVoiceFab)
         increaser.start()
         binding.recordVoiceFab.backgroundTintList =
-            ColorStateList.valueOf(Color.parseColor("#EE4B4B"))
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.primary_accent_yellow))
 
 
         //StartRecording
@@ -277,7 +286,7 @@ class ChatRoomFragment : Fragment() {
         regainer.setTarget(binding.recordVoiceFab)
         regainer.start()
         binding.recordVoiceFab.backgroundTintList =
-            ColorStateList.valueOf(Color.parseColor("#b39ddb"))
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.primary_dark))
 
         //stopRecording
         recorder?.apply {
@@ -401,16 +410,4 @@ class ChatRoomFragment : Fragment() {
     }
 
 }
-
-
-//TODO Permission(requestWritePermissionLauncher)に対して、引数を渡す方法を検討する。
-//TODO PermissionやMediaを使用した際のMVVMを検討する。
-//TODO VoiceのしようとDownLoadの使用によりPermission関連の記述が多くなっている。コードをキレイにする方法はないだろうか。
-
-//TODO ChatFragmentに前画面への戻るボタンを設置する。DetailGroupFragmentを参考にする。
-//TODO Audio再生中にプログレスバーが更新されない不具合を確認する。
-
-//TODO Adapterに対してSubmitを行った上でさらにnotifyItemInsertedを行っているのはなぜなのか？理解する。
-
-//TODO Permissionの文言を日本語に書き換える。
-//TODO DexterでのPermissionを置き換える。
+//TODO クソコードだけど、問題なく動いているのでリファクタは後回し。

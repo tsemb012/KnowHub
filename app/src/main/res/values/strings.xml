@@ -88,7 +88,7 @@
     <string name="audio_permission_denied">オーディオへのアクセスが拒否されました。</string>
     <string name="audio_permission_available">オーディオへのアクセスが許可されています。録音を開始します。</string>
     <string name="permisson_is_denied">permission is denied.</string>
-    <string name="test_aaa">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</string>
+    <string name="test_aaa">あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</string>
     <string name="download_clicked_file_or_not">クリックしたファイルをダウンロードしますか。</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>

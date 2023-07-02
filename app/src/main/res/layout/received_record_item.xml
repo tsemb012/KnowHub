@@ -37,13 +37,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:lineSpacingExtra="2dp"
-                android:paddingStart="20dp"
+                android:layout_marginStart="4dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
                 android:text="@{message.userName}"
                 android:textSize="12sp"
                 android:textAllCaps="true"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/user_image_view"
                 app:layout_constraintTop_toTopOf="@id/user_image_view"
                 tools:text="Name" />
@@ -57,7 +58,7 @@
                 app:layout_constraintEnd_toStartOf="@id/record_message"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:imageUserUrlString="@{message.userImageUrl}"
+                app:imageFireStorage="@{message.userImageUrl}"
                 />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,6 +69,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/user_image_view"
                 app:layout_constraintTop_toBottomOf="@+id/user_name"
+                android:layout_marginStart="4dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="start"
                 android:maxWidth="230dp"
@@ -79,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     app:layout_constraintVertical_bias="0.15"
                     android:padding="8dp"
                     android:src="@drawable/ic_play_arrow_black_24dp"                    app:layout_constraintEnd_toStartOf="@+id/progress_bar"
@@ -100,8 +102,8 @@
                     android:paddingLeft="8dp"
                     android:paddingTop="4dp"
                     android:paddingRight="8dp"
-                    android:paddingBottom="10dp"
-                    android:progressTint="@color/blue"
+                    android:paddingBottom="5dp"
+                    android:progressTint="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -111,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:textColor="@color/black"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -118,6 +121,7 @@
                     app:setDuration="@{message.duration}"
                     app:layout_constraintTop_toBottomOf="@+id/play_pause_image"
                     app:layout_constraintStart_toStartOf="@id/progress_bar"
+                    android:paddingBottom="8dp"
                     tools:text="2:21" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

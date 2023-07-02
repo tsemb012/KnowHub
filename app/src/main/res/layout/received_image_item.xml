@@ -36,12 +36,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
+                android:layout_marginStart="4dp"
                 android:lineSpacingExtra="2dp"
-                android:paddingStart="20dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
                 android:text="@{message.userName}"
+                android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toEndOf="@id/user_image_view"
@@ -57,14 +58,14 @@
                 app:layout_constraintEnd_toStartOf="@id/text_message_received"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:imageUserUrlString="@{message.userImageUrl}"/>
+                app:imageFireStorage="@{message.userImageUrl}"/>
 
             <ImageView
                 android:id="@+id/text_message_received"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:gravity="start"
-                android:paddingStart="20dp"
+                android:layout_marginStart="4dp"
                 android:paddingTop="2dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
@@ -72,8 +73,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/user_image_view"
                 app:layout_constraintTop_toBottomOf="@+id/user_name"
-                app:imageFireStorage="@{message.imageRef}"
-                android:src="@mipmap/ic_launcher_round"
+                app:imageFireStorageForChat="@{message.imageRef}"
+                android:src="@drawable/ic_baseline_image_24"
                 android:onClick="@{() -> clickListener.onMessageClicked(position,message)}"
                 />
 

@@ -226,6 +226,7 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun fetchJoinedGroups() : List<ApiGroup> = mainApi.fetchUserJoinedGroups(userId = userId).body()?.map { it.toEntity() } ?: listOf()
     override suspend fun fetchGroupCountByArea(): List<GroupCountByArea> = mainApi.fetchGroupCountByArea(userId, false).map { it.toEntity() }
+    override suspend fun fetchChatGroup(groupId: String): ChatGroup = mainApi.fetchChatGroup(groupId).body()?.toEntity() ?: throw Exception("fetchChatGroup is failed")
     override suspend fun fetchUser(): UserDetail = mainApi.fetchUser(userId).toEntity()
     override suspend fun updateUserDetail(userDetail: UserDetail) = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message

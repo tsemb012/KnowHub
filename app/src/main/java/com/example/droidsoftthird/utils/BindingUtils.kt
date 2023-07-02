@@ -12,6 +12,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
 import com.google.android.material.slider.Slider
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,6 +59,45 @@ fun ImageView.imageURI(imageMap: Map<String, String>?) {
 }
 
 //DONE GlideでStorageのデータを表示する。
+@BindingAdapter("imageFireStorageForChat")
+fun ImageView.imageFireStorageForChat(ref: String?) {
+    if (ref != null) {
+        val maxAttempts = 3
+        var currentAttempt = 0
+        CoroutineScope(Dispatchers.IO).launch {
+            while (currentAttempt < maxAttempts) {
+                try {
+                    val uri = FirebaseStorage.getInstance().reference.child(ref).downloadUrl.await()
+                    withContext(Dispatchers.Main) {
+                        Glide.with(this@imageFireStorageForChat)
+                            .load(uri)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .apply(
+                                RequestOptions()
+                                    .placeholder(R.drawable.loading_animation)
+                                    .error(R.drawable.ic_baseline_image_24)
+                            )
+                            .into(this@imageFireStorageForChat)
+                    }
+                    break
+                } catch (e: Exception) {
+                    if (++currentAttempt >= maxAttempts) {
+                        withContext(Dispatchers.Main) {
+                            Glide.with(this@imageFireStorageForChat)
+                            .load(R.drawable.ic_baseline_image_24)
+                            .placeholder(R.drawable.ic_broken_image)
+                            .into(this@imageFireStorageForChat)
+                        }
+                    } else {
+                        delay(1000) // Wait for 1 second before the next attempt
+                    }
+                }
+            }
+        }
+    }
+}
+
 @BindingAdapter("imageFireStorage")
 fun ImageView.imageFireStorage(ref: String?) {
     if (ref != null){
@@ -71,6 +116,7 @@ fun ImageView.imageFireStorage(ref: String?) {
             .into(this)
     }
 }
+
 
 @BindingAdapter("imageURI")
 fun ImageView.imageURI(uri: URI) {
@@ -173,10 +219,10 @@ fun setDuration(textView: TextView, timeinmillis: String?) {
 
     val sp = when (h) {
         0 -> {
-            StringBuilder().append(m).append(":").append(s)
+            String.format("%02d:%02d", m, s)
         }
         else -> {
-            StringBuilder().append(h).append(":").append(m).append(":").append(s)
+            String.format("%d:%02d:%02d", h, m, s)
         }
     }
     textView.text = sp
