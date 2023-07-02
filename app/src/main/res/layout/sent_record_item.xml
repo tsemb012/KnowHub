@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:gravity="start"
                 android:maxWidth="230dp"
                 android:background="@drawable/my_bubble_shape">
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="end"
                 app:formatDateToHHMM="@{message.timestamp}"
