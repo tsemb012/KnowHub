@@ -1,6 +1,5 @@
 package com.example.droidsoftthird.utils
 
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
@@ -8,19 +7,21 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.example.droidsoftthird.R
 import com.google.android.material.slider.Slider
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 
 @BindingAdapter("imageURI")
@@ -62,24 +63,41 @@ fun ImageView.imageURI(imageMap: Map<String, String>?) {
 @BindingAdapter("imageFireStorage")
 fun ImageView.imageFireStorage(ref: String?) {
     if (ref != null) {
-        FirebaseStorage.getInstance().reference.child(ref).downloadUrl.addOnSuccessListener { uri ->
-            Glide.with(this)
-                .load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.ic_baseline_image_24)
-                )
-                .into(this)
-        }.addOnFailureListener {
-            Glide.with(this)
-                .load(R.drawable.loading_animation)
-                .placeholder(R.drawable.ic_broken_image)
-                .into(this)
+        val maxAttempts = 3
+        var currentAttempt = 0
+        CoroutineScope(Dispatchers.IO).launch {
+            while (currentAttempt < maxAttempts) {
+                try {
+                    val uri = FirebaseStorage.getInstance().reference.child(ref).downloadUrl.await()
+                    withContext(Dispatchers.Main) {
+                        Glide.with(this@imageFireStorage)
+                            .load(uri)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .apply(
+                                RequestOptions()
+                                    .placeholder(R.drawable.loading_animation)
+                                    .error(R.drawable.ic_baseline_image_24)
+                            )
+                            .into(this@imageFireStorage)
+                    }
+                    break
+                } catch (e: Exception) {
+                    if (++currentAttempt >= maxAttempts) {
+                        withContext(Dispatchers.Main) {
+                            Glide.with(this@imageFireStorage)
+                            .load(R.drawable.ic_baseline_image_24)
+                            .placeholder(R.drawable.ic_broken_image)
+                            .into(this@imageFireStorage)
+                        }
+                    } else {
+                        delay(1000) // Wait for 1 second before the next attempt
+                    }
+                }
+            }
         }
     }
 }
+
 
 @BindingAdapter("imageURI")
 fun ImageView.imageURI(uri: URI) {
