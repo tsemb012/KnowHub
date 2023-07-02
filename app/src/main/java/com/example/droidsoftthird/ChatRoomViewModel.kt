@@ -61,7 +61,6 @@ class ChatRoomViewModel @AssistedInject constructor(
 
         viewModelScope.launch {
             repository.getChatEvents(groupId).collect{
-
                 val messageList = ArrayList<FireMessage>()
                 for(doc in it){
                     val message = when(doc.get("messageType")){
@@ -72,8 +71,8 @@ class ChatRoomViewModel @AssistedInject constructor(
                         else -> {}
                     }
                     messageList.add(message as FireMessage)
-                    _messages.postValue(messageList)
                 }
+                _messages.postValue(messageList)
             }
         }
     }

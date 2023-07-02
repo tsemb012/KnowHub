@@ -61,42 +61,24 @@ fun ImageView.imageURI(imageMap: Map<String, String>?) {
 //DONE GlideでStorageのデータを表示する。
 @BindingAdapter("imageFireStorage")
 fun ImageView.imageFireStorage(ref: String?) {
-    val maxRetries = 3 // 最大再試行回数
-    var retries = 0 // 現在の再試行回数
-
-    val glide = Glide.with(this)
-        .load(if (ref != null) FirebaseStorage.getInstance().getReference(ref) else R.drawable.loading_animation)
-        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-        .apply(
-            RequestOptions()
-                .placeholder(R.drawable.loading_animation)
-                .error(R.drawable.ic_baseline_image_24)
-        )
-
-    glide.listener(object : RequestListener<Drawable> {
-        override fun onLoadFailed(
-            e: GlideException?,
-            model: Any?,
-            target: com.bumptech.glide.request.target.Target<Drawable>?,
-            isFirstResource: Boolean,
-        ): Boolean {
-            if (retries < maxRetries) {
-                retries++
-                glide.into(this@imageFireStorage)
-            }
-            return false // falseを返すと、error Drawableが表示されます。
+    if (ref != null) {
+        FirebaseStorage.getInstance().reference.child(ref).downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(this)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.ic_baseline_image_24)
+                )
+                .into(this)
+        }.addOnFailureListener {
+            Glide.with(this)
+                .load(R.drawable.loading_animation)
+                .placeholder(R.drawable.ic_broken_image)
+                .into(this)
         }
-
-        override fun onResourceReady(
-            resource: Drawable?,
-            model: Any?,
-            target: com.bumptech.glide.request.target.Target<Drawable>?,
-            dataSource: DataSource?,
-            isFirstResource: Boolean,
-        ): Boolean {
-            return false // falseを返すと、読み込みが成功した画像が表示されます。
-        }
-    }).into(this)
+    }
 }
 
 @BindingAdapter("imageURI")
