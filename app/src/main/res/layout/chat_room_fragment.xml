@@ -155,7 +155,7 @@
                         android:layout_marginLeft="80dp"
                         android:background="@drawable/circular_border_solid"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/attachment_image"
+                        app:layout_constraintEnd_toStartOf="@id/send_message"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -163,49 +163,49 @@
 
                         <EditText
                             android:id="@+id/message_edit_text"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="@drawable/circular_border_solid"
                             android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+                            android:paddingStart="8dp"
                             android:text="@={viewModel.editMessage}"
                             android:textSize="16sp"
                             app:errorEnabled="true"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/attachment_image"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                         <!--TODO inputTypeのFLAGを確認し、UI/UXを向上させる。-->
                         <!--android:hint="@string/type_a_message"-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/attachment_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.showBottomSheet()}"
+                            android:src="@drawable/ic_baseline_attach_file_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/attachment_image"
-                        android:layout_width="30dp"
-                        android:layout_height="40dp"
-                        android:padding="4dp"
-                        android:contentDescription="attachments"
-                        android:onClick="@{() -> viewModel.showBottomSheet()}"
-                        android:src="@drawable/ic_baseline_attach_file_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/send_message"
-                        app:layout_constraintStart_toEndOf="@+id/message_layout"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     <ImageView
                         android:id="@+id/send_message"
-                        android:layout_width="30dp"
+                        android:layout_width="35dp"
                         android:layout_height="40dp"
-                        android:padding="4dp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="2dp"
                         android:enabled="@{viewModel.enableState}"
                         android:onClick="@{() -> viewModel.createTextMessage()}"
 
                         android:src="@drawable/enable_arrow"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/attachment_image"
+                        app:layout_constraintStart_toEndOf="@id/message_layout"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
