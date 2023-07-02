@@ -219,10 +219,10 @@ fun setDuration(textView: TextView, timeinmillis: String?) {
 
     val sp = when (h) {
         0 -> {
-            StringBuilder().append(m).append(":").append(s)
+            String.format("%02d:%02d", m, s)
         }
         else -> {
-            StringBuilder().append(h).append(":").append(m).append(":").append(s)
+            String.format("%d:%02d:%02d", h, m, s)
         }
     }
     textView.text = sp

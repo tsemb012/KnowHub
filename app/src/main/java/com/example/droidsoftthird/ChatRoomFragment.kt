@@ -50,6 +50,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -201,7 +202,7 @@ class ChatRoomFragment : Fragment() {
             showPlaceholderRecord()
             viewModel.createRecordMessage(
                 "${requireActivity().externalCacheDir?.absolutePath}/audiorecord.3gp",
-                recordDuration.toString(),
+                recordDuration.toString(),//convertMillisToReadableTime(recordDuration),
                 )
             Toast.makeText(context, "録音が完了しました。", Toast.LENGTH_SHORT).show()
             isRecording = !isRecording
