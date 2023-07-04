@@ -38,9 +38,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/primary_text_grey"
-                            android:textSize="24sp"
+                            android:textSize="28sp"
                             android:fontFamily="sans-serif-light"
-                            android:paddingRight="8dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="8dp"
+                            android:textStyle="bold"
                             android:text="2019" />
 
                         <TextView
@@ -49,25 +51,26 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
                             android:textColor="@color/primary_text_grey_dark"
-                            android:textSize="24sp"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
                             android:text="April" />
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
+                    <Button
                         android:id="@+id/select_group_button"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="Select group"
                         android:text="グループ選択"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/primary_dark"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        app:cornerRadius="8dp"
-                        app:backgroundTint="@color/primary_dark"
+                        android:textAlignment="textStart"
                         app:rippleColor="?attr/colorControlHighlight"
-                        app:icon="@drawable/expand_icon"
-                        app:iconGravity="textEnd"
-                        app:iconPadding="8dp" />
+                        android:drawableEnd="@drawable/expand_icon"
+                        android:drawableTint="@color/primary_dark"
+                        android:background="@drawable/button_border_primary_dark"/>
+
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 

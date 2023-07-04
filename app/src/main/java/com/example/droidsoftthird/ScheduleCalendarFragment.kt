@@ -77,11 +77,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.setupGroupDialog()
-        viewModel.uiModel.observe(viewLifecycleOwner) {
-            binding.myComposeView.setContent {
-                MyProgressBar(viewModel.uiModel.value?.isLoading == true)
-            }
-        }
         setupWeekLabel()
         setupCalendarMatrix()
         setupEventList()
@@ -89,8 +84,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
     private fun bindUiModel() {
         viewModel.uiModel.observe(viewLifecycleOwner) {
-            /*binding.progressBar.isVisible = it.isLoading
-            binding.progressBarSpace.isVisible = !it.isLoading*/
             it.error?.let { error ->
                 Toast.makeText(
                     requireContext(),
@@ -107,6 +100,10 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             }
 
             binding.selectGroupButton.text = it.selectedSimpleGroup?.groupName ?: getString(R.string.select_group)
+
+            binding.myComposeView.setContent {
+                MyProgressBar(viewModel.uiModel.value?.isLoading == true)
+            }
         }
     }
 
