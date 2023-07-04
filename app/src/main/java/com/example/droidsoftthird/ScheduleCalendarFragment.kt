@@ -11,14 +11,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -28,6 +23,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
@@ -258,14 +254,6 @@ fun MyProgressBar(loading: Boolean) {
     ) {
         if (loading) CommonLinearProgressIndicator() else Spacer(modifier = Modifier.height(4.dp))
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "イベント",
-            color = Color.DarkGray,
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.SansSerif,
-            modifier = Modifier
-                .padding(start = 12.dp, bottom = 8.dp)
-        )
+        BoldTitleItem(title = "イベント", Modifier.padding(start = 16.dp))
     }
 }
