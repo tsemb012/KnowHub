@@ -54,11 +54,11 @@ class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
                 pager.adapter = ScheduleHomePagerAdapter(this@ScheduleHomeFragment)
                 pager.isUserInputEnabled = false
             }
-            tabLayout.let {
+            /*tabLayout.let {
                 TabLayoutMediator(it, pager) { tab, position -> tab.text = "OBJECT" + (position + 1) }.attach()
                 it.getTabAt(0)?.setText(R.string.schedule_calendar) ?: throw IllegalStateException()
                 it.getTabAt(1)?.setText(R.string.schedule_list) ?: throw IllegalStateException()
-            }
+            }*/
             floatingActionButton.setOnClickListener {
                 val action = ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment()
                 Navigation.findNavController(it).navigate(action)
