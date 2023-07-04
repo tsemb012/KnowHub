@@ -9,44 +9,16 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical">
-        <!--TODO カレンダーの背景を設定する。-->
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:indeterminate="true" />
-
-        <Space
-            android:id="@+id/progress_bar_space"
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
-
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/exOneAppBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/base_100"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Light">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="イベント"
-                    android:textColor="@color/dark_gray"
-                    android:paddingStart="12dp"
-                    android:textStyle="bold"
-                    android:textSize="34sp"
-                    android:fontFamily="sans-serif-light"
-                    android:paddingBottom="8dp" />
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/my_compose_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -107,8 +79,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
 
-        </com.google.android.material.appbar.AppBarLayout>
-        <!--TODO 上部までAppBarで既存のレイアウトである。-->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

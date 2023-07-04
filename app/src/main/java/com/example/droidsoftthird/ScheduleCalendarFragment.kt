@@ -7,8 +7,22 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -75,6 +89,9 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.setupGroupDialog()
+        binding.myComposeView.setContent {
+            MyProgressBar()
+        }
         setupWeekLabel()
         setupCalendarMatrix()
         setupEventList()
@@ -82,8 +99,8 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
     private fun bindUiModel() {
         viewModel.uiModel.observe(viewLifecycleOwner) {
-            binding.progressBar.isVisible = it.isLoading
-            binding.progressBarSpace.isVisible = !it.isLoading
+            /*binding.progressBar.isVisible = it.isLoading
+            binding.progressBarSpace.isVisible = !it.isLoading*/
             it.error?.let { error ->
                 Toast.makeText(
                     requireContext(),
@@ -236,5 +253,32 @@ class DayViewBinder(private val viewModel: ScheduleViewModel) : DayBinder<DayVie
             dot.isVisible = false
             textView.background = null
         }
+    }
+}
+
+@Composable
+fun MyProgressBar() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+    ) {
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp),
+            color = MaterialTheme.colors.primary,
+            backgroundColor = MaterialTheme.colors.background
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "イベント",
+            color = Color.DarkGray,
+            fontSize = 34.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.SansSerif,
+            modifier = Modifier
+                .padding(start = 12.dp, bottom = 8.dp)
+        )
     }
 }
