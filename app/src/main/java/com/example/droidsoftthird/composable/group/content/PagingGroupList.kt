@@ -35,6 +35,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.composable.shared.EmptyMessage
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
@@ -93,13 +94,7 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
                 Modifier.align(Alignment.TopCenter)
             )
             if (isLoading) {
-                LinearProgressIndicator(
-                    color = colorResource(id = R.color.primary_dark),
-                    trackColor = colorResource(id = R.color.base_100),
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .fillMaxWidth(),
-                )
+                CommonLinearProgressIndicator(Modifier.align(Alignment.TopCenter))
             } else {
                 Spacer(modifier = Modifier.height(4.dp))
             }
