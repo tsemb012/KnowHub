@@ -1,6 +1,5 @@
 package com.example.droidsoftthird
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,36 +11,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContentProviderCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
-import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
 import com.example.droidsoftthird.model.domain_model.SimpleGroup
-import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
 import com.example.droidsoftthird.model.presentation_model.selectedDate
@@ -89,8 +81,10 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun setupView() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.setupGroupDialog()
-        binding.myComposeView.setContent {
-            MyProgressBar()
+        viewModel.uiModel.observe(viewLifecycleOwner) {
+            binding.myComposeView.setContent {
+                MyProgressBar(viewModel.uiModel.value?.isLoading == true)
+            }
         }
         setupWeekLabel()
         setupCalendarMatrix()
@@ -257,19 +251,12 @@ class DayViewBinder(private val viewModel: ScheduleViewModel) : DayBinder<DayVie
 }
 
 @Composable
-fun MyProgressBar() {
+fun MyProgressBar(loading: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
     ) {
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp),
-            color = MaterialTheme.colors.primary,
-            backgroundColor = MaterialTheme.colors.background
-        )
+        if (loading) CommonLinearProgressIndicator() else Spacer(modifier = Modifier.height(4.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "イベント",

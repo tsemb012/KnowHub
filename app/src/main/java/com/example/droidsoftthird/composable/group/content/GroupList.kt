@@ -19,6 +19,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.composable.shared.EmptyMessage
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.presentation_model.LoadState
@@ -45,15 +46,7 @@ fun GroupList(groupsLoadState: LoadState, navigate: (String) -> Unit) {
 
             }
             if (isLoading) {
-                LinearProgressIndicator(
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .fillMaxWidth(),
-                    color = colorResource(id = R.color.primary_dark),
-                    trackColor = colorResource(
-                        id = R.color.base_100
-                    )
-                )
+                CommonLinearProgressIndicator(Modifier.align(Alignment.TopCenter))
             }
         }
     }
