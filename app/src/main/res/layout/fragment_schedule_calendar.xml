@@ -37,11 +37,12 @@
                             android:id="@+id/exOneYearText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_grey"
-                            android:textSize="28sp"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="34sp"
                             android:fontFamily="sans-serif-light"
-                            android:paddingStart="16dp"
+                            android:paddingStart="8dp"
                             android:paddingEnd="8dp"
+                            android:gravity="start|center_vertical"
                             android:textStyle="bold"
                             android:text="2019" />
 
@@ -50,26 +51,31 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:textColor="@color/primary_text_grey_dark"
-                            android:textSize="28sp"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="34sp"
+                            android:gravity="center_vertical"
                             android:textStyle="bold"
                             android:text="April" />
                     </LinearLayout>
 
-                    <Button
+                    <TextView
                         android:id="@+id/select_group_button"
                         android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="Select group"
-                        android:text="グループ選択"
-                        android:textColor="@color/primary_dark"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textAlignment="textStart"
-                        app:rippleColor="?attr/colorControlHighlight"
-                        android:drawableEnd="@drawable/expand_icon"
-                        android:drawableTint="@color/primary_dark"
-                        android:background="@drawable/button_border_primary_dark"/>
+                        android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:contentDescription="Select group"
+                    android:text="グループ選択"
+                    android:textColor="@color/primary_dark"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:background="@drawable/button_border_primary_dark"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:drawableRight="@drawable/expand_icon"
+                    android:drawableTint="@color/primary_dark"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    tools:targetApi="lollipop" />
 
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
