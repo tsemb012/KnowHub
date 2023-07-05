@@ -6,12 +6,15 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -23,6 +26,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.databinding.CalendarDayBinding
@@ -79,7 +83,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         binding.setupGroupDialog()
         setupWeekLabel()
         setupCalendarMatrix()
-        setupEventList()
+        //setupEventList()
     }
 
     private fun bindUiModel() {
@@ -103,6 +107,18 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
             binding.myComposeView.setContent {
                 MyProgressBar(viewModel.uiModel.value?.isLoading == true)
+            }
+
+            binding.recyclerViewCompose.setContent {
+                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+                    CommonAddButton(
+                        label = "イベントを追加",
+                        navigate = { findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment()) },
+                        modifier = Modifier
+                            .padding(bottom = 32.dp, end = 16.dp)
+                            .align(Alignment.BottomEnd)
+                    )
+                }
             }
         }
     }
@@ -129,7 +145,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         }
     }
 
-    private fun setupEventList() {
+    /*private fun setupEventList() {
         binding.recyclerView.apply {
             adapter = this@ScheduleCalendarFragment.adapter
             layoutManager = LinearLayoutManager(context)
@@ -137,7 +153,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                 getDrawable(context, R.drawable.divider)?.let { setDrawable(it) } ?: throw IllegalStateException("Divider drawable not found")
             })
         }
-    }
+    }*/
 
     private fun selectEvent(eventId: String) {
         findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleDetailFragment(eventId))
