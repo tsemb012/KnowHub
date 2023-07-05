@@ -236,7 +236,7 @@ class DayViewBinder(private val viewModel: ScheduleViewModel) : DayBinder<DayVie
         }
 
         private fun bindOtherMonthDays() {
-            textView.setTextColorRes(R.color.primary_accent_red)
+            textView.setTextColorRes(R.color.base_100)
             dot.isVisible = false
             textView.background = null
         }
