@@ -146,13 +146,13 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun scrollMonth(it: CalendarMonth) {//スクロール時のロジック
         val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
         if (binding.calendarMatrix.maxRowCount == 6) {//Monthモード
-            binding.exOneYearText.text = it.yearMonth.year.toString()
+            binding.exOneYearText.text = "${it.yearMonth.year}年"
             binding.exOneMonthText.text = monthTitleFormatter.format(it.yearMonth)
         } else {//Weekモード
             val firstDate = it.weekDays.first().first().date
             val lastDate = it.weekDays.last().last().date
             if (firstDate.yearMonth == lastDate.yearMonth) {
-                binding.exOneYearText.text = firstDate.yearMonth.year.toString()
+                binding.exOneYearText.text = "${firstDate.yearMonth.year}年"
                 binding.exOneMonthText.text = monthTitleFormatter.format(firstDate)
             } else {
                 binding.exOneMonthText.text = "${monthTitleFormatter.format(firstDate)} - ${monthTitleFormatter.format(lastDate)}"
@@ -251,6 +251,5 @@ fun MyProgressBar(loading: Boolean) {
     ) {
         if (loading) CommonLinearProgressIndicator() else Spacer(modifier = Modifier.height(4.dp))
         Spacer(modifier = Modifier.height(8.dp))
-        BoldTitleItem(title = "イベント", Modifier.padding(start = 16.dp))
     }
 }
