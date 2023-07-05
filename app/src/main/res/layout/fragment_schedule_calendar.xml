@@ -62,20 +62,20 @@
                         android:id="@+id/select_group_button"
                         android:layout_width="150dp"
                         android:layout_height="35dp"
-                    android:gravity="center_vertical"
-                    android:contentDescription="Select group"
-                    android:text="グループ選択"
-                    android:textColor="@color/primary_dark"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:background="@drawable/button_border_primary_dark"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:drawableRight="@drawable/expand_icon"
-                    android:drawableTint="@color/primary_dark"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    tools:targetApi="lollipop" />
+                        android:gravity="center_vertical"
+                        android:contentDescription="Select group"
+                        android:text="グループ選択"
+                        android:textColor="@color/primary_dark"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:background="@drawable/button_border_primary_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:drawableRight="@drawable/expand_icon"
+                        android:drawableTint="@color/primary_dark"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        tools:targetApi="lollipop" />
 
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -85,8 +85,12 @@
                 layout="@layout/day_of_week_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="5dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

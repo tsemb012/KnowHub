@@ -111,8 +111,8 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun setupWeekLabel() {
         binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
             val textView = view as TextView
-            textView.text = daysOfWeekFromLocale()[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
-            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.primary_text_grey))
+            textView.text = daysOfWeekFromLocale()[index].getDisplayName(TextStyle.SHORT, Locale.JAPANESE).toUpperCase(Locale.ENGLISH)
+            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.gray))
         }
     }
 
