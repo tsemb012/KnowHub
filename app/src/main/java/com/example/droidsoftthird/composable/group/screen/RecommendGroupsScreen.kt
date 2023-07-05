@@ -19,12 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.RecommendGroupsViewModel
-import com.example.droidsoftthird.composable.group.content.GroupAddButton
+import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.composable.group.content.PagingGroupList
 import com.example.droidsoftthird.composable.group.content.bottomdialog.AnimatedFilterConditionDialog
 import com.example.droidsoftthird.model.domain_model.ApiGroup
@@ -81,6 +82,6 @@ private fun BoxScope.FloatingActionButtons(
             Icon(Icons.Filled.FilterList, contentDescription = "Filter", tint = Color.White)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        GroupAddButton(navigateToGroupAdd, Modifier.Companion.align(Alignment.End))
+        CommonAddButton(stringResource(id = R.string.group_add),  navigateToGroupAdd, Modifier.Companion.align(Alignment.End))
     }
 }
