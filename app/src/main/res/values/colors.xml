@@ -5,8 +5,11 @@
     <color name="primary_light">#63D7C6</color>
     <color name="primary_accent_purple">#CB4FB5</color>
     <color name="primary_accent_yellow">#F8B500</color>
+    <color name="primary_accent_yellow_alpha">#64F8B500</color>
     <color name="primary_accent_red">#FF0000</color>
     <color name="base_100">#FEFFFE</color>
+    <color name="today_color">#54FF2525</color>
+
 
     <color name="primary_text_grey">#535353</color>
     <color name="primary_text_grey_dark">#3A3A3A</color>
