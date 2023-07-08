@@ -33,20 +33,20 @@ data class GetItemEventJson (
 ) {
     fun toEntity(): ItemEvent {
         return ItemEvent(
-                        eventId = eventId,
-                        hostId = hostId,
-                        name = name,
-                        comment = comment,
-                        period = Pair(
-                                ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault()),
-                                ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault())
-                        ),
-                        groupId = groupId,
-                        groupName = groupName,
-                        placeName = if(placeName.isNullOrBlank()) "オンライン" else placeName,
-                        eventRegisteredNumber = eventRegisteredNumber,
-                        groupJoinedNumber = groupJoinedNumber,
-                        status = EventStatus.valueOf(status.uppercase()),
+                    eventId = eventId,
+                    hostId = hostId,
+                    name = name,
+                    comment = comment,
+                    period = Pair(
+                            ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault()),
+                            ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault())
+                    ),
+                    groupId = groupId,
+                    groupName = groupName,
+                    placeName = if(placeName.isNullOrBlank()) "オンライン" else placeName,
+                    eventRegisteredNumber = eventRegisteredNumber,
+                    groupJoinedNumber = groupJoinedNumber,
+                    status = EventStatus.valueOf(status.uppercase()),
                 )
     }
 }
