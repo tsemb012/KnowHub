@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.composable
+package com.example.droidsoftthird.composable.shared
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
