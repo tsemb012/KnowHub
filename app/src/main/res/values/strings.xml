@@ -196,5 +196,6 @@
     <string name="thursday">木</string>
     <string name="friday">金</string>
     <string name="saturday">土</string>
+    <string name="no_events_on_selected_date">選択した日付にイベントがありません。イベントがある日付には青い目印が表示されます。</string>
 
 </resources>

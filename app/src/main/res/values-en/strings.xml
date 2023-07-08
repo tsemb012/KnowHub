@@ -193,5 +193,6 @@
     <string name="thursday">THU</string>
     <string name="friday">FRI</string>
     <string name="saturday">SAT</string>
+    <string name="no_events_on_selected_date">選択した日付にイベントがありません。イベントがある日付には青い目印が表示されます。</string>
 
 </resources>
