@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AvTimer
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.VideoChat
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.example.droidsoftthird.R
@@ -26,11 +27,12 @@ fun EventListItem(event: ItemEvent, navigateToDetail: (String) -> Unit) {
 @Composable
 fun EventCardContent(event: ItemEvent) {
 
-    val descriptionList = listOf(
+    val descriptionList = listOfNotNull(
         Triple(Icons.Filled.Group, event.groupName ?: "", 1),
         Triple(Icons.Filled.AvTimer, event.period.toString(), 1),
-        Triple(Icons.Filled.LocationOn, event.placeName ?: "", 1),
+        if (!event.isOnline) Triple(Icons.Filled.LocationOn, event.placeName ?: "", 1) else null,
     )
+    //TODO 日付の文字列をうまく表現する。Creat画面のロジックをアレンジするようにする。
 
     val statusColor = when {
         event.status == EventStatus.BEFORE_REGISTRATION -> R.color.gph_dark_red to "参加受付中"
@@ -40,14 +42,14 @@ fun EventCardContent(event: ItemEvent) {
         else -> R.color.gph_dark_red to "エラー"
     }
 
-    val statusList = listOf(
+    val statusList = listOfNotNull(
         Triple(Icons.Filled.Group, statusColor.first, statusColor.second),
-        Triple(Icons.Filled.AvTimer, R.color.primary_dark, "オンライン"),
+        if (event.isOnline) Triple(Icons.Filled.VideoChat, R.color.primary_dark, "オンライン") else null,
     )
 
     Column {
         ItemDescription(event.name, descriptionList)
         ItemStatus(statusList)
-        Text(text = "人数")
+        Text(text = "${event.registrationRatio} 人" )
     }
 }

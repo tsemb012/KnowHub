@@ -30,6 +30,8 @@ data class GetItemEventJson (
         val groupJoinedNumber: Int,
         @Json(name = "event_status")
         val status: String,
+        @Json(name = "is_online")
+        val isOnline: Boolean,
 ) {
     fun toEntity(): ItemEvent {
         return ItemEvent(
@@ -47,6 +49,7 @@ data class GetItemEventJson (
                     eventRegisteredNumber = eventRegisteredNumber,
                     groupJoinedNumber = groupJoinedNumber,
                     status = EventStatus.valueOf(status.uppercase()),
+                    isOnline = isOnline
                 )
     }
 }

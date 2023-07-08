@@ -16,6 +16,7 @@ data class EventDetail(
     val registeredUserIds: List<String>,
     val groupMembers: List<SimpleUser>,
     val status: EventStatus,
+    val isOnline: Boolean,
 ) {
     val eventRegisteredMembers: List<SimpleUser> = groupMembers.filter { registeredUserIds.contains(it.userId) }
     val registrationRatio: String = "${registeredUserIds.size} / ${groupMembers.size}"

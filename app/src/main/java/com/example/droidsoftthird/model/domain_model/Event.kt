@@ -45,7 +45,10 @@ data class ItemEvent(
         val eventRegisteredNumber: Int,
         val groupJoinedNumber: Int,
         val status: EventStatus,
-) :Event()
+        val isOnline: Boolean,
+) :Event() {
+        val registrationRatio = "$eventRegisteredNumber / $groupJoinedNumber"
+}
 
 enum class EventStatus {
         BEFORE_REGISTRATION,
