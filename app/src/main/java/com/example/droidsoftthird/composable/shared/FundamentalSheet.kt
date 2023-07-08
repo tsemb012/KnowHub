@@ -10,13 +10,11 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun FundamentalSheet(content: @Composable () -> Unit, isLoading: Boolean, error: Throwable?) {
-    Column {
         Box {
             content()
             if (isLoading) {
                 CommonLinearProgressIndicator(Modifier.align(Alignment.TopCenter))
             }
         }
-    }
     error?.let { Toast.makeText(LocalContext.current, it.message, Toast.LENGTH_SHORT).show() }
 }

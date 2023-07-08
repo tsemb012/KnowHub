@@ -28,10 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.droidsoftthird.composable.group.content.CommonAddButton
-import com.example.droidsoftthird.composable.group.content.GroupListItem
+import com.example.droidsoftthird.composable.event.EventListItem
 import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.composable.shared.EmptyMessage
@@ -40,7 +37,6 @@ import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
-import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import com.example.droidsoftthird.model.presentation_model.NotifyType
@@ -122,9 +118,9 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                 FundamentalSheet(
                     content = {
                               EventListContent(
-                                  selectedDate = it.selectedDate.toString(),//TODO 後で修正
-                                  events = it.groupFilteredEvents,
-                                  navigate = { eventId -> },
+                                  selectedDate = it.selectedDate.toString(),
+                                  events = it.selectedEvents,
+                                  navigate = {  },
                                   isLoading = it.isLoading,
                               )
                     },
@@ -160,7 +156,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             item { BoldTitleItem(selectedDate, Modifier.padding(bottom = 8.dp)) }
             if (!isLoading && events?.isEmpty() == true) item { EmptyMessage(R.string.join_or_create_group) }
             events?.let { list ->
-                items(list.size) { /*GroupListItem(groups[it], navigate)*/ }
+                items(list.size) { EventListItem(events[it], navigate) }
             }
 
         }
