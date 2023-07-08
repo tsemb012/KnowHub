@@ -120,7 +120,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                               EventListContent(
                                   selectedDate = it.selectedDate.toString(),
                                   events = it.selectedEvents,
-                                  navigate = {  },
+                                  navigate = { eventId -> selectEvent(eventId) },
                                   isLoading = it.isLoading,
                               )
                     },

@@ -129,7 +129,8 @@ interface MainApi {
 
     @GET("events/{id}")
     suspend fun getEventDetail(
-            @Path("id") eventId: String
+            @Path("id") eventId: String,
+            @Query("user_id") userId: String
     ) : GetEventDetailJson
 
     @POST("events")
