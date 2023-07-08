@@ -2,7 +2,9 @@ package com.example.droidsoftthird.model.infra_model.json.response
 
 import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.EventDetail
+import com.example.droidsoftthird.model.domain_model.EventStatus
 import com.example.droidsoftthird.model.domain_model.Location
+import com.example.droidsoftthird.model.domain_model.SimpleUser
 import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 import java.time.Instant
@@ -28,10 +30,14 @@ data class GetEventDetailJson (
     @Json(name = "group_name")
     val groupName: String,
     @Json(name = "registered_user_ids")
-    val registeredUserIds: List<String>
+    val registeredUserIds: List<String>,
+    @Json(name = "group_members")
+    val groupMembers: List<SimpleUser>,
+    @Json(name = "event_status")
+    val status: String
 ) {
-        fun toEntity(
-        ): EventDetail = EventDetail(
+        fun toEntity() =
+            EventDetail(
                 eventId = eventId,
                 hostId = hostId,
                 roomId = roomId,
@@ -42,8 +48,10 @@ data class GetEventDetailJson (
                 place = place?.toEntity(),
                 groupId = groupId,
                 groupName = groupName,
-                registeredUserIds = registeredUserIds
-        )
+                registeredUserIds = registeredUserIds,
+                groupMembers = groupMembers,
+                status = EventStatus.valueOf(status.uppercase())
+            )
 
         data class GetEventPlaceJson(
             val id: String,
