@@ -153,8 +153,8 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
         ) {
 
-            item { BoldTitleItem(selectedDate, Modifier.padding(bottom = 8.dp)) }
-            if (!isLoading && events?.isEmpty() == true) item { EmptyMessage(R.string.join_or_create_group) }
+            item { BoldTitleItem(selectedDate, Modifier.padding(bottom = 8.dp)) }  //TODO 後で修正
+            if (!isLoading && events?.isEmpty() == true) item { EmptyMessage(R.string.no_events_on_selected_date) }
             events?.let { list ->
                 items(list.size) { EventListItem(events[it], navigate) }
             }
