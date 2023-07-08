@@ -33,7 +33,9 @@ data class GetEventDetailJson (
     @Json(name = "group_members")
     val groupMembers: List<GetSimpleUserJson>,
     @Json(name = "event_status")
-    val status: String
+    val status: String,
+    @Json(name = "is_online")
+    val isOnline: Boolean,
 ) {
         fun toEntity() =
             EventDetail(
@@ -49,7 +51,8 @@ data class GetEventDetailJson (
                 groupName = groupName,
                 registeredUserIds = registeredUserIds,
                 groupMembers = groupMembers.map { it.toEntity() },
-                status = EventStatus.valueOf(status.uppercase())
+                status = EventStatus.valueOf(status.uppercase()),
+                isOnline = isOnline
             )
 
         data class GetEventPlaceJson(
