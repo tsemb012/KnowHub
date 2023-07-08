@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
+import com.example.droidsoftthird.composable.shared.FundamentalSheet
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
@@ -105,12 +108,17 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
             binding.selectGroupButton.text = it.selectedSimpleGroup?.groupName ?: getString(R.string.select_group)
 
-            binding.myComposeView.setContent {
+            binding.topComposeView.setContent {
                 MyProgressBar(viewModel.uiModel.value?.isLoading == true)
             }
 
-            binding.recyclerViewCompose.setContent {
-                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+            binding.bottomComposeView.setContent {
+                FundamentalSheet(
+                    content = { Text(text = "aaaaa") },
+                    isLoading = false,
+                    error = viewModel.uiModel.value?.error
+                )
+                /*Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
                     CommonAddButton(
                         label = "イベントを追加",
                         navigate = { findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment()) },
@@ -118,7 +126,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                             .padding(bottom = 32.dp, end = 16.dp)
                             .align(Alignment.BottomEnd)
                     )
-                }
+                }*/
             }
         }
     }
