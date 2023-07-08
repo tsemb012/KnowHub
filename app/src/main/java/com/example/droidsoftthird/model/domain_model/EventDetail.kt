@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 data class EventDetail(
     val eventId: String,
     val hostId: String,
-    val roomId: String, //TODO オンラインでもオフラインでも部屋番号は生成できるように。いつでもオンラインに変更できるように。
+    val roomId: String,
     val name: String,
     val comment: String,
     val startDateTime: ZonedDateTime,
@@ -13,5 +13,10 @@ data class EventDetail(
     val place: EditedPlace?,
     val groupId: String,
     val groupName: String,
-    val registeredUserIds: List<String>
-)
+    val registeredUserIds: List<String>,
+    val groupMembers: List<SimpleUser>,
+    val status: EventStatus,
+) {
+    val eventRegisteredMembers: List<SimpleUser> = groupMembers.filter { registeredUserIds.contains(it.userId) }
+    val registrationRatio: String = "${registeredUserIds.size} / ${groupMembers.size}"
+}

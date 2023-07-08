@@ -42,4 +42,14 @@ data class ItemEvent(
         override val groupId: String,
         val groupName: String?,
         val placeName: String?,
+        val eventRegisteredNumber: Int,
+        val groupJoinedNumber: Int,
+        val status: EventStatus,
 ) :Event()
+
+enum class EventStatus {
+        BEFORE_REGISTRATION,
+        AFTER_REGISTRATION_BEFORE_EVENT,
+        AFTER_REGISTRATION_DURING_EVENT,
+        AFTER_EVENT,
+}
