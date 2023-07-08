@@ -16,6 +16,7 @@ import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.composable.shared.EmptyMessage
+import com.example.droidsoftthird.composable.shared.FundamentalSheet
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.presentation_model.LoadState
 
@@ -26,25 +27,30 @@ fun MyPageGroupList(groupsLoadState: LoadState, navigate: (String) -> Unit) {
     val isLoading = groupsLoadState is LoadState.Loading
     val error = groupsLoadState.getErrorOrNull()
 
-    Column {
-        Box {
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
-            ) {
+    FundamentalSheet(
+        content = { MyPageGroupListContent(isLoading, groups, navigate) },
+        isLoading = isLoading,
+        error = error
+    )
+}
 
-                item { BoldTitleItem("マイページ", Modifier.padding(bottom = 8.dp)) }
-                if (!isLoading && groups?.isEmpty() == true) item { EmptyMessage(R.string.join_or_create_group) }
-                groups?.let { list ->
-                    items(list.size) { GroupListItem(groups[it], navigate) }
-                }
+@Composable
+private fun MyPageGroupListContent(
+    isLoading: Boolean,
+    groups: List<ApiGroup>?,
+    navigate: (String) -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+    ) {
 
-            }
-            if (isLoading) {
-                CommonLinearProgressIndicator(Modifier.align(Alignment.TopCenter))
-            }
+        item { BoldTitleItem("マイページ", Modifier.padding(bottom = 8.dp)) }
+        if (!isLoading && groups?.isEmpty() == true) item { EmptyMessage(R.string.join_or_create_group) }
+        groups?.let { list ->
+            items(list.size) { GroupListItem(groups[it], navigate) }
         }
+
     }
-    error?.let { Toast.makeText(LocalContext.current, it.message, Toast.LENGTH_SHORT).show() }
 }
 
