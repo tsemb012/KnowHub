@@ -8,11 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,13 +31,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droidsoftthird.composable.group.content.CommonAddButton
+import com.example.droidsoftthird.composable.group.content.GroupListItem
 import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
+import com.example.droidsoftthird.composable.shared.EmptyMessage
 import com.example.droidsoftthird.composable.shared.FundamentalSheet
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions.setTextColorRes
+import com.example.droidsoftthird.model.domain_model.ApiGroup
+import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
@@ -114,7 +120,14 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
 
             binding.bottomComposeView.setContent {
                 FundamentalSheet(
-                    content = { Text(text = "aaaaa") },
+                    content = {
+                              EventListContent(
+                                  selectedDate = it.selectedDate.toString(),//TODO 後で修正
+                                  events = it.groupFilteredEvents,
+                                  navigate = { eventId -> },
+                                  isLoading = it.isLoading,
+                              )
+                    },
                     isLoading = false,
                     error = viewModel.uiModel.value?.error
                 )
@@ -128,6 +141,28 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                     )
                 }*/
             }
+        }
+    }
+
+
+    @Composable
+    private fun EventListContent(
+        selectedDate: String,
+        isLoading: Boolean,
+        events: List<ItemEvent>?,
+        navigate: (String) -> Unit,
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+        ) {
+
+            item { BoldTitleItem(selectedDate, Modifier.padding(bottom = 8.dp)) }
+            if (!isLoading && events?.isEmpty() == true) item { EmptyMessage(R.string.join_or_create_group) }
+            events?.let { list ->
+                items(list.size) { /*GroupListItem(groups[it], navigate)*/ }
+            }
+
         }
     }
 
