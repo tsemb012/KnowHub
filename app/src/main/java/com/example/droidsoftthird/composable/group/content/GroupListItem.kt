@@ -23,7 +23,7 @@ import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.model.domain_model.Style
 import com.example.droidsoftthird.R
-import com.example.droidsoftthird.composable.ItemDescription
+import com.example.droidsoftthird.composable.shared.ItemDescription
 import com.example.droidsoftthird.composable.shared.FundamentalCard
 
 @Composable
