@@ -41,7 +41,7 @@ data class GetItemEventJson (
                     comment = comment,
                     period = Pair(
                             ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault()),
-                            ZonedDateTime.ofInstant(Instant.parse(startDateTime) , ZoneId.systemDefault())
+                            ZonedDateTime.ofInstant(Instant.parse(endDateTime) , ZoneId.systemDefault())
                     ),
                     groupId = groupId,
                     groupName = groupName,
