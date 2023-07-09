@@ -3,10 +3,9 @@ package com.example.droidsoftthird.model.presentation_model
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.CreateEvent
-import com.example.droidsoftthird.utils.converter.periodConverter
+import com.example.droidsoftthird.utils.converter.convertPeriodFromDuration
 import java.time.LocalDate
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 data class ScheduleCreateUiModel (
     val isLoading: Boolean = false,
@@ -17,7 +16,7 @@ data class ScheduleCreateUiModel (
     private val bindingUiComment: String? = null,
 ) {
     val uiDate = selectedItems.selectedDate?.toString()?.format("yyyy/MM/dd") ?: NO_SETTING
-    val uiPeriod = selectedItems.let { periodConverter(it.startTime, it.duration) }
+    val uiPeriod = selectedItems.let { convertPeriodFromDuration(it.startTime, it.duration) }
 
     val uiPlace = if (selectedItems.isOnline == true) "オンライン" else selectedItems.selectedPlace?.name ?: NO_SETTING
     val uiGroup = selectedItems.selectedGroup?.groupName ?: NO_SETTING

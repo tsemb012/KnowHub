@@ -1,7 +1,6 @@
 package com.example.droidsoftthird.composable.event
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AvTimer
 import androidx.compose.material.icons.filled.Group
@@ -15,6 +14,7 @@ import com.example.droidsoftthird.composable.shared.FundamentalCard
 import com.example.droidsoftthird.composable.shared.ItemStatus
 import com.example.droidsoftthird.model.domain_model.EventStatus
 import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.utils.converter.formatTimePeriod
 
 @Composable
 fun EventListItem(event: ItemEvent, navigateToDetail: (String) -> Unit) {
@@ -29,7 +29,7 @@ fun EventCardContent(event: ItemEvent) {
 
     val descriptionList = listOfNotNull(
         Triple(Icons.Filled.Group, event.groupName ?: "", 1),
-        Triple(Icons.Filled.AvTimer, event.period.toString(), 1),
+        Triple(Icons.Filled.AvTimer, formatTimePeriod(event.period.first, event.period.second), 1),
         if (!event.isOnline) Triple(Icons.Filled.LocationOn, event.placeName ?: "", 1) else null,
     )
     //TODO 日付の文字列をうまく表現する。Creat画面のロジックをアレンジするようにする。
