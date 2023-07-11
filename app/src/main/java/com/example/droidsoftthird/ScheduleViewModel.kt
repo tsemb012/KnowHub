@@ -23,6 +23,7 @@ open class ScheduleViewModel(
     private val _selectedEvents: MutableLiveData<List<ItemEvent>> by lazy { MutableLiveData(emptyList())}
     private val _simpleGroupsLoadState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     private val _selectedGroup: MutableLiveData<String> by lazy { MutableLiveData("") }
+    private var _isGroupFixed: MutableLiveData<Boolean> = MutableLiveData(false)
     val uiModel by lazy {
         combine(
                 ScheduleUiModel(),
@@ -30,9 +31,10 @@ open class ScheduleViewModel(
                 _selectedDate,
                 _selectedEvents,
                 _simpleGroupsLoadState,
-                _selectedGroup
-        ) { current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState, _selectedGroup ->
-            ScheduleUiModel(current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState, _selectedGroup)
+                _selectedGroup,
+                _isGroupFixed,
+        ) { current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState, _selectedGroup, _isGroupFixed ->
+            ScheduleUiModel(current, _schedulesState, _selectedDate, _selectedEvents, _groupIdsLoadState, _selectedGroup, _isGroupFixed)
         }
     }
 
@@ -64,6 +66,10 @@ open class ScheduleViewModel(
         _selectedGroup.value = selectedGroupId
     }
 
+    fun setIsNavigatedFromChatGroup(isNavigatedFrom: Boolean) {
+        _isGroupFixed.value = isNavigatedFrom
+    }
+
     fun fetchSimpleGroups() {
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             kotlin.runCatching { userUseCase.fetchUserJoinedSimpleGroups() }
@@ -77,4 +83,6 @@ open class ScheduleViewModel(
         _simpleGroupsLoadState.value = LoadState.Loading(job)
         job.start()
     }
+
+
 }

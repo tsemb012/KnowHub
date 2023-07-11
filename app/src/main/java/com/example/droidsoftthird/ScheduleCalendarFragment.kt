@@ -103,6 +103,13 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             }
 
             binding.selectGroupButton.text = it.selectedSimpleGroup?.groupName ?: getString(R.string.select_group)
+            if (it.isGroupFixed) {
+                binding.selectGroupButton.isEnabled = false
+                binding.selectGroupButton.setTextColorRes(R.color.gray)
+                val grayBorder = ContextCompat.getDrawable(requireContext(), R.drawable.button_border_gray)
+                binding.selectGroupButton.background = grayBorder
+                binding.selectGroupButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
 
             binding.topComposeView.setContent {
                 MyProgressBar(viewModel.uiModel.value?.isLoading == true)
