@@ -56,7 +56,10 @@ class ScheduleCreateViewModel @Inject constructor(
     fun initializeGroups() {
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching { groupUseCase.fetchJoinedGroups() }
-                .onSuccess { _groupsLoadState.value = LoadState.Loaded(it) }
+                .onSuccess {
+                    if (it.isNotEmpty()) _groupsLoadState.value = LoadState.Loaded(it)
+                    else _groupsLoadState.value = LoadState.Error(Throwable("グループに参加してください。"))
+                }
                 .onFailure { _groupsLoadState.value = LoadState.Error(it) }
         }
         job.start()
