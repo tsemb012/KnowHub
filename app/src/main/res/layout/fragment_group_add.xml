@@ -39,7 +39,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-
                     <FrameLayout
                         android:id="@+id/header_item"
                         android:layout_width="match_parent"

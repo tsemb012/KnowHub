@@ -49,12 +49,17 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
     private fun setupClickActions() {
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
+            setupCloseBtn()
             setupDateDialog()
             setupTimeDialog()
             setupMapNav()
             setupGroupDialog()
             setupSwitch()
         }
+    }
+
+    private fun FragmentScheduleCreateBinding.setupCloseBtn() {
+        btnForClose.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun FragmentScheduleCreateBinding.setupGroupDialog() {
