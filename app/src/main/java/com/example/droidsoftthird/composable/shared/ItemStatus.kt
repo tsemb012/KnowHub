@@ -3,6 +3,7 @@ package com.example.droidsoftthird.composable.shared
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -16,12 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ItemStatus(
         itemList: List<Triple<ImageVector, Int, String>>,
 ) {
-    Column(modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp), horizontalAlignment = Alignment.Start) {
 
         itemList.forEach { (icon, color, label) ->
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -29,7 +31,7 @@ fun ItemStatus(
                     imageVector = icon,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(16.dp)
+                        .size(14.dp)
                         .align(Alignment.CenterVertically),
                     tint = colorResource(id = color)
                 )
@@ -38,6 +40,7 @@ fun ItemStatus(
                     text = label,
                     style = MaterialTheme.typography.body1,
                     color = Color.DarkGray,
+                    fontSize = 14.sp,
                     maxLines = 1
                 )
             }
