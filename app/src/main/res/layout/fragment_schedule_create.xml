@@ -196,6 +196,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_height="15dp"
+        android:layout_width="match_parent"
+        android:indeterminate="true"
+        android:background="@color/base_100"
+        android:visibility="invisible" />
+
 </FrameLayout>
 
 

@@ -53,7 +53,7 @@ data class ScheduleCreateUiModel (
             _bindingEventName: String,
             _bindingEventComment: String,
         ) = ScheduleCreateUiModel(
-                    isLoading = groupsLoadState is LoadState.Loading,
+                    isLoading = groupsLoadState is LoadState.Loading || groupsLoadState is LoadState.Initialized,
                     error = groupsLoadState.getErrorOrNull(),
                     groups = groupsLoadState.getValueOrNull(),
                     selectedItems = _selectedItems,

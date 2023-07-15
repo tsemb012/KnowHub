@@ -3,6 +3,7 @@ package com.example.droidsoftthird
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
@@ -34,7 +35,10 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         binding.includeScheduleCreateGroup.itemScheduleCreate.isEnabled = isNavigatedFromChatGroup == false
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.uiModel.observe(viewLifecycleOwner) { if(canInsertGroupIdFromPreviousScreen(it)) initializeGroup() }
+        viewModel.uiModel.observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = it.isLoading
+            if (canInsertGroupIdFromPreviousScreen(it)) initializeGroup()
+        }
     }
 
     private fun setupClickActions() {
