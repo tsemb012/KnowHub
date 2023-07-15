@@ -26,15 +26,23 @@
         android:background="@color/base_100"
         style="@style/AppTheme">
 
+        <ImageButton
+            android:id="@+id/btn_for_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:src="@drawable/ic_baseline_close_24" />
+
         <TextView
             android:drawableStart="@drawable/baseline_create_24"
             android:drawableTint="@color/dark_gray"
             style="@style/item_schedule_create_title"
             android:drawablePadding="4dp"
-            android:layout_marginTop="20dp"
             android:layout_marginHorizontal="20dp"
             android:text="@string/event_name"
-            android:paddingVertical="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
             android:layout_height="wrap_content"
             android:textColor="@color/dark_gray"
             android:layout_width="match_parent" />
