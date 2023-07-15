@@ -81,7 +81,7 @@ class ScheduleCreateViewModel @Inject constructor(
         _selectedItems.value = _selectedItems.value?.copy(selectedGroup = selectedGroup)
     }
 
-    fun setSelectGroup(groupId: String) {
+    fun initGroup(groupId: String) {
         val selectedGroup = _groupsLoadState.value?.getValueOrNull<List<ApiGroup>>()?.firstOrNull() { it.groupId == groupId }
         selectedGroup?.let {  _selectedItems.value = _selectedItems.value?.copy(selectedGroup = it) }
     }
