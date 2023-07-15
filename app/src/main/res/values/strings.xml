@@ -13,7 +13,7 @@
     <string name="tab_2nd">スケジュール</string>
     <string name="tab_3rd">マップ</string>
     <string name="group_name">グループ名</string>
-    <string name="group_introduction">グループの説明文を入力して下さい(500字以内)\n\n 例) 毎週水曜日に図書館に集まって、それぞれの勉強や作業をしましょう。</string>
+    <string name="group_introduction">グループの説明文を入力(500字以内)\n\n 例) 毎週水曜日に図書館に集まって、それぞれの勉強や作業をしましょう。</string>
     <string name="group_detail">詳細情報</string>
     <string name="group_type">取り組み対象</string>
     <string name="no_set">指定なし</string>
@@ -114,8 +114,8 @@
     <!--ScheduleGeneral-->
 
     <!--ScheduleCreate-->
-    <string name="schedule_event_name_hint">イベント名(15字以内)</string>
-    <string name="schedule_event_comment_hint">コメント(100字以内)</string>
+    <string name="schedule_event_name_hint">イベント名を入力(20字以内)</string>
+    <string name="schedule_event_comment_hint">コメントを入力(500字以内)\n\n 例) 今週の火曜日にカフェに集まって、英会話しませんか？</string>
     <string name="schedule_create_date">日付</string>
     <string name="schedule_create_time">時間</string>
     <string name="schedule_create_location">場所</string>
@@ -175,7 +175,7 @@
     <string name="clear_filter">クリア</string>
     <string name="group_condition_filter">絞り込み</string>
     <string name="select_area">活動地域を選択してください</string>
-    <string name="select_group">グループ選択</string>
+    <string name="select_group">グループから検索</string>
     <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
     <string name="no_groups_found">参加可能なグループがありません。</string>
     <string name="individual_task">別々: 個々の課題</string>
@@ -197,5 +197,8 @@
     <string name="friday">金</string>
     <string name="saturday">土</string>
     <string name="no_events_on_selected_date">選択した日付にイベントがありません。イベントがある日付には青い目印が表示されます。</string>
+    <string name="event_name">イベント名</string>
+    <string name="event_comment">コメント</string>
+    <string name="event_register">イベントを登録</string>
 
 </resources>

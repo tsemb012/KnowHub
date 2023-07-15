@@ -3,6 +3,8 @@ package com.example.droidsoftthird
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +20,7 @@ import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import java.time.*
+import java.util.Calendar
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
@@ -34,18 +37,30 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         binding.includeScheduleCreateGroup.itemScheduleCreate.isEnabled = isNavigatedFromChatGroup == false
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.uiModel.observe(viewLifecycleOwner) { if(canInsertGroupIdFromPreviousScreen(it)) initializeGroup() }
+        viewModel.uiModel.observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = it.isLoading
+            if (canInsertGroupIdFromPreviousScreen(it)) initializeGroup()
+            if (it.isSubmitted) {
+                findNavController().popBackStack()
+                Toast.makeText(requireContext(), "イベントを登録しました。", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupClickActions() {
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
+            setupCloseBtn()
             setupDateDialog()
             setupTimeDialog()
             setupMapNav()
             setupGroupDialog()
             setupSwitch()
         }
+    }
+
+    private fun FragmentScheduleCreateBinding.setupCloseBtn() {
+        btnForClose.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun FragmentScheduleCreateBinding.setupGroupDialog() {
@@ -86,10 +101,16 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                 .setNegativeButton("キャンセル", null)
                 .create()
 
+            val currentTime = Calendar.getInstance()
+            val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
+            val currentMinute = currentTime.get(Calendar.MINUTE)
+
             val dialogForStartTime = MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_12H)
                 .setTitleText(R.string.schedule_create_time_start)
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
+                .setHour(currentHour)
+                .setMinute(currentMinute)
                 .build()
             dialogForStartTime.addOnPositiveButtonClickListener {//TODO カラーを変更する。
                 startTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
