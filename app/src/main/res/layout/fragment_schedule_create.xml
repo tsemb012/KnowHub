@@ -161,19 +161,40 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
-        android:enabled="@{viewModel.uiModel.isSubmitEnabled}"
-        android:onClick="@{() -> viewModel.submitEvent()}"
-        android:clickable="true"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/floating_button_elevation"
-        android:outlineSpotShadowColor="@color/primary_accent_purple"
-        android:backgroundTint="@color/primary_accent_purple"
-        app:srcCompat="@drawable/ic_baseline_add_circle_24"
-        android:layout_gravity="right|bottom"
-        android:layout_margin="@dimen/floating_button_margin"/>
+        android:layout_height="64dp"
+        android:background="@color/base_100"
+        android:layout_gravity="bottom"
+        >
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_alpha"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <Button
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/event_register"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:enabled="@{viewModel.uiModel.isSubmitEnabled}"
+            android:onClick="@{() -> viewModel.submitEvent()}"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="16dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
 
