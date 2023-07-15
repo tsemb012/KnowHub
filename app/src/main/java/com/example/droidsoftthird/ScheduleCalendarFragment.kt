@@ -1,16 +1,13 @@
 package com.example.droidsoftthird
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +20,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.composable.event.EventListItem
-import com.example.droidsoftthird.composable.shared.BoldTitleItem
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.composable.shared.EmptyMessage
 import com.example.droidsoftthird.composable.shared.FundamentalSheet
@@ -135,11 +131,10 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
         ) {
-
-            item { BoldTitleItem(selectedDate, Modifier.padding(bottom = 8.dp)) }  //TODO 後で修正
             if (!isLoading && events?.isEmpty() == true) item { EmptyMessage(R.string.no_events_on_selected_date) }
             events?.let { list ->
                 items(list.size) { EventListItem(events[it], navigate) }
+                item { Spacer(modifier = Modifier.height(100.dp)) }
             }
 
         }

@@ -20,8 +20,9 @@ import androidx.compose.ui.unit.dp
 fun ItemDescription(
     title: String,
     itemList: List<Triple<ImageVector, String, Int>>,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             text = title,
             style = MaterialTheme.typography.h6,
