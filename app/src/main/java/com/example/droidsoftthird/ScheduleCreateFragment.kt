@@ -3,6 +3,7 @@ package com.example.droidsoftthird
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -38,6 +39,10 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         viewModel.uiModel.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = it.isLoading
             if (canInsertGroupIdFromPreviousScreen(it)) initializeGroup()
+            if (it.isSubmitted) {
+                findNavController().popBackStack()
+                Toast.makeText(requireContext(), "イベントを登録しました。", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

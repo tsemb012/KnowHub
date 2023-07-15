@@ -33,6 +33,7 @@ class ScheduleCreateViewModel @Inject constructor(
     }
 
     private val _groupsLoadState by lazy { MutableLiveData<LoadState>(LoadState.Initialized) }
+    private val _submitLoadState by lazy { MutableLiveData<LoadState>(LoadState.Initialized) }
     private val _selectedItems by lazy { MutableLiveData(SelectedItemStack()) }
     val bindingEventName by lazy { MutableLiveData("") }
     val bindingEventComment by lazy { MutableLiveData("") }
@@ -43,11 +44,12 @@ class ScheduleCreateViewModel @Inject constructor(
         combine(
                 ScheduleCreateUiModel(),
                 _groupsLoadState,
+                _submitLoadState,
                 _selectedItems,
                 bindingEventName,
                 bindingEventComment
-        ) { current, _groupsLoadState, _selectedItems, _bindingEventName, _bindingEventComment  ->
-            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _selectedItems, _bindingEventName, _bindingEventComment)
+        ) { current, _groupsLoadState, _submitLoadState, _selectedItems, _bindingEventName, _bindingEventComment  ->
+            ScheduleCreateUiModel.invoke(current, _groupsLoadState, _submitLoadState, _selectedItems, _bindingEventName, _bindingEventComment)
         }
     }
 
@@ -94,8 +96,12 @@ class ScheduleCreateViewModel @Inject constructor(
         if(uiModel.value?.isSubmitEnabled == true) {
             viewModelScope.launch {
                 runCatching { eventUseCase.submitEvent(uiModel.value?.fixedEvent!!) }//TODO !!を消すようにする。
-                    .onSuccess { Log.d("tsemb012", it) }
-                    .onFailure { Log.d("tsemb012", it.toString()) } //TODO　提出ができるようになったら
+                    .onSuccess {
+                        _submitLoadState.value = LoadState.Loaded(it)
+                    }
+                    .onFailure {
+                        _submitLoadState.value = LoadState.Error(IllegalStateException("イベントの登録に失敗しました。"))
+                    }
             }
         }
     }
