@@ -1,31 +1,34 @@
 package com.example.droidsoftthird
 
-import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.content.ContentProviderCompat
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.droidsoftthird.composable.event.EventListItem
+import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
+import com.example.droidsoftthird.composable.shared.EmptyMessage
+import com.example.droidsoftthird.composable.shared.FundamentalSheet
 import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
-import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
-import com.example.droidsoftthird.extentions.daysOfWeekFromLocale
-import com.example.droidsoftthird.extentions.setTextColorRes
+import com.example.droidsoftthird.extentions_depreciated.daysOfWeekFromLocale
+import com.example.droidsoftthird.extentions_depreciated.setTextColorRes
+import com.example.droidsoftthird.model.domain_model.ItemEvent
 import com.example.droidsoftthird.model.domain_model.SimpleGroup
-import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
 import com.example.droidsoftthird.model.presentation_model.selectedDate
@@ -57,7 +60,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         setFragmentResultListener("key") { _, bundle ->
             val result = bundle.getString("result")
             viewModel.setSelectedGroupId(result ?: "")
-            Log.d("groupId_tsemb012", bundle.getString("groupId") ?: "")
         }
     }
 
@@ -67,8 +69,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         viewModel.fetchSimpleGroups()
         setupView()
         bindUiModel()
-
-
     }
 
 
@@ -77,20 +77,10 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         binding.setupGroupDialog()
         setupWeekLabel()
         setupCalendarMatrix()
-        setupEventList()
     }
 
     private fun bindUiModel() {
         viewModel.uiModel.observe(viewLifecycleOwner) {
-            binding.progressBar.isVisible = it.isLoading
-            binding.progressBarSpace.isVisible = !it.isLoading
-            it.error?.let { error ->
-                Toast.makeText(
-                    requireContext(),
-                    error.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
 
             adapter.submitList(it.selectedEvents)
             when (it.notifyType) {
@@ -100,6 +90,53 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             }
 
             binding.selectGroupButton.text = it.selectedSimpleGroup?.groupName ?: getString(R.string.select_group)
+            if (it.isGroupFixed) {
+                binding.selectGroupButton.isEnabled = false
+                binding.selectGroupButton.setTextColorRes(R.color.gray)
+                val grayBorder = ContextCompat.getDrawable(requireContext(), R.drawable.button_border_gray)
+                binding.selectGroupButton.background = grayBorder
+                binding.selectGroupButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+
+            binding.topComposeView.setContent {
+                MyProgressBar(viewModel.uiModel.value?.isLoading == true)
+            }
+
+            binding.bottomComposeView.setContent {
+                FundamentalSheet(
+                    content = {
+                              EventListContent(
+                                  selectedDate = it.selectedDate.toString(),
+                                  events = it.selectedEvents,
+                                  navigate = { eventId -> selectEvent(eventId) },
+                                  isLoading = it.isLoading,
+                              )
+                    },
+                    isLoading = false,
+                    error = viewModel.uiModel.value?.error
+                )
+            }
+        }
+    }
+
+
+    @Composable
+    private fun EventListContent(
+        selectedDate: String,
+        isLoading: Boolean,
+        events: List<ItemEvent>?,
+        navigate: (String) -> Unit,
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+        ) {
+            if (!isLoading && events?.isEmpty() == true) item { EmptyMessage(R.string.no_events_on_selected_date) }
+            events?.let { list ->
+                items(list.size) { EventListItem(events[it], navigate) }
+                item { Spacer(modifier = Modifier.height(100.dp)) }
+            }
+
         }
     }
 
@@ -107,8 +144,8 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun setupWeekLabel() {
         binding.dayOfWeekLabel.dayOfWeekLabel.children.forEachIndexed { index, view ->
             val textView = view as TextView
-            textView.text = daysOfWeekFromLocale()[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase(Locale.ENGLISH)
-            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.primary_text_grey))
+            textView.text = daysOfWeekFromLocale()[index].getDisplayName(TextStyle.SHORT, Locale.JAPANESE).toUpperCase(Locale.ENGLISH)
+            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.gray))
         }
     }
 
@@ -125,16 +162,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         }
     }
 
-    private fun setupEventList() {
-        binding.recyclerView.apply {
-            adapter = this@ScheduleCalendarFragment.adapter
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-                getDrawable(context, R.drawable.divider)?.let { setDrawable(it) } ?: throw IllegalStateException("Divider drawable not found")
-            })
-        }
-    }
-
     private fun selectEvent(eventId: String) {
         findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleDetailFragment(eventId))
     }
@@ -142,13 +169,13 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun scrollMonth(it: CalendarMonth) {//スクロール時のロジック
         val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
         if (binding.calendarMatrix.maxRowCount == 6) {//Monthモード
-            binding.exOneYearText.text = it.yearMonth.year.toString()
+            binding.exOneYearText.text = "${it.yearMonth.year}年"
             binding.exOneMonthText.text = monthTitleFormatter.format(it.yearMonth)
         } else {//Weekモード
             val firstDate = it.weekDays.first().first().date
             val lastDate = it.weekDays.last().last().date
             if (firstDate.yearMonth == lastDate.yearMonth) {
-                binding.exOneYearText.text = firstDate.yearMonth.year.toString()
+                binding.exOneYearText.text = "${firstDate.yearMonth.year}年"
                 binding.exOneMonthText.text = monthTitleFormatter.format(firstDate)
             } else {
                 binding.exOneMonthText.text = "${monthTitleFormatter.format(firstDate)} - ${monthTitleFormatter.format(lastDate)}"
@@ -232,9 +259,20 @@ class DayViewBinder(private val viewModel: ScheduleViewModel) : DayBinder<DayVie
         }
 
         private fun bindOtherMonthDays() {
-            textView.setTextColorRes(R.color.primary_accent_red)
+            textView.setTextColorRes(R.color.base_100)
             dot.isVisible = false
             textView.background = null
         }
+    }
+}
+
+@Composable
+fun MyProgressBar(loading: Boolean) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        if (loading) CommonLinearProgressIndicator() else Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }

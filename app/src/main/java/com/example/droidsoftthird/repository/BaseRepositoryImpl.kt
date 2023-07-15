@@ -232,7 +232,7 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun createUser(userDetail: UserDetail): String = mainApi.putUserDetail(userId, userDetail.copy(userId = userId).toJson()).message
     override suspend fun createEvent(event: CreateEvent): String = mainApi.postEvent(event.copy(hostId = userId).toJson()).message
     override suspend fun fetchEvents(): List<ItemEvent> = mainApi.getEvents(userId).map { it.toEntity() }
-    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId).toEntity()
+    override suspend fun fetchEventDetail(eventId: String): EventDetail = mainApi.getEventDetail(eventId, userId).toEntity()
     override suspend fun registerEvent(eventId: String): String = mainApi.putEvent(eventId, PutUserToEventJson(userId)).message
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message

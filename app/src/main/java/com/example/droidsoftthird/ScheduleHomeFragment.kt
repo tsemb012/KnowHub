@@ -1,52 +1,70 @@
 package com.example.droidsoftthird
 
-import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.databinding.FragmentScheduleHomeBinding
-import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.properties.Delegates
 
-@AndroidEntryPoint //このActivityはHiltが使うと宣言し、依存関係をHiltから引っ張ってくる。
+@AndroidEntryPoint
 class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
 
     private val viewModel: ScheduleCalendarViewModel by activityViewModels() //TODO 生存期間流すぎるので後で短くするように
     private val binding: FragmentScheduleHomeBinding by dataBinding()
+    private val bottomNavigationView: BottomNavigationView? by lazy { requireActivity().findViewById(R.id.bottom_nav) }
+    private var isNavigatedFromChatGroup by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         val groupId = arguments?.getString("groupId")
+        isNavigatedFromChatGroup = groupId != null
         viewModel.setSelectedGroupId(groupId ?: "")
+        viewModel.setIsNavigatedFromChatGroup(isNavigatedFromChatGroup)
         setFragmentResult("key", bundleOf("result" to groupId))
+        if(isNavigatedFromChatGroup) bottomNavigationView?.isGone = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(isNavigatedFromChatGroup) bottomNavigationView?.isGone = true
+        if(viewModel.uiModel.value?.isGroupFixed == true) bottomNavigationView?.isGone = true
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         with(binding){
             pager.apply {
                 pager.adapter = ScheduleHomePagerAdapter(this@ScheduleHomeFragment)
                 pager.isUserInputEnabled = false
             }
-            tabLayout.let {
-                TabLayoutMediator(it, pager) { tab, position -> tab.text = "OBJECT" + (position + 1) }.attach()
-                it.getTabAt(0)?.setText(R.string.schedule_calendar) ?: throw IllegalStateException()
-                it.getTabAt(1)?.setText(R.string.schedule_list) ?: throw IllegalStateException()
-            }
-            floatingActionButton.setOnClickListener {
-                val action = ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment()
-                Navigation.findNavController(it).navigate(action)
+
+            floatingActionButtonCompose.setContent {
+                CommonAddButton(
+                    label = "イベントを追加",
+                    navigate = {
+                        findNavController().navigate(
+                            ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment(
+                                isNavigatedFromChatGroup,
+                                viewModel.uiModel.value?.selectedSimpleGroup?.groupId ?: ""
+                            )
+                        ) },
+                    modifier = Modifier.padding(bottom = 32.dp, end = 16.dp)
+                )
             }
         }
     }

@@ -124,8 +124,14 @@
             app:enterAnim="@anim/nav_up_enter_anim"
             app:exitAnim="@anim/nav_up_exit_anim"
             app:popEnterAnim="@anim/nav_up_pop_enter_anim"
-            app:popExitAnim="@anim/nav_up_pop_exit_anim"
-            />
+            app:popExitAnim="@anim/nav_up_pop_exit_anim">
+            <argument
+                android:name="isNavigatedFromChatGroup"
+                app:argType="boolean" />
+            <argument
+                android:name="groupId"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_ScheduleHomeFragment_to_scheduleDetailFragment"
             app:destination="@id/scheduleDetailFragment" />

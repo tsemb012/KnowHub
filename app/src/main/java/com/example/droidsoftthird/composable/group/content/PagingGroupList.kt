@@ -1,14 +1,9 @@
 package com.example.droidsoftthird.composable.group.content
 
-import android.annotation.SuppressLint
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,13 +14,11 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Divider
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +29,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.shared.EmptyMessage
+import com.example.droidsoftthird.composable.shared.FundamentalSheet
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.FrequencyBasis
@@ -43,15 +37,39 @@ import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.model.domain_model.Style
 import kotlinx.coroutines.flow.flowOf
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (String) -> Unit, isLocationGroup: Boolean = false) {
+
+    val isLoading = lazyPagingGroups.loadState.refresh is LoadState.Loading || lazyPagingGroups.loadState.append is LoadState.Loading
+    val error = lazyPagingGroups.loadState.refresh as? LoadState.Error ?: lazyPagingGroups.loadState.append as? LoadState.Error
+
+    FundamentalSheet(
+        content = {
+            PagingGroupListContent(
+                isLoading,
+                lazyPagingGroups,
+                isLocationGroup,
+                navigate,
+            )
+        },
+        isLoading = isLoading,
+        error = error?.error
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterialApi::class)
+private fun PagingGroupListContent(
+    isLoading: Boolean,
+    lazyPagingGroups: LazyPagingItems<ApiGroup>,
+    isLocationGroup: Boolean,
+    navigate: (String) -> Unit,
+) {
+
     var refreshing by remember { mutableStateOf(false) }
-    fun refresh () {lazyPagingGroups.refresh()}
-    val listState = rememberLazyListState()
+    fun refresh() {lazyPagingGroups.refresh()}
     val state = rememberPullRefreshState(refreshing, ::refresh)
-    val isLoading = lazyPagingGroups.loadState.refresh is LoadState.Loading ||
-        lazyPagingGroups.loadState.append is LoadState.Loading
+    val listState = rememberLazyListState()
 
     LaunchedEffect(true) {
         listState.scrollToItem(
@@ -61,11 +79,10 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
     }
 
     Column(modifier = Modifier.pullRefresh(state)) {
-
         if (!isLoading && lazyPagingGroups.itemCount != 0 && isLocationGroup) {
             lazyPagingGroups[0]?.let {
                 it.prefecture
-                androidx.compose.material3.Text(
+                Text(
                     text = "${it.prefecture}、${it.city}",
                     color = Color.DarkGray,
                     style = MaterialTheme.typography.h4,
@@ -92,48 +109,9 @@ fun PagingGroupList(lazyPagingGroups: LazyPagingItems<ApiGroup>, navigate: (Stri
                 state,
                 Modifier.align(Alignment.TopCenter)
             )
-            if (isLoading) {
-                LinearProgressIndicator(
-                    color = colorResource(id = R.color.primary_dark),
-                    trackColor = colorResource(id = R.color.base_100),
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .fillMaxWidth(),
-                )
-            } else {
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-        }
-    }
-    handleLoadStateErrors(lazyPagingGroups)
-}
-
-@SuppressLint("LogNotTimber")
-@Composable
-fun handleLoadStateErrors(lazyPagingGroups: LazyPagingItems<ApiGroup>) {
-    lazyPagingGroups.apply {
-        when {
-            loadState.refresh is LoadState.Error -> {
-                val error = loadState.refresh as? LoadState.Error
-                error?.let {
-                    Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
-                        .show()
-                    Log.d("PagingGroupList", "handleLoadStateErrors: ${it.error.message}")
-                }
-            }
-            loadState.append is LoadState.Error -> {
-                val error = loadState.append as? LoadState.Error
-                error?.let {
-                    Toast.makeText(LocalContext.current, it.error.message, Toast.LENGTH_SHORT)
-                        .show()
-                    Log.d("PagingGroupList", "handleLoadStateErrors: ${it.error.message}")
-                }
-            }
-            else -> { }
         }
     }
 }
-
 
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true, showSystemUi = true)
 @Composable

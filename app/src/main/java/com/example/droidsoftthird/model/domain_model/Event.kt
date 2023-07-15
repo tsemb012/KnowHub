@@ -42,4 +42,17 @@ data class ItemEvent(
         override val groupId: String,
         val groupName: String?,
         val placeName: String?,
-) :Event()
+        val eventRegisteredNumber: Int,
+        val groupJoinedNumber: Int,
+        val status: EventStatus,
+        val isOnline: Boolean,
+) :Event() {
+        val registrationRatio = "$eventRegisteredNumber / $groupJoinedNumber"
+}
+
+enum class EventStatus {
+        BEFORE_REGISTRATION,
+        AFTER_REGISTRATION_BEFORE_EVENT,
+        AFTER_REGISTRATION_DURING_EVENT,
+        AFTER_EVENT,
+}

@@ -14,11 +14,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.droidsoftthird.GroupLocationsFragment
 import com.example.droidsoftthird.GroupLocationsViewModel
-import com.example.droidsoftthird.composable.group.content.GroupAddButton
+import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.composable.group.content.PagingGroupList
 import com.example.droidsoftthird.model.domain_model.AreaCategory
 import kotlinx.coroutines.flow.emptyFlow
@@ -53,8 +55,10 @@ fun OSMBottomSheetScreen(
                 scope
             ) { code: Int, category: AreaCategory -> viewModel.getGroupsByArea(code, category) }
 
-            GroupAddButton(
-                navigateToGroupAdd = navigateToGroupAdd, modifier = Modifier
+            CommonAddButton(
+                stringResource(id = R.string.group_add),
+                navigate = navigateToGroupAdd,
+                modifier = Modifier
                     .padding(bottom = 32.dp, end = 16.dp)
                     .align(Alignment.BottomEnd)
             )

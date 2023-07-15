@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.example.droidsoftthird.R
 
 @Composable
-fun GroupAddButton(navigateToGroupAdd: () -> Unit, modifier: Modifier) {
+fun CommonAddButton(label: String, navigate: () -> Unit, modifier: Modifier) {
     FloatingActionButton(
-        onClick = { navigateToGroupAdd() },
+        onClick = { navigate() },
         backgroundColor = colorResource(id = R.color.primary_dark),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
@@ -31,7 +31,7 @@ fun GroupAddButton(navigateToGroupAdd: () -> Unit, modifier: Modifier) {
         ) {
             Icon(Icons.Filled.Add, contentDescription = "Add", tint = Color.White)
             Text(
-                text = stringResource(id = R.string.group_add),
+                text = label,
                 color = Color.White,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold

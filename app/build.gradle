@@ -96,7 +96,7 @@ dependencies {
     testImplementation "io.mockk:mockk:$mockk_version"
 
     //-----Jitsi meet
-    implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+    implementation ('org.jitsi.react:jitsi-meet-sdk:8.1.2') { transitive = true }
 
     //-----androidx
 

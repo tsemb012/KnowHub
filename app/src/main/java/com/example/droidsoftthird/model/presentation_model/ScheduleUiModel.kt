@@ -16,6 +16,7 @@ data class ScheduleUiModel (
     val selectedEvents: List<ItemEvent> = emptyList(),
     val simpleGroups: List<SimpleGroup> = emptyList(),
     val selectedSimpleGroup: SimpleGroup? = simpleGroups.firstOrNull(),
+    val isGroupFixed: Boolean = false,
 ) {
     companion object {
         operator fun invoke(
@@ -25,6 +26,7 @@ data class ScheduleUiModel (
             selectedEvents: List<ItemEvent>,
             simpleGroupsLoadState: LoadState,
             selectedGroupId: String,
+            isGroupFixed: Boolean,
         ) = ScheduleUiModel(
                 isLoading = schedulesLoadState is LoadState.Loading || simpleGroupsLoadState is LoadState.Loading,
                 error = schedulesLoadState.getErrorOrNull() ?: simpleGroupsLoadState.getErrorOrNull(),
@@ -39,6 +41,7 @@ data class ScheduleUiModel (
                 selectedEvents = selectedEvents,
                 simpleGroups = simpleGroupsLoadState.getValueOrNull() ?: current.simpleGroups,
                 selectedSimpleGroup = current.simpleGroups.firstOrNull { it.groupId == selectedGroupId },
+                isGroupFixed = isGroupFixed,
         )
     }
 }

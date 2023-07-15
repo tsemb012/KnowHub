@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
-import com.example.droidsoftthird.extentions.gs
+import com.example.droidsoftthird.extentions_depreciated.gs
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 
 class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAdapter<ItemEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
