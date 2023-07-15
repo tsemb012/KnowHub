@@ -199,5 +199,6 @@
     <string name="no_events_on_selected_date">選択した日付にイベントがありません。イベントがある日付には青い目印が表示されます。</string>
     <string name="event_name">イベント名</string>
     <string name="event_comment">コメント</string>
+    <string name="event_register">イベントを登録</string>
 
 </resources>
