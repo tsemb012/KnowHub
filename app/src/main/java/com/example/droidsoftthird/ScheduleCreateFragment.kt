@@ -20,6 +20,7 @@ import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import java.time.*
+import java.util.Calendar
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
@@ -100,10 +101,16 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
                 .setNegativeButton("キャンセル", null)
                 .create()
 
+            val currentTime = Calendar.getInstance()
+            val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
+            val currentMinute = currentTime.get(Calendar.MINUTE)
+
             val dialogForStartTime = MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_12H)
                 .setTitleText(R.string.schedule_create_time_start)
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
+                .setHour(currentHour)
+                .setMinute(currentMinute)
                 .build()
             dialogForStartTime.addOnPositiveButtonClickListener {//TODO カラーを変更する。
                 startTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
