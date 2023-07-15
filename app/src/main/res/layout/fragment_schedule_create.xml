@@ -22,49 +22,72 @@
         android:background="@color/base_100"
         style="@style/AppTheme">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/event_name_layout"
+        <TextView
+            android:drawableStart="@drawable/baseline_create_24"
+            android:drawableTint="@color/dark_gray"
+            style="@style/item_schedule_create_title"
+            android:drawablePadding="4dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/event_name"
+            android:paddingVertical="8dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:layout_width="match_parent" />
+
+        <EditText
+            android:id="@+id/event_name"
             android:layout_width="match_parent"
-            app:counterEnabled="true"
-            app:counterMaxLength="15"
-            app:errorEnabled="true"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true"
-            android:layout_marginTop="25dp"
-            >
+            android:layout_height="64dp"
+            android:background="@null"
+            android:textSize="15dp"
+            android:layout_marginHorizontal="30dp"
+            android:maxLength="20"
+            android:textColorHint="@color/gray"
+            android:inputType="textPersonName"
+            android:text="@={viewModel.bindingEventName}"
+            android:hint="@string/schedule_event_name_hint" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/event_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={viewModel.bindingEventName}"
-                android:hint="@string/schedule_event_name_hint"
-                android:inputType="text"
-                android:background="@drawable/radius_rectangular_prime_base_yellow"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:drawableStart="@drawable/ic_baseline_comment_24"
+            android:drawableTint="@color/dark_gray"
+            style="@style/item_schedule_create_title"
+            android:drawablePadding="4dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/event_comment"
+            android:textColor="@color/dark_gray"
+            android:paddingVertical="8dp"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <EditText
+            android:id="@+id/event_comment"
             android:layout_width="match_parent"
-            app:counterEnabled="true"
-            app:counterMaxLength="100"
-            app:errorEnabled="true"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true"
-            android:layout_marginTop="5dp"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/event_comment"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="@={viewModel.bindingEventComment}"
-                android:hint="@string/schedule_event_comment_hint"
-                android:inputType="text"
-                android:background="@drawable/radius_rectangular_prime_base_yellow"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:minHeight="64dp"
+            android:background="@null"
+            android:hint="@string/schedule_event_comment_hint"
+            android:textSize="15sp"
+            android:maxLength="500"
+            android:textColorHint="@color/gray"
+            android:layout_marginHorizontal="30dp"
+            android:inputType="textMultiLine"
+            android:text="@={viewModel.bindingEventComment}"
+            android:paddingBottom="20dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
         <include
             android:id="@+id/include_schedule_create_group"
             layout="@layout/include_item_schedule_create"
@@ -105,6 +128,8 @@
                 android:id="@+id/is_online_title"
                 android:text="@string/online"
                 android:drawableStart="@drawable/ic_baseline_wifi_24"
+                android:drawableTint="@color/dark_gray"
+                android:textColor="@color/dark_gray"
                 android:drawablePadding="3dp"
                 android:layout_height="0dp"
                 style="@style/item_schedule_create_title"
@@ -120,11 +145,17 @@
                 android:id="@+id/is_online_switch"
                 style="@style/item_schedule_create_text"
                 android:clickable="false"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/view2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-            />
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/view2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

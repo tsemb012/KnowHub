@@ -114,7 +114,7 @@
     <!--ScheduleGeneral-->
 
     <!--ScheduleCreate-->
-    <string name="schedule_event_name_hint">イベント名(15字以内)</string>
+    <string name="schedule_event_name_hint">イベント名(20字以内)</string>
     <string name="schedule_event_comment_hint">コメント(100字以内)</string>
     <string name="schedule_create_date">日付</string>
     <string name="schedule_create_time">時間</string>
@@ -197,5 +197,7 @@
     <string name="friday">金</string>
     <string name="saturday">土</string>
     <string name="no_events_on_selected_date">選択した日付にイベントがありません。イベントがある日付には青い目印が表示されます。</string>
+    <string name="event_name">イベント名</string>
+    <string name="event_comment">コメント</string>
 
 </resources>
