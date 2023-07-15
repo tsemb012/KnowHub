@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.composable
+package com.example.droidsoftthird.composable.shared
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,9 +19,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ItemDescription(
     title: String,
-    itemList: List<Pair<ImageVector, String>>,
+    itemList: List<Triple<ImageVector, String, Int>>,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             text = title,
             style = MaterialTheme.typography.h6,
@@ -31,7 +32,7 @@ fun ItemDescription(
 
         Column(modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
 
-            itemList.forEach { (icon, text) ->
+            itemList.forEach { (icon, text, maxLines) ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = icon,
@@ -46,7 +47,7 @@ fun ItemDescription(
                         text = text,
                         style = MaterialTheme.typography.body1,
                         color = Color.DarkGray,
-                        maxLines = 2
+                        maxLines = maxLines
                     )
                 }
             }

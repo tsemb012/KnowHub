@@ -3,19 +3,16 @@ package com.example.droidsoftthird.composable.group.content
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,44 +23,42 @@ import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.model.domain_model.Style
 import com.example.droidsoftthird.R
-import com.example.droidsoftthird.composable.ItemDescription
+import com.example.droidsoftthird.composable.shared.ItemDescription
+import com.example.droidsoftthird.composable.shared.FundamentalCard
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GroupListItem(group: ApiGroup, navigateToDetail: (String) -> Unit) {
-    Card(
-        shape = RoundedCornerShape(24.dp),
+    FundamentalCard(
+        onClick = { group.groupId?.let { navigateToDetail(it) } },
+        content = { GroupCardContent(group) }
+    )
+}
+
+@Composable
+private fun GroupCardContent(group: ApiGroup) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        elevation = 4.dp,
-        onClick = { group.groupId?.let { navigateToDetail(it) } },
-        backgroundColor = colorResource(id = R.color.base_100),
+            .padding(12.dp)
     ) {
-        Row(
+        AsyncImage(
+            model = group.storageRef,
+            contentDescription = null,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-        ) {
-            AsyncImage(model = group.storageRef,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(RoundedCornerShape(24.dp))
-                    .align(Alignment.CenterVertically)
-                    .border(1.dp, Color.Black.copy(alpha = 0.1F), RoundedCornerShape(24.dp)),
-                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-            )
-            Spacer(modifier = Modifier.width(16.dp))
+                .size(120.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .align(Alignment.CenterVertically)
+                .border(1.dp, Color.Black.copy(alpha = 0.1F), RoundedCornerShape(24.dp)),
+            contentScale = ContentScale.Crop,
+        )
+        Spacer(modifier = Modifier.width(16.dp))
 
-            val itemList = listOf(
-                Icons.Filled.Group to stringResource(id = R.string.availability, group.availability),
-                Icons.Filled.LocationOn to group.location,
-                Icons.Filled.Comment to group.groupIntroduction,
-            )
-            ItemDescription(group.groupName, itemList)
-        }
+        val itemList = listOf(
+            Triple(Icons.Filled.Group, stringResource(id = R.string.group_name), 1),
+            Triple(Icons.Filled.LocationOn, group.location, 1),
+            Triple(Icons.Filled.Comment, group.groupIntroduction, 2),
+        )
+        ItemDescription(group.groupName, itemList)
     }
 }
 

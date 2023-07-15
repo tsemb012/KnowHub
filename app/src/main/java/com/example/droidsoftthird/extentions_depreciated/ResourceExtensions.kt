@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.extentions
+package com.example.droidsoftthird.extentions_depreciated
 
 import android.graphics.drawable.Drawable
 import android.view.View

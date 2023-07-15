@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="SUN"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/sunday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
         <TextView
@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="MON"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/monday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
         <TextView
@@ -36,8 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="TUE"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/tuesday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
         <TextView
@@ -46,8 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="WED"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/wednesday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
         <TextView
@@ -56,8 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="THU"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/thursday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
         <TextView
@@ -66,8 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="FRI"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/friday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
         <TextView
@@ -76,8 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="SAT"
-            android:textColor="@color/primary_text_grey"
+            android:text="@string/saturday"
+            android:textColor="@color/gray"
             android:textSize="14sp" />
 
     </LinearLayout>

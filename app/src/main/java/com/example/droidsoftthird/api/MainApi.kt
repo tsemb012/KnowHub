@@ -14,7 +14,7 @@ interface MainApi {
             @Query("user_id") userId: String,//TODO ここをpathに書き換える必要がある。
     ) : Response<Any>
 
-    @GET("users/{user_id}")
+    @GET("users/{user_id}") //TODO
     suspend fun fetchUser(
             @Path("user_id") userId: String
     ): GetUserDetailJson
@@ -122,14 +122,15 @@ interface MainApi {
             @Query("language") language: String,
     ): Response<GetPlaceDetailJson>
 
-    @GET("events")
+    @GET("events") //TODO
     suspend fun getEvents(
             @Query("user_id") userId: String
     ) : List<GetItemEventJson>
 
     @GET("events/{id}")
     suspend fun getEventDetail(
-            @Path("id") eventId: String
+            @Path("id") eventId: String,
+            @Query("user_id") userId: String
     ) : GetEventDetailJson
 
     @POST("events")

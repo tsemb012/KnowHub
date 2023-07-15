@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.profileCreateFragment,
                 R.id.addGroupFragment,
                 R.id.groupDetailFragment,
-                R.id.chatRoomFragment -> View.GONE
+                R.id.chatRoomFragment,
+                R.id.scheduleCreateFragment,
+                -> View.GONE
                 else -> View.VISIBLE
             }
         }

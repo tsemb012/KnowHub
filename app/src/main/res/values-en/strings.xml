@@ -186,5 +186,13 @@
     <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
     <string name="group_intro">グループ紹介</string>
     <string name="leave_group">Leave this group</string>
+    <string name="sunday">SUN</string>
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thursday">THU</string>
+    <string name="friday">FRI</string>
+    <string name="saturday">SAT</string>
+    <string name="no_events_on_selected_date">選択した日付にイベントがありません。イベントがある日付には青い目印が表示されます。</string>
 
 </resources>

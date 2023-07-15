@@ -3,31 +3,21 @@ package com.example.droidsoftthird.model.presentation_model
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.CreateEvent
+import com.example.droidsoftthird.utils.converter.convertPeriodFromDuration
 import java.time.LocalDate
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 data class ScheduleCreateUiModel (
     val isLoading: Boolean = false,
     val error: Throwable? = null,
-    private val groups: List<ApiGroup>? = null,
+    val groups: List<ApiGroup>? = null,
     val selectedItems: SelectedItemStack = SelectedItemStack(),
     private val bindingUiName: String? = null,
     private val bindingUiComment: String? = null,
 ) {
     val uiDate = selectedItems.selectedDate?.toString()?.format("yyyy/MM/dd") ?: NO_SETTING
-    val uiPeriod = selectedItems.let {
-        val startTime = it.startTime?.toLocalTime()
-        val startTimeFormatted = startTime?.format(DateTimeFormatter.ofPattern("HH:mm"))
-        val endTime = it.startTime?.plus(it.duration)?.toLocalTime()
-        val endTimeFormatted = endTime?.format(DateTimeFormatter.ofPattern("HH:mm"))
+    val uiPeriod = selectedItems.let { convertPeriodFromDuration(it.startTime, it.duration) }
 
-        val isNextDay = startTime?.isAfter(endTime) ?: false
-
-        if (startTimeFormatted == null || endTimeFormatted == null) NO_SETTING
-        else if (isNextDay) "$startTimeFormatted - 翌$endTimeFormatted"
-        else "$startTimeFormatted - $endTimeFormatted"
-    }
     val uiPlace = if (selectedItems.isOnline == true) "オンライン" else selectedItems.selectedPlace?.name ?: NO_SETTING
     val uiGroup = selectedItems.selectedGroup?.groupName ?: NO_SETTING
 
