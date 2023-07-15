@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
+import com.example.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -17,29 +18,14 @@ import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import java.time.*
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
-
-    /**
-     * 【方針】
-     *      タッチアクションは、Fragmentで請け負う。
-     *      ViewModelで請け負った場合、observeしてFragmentからダイアログを起動させることになるので手間。
-     *      また、observeするために、リスナーごとにSubjectを作るのも非効率的だと思われる。
-     *      ついては、FragmentでViewにListenerをセットして、Dialogを起動する。
-     *      名前とコメントの記入欄だけViewModelに直接書き込めるようにする。
-     *      画面遷移については、UiModelの中に組み込んで、Succeedで全画面に戻るようにする。
-     * */
 
     private val binding: FragmentScheduleCreateBinding by dataBinding()
     private val viewModel:ScheduleCreateViewModel by hiltNavGraphViewModels(R.id.schedule_graph)
     private val groupId by lazy { arguments?.getString("groupId") }
     private val isNavigatedFromChatGroup by lazy { arguments?.getBoolean("isNavigatedFromChatGroup") }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,13 +34,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
         binding.includeScheduleCreateGroup.itemScheduleCreate.isEnabled = isNavigatedFromChatGroup == false
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            if(!uiModel.isLoading && uiModel.groups?.isNotEmpty() == true && uiModel.selectedItems.selectedGroup == null) {
-                groupId?.let { viewModel.setSelectGroup(it) }
-                if (isNavigatedFromChatGroup == true) binding.includeScheduleCreateGroup.itemScheduleCreateText.setTextColor(resources.getColor(R.color.gray, null))
-            }
-        }
+        viewModel.uiModel.observe(viewLifecycleOwner) { if(canInsertGroupIdFromPreviousScreen(it)) initializeGroup() }
     }
 
     private fun setupClickActions() {
@@ -172,4 +152,14 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
             }
         }
     }
+
+    private fun initializeGroup() {
+        groupId?.let { viewModel.initGroup(it) }
+        if (isNavigatedFromChatGroup == true) binding.includeScheduleCreateGroup.itemScheduleCreateText.setTextColor(
+            resources.getColor(R.color.gray, null)
+        )
+    }
+
+    private fun canInsertGroupIdFromPreviousScreen(uiModel: ScheduleCreateUiModel) =
+        !uiModel.isLoading && uiModel.groups?.isNotEmpty() == true && uiModel.selectedItems.selectedGroup == null
 }
