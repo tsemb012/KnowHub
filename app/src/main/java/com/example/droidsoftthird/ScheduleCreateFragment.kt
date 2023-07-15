@@ -17,6 +17,7 @@ import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import java.time.*
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
@@ -33,13 +34,27 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
 
     private val binding: FragmentScheduleCreateBinding by dataBinding()
     private val viewModel:ScheduleCreateViewModel by hiltNavGraphViewModels(R.id.schedule_graph)
+    private val groupId by lazy { arguments?.getString("groupId") }
+    private val isNavigatedFromChatGroup by lazy { arguments?.getBoolean("isNavigatedFromChatGroup") }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClickActions()
         viewModel.initializeGroups()
+        binding.includeScheduleCreateGroup.itemScheduleCreate.isEnabled = isNavigatedFromChatGroup == false
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            if(!uiModel.isLoading && uiModel.groups?.isNotEmpty() == true && uiModel.selectedItems.selectedGroup == null) {
+                groupId?.let { viewModel.setSelectGroup(it) }
+                if (isNavigatedFromChatGroup == true) binding.includeScheduleCreateGroup.itemScheduleCreateText.setTextColor(resources.getColor(R.color.gray, null))
+            }
+        }
     }
 
     private fun setupClickActions() {

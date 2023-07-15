@@ -56,7 +56,13 @@ class ScheduleHomeFragment: Fragment(R.layout.fragment_schedule_home) {
             floatingActionButtonCompose.setContent {
                 CommonAddButton(
                     label = "イベントを追加",
-                    navigate = { findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment()) },
+                    navigate = {
+                        findNavController().navigate(
+                            ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment(
+                                isNavigatedFromChatGroup,
+                                viewModel.uiModel.value?.selectedSimpleGroup?.groupId ?: ""
+                            )
+                        ) },
                     modifier = Modifier.padding(bottom = 32.dp, end = 16.dp)
                 )
             }
