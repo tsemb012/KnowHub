@@ -64,7 +64,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         setFragmentResultListener("key") { _, bundle ->
             val result = bundle.getString("result")
             viewModel.setSelectedGroupId(result ?: "")
-            Log.d("groupId_tsemb012", bundle.getString("groupId") ?: "")
         }
     }
 
@@ -82,18 +81,10 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
         binding.setupGroupDialog()
         setupWeekLabel()
         setupCalendarMatrix()
-        //setupEventList()
     }
 
     private fun bindUiModel() {
         viewModel.uiModel.observe(viewLifecycleOwner) {
-            it.error?.let { error ->
-                Toast.makeText(
-                    requireContext(),
-                    error.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
 
             adapter.submitList(it.selectedEvents)
             when (it.notifyType) {
@@ -128,15 +119,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
                     isLoading = false,
                     error = viewModel.uiModel.value?.error
                 )
-                /*Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                    CommonAddButton(
-                        label = "イベントを追加",
-                        navigate = { findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleCreateFragment()) },
-                        modifier = Modifier
-                            .padding(bottom = 32.dp, end = 16.dp)
-                            .align(Alignment.BottomEnd)
-                    )
-                }*/
             }
         }
     }
@@ -184,16 +166,6 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
             monthScrollListener = this@ScheduleCalendarFragment::scrollMonth
         }
     }
-
-    /*private fun setupEventList() {
-        binding.recyclerView.apply {
-            adapter = this@ScheduleCalendarFragment.adapter
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-                getDrawable(context, R.drawable.divider)?.let { setDrawable(it) } ?: throw IllegalStateException("Divider drawable not found")
-            })
-        }
-    }*/
 
     private fun selectEvent(eventId: String) {
         findNavController().navigate(ScheduleHomeFragmentDirections.actionScheduleHomeFragmentToScheduleDetailFragment(eventId))
