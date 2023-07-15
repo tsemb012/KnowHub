@@ -29,9 +29,11 @@
         android:id="@+id/is_online_title"
         android:text="@{title}"
         android:drawableStart="@{drawable}"
-        android:drawablePadding="3dp"
+        android:drawableTint="@color/dark_gray"
+        android:drawablePadding="4dp"
         android:layout_height="0dp"
         android:hint="アイテムタイトル"
+        android:textColor="@color/dark_gray"
         style="@style/item_schedule_create_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_schedule_create_text"
@@ -46,10 +48,18 @@
         android:text ="@{text}"
         android:hint="アイテムテキスト"
         style="@style/item_schedule_create_text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,7 +54,7 @@ private fun GroupCardContent(group: ApiGroup) {
         Spacer(modifier = Modifier.width(16.dp))
 
         val itemList = listOf(
-            Triple(Icons.Filled.Group, stringResource(id = R.string.group_name), 1),
+            Triple(Icons.Filled.Group, group.availability, 1),
             Triple(Icons.Filled.LocationOn, group.location, 1),
             Triple(Icons.Filled.Comment, group.groupIntroduction, 2),
         )
