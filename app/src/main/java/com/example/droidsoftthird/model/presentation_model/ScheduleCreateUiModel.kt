@@ -12,6 +12,7 @@ data class ScheduleCreateUiModel (
     val error: Throwable? = null,
     val groups: List<ApiGroup>? = null,
     val selectedItems: SelectedItemStack = SelectedItemStack(),
+    val isSubmitted: Boolean = false,
     private val bindingUiName: String? = null,
     private val bindingUiComment: String? = null,
 ) {
@@ -49,14 +50,17 @@ data class ScheduleCreateUiModel (
         operator fun invoke(
             current: ScheduleCreateUiModel,
             groupsLoadState: LoadState,
+            submitLoadState: LoadState,
             _selectedItems: SelectedItemStack,
             _bindingEventName: String,
             _bindingEventComment: String,
         ) = ScheduleCreateUiModel(
-                    isLoading = groupsLoadState is LoadState.Loading || groupsLoadState is LoadState.Initialized,
-                    error = groupsLoadState.getErrorOrNull(),
+                    isLoading =
+                        groupsLoadState is LoadState.Loading || groupsLoadState is LoadState.Initialized || submitLoadState is LoadState.Loading,
+                    error = groupsLoadState.getErrorOrNull() ?: submitLoadState.getErrorOrNull(),
                     groups = groupsLoadState.getValueOrNull(),
                     selectedItems = _selectedItems,
+                    isSubmitted = submitLoadState is LoadState.Loaded<*>,
                     bindingUiName = _bindingEventName,
                     bindingUiComment = _bindingEventComment,
         )
