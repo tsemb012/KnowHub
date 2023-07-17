@@ -5,6 +5,7 @@ import com.example.droidsoftthird.model.infra_model.json.request.*
 import com.example.droidsoftthird.model.infra_model.json.response.*
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.IdentityHashMap
 
 interface MainApi {
 
@@ -121,6 +122,51 @@ interface MainApi {
             @Query("place_id") placeId: String,
             @Query("language") language: String,
     ): Response<GetPlaceDetailJson>
+
+    @GET("maps/yolp_text_search")
+    suspend fun getYolpTextSearch(
+        query: String,
+        centerLat: Double,
+        centerLng: Double,
+        northLat: Double,
+        eastLng: Double,
+        southLat: Double,
+        westLng: Double,
+    ): Response<List<GetYolpSimplePlaceJson>>
+
+    @GET("maps/yolp_auto_complete")
+    suspend fun getYolpAutoComplete(
+        query: String,
+        centerLat: Double,
+        centerLng: Double,
+        northLat: Double,
+        eastLng: Double,
+        southLat: Double,
+        westLng: Double,
+    ): Response<List<GetYolpSimplePlaceJson>>
+
+    @GET("maps/yolp_category_search")
+    suspend fun getYolpCategorySearch(
+        query: String,
+        category: String,
+        centerLat: Double,
+        centerLng: Double,
+        northLat: Double,
+        eastLng: Double,
+        southLat: Double,
+        westLng: Double,
+    ): Response<List<GetYolpSimplePlaceJson>>
+
+    @GET("maps/yolp_detail_search")
+    suspend fun getYolpDetailSearch(
+        placeId: String,
+    ): Response<GetYolpDetailPlaceJson>
+
+    @GET("maps/yolp_reverse_geo_coder")
+    suspend fun getYolpReverseGeoCoder(
+        lat: Double,
+        lng: Double,
+    ): String
 
     @GET("events") //TODO
     suspend fun getEvents(

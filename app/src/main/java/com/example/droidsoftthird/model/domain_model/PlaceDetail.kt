@@ -30,6 +30,17 @@ data class PlaceDetail(
        )
 }
 
+data class YolpDetailPlace(
+        val id: String,
+        val name: String,
+        val yomi: String?,
+        val category: String,
+        val tel: String?,
+        val url: String?,
+        val location: Location,
+        val formattedAddress: String?,
+)
+
 @Parcelize
 data class EditedPlace(
         val placeId: String,

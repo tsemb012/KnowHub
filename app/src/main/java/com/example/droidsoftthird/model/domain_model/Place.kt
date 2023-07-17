@@ -19,3 +19,16 @@ data class LocationPhoto (
         val photoReference: String,
         val htmlAttributions: List<String>,
 )
+
+data class YolpSimplePlace (
+        val id: String,
+        val name: String,
+        val category: String,
+        val location: Location
+)
+
+enum class Category {
+        CAFE,
+        PARK,
+        LIBRARY,
+}

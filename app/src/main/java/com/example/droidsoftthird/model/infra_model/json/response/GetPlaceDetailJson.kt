@@ -64,3 +64,27 @@ data class GetPlaceDetailJson(
             addressComponents = addressComponents.map { it.toEntity() },
     )
 }
+
+data class GetYolpDetailPlaceJson(
+        val id: String,
+        val name: String,
+        val yomi: String,
+        val category: String,
+        val tel: String?,
+        val url: String?,
+        val lat: Double,
+        val lng: Double,
+        val address: String,
+) {
+
+    fun toEntity(): YolpDetailPlace = YolpDetailPlace(
+            id = id,
+            name = name,
+            yomi = yomi,
+            category = category,
+            tel = tel,
+            url = url,
+            location = Location(lat, lng),
+            formattedAddress = address,
+    )
+}

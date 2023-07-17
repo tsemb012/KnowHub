@@ -37,4 +37,10 @@ interface RailsApiRepository {
 
     suspend fun fetchUserJoinedSimpleGroups(): List<SimpleGroup>
     suspend fun fetchChatGroup(groupId: String): ChatGroup
+
+    suspend fun yolpTextSearch(query: String, viewPort: ViewPort, centerPoint: LatLng, ): List<YolpSimplePlace>
+    suspend fun yolpAutoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace>
+    suspend fun yolpCategorySearch(query: String, viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace>
+    suspend fun yolpDetailSearch(placeId: String): YolpDetailPlace?
+    suspend fun yolpReverseGeoCoder(lat: Double, lon: Double): String
 }
