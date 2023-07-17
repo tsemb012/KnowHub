@@ -273,6 +273,52 @@ class BaseRepositoryImpl @Inject constructor(
                 language = LANGUAGE_JP
         ).body()?.toEntity()
 
+
+    override suspend fun yolpTextSearch(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
+        mainApi.getYolpTextSearch(
+                query = query,
+                centerLat = centerPoint.latitude,
+                centerLng = centerPoint.longitude,
+                northLat = viewPort.northEast?.latitude ?: 0.0,
+                eastLng = viewPort.northEast?.longitude ?: 0.0,
+                southLat = viewPort.southWest?.latitude ?: 0.0,
+                westLng = viewPort.southWest?.longitude ?: 0.0,
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun yolpAutoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
+        mainApi.getYolpAutoComplete(
+            query = query,
+            centerLat = centerPoint.latitude,
+            centerLng = centerPoint.longitude,
+            northLat = viewPort.northEast?.latitude ?: 0.0,
+            eastLng = viewPort.northEast?.longitude ?: 0.0,
+            southLat = viewPort.southWest?.latitude ?: 0.0,
+            westLng = viewPort.southWest?.longitude ?: 0.0,
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun yolpCategorySearch(query: String, viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
+        mainApi.getYolpCategorySearch(
+            query = query,
+            category = category.name.lowercase(),
+            centerLat = centerPoint.latitude,
+            centerLng = centerPoint.longitude,
+            northLat = viewPort.northEast?.latitude ?: 0.0,
+            eastLng = viewPort.northEast?.longitude ?: 0.0,
+            southLat = viewPort.southWest?.latitude ?: 0.0,
+            westLng = viewPort.southWest?.longitude ?: 0.0,
+        ).body()?.map { it.toEntity() } ?: listOf()
+
+    override suspend fun yolpDetailSearch(placeId: String): YolpDetailPlace? =
+        mainApi.getYolpDetailSearch(
+            placeId = placeId,
+        ).body()?.toEntity()
+
+    override suspend fun yolpReverseGeoCoder(lat: Double, lng: Double): String =
+        mainApi.getYolpReverseGeoCoder(
+            lat = lat,
+            lng = lng,
+        )
+
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
