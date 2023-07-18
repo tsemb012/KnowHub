@@ -18,6 +18,7 @@ import androidx.navigation.navGraphViewModels
 import com.example.droidsoftthird.composable.*
 import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.Place
+import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -144,16 +145,16 @@ class MapFragment: Fragment() {
                             it.center.latitude,
                             it.northeast.longitude
                     ).toInt()
+                    mapViewModel.updateViewPoint(it.northeast, it.southwest)
                 }
             }
 
             if (mapViewModel.placesLoadState.value is LoadState.Loaded<*> ) {
-                mapViewModel.placesLoadState.value.getValueOrNull<List<Place>>()?.forEach {
+                mapViewModel.placesLoadState.value.getValueOrNull<List<YolpSimplePlace>>()?.forEach {
                     Marker(
                             state = MarkerState(position = LatLng(it.location.lat, it.location.lng)),
-                            tag = it.placeId,
+                            tag = it.id,
                             title = it.name,
-                            snippet = it.types[0],
                             onClick = { marker ->
                                 mapViewModel.fetchPlaceDetail((marker.tag.toString()))
                                 true
