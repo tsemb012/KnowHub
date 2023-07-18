@@ -113,7 +113,7 @@ interface MainApi {
             @Query("type") type: String,
             @Query("language") language: String,
             @Query("center_lat") centerLat: Double,
-            @Query("center_lng")centerLng: Double,
+            @Query("center_lng") centerLng: Double,
             @Query("radius") radius: String,
     ): Response<List<GetPlaceJson>>
 
@@ -125,41 +125,41 @@ interface MainApi {
 
     @GET("maps/yolp_text_search")
     suspend fun getYolpTextSearch(
-        query: String,
-        centerLat: Double,
-        centerLng: Double,
-        northLat: Double,
-        eastLng: Double,
-        southLat: Double,
-        westLng: Double,
+        @Query("query") query: String,
+        @Query("center_lat") centerLat: Double,
+        @Query("center_lng") centerLng: Double,
+        @Query("north_lat") northLat: Double,
+        @Query("east_lng") eastLng: Double,
+        @Query("south_lat") southLat: Double,
+        @Query("west_lng") westLng: Double,
     ): Response<List<GetYolpSimplePlaceJson>>
 
     @GET("maps/yolp_auto_complete")
     suspend fun getYolpAutoComplete(
-        query: String,
-        centerLat: Double,
-        centerLng: Double,
-        northLat: Double,
-        eastLng: Double,
-        southLat: Double,
-        westLng: Double,
+        @Query("query") query: String,
+        @Query("center_lat") centerLat: Double,
+        @Query("center_lng") centerLng: Double,
+        @Query("north_lat") northLat: Double,
+        @Query("east_lng") eastLng: Double,
+        @Query("south_lat") southLat: Double,
+        @Query("west_lng") westLng: Double,
     ): Response<List<GetYolpSimplePlaceJson>>
 
     @GET("maps/yolp_category_search")
     suspend fun getYolpCategorySearch(
-        query: String,
-        category: String,
-        centerLat: Double,
-        centerLng: Double,
-        northLat: Double,
-        eastLng: Double,
-        southLat: Double,
-        westLng: Double,
+        @Query("query") query: String,
+        @Query("category") category: String,
+        @Query("center_lat") centerLat: Double,
+        @Query("center_lng") centerLng: Double,
+        @Query("north_lat") northLat: Double,
+        @Query("east_lng") eastLng: Double,
+        @Query("south_lat") southLat: Double,
+        @Query("west_lng") westLng: Double,
     ): Response<List<GetYolpSimplePlaceJson>>
 
     @GET("maps/yolp_detail_search")
     suspend fun getYolpDetailSearch(
-        placeId: String,
+        @Query("place_id") placeId: String,
     ): Response<GetYolpDetailPlaceJson>
 
     @GET("maps/yolp_reverse_geo_coder")

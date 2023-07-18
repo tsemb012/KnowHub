@@ -63,7 +63,7 @@ data class GetPlaceJson(
 data class GetYolpSimplePlaceJson(
         val id: String,
         val name: String,
-        val category: String,
+        val category: String?,
         val lat: Double,
         val lng: Double,
 ) {

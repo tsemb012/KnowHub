@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.droidsoftthird.model.domain_model.Category
 import com.example.droidsoftthird.model.domain_model.ViewPort
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.MapUseCase
@@ -50,12 +51,12 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
     fun searchByText() {//TODO Markerの名前を変えた方が良いかもしれない。
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching {
-                useCase.searchByText(query.value, centerPoint.value, selectedType.value, radius.value)
+                useCase.searchByText(query.value, viewPort.value, centerPoint.value)
+            }.onSuccess {
+                placesLoadState.value = LoadState.Loaded(it)
+            }.onFailure {
+                placesLoadState.value = LoadState.Error(it)
             }
-                .onSuccess {
-                    placesLoadState.value = LoadState.Loaded(it)
-                }
-                .onFailure { placesLoadState.value = LoadState.Error(it) }
         }
         placesLoadState.value = LoadState.Loading(job)
         job.start()
@@ -63,7 +64,7 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
 
     fun searchByPoi() {
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
-            runCatching { useCase.searchByPoi(centerPoint.value, selectedType.value, radius.value) }
+            runCatching { useCase.searchByPoi(viewPort.value, centerPoint.value, Category.CAFE) } //TODO カテゴリーを変動させる。
                 .onSuccess { placesLoadState.value = LoadState.Loaded(it) }
                 .onFailure { placesLoadState.value = LoadState.Error(it) }
         }

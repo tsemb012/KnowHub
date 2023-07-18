@@ -296,10 +296,10 @@ class BaseRepositoryImpl @Inject constructor(
             westLng = viewPort.southWest?.longitude ?: 0.0,
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun yolpCategorySearch(query: String, viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
+    override suspend fun yolpCategorySearch(viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
         mainApi.getYolpCategorySearch(
-            query = query,
-            category = category.name.lowercase(),
+            query = if (category == Category.LIBRARY) "図書館" else "",
+            category = if (category != Category.LIBRARY) category.name.lowercase() else "",
             centerLat = centerPoint.latitude,
             centerLng = centerPoint.longitude,
             northLat = viewPort.northEast?.latitude ?: 0.0,

@@ -23,7 +23,7 @@ data class LocationPhoto (
 data class YolpSimplePlace (
         val id: String,
         val name: String,
-        val category: String,
+        val category: String?,
         val location: Location
 )
 
