@@ -237,43 +237,6 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
 
-    override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
-        mainApi.getIndividualPlace(
-                query = query,
-                language = LANGUAGE_JP,
-                northLat = viewPort.northEast?.latitude ?: 0.0,
-                eastLng = viewPort.northEast?.longitude ?: 0.0,
-                southLat = viewPort.southWest?.latitude ?: 0.0,
-                westLng = viewPort.southWest?.longitude ?: 0.0
-        ).body()?.map { it.toEntity() } ?: listOf()
-
-    override suspend fun searchByText(query: String, centerPoint: LatLng, type: String, radius: Int): List<Place> =
-        mainApi.getPlacesByText(
-                query = query,
-                type = type,
-                language = LANGUAGE_JP,
-                region = REGION_JP,
-                centerLat = centerPoint.latitude,
-                centerLng = centerPoint.longitude,
-                radius = radius.toString(),
-        ).body()?.map { it.toEntity() } ?: listOf()
-
-    override suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place> =
-        mainApi.getPlacesByPoi(
-                type = type,
-                language = LANGUAGE_JP,
-                centerLat = centerPoint.latitude,
-                centerLng = centerPoint.longitude,
-                radius = radius.toString(),
-        ).body()?.map { it.toEntity() } ?: listOf()
-
-    override suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
-        mainApi.getPlaceDetail(
-                placeId = placeId,
-                language = LANGUAGE_JP
-        ).body()?.toEntity()
-
-
     override suspend fun yolpTextSearch(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
         mainApi.getYolpTextSearch(
                 query = query,
