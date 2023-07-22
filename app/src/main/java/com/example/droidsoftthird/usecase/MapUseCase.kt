@@ -15,13 +15,15 @@ class MapUseCase  @Inject constructor(private val repository: BaseRepositoryImpl
         repository.yolpTextSearch(query, viewPort, centerPoint)
 
     suspend fun searchByPoi(viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
-        repository.yolpCategorySearch(viewPort, centerPoint, category) //POIで検索する。
+        repository.yolpCategorySearch(viewPort, centerPoint, category)
 
     suspend fun autoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
         repository.yolpAutoComplete(query, viewPort, centerPoint)
 
     suspend fun fetchPlaceDetail(placeId: String): YolpDetailPlace? =
-        repository.yolpDetailSearch(placeId) //場所の詳細を取得する。
+        repository.yolpDetailSearch(placeId)
+    suspend fun reverseGeocode(centerPoint: LatLng): String =
+        repository.yolpReverseGeocode(centerPoint.latitude, centerPoint.longitude)
 
     //suspend fun fetchCurrentLocation():  TODO 現在地を取得するようにする。
 }

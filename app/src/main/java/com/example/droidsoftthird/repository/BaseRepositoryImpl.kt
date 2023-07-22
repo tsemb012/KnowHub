@@ -276,8 +276,8 @@ class BaseRepositoryImpl @Inject constructor(
             placeId = placeId,
         ).body()?.toEntity()
 
-    override suspend fun yolpReverseGeoCoder(lat: Double, lng: Double): String =
-        mainApi.getYolpReverseGeoCoder(
+    override suspend fun yolpReverseGeocode(lat: Double, lng: Double): String =
+        mainApi.getYolpReverseGeocode(
             lat = lat,
             lng = lng,
         )

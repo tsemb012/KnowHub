@@ -5,7 +5,6 @@ import com.example.droidsoftthird.model.infra_model.json.request.*
 import com.example.droidsoftthird.model.infra_model.json.response.*
 import retrofit2.Response
 import retrofit2.http.*
-import java.util.IdentityHashMap
 
 interface MainApi {
 
@@ -163,7 +162,7 @@ interface MainApi {
     ): Response<GetYolpDetailPlaceJson>
 
     @GET("maps/yolp_reverse_geo_coder")
-    suspend fun getYolpReverseGeoCoder(
+    suspend fun getYolpReverseGeocode(
         lat: Double,
         lng: Double,
     ): String
