@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.droidsoftthird.composable.*
 import com.example.droidsoftthird.model.domain_model.EditedPlace
-import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.google.android.gms.maps.model.CameraPosition
@@ -60,9 +59,9 @@ import dagger.hilt.android.AndroidEntryPoint
 //TODO 公式にuiStateのベストプラクティスみたいなのがあるので、それに合わせていく。
 
 @AndroidEntryPoint
-class MapFragment: Fragment() {
+class PlaceMapFragment: Fragment() {
 
-    private val mapViewModel: MapViewModel by viewModels()
+    private val mapViewModel: PlaceMapViewModel by viewModels()
     private val scheduleViewModel:ScheduleCreateViewModel by navGraphViewModels(R.id.schedule_graph)
 
     val tokyo = LatLng(35.681236, 139.767125)

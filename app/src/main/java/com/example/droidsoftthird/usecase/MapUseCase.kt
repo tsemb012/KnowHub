@@ -4,6 +4,7 @@ import com.example.droidsoftthird.model.domain_model.Category
 import com.example.droidsoftthird.model.domain_model.Place
 import com.example.droidsoftthird.model.domain_model.PlaceDetail
 import com.example.droidsoftthird.model.domain_model.ViewPort
+import com.example.droidsoftthird.model.domain_model.YolpDetailPlace
 import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.android.gms.maps.model.LatLng
@@ -23,11 +24,11 @@ class MapUseCase  @Inject constructor(private val repository: BaseRepositoryImpl
     suspend fun autoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
         repository.yolpAutoComplete(query, viewPort, centerPoint)
 
-    suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
-        repository.fetchPlaceDetail(placeId)
+   /* suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
+        repository.fetchPlaceDetail(placeId)*/
 
-    /*suspend fun fetchPlaceDetail(placeId: String): YolpDetailPlace? =
-        repository.yolpDetailSearch(placeId) //場所の詳細を取得する。*/
+    suspend fun fetchPlaceDetail(placeId: String): YolpDetailPlace? =
+        repository.yolpDetailSearch(placeId) //場所の詳細を取得する。
 
     //suspend fun fetchCurrentLocation():  TODO 現在地を取得するようにする。
 }

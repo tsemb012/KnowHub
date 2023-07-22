@@ -199,7 +199,7 @@
         </fragment>
         <fragment
             android:id="@+id/mapFragment"
-            android:name="com.example.droidsoftthird.MapFragment"
+            android:name="com.example.droidsoftthird.PlaceMapFragment"
             android:label="MapFragment">
             <action
                 android:id="@+id/action_mapFragment_to_scheduleCreateFragment"

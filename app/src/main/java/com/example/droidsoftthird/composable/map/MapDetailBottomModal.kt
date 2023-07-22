@@ -28,7 +28,7 @@ fun BottomModal(
         //modifier = Modifier.background(editedPlaceDetail?.color.let { if (it != null) Color(android.graphics.Color.parseColor(it)) else Color.White  }),
         sheetContent = {
             if (placeDetailLoadState.value is LoadState.Loaded<*>) {
-                placeDetailLoadState.value.getValueOrNull<PlaceDetail>()?.let {
+                placeDetailLoadState.value.getValueOrNull<YolpDetailPlace>()?.let {
                     scope.launch { bottomSheetState.show() }
                     editedPlaceDetail = it.toEditedPlace()
                 }
