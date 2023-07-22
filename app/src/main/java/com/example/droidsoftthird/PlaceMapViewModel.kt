@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewModel() {
+class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewModel() {
 
     //LoadStateで読み込みを管理。それ以外の動作はCompose内部で管理。それに合わせてメッセージを切り替える。
 
@@ -31,6 +31,8 @@ class MapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewMo
 
     val isLoading = placesLoadState.value is LoadState.Loading || placeDetailLoadState.value is LoadState.Loading
     val isError = placesLoadState.value is LoadState.Error || placeDetailLoadState.value is LoadState.Error
+
+
 
     //TODO Flowで流してComibineするのが良いかも。
     //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。

@@ -33,22 +33,38 @@ data class PlaceDetail(
 data class YolpDetailPlace(
         val id: String,
         val name: String,
-        val yomi: String?,
+        val yomi: String,
         val category: String,
         val tel: String?,
         val url: String?,
         val location: Location,
         val formattedAddress: String?,
-)
+) {
+        fun toEditedPlace(): EditedPlace? {
+                return EditedPlace(
+                        placeId = id,
+                        name = name,
+                        yomi = yomi,
+                        category = category,
+                        tel = tel,
+                        url = url,
+                        location = location,
+                        formattedAddress = formattedAddress,
+                        memo = null,
+                )
+
+        }
+}
 
 @Parcelize
 data class EditedPlace(
         val placeId: String,
         val name: String,
-        val placeType: String,
+        val yomi: String,
+        val category: String,
         val location: Location,
         val formattedAddress: String?,
-        val plusCode: PlusCode,
+        val tel: String?,
         val url: String?,
         val memo: String?,
 ): Parcelable {
