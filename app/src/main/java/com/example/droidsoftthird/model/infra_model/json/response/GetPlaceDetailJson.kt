@@ -49,20 +49,6 @@ data class GetPlaceDetailJson(
                 htmlAttributions = htmlAttributions,
         )
     }
-
-    fun toEntity(): PlaceDetail = PlaceDetail(
-            placeId = placeId,
-            name = name,
-            types = types,
-            location = geometry.location,
-            viewPort = geometry.viewport.toEntity(),
-            formattedAddress = formattedAddress,
-            plusCode = plusCode.toEntity(),
-            photos = photos?.map { it.toEntity() },
-            color = color,
-            url = url,
-            addressComponents = addressComponents.map { it.toEntity() },
-    )
 }
 
 data class GetYolpDetailPlaceJson(
