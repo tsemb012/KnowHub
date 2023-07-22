@@ -1,11 +1,13 @@
 package com.example.droidsoftthird
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.Category
 import com.example.droidsoftthird.model.domain_model.ViewPort
+import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.MapUseCase
 import com.google.android.gms.maps.model.LatLng
@@ -17,73 +19,69 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : ViewModel() {
 
-    //LoadStateで読み込みを管理。それ以外の動作はCompose内部で管理。それに合わせてメッセージを切り替える。
+    var viewState: PlaceMapViewState by mutableStateOf(PlaceMapViewState())
 
-    val selectedType: MutableState<String> = mutableStateOf("restaurant")
-    val selections: MutableState<List<String>> = mutableStateOf(listOf("restaurant", "cafe"))
-    val tokyo = LatLng(35.681236, 139.767125)
-    val query: MutableState<String> = mutableStateOf("")
-    private val viewPort: MutableState<ViewPort> = mutableStateOf(ViewPort(null, null))
-    val centerPoint: MutableState<LatLng> = mutableStateOf(tokyo)
-    val radius: MutableState<Int> = mutableStateOf(500)
-    val placesLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
-    val placeDetailLoadState: MutableState<LoadState> = mutableStateOf(LoadState.Initialized)
-
-    val isLoading = placesLoadState.value is LoadState.Loading || placeDetailLoadState.value is LoadState.Loading
-    val isError = placesLoadState.value is LoadState.Error || placeDetailLoadState.value is LoadState.Error
-
-
-
-    //TODO Flowで流してComibineするのが良いかも。
-    //TODO Messageに詳細情報を含めて、モーダルを出現させるようにする。
     fun fetchPlaceDetail(placeId: String) {
-        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
-            runCatching { useCase.fetchPlaceDetail(placeId) }
-                .onSuccess {
-                    it?.let { placeDetail -> placeDetailLoadState.value = LoadState.Loaded(placeDetail) }
-                }
-                .onFailure {
-                    placeDetailLoadState.value = LoadState.Error(it)
-                }
+        launchDataLoad({ useCase.fetchPlaceDetail(placeId) }) { loadState ->
+            viewState.copy(placeDetailLoadState = loadState)
         }
-        placeDetailLoadState.value = LoadState.Loading(job)
-        job.start()
     }
 
-    fun searchByText() {//TODO Markerの名前を変えた方が良いかもしれない。
-        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
-            runCatching {
-                useCase.searchByText(query.value, viewPort.value, centerPoint.value)
-            }.onSuccess {
-                placesLoadState.value = LoadState.Loaded(it)
-            }.onFailure {
-                placesLoadState.value = LoadState.Error(it)
-            }
+    fun searchByText() {
+        launchDataLoad({ useCase.searchByText(viewState.query, viewState.viewPort, viewState.centerPoint) }) { loadState ->
+            viewState.copy(placesLoadState = loadState)
         }
-        placesLoadState.value = LoadState.Loading(job)
-        job.start()
     }
 
     fun searchByPoi() {
-        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
-            runCatching { useCase.searchByPoi(viewPort.value, centerPoint.value, Category.CAFE) } //TODO カテゴリーを変動させる。
-                .onSuccess { placesLoadState.value = LoadState.Loaded(it) }
-                .onFailure { placesLoadState.value = LoadState.Error(it) }
-        }
-        placesLoadState.value = LoadState.Loading(job)
-        job.start()
-    }
-    /*
-    TODO 個別検索のユースケースは今のところ存在しないので置いておく。
-    fun searchByIndividual() {
-        viewModelScope.launch {
-            runCatching { useCase.searchIndividualPlace(query.value, viewPort.value) }
-                .onSuccess {  }
-                .onFailure {  }
+        launchDataLoad({ useCase.searchByPoi(viewState.viewPort, viewState.centerPoint, Category.CAFE) }) { loadState ->
+            viewState.copy(placesLoadState = loadState)
         }
     }
-    */
+
+    fun autoComplete() {
+        launchDataLoad({ useCase.autoComplete(viewState.query, viewState.viewPort, viewState.centerPoint) }) { loadState ->
+            viewState.copy(placesLoadState = loadState)
+        }
+    }
+
+    fun reverseGeocode() {
+        launchDataLoad({ useCase.reverseGeocode(viewState.centerPoint) }) { loadState ->
+            viewState.copy(reverseGeocodeLoadState = loadState)
+        }
+    }
+
     fun updateViewPoint(northEast: LatLng, southWest: LatLng) {
-        viewPort.value = ViewPort(northEast, southWest)
+        viewState = viewState.copy(viewPort = ViewPort(northEast, southWest))
     }
+
+    private fun <T> launchDataLoad(
+        block: suspend () -> T,
+        stateUpdater: (LoadState) -> PlaceMapViewState
+    ) {
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
+            runCatching { block() }
+                .onSuccess { viewState = it?.let { stateUpdater(LoadState.Loaded(it)) } ?: viewState }
+                .onFailure { viewState = stateUpdater(LoadState.Error(it)) }
+        }
+        viewState = stateUpdater(LoadState.Loading(job))
+    }
+}
+
+
+data class PlaceMapViewState(
+    val selectedType: String = "restaurant",
+    val selections: List<String> = listOf("restaurant", "cafe"),
+    val centerPoint: LatLng = LatLng(35.681236, 139.767125),
+    val radius: Int = 500,
+    val viewPort: ViewPort = ViewPort(null, null),
+    val query: String = "",
+    val placesLoadState: LoadState = LoadState.Initialized,
+    val placeDetailLoadState: LoadState = LoadState.Initialized,
+    val reverseGeocodeLoadState: LoadState = LoadState.Initialized
+) {
+    val places = placesLoadState.getValueOrNull<List<YolpSimplePlace>>()
+    val placeDetail = placeDetailLoadState.getValueOrNull<YolpSimplePlace>()
+    val isLoading = placesLoadState is LoadState.Loading || placeDetailLoadState is LoadState.Loading || reverseGeocodeLoadState is LoadState.Loading
+    val error = placesLoadState.getErrorOrNull() ?: placeDetailLoadState.getErrorOrNull() ?: reverseGeocodeLoadState.getErrorOrNull()
 }
