@@ -115,7 +115,7 @@ class PlaceMapFragment: Fragment() {
     private fun confirmPlace(editedPlaceDetail: EditedPlace?) {
 
         if (editedPlaceDetail != null) {
-            val action = MapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)
+            val action = PlaceMapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)
             findNavController().navigate(action)
             scheduleViewModel.postPlace(editedPlaceDetail)
         }

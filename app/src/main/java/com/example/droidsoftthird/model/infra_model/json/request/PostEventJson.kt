@@ -20,18 +20,15 @@ data class PostEventJson(
 )
 
 data class PostPlaceJson(
-        val name: String,
-        val address: String,
-        val latitude: Double,
-        val longitude: Double,
         @Json(name = "place_id")
         val placeId: String,
-        @Json(name = "place_type")
-        val placeType: String,
-        @Json(name = "global_code")
-        val globalCode: String?,
-        @Json(name = "compound_code")
-        val compoundCode: String?,
+        val name: String,
+        val yomi: String,
+        val latitude: Double,
+        val longitude: Double,
+        val address: String,
+        val category: String,
+        val tel: String?,
         val url: String?,
         val memo: String?
 ) {
@@ -39,18 +36,13 @@ data class PostPlaceJson(
                 return EditedPlace(
                         placeId = placeId,
                         name = name,
-                        placeType = placeType,
-                        location = Location(
-                                lat = latitude,
-                                lng = longitude
-                        ),
+                        yomi = yomi,
+                        category = category,
+                        location = Location(lat = latitude, lng = longitude),
                         formattedAddress = address,
-                        plusCode = PlusCode.builder()
-                                .setGlobalCode(globalCode)
-                                .setCompoundCode(compoundCode)
-                                .build(),
+                        tel = tel,
                         url = url,
-                        memo = memo
+                        memo = memo,
                 )
         }
 }
