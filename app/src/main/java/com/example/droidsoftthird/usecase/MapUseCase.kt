@@ -14,7 +14,7 @@ class MapUseCase  @Inject constructor(private val repository: BaseRepositoryImpl
     suspend fun searchByText(query: String, viewPort: ViewPort, centerPoint: LatLng,): List<YolpSimplePlace> =
         repository.yolpTextSearch(query, viewPort, centerPoint)
 
-    suspend fun searchByPoi(viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
+    suspend fun searchByCategory(viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
         repository.yolpCategorySearch(viewPort, centerPoint, category)
 
     suspend fun autoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =

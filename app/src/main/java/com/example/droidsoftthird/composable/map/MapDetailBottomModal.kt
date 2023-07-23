@@ -1,12 +1,14 @@
 package com.example.droidsoftthird.composable
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.droidsoftthird.PlaceMapViewState
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.presentation_model.LoadState
@@ -14,26 +16,23 @@ import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
-fun BottomModal(
-    placeDetailLoadState: MutableState<LoadState>,
+fun PlaceMapBottomModal(
+    viewState: State<PlaceMapViewState>,
     onConfirm: (EditedPlace?) -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
-    var editedPlaceDetail by remember { mutableStateOf<EditedPlace?>(null) }
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),  // 丸い角を作成
         //modifier = Modifier.background(editedPlaceDetail?.color.let { if (it != null) Color(android.graphics.Color.parseColor(it)) else Color.White  }),
         sheetContent = {
-            if (placeDetailLoadState.value is LoadState.Loaded<*>) {
-                placeDetailLoadState.value.getValueOrNull<YolpDetailPlace>()?.let {
-                    scope.launch { bottomSheetState.show() }
-                    editedPlaceDetail = it.toEditedPlace()
-                }
-                placeDetailLoadState.value = LoadState.Initialized
-            }
+            val editedPlace = viewState.value.placeDetail?.toEditedPlace()
+            var editedPlaceDetail by remember { mutableStateOf<EditedPlace?>(editedPlace) }
+            if (editedPlaceDetail != null) { scope.launch { bottomSheetState.show() } }
+
             Column {
                 ListItem(label = stringResource(R.string.map_place_name), value = editedPlaceDetail?.name ?: "")
                 ListItem(label = stringResource(R.string.map_address), value = editedPlaceDetail?.formattedAddress ?: "")

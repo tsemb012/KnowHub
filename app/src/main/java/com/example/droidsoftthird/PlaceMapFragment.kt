@@ -5,23 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.example.droidsoftthird.composable.*
+import com.example.droidsoftthird.composable.map.place.PlaceMapScreen
 import com.example.droidsoftthird.model.domain_model.EditedPlace
-import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
-import com.example.droidsoftthird.model.presentation_model.LoadState
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.*
 import dagger.hilt.android.AndroidEntryPoint
 
 //DONE 図にまとめるOK　→　マップ入力画面UIの情報収集を行うOK　→　UIを確定させるOK　→　データのやりとりをざっくり検討するOK　→　TODOを設置して全体像を掴む　→　
@@ -64,114 +54,24 @@ class PlaceMapFragment: Fragment() {
     private val mapViewModel: PlaceMapViewModel by viewModels()
     private val scheduleViewModel:ScheduleCreateViewModel by navGraphViewModels(R.id.schedule_graph)
 
-    val tokyo = LatLng(35.681236, 139.767125)
-    val defaultCameraPosition = CameraPosition.fromLatLngZoom(tokyo, 11f)//これを現在地に変更する。
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View { //TODO 要リファクタリング
-
+    ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                var isMapLoaded by remember { mutableStateOf(false) }
-                BottomModal(
-                        placeDetailLoadState = mapViewModel.placeDetailLoadState,
-                        onConfirm = { confirmPlace(it) }
-                ) {
-                    Column {
-                        if (mapViewModel.isLoading) LinearProgressIndicator(Modifier.fillMaxWidth())
-                        if (mapViewModel.isError) {
-                            if (mapViewModel.placeDetailLoadState.value is LoadState.Error) Toast.makeText(requireContext(), mapViewModel.placeDetailLoadState.value.getErrorOrNull().toString(), Toast.LENGTH_SHORT).show()
-                            if (mapViewModel.placesLoadState.value is LoadState.Error) Toast.makeText(requireContext(), mapViewModel.placesLoadState.value.getErrorOrNull().toString(), Toast.LENGTH_SHORT).show()
-                        }
-                        Box {
-                            val cameraPositionState = rememberCameraPositionState { position = defaultCameraPosition }
-                            GoogleMap(
-                                cameraPositionState = cameraPositionState,
-                                modifier = Modifier,
-                                properties = MapProperties(mapType = MapType.NORMAL),
-                                uiSettings = MapUiSettings(compassEnabled = false),
-                                onMapLoaded = { isMapLoaded = true },
-                                onPOIClick = { },
-                                content = function(cameraPositionState, mapViewModel.centerPoint, mapViewModel.radius),
-                            )
-                            Column {
-                                Row(modifier = Modifier.height(56.dp).padding(top = 16.dp)) {
-                                    SearchBox(mapViewModel.query) { mapViewModel.searchByText() }
-                                    DropDown(mapViewModel.selections, mapViewModel.selectedType)
-                                }
-                                ChipGroup(mapViewModel.selections) { mapViewModel.searchByPoi() }
-                            }
-                        }
-                    }
-                }
-                CircleProgressBar(isMapLoaded)
+                PlaceMapScreen(mapViewModel, ::confirmPlace)
+                mapViewModel.viewState.value.error?.let { Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
             }
         }
     }
 
-    private fun confirmPlace(editedPlaceDetail: EditedPlace?) {
-
+    fun confirmPlace(editedPlaceDetail: EditedPlace?) {
         if (editedPlaceDetail != null) {
             val action = PlaceMapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)
             findNavController().navigate(action)
             scheduleViewModel.postPlace(editedPlaceDetail)
         }
-    }
-
-
-
-    @Composable
-    private fun function(
-        cameraPositionState: CameraPositionState,
-        centerPoint: MutableState<LatLng>,
-        radius: MutableState<Int>,
-
-
-    ): @Composable () -> Unit =
-        {
-            val updateCameraPosition: (northEast: LatLng, southWest: LatLng) -> Unit = { _, _ -> }
-            if (!cameraPositionState.isMoving) {//カメラの動きが止まった時のデータをViewModelにあげるようにする。
-                cameraPositionState.projection?.visibleRegion?.latLngBounds?.let {
-                    updateCameraPosition(it.northeast, it.southwest)
-                    cameraPositionState
-                    centerPoint.value = it.center
-                    radius.value = distanceInMeters(
-                            it.center.latitude,
-                            it.center.longitude,
-                            it.center.latitude,
-                            it.northeast.longitude
-                    ).toInt()
-                    mapViewModel.updateViewPoint(it.northeast, it.southwest)
-                }
-            }
-
-            if (mapViewModel.placesLoadState.value is LoadState.Loaded<*> ) {
-                mapViewModel.placesLoadState.value.getValueOrNull<List<YolpSimplePlace>>()?.forEach {
-                    Marker(
-                            state = MarkerState(position = LatLng(it.location.lat, it.location.lng)),
-                            tag = it.id,
-                            title = it.name,
-                            onClick = { marker ->
-                                mapViewModel.fetchPlaceDetail((marker.tag.toString()))
-                                true
-                            }
-                    )
-                }
-                //viewModel.placeDetailLoadState.value = LoadState.Modified(Pair(viewModel.placeDetailLoadState.value.getValueOrNull() , null))
-            }
-        }
-
-    private fun distanceInMeters(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
-        val earthRadius = 6371.0 // 地球の半径
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLng = Math.toRadians(lng2 - lng1)
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-            Math.sin(dLng / 2) * Math.sin(dLng / 2)
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-        return (earthRadius * c * 1000.0) * 0.8
     }
 }
