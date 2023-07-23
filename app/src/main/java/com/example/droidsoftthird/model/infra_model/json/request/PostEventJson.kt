@@ -23,11 +23,11 @@ data class PostPlaceJson(
         @Json(name = "place_id")
         val placeId: String,
         val name: String,
-        val yomi: String,
+        val yomi: String?,
         val latitude: Double,
         val longitude: Double,
-        val address: String,
-        val category: String,
+        val address: String?,
+        val category: String?,
         val tel: String?,
         val url: String?,
         val memo: String?

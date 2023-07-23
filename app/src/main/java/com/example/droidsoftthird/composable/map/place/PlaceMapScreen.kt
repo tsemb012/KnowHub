@@ -21,6 +21,7 @@ fun PlaceMapScreen(viewModel: PlaceMapViewModel, confirmPlace: (EditedPlace?) ->
 
     PlaceMapBottomModal(
         viewState = viewState,
+        updateViewState = updateViewState,
         onConfirm = { confirmPlace(it) }
     ) {
         GoogleMapScreen(viewState, updateViewState, fetchPlaceDetail) { _isMapLoading.value = false }
