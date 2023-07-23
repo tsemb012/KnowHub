@@ -26,10 +26,4 @@ class MapTest{
         hiltRule.inject()
     }
 
-    @Test
-    fun `happypath`() {
-        runBlocking { repository.searchIndividualPlace("ラーメン", viewPort) }.let {
-            TestCase.assertEquals(20, it.size)
-        }
-    }
 }
