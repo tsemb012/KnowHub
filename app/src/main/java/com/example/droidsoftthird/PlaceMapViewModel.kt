@@ -25,36 +25,32 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
 
     fun fetchPlaceDetail(placeId: String) {
         launchDataLoad({ useCase.fetchPlaceDetail(placeId) }) { loadState ->
-            _viewState.value.copy(placeDetailLoadState = loadState)
+            _viewState.value = _viewState.value.copy(placeDetailLoadState = loadState)
         }
     }
 
     fun searchByText(query: String) {
         launchDataLoad({ useCase.searchByText(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
-            _viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = _viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun searchByCategory(category: Category) {
         launchDataLoad({ useCase.searchByCategory(viewState.value.viewPort, viewState.value.centerPoint, category) }) { loadState ->
-            _viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = _viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun autoComplete(query: String) {
         launchDataLoad({ useCase.autoComplete(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
-            _viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = _viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun reverseGeocode() {
         launchDataLoad({ useCase.reverseGeocode(viewState.value.centerPoint) }) { loadState ->
-            _viewState.value.copy(reverseGeocodeLoadState = loadState)
+            _viewState.value = _viewState.value.copy(reverseGeocodeLoadState = loadState)
         }
-    }
-
-    fun updateViewPoint(northEast: LatLng, southWest: LatLng) {
-        _viewState.value = viewState.value.copy(viewPort = ViewPort(northEast, southWest))
     }
 
     fun updateViewState(state: PlaceMapViewState) {
@@ -63,14 +59,14 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
 
     private fun <T> launchDataLoad(
         block: suspend () -> T,
-        stateUpdater: (LoadState) -> PlaceMapViewState
+        stateUpdater: (LoadState) -> Unit
     ) {
         val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             runCatching { block() }
-                .onSuccess { _viewState.value = it?.let { stateUpdater(LoadState.Loaded(it)) } ?: viewState.value }
-                .onFailure { _viewState.value = stateUpdater(LoadState.Error(it)) }
+                .onSuccess { it?.let { stateUpdater(LoadState.Loaded(it)) } }
+                .onFailure { stateUpdater(LoadState.Error(it)) }
         }
-        _viewState.value = stateUpdater(LoadState.Loading(job))
+        stateUpdater(LoadState.Loading(job))
         job.start()
     }
 }
