@@ -16,7 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchBox(query: MutableState<String>, callback: () -> Unit,){
+fun SearchBox(callback: (String) -> Unit,){
+    val query = remember { mutableStateOf("") }
+
     Row(
         modifier = Modifier.height(56.dp),
         horizontalArrangement = Arrangement.Center,
@@ -43,7 +45,7 @@ fun SearchBox(query: MutableState<String>, callback: () -> Unit,){
         )
         Button(
             modifier = Modifier.fillMaxHeight(),
-            onClick = { callback() }
+            onClick = { callback(query.value) }
         ) {
             Text("Search")
         }
@@ -55,6 +57,6 @@ fun SearchBox(query: MutableState<String>, callback: () -> Unit,){
 fun DefaultPreview() {
     val query = remember { mutableStateOf("") }
     MaterialTheme {
-        SearchBox(query = query , callback = {})
+        SearchBox() {}
     }
 }
