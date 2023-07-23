@@ -19,7 +19,7 @@ fun SharedBackButton(navigateUp: () -> Unit) {
         onClick = { navigateUp() },
         modifier = Modifier
             .background(colorResource(id = R.color.base_100), shape = CircleShape)
-            .padding(4.dp)
+            .padding(3.dp)
     ) {
         Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
     }
