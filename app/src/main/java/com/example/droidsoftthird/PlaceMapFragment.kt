@@ -61,7 +61,7 @@ class PlaceMapFragment: Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PlaceMapScreen(mapViewModel, ::confirmPlace)
+                PlaceMapScreen(mapViewModel, ::confirmPlace, ::navigateUp)
                 mapViewModel.viewState.value.error?.let { Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()}
             }
         }
@@ -73,5 +73,9 @@ class PlaceMapFragment: Fragment() {
             findNavController().navigate(action)
             scheduleViewModel.postPlace(editedPlaceDetail)
         }
+    }
+
+    fun navigateUp() {
+        findNavController().navigateUp()
     }
 }
