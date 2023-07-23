@@ -22,7 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.droidsoftthird.R
-import com.example.droidsoftthird.composable.shared.ItemDescription
+import com.example.droidsoftthird.composable.shared.SharedDescriptions
+import com.example.droidsoftthird.composable.shared.DescriptionItem
 import com.example.droidsoftthird.composable.shared.FundamentalCard
 import com.example.droidsoftthird.composable.shared.ItemStatus
 import com.example.droidsoftthird.model.domain_model.EventStatus
@@ -41,11 +42,12 @@ fun EventListItem(event: ItemEvent, navigateToDetail: (String) -> Unit) {
 @Composable
 fun EventCardContent(event: ItemEvent) {
 
-    val descriptionList = listOfNotNull(
-        Triple(Icons.Filled.Group, event.groupName ?: "", 1),
-        Triple(Icons.Filled.AvTimer, formatTimePeriod(event.period.first, event.period.second), 1),
-        Triple(Icons.Filled.LocationOn, if (!event.isOnline) event.placeName ?: "" else "-", 1),
+    val descriptionList: List<DescriptionItem> = listOf(
+        DescriptionItem(Icons.Filled.Group, event.groupName ?: "", 1, false),
+        DescriptionItem(Icons.Filled.AvTimer, formatTimePeriod(event.period.first, event.period.second), 1, false),
+        DescriptionItem(Icons.Filled.LocationOn, if (!event.isOnline) event.placeName ?: "" else "-", 1, false),
     )
+
     //TODO 日付の文字列をうまく表現する。Creat画面のロジックをアレンジするようにする。
 
     val statusColor = when (event.status) {
@@ -63,7 +65,7 @@ fun EventCardContent(event: ItemEvent) {
     Row(modifier = Modifier
         .padding(start = 16.dp, top = 12.dp, end = 12.dp, bottom = 12.dp)
         .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        ItemDescription(event.name, descriptionList, modifier = Modifier
+        SharedDescriptions(event.name, descriptionList, modifier = Modifier
             .weight(1f)
             .padding(start = 8.dp))
         Box(modifier = Modifier.width(100.dp).height(100.dp).padding(bottom = 16.dp)) {
