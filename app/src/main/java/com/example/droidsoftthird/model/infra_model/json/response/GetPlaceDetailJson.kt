@@ -54,13 +54,13 @@ data class GetPlaceDetailJson(
 data class GetYolpDetailPlaceJson(
         val id: String,
         val name: String,
-        val yomi: String,
-        val category: String,
+        val yomi: String?,
+        val category: String?,
         val tel: String?,
         val url: String?,
         val lat: Double,
         val lng: Double,
-        val address: String,
+        val address: String?,
 ) {
 
     fun toEntity(): YolpDetailPlace = YolpDetailPlace(

@@ -7,8 +7,8 @@ import kotlinx.android.parcel.Parcelize
 data class YolpDetailPlace(
         val id: String,
         val name: String,
-        val yomi: String,
-        val category: String,
+        val yomi: String?,
+        val category: String?,
         val tel: String?,
         val url: String?,
         val location: Location,
@@ -34,8 +34,8 @@ data class YolpDetailPlace(
 data class EditedPlace(
         val placeId: String,
         val name: String,
-        val yomi: String,
-        val category: String,
+        val yomi: String?,
+        val category: String?,
         val location: Location,
         val formattedAddress: String?,
         val tel: String?,

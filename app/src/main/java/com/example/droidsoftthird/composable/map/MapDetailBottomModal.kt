@@ -13,28 +13,37 @@ import com.example.droidsoftthird.R
 import com.example.droidsoftthird.model.domain_model.*
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import kotlinx.coroutines.launch
+import kotlin.reflect.KFunction1
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun PlaceMapBottomModal(
     viewState: State<PlaceMapViewState>,
+    updateViewState: KFunction1<PlaceMapViewState, Unit>,
     onConfirm: (EditedPlace?) -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
+    var isOpenable by remember { mutableStateOf(false) } // Initialize isOpenable to false
+
+    LaunchedEffect(viewState.value.placeDetail) { // Whenever placeDetail changes, update isOpenable
+        isOpenable = viewState.value.placeDetail?.toEditedPlace() != null
+        if (isOpenable) {
+            scope.launch { bottomSheetState.show() }
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),  // 丸い角を作成
-        //modifier = Modifier.background(editedPlaceDetail?.color.let { if (it != null) Color(android.graphics.Color.parseColor(it)) else Color.White  }),
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetContent = {
             val editedPlace = viewState.value.placeDetail?.toEditedPlace()
             var editedPlaceDetail by remember { mutableStateOf<EditedPlace?>(editedPlace) }
-            if (editedPlaceDetail != null) { scope.launch { bottomSheetState.show() } }
 
             Column {
-                ListItem(label = stringResource(R.string.map_place_name), value = editedPlaceDetail?.name ?: "")
+                ListItem(label = stringResource(R.string.map_place_name), value = viewState.value.placeDetail?.name ?: "")
                 ListItem(label = stringResource(R.string.map_address), value = editedPlaceDetail?.formattedAddress ?: "")
                 ListItem(label = stringResource(R.string.map_category), value = editedPlaceDetail?.category ?: "")
                 EditableListItem(label = stringResource(R.string.map_memo), value = editedPlaceDetail?.memo?: "", onTextChanged = { editedPlaceDetail = editedPlaceDetail?.copy(memo = it) })

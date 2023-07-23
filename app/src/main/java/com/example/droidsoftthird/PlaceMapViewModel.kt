@@ -25,31 +25,31 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
 
     fun fetchPlaceDetail(placeId: String) {
         launchDataLoad({ useCase.fetchPlaceDetail(placeId) }) { loadState ->
-            _viewState.value = _viewState.value.copy(placeDetailLoadState = loadState)
+            _viewState.value = viewState.value.copy(placeDetailLoadState = loadState)
         }
     }
 
     fun searchByText(query: String) {
         launchDataLoad({ useCase.searchByText(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
-            _viewState.value = _viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun searchByCategory(category: Category) {
         launchDataLoad({ useCase.searchByCategory(viewState.value.viewPort, viewState.value.centerPoint, category) }) { loadState ->
-            _viewState.value = _viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun autoComplete(query: String) {
         launchDataLoad({ useCase.autoComplete(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
-            _viewState.value = _viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun reverseGeocode() {
         launchDataLoad({ useCase.reverseGeocode(viewState.value.centerPoint) }) { loadState ->
-            _viewState.value = _viewState.value.copy(reverseGeocodeLoadState = loadState)
+            _viewState.value = viewState.value.copy(reverseGeocodeLoadState = loadState)
         }
     }
 
