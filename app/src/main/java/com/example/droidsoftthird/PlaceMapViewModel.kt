@@ -30,19 +30,19 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
     }
 
     fun searchByText(query: String) {
-        launchDataLoad({ viewState.value.apply { useCase.searchByText(query, viewPort, centerPoint) } }) { loadState ->
+        launchDataLoad({ useCase.searchByText(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
             _viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun searchByCategory(category: Category) {
-        launchDataLoad({ viewState.value.apply { useCase.searchByCategory(viewPort, centerPoint, category) } } ) { loadState ->
+        launchDataLoad({ useCase.searchByCategory(viewState.value.viewPort, viewState.value.centerPoint, category) }) { loadState ->
             _viewState.value.copy(placesLoadState = loadState)
         }
     }
 
     fun autoComplete(query: String) {
-        launchDataLoad({ viewState.value.apply { useCase.autoComplete(query, viewPort, centerPoint) } }) { loadState ->
+        launchDataLoad({ useCase.autoComplete(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
             _viewState.value.copy(placesLoadState = loadState)
         }
     }
