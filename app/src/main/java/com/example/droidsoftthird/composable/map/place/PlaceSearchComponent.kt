@@ -18,6 +18,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.PlaceMapViewState
@@ -45,43 +46,62 @@ fun PlaceSearchComponent(
         ))
         keyboardController?.hide()
     }
-    Column(Modifier.padding(horizontal = 28.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 28.dp, vertical = 8.dp)) {
         SearchBox(searchByText, autoComplete, clearSearch)
         Box {
             ChipGroup(Category.values()) { category -> searchByCategory(category) }
-            LazyColumn(modifier = Modifier.background(color = colorResource(id = R.color.base_100))) {
-                viewState.value.autoCompleteItems?.let { list ->
-                    items(list.size) {
-                        Column(Modifier.clickable(onClick = {
-                            updateViewState(viewState.value.copy(
-                                autoCompleteLoadState = LoadState.Initialized,
-                                currentPoint = LatLng(list[it].location.lat, list[it].location.lng)
-                            ))
-                            keyboardController?.hide()
-                            fetchPlaceDetail(list[it].id)
-                        })) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                horizontalArrangement = Arrangement.Start,
-                            ) {
-                                Text(
-                                    text = viewState.value.currentPoint?.let { currentPoint -> "${list[it].calculateKiloMeter(currentPoint)} km" } ?: "N/A",
-                                    modifier = Modifier.weight(1f),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray,
-                                )
-                                Text(
-                                    text = list[it].name,
-                                    modifier = Modifier.weight(4f),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    maxLines = 1
-                                )
-                            }
-                            Divider()
-                        }
+            AutoCompleteList(viewState, updateViewState, keyboardController, fetchPlaceDetail)
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun AutoCompleteList(
+    viewState: State<PlaceMapViewState>,
+    updateViewState: (PlaceMapViewState) -> Unit,
+    keyboardController: SoftwareKeyboardController?,
+    fetchPlaceDetail: (placeId: String) -> Unit,
+) {
+    LazyColumn(modifier = Modifier.background(color = colorResource(id = R.color.base_100))) {
+        viewState.value.autoCompleteItems?.let { list ->
+            items(list.size) {
+                Column(Modifier.clickable(onClick = {
+                    updateViewState(
+                        viewState.value.copy(
+                            autoCompleteLoadState = LoadState.Initialized,
+                            currentPoint = LatLng(list[it].location.lat, list[it].location.lng)
+                        )
+                    )
+                    keyboardController?.hide()
+                    fetchPlaceDetail(list[it].id)
+                })) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.Start,
+                    ) {
+                        Text(
+                            text = viewState.value.currentPoint?.let { currentPoint ->
+                                "${
+                                    list[it].calculateKiloMeter(
+                                        currentPoint
+                                    )
+                                } km"
+                            } ?: "N/A",
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
+                        )
+                        Text(
+                            text = list[it].name,
+                            modifier = Modifier.weight(4f),
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1
+                        )
                     }
+                    Divider()
                 }
             }
         }
