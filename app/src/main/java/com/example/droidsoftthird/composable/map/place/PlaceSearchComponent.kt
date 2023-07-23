@@ -38,23 +38,26 @@ fun PlaceSearchComponent(
     autoComplete: (query: String) -> Unit,
     fetchPlaceDetail: (placeId: String) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val clearSearch = {
+        updateViewState(viewState.value.copy(
+            autoCompleteLoadState = LoadState.Initialized,
+        ))
+        keyboardController?.hide()
+    }
     Column(Modifier.padding(horizontal = 28.dp, vertical = 16.dp)) {
-        SearchBox(searchByText, autoComplete)
+        SearchBox(searchByText, autoComplete, clearSearch)
         Box {
             ChipGroup(Category.values()) { category -> searchByCategory(category) }
             LazyColumn(modifier = Modifier.background(color = colorResource(id = R.color.base_100))) {
                 viewState.value.autoCompleteItems?.let { list ->
                     items(list.size) {
-                        val keyboardController = LocalSoftwareKeyboardController.current
                         Column(Modifier.clickable(onClick = {
-                            keyboardController?.hide()
                             updateViewState(viewState.value.copy(
                                 autoCompleteLoadState = LoadState.Initialized,
                                 currentPoint = LatLng(list[it].location.lat, list[it].location.lng)
-                            //TODO 場所を移動
-                            //TODO ピンを指す
-                            //TODO BottomSheetを出す、
                             ))
+                            keyboardController?.hide()
                             fetchPlaceDetail(list[it].id)
                         })) {
                             Row(
@@ -82,13 +85,5 @@ fun PlaceSearchComponent(
                 }
             }
         }
-
-
-
-
-        //TOOD AutoCompleteの実装はSearchBoxとまとめて行う。
-        /*modifier = Modifier
-                    .height(56.dp)
-                    .padding(top = 16.dp))*/
     }
 }
