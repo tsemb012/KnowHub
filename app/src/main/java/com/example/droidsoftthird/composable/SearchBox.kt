@@ -24,7 +24,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchBox(onSearch: (String) -> Unit, onAutoComplete: (String) -> Unit) {
+fun SearchBox(
+    onSearch: (String) -> Unit,
+    onAutoComplete: (String) -> Unit,
+    clearSearch: () -> Unit?
+) {
     val query = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val currentJob = remember { mutableStateOf<Job?>(null) }
@@ -56,7 +60,10 @@ fun SearchBox(onSearch: (String) -> Unit, onAutoComplete: (String) -> Unit) {
             },
             trailingIcon = {
                 if (query.value.isNotBlank()) {
-                    IconButton(onClick = { query.value = "" }) {
+                    IconButton(onClick = {
+                        query.value = ""
+                        clearSearch()
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Clear,
                             contentDescription = "Clear"
@@ -72,7 +79,10 @@ fun SearchBox(onSearch: (String) -> Unit, onAutoComplete: (String) -> Unit) {
             ),
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onSearch = { onSearch(query.value) }),
+            keyboardActions = KeyboardActions(onSearch = {
+                onSearch(query.value)
+                clearSearch()
+            }),
         )
     }
 }
