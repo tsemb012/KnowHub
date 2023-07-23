@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.groupDetailFragment,
                 R.id.chatRoomFragment,
                 R.id.scheduleCreateFragment,
+                R.id.mapFragment
                 -> View.GONE
                 else -> View.VISIBLE
             }
