@@ -1,18 +1,26 @@
 package com.example.droidsoftthird
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.droidsoftthird.composable.map.place.PlaceMapScreen
 import com.example.droidsoftthird.model.domain_model.EditedPlace
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.Marker
 
 //DONE 図にまとめるOK　→　マップ入力画面UIの情報収集を行うOK　→　UIを確定させるOK　→　データのやりとりをざっくり検討するOK　→　TODOを設置して全体像を掴む　→　
 //TODO ComposableのPreviewを用意する。 →　
@@ -59,6 +67,13 @@ class PlaceMapFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            mapViewModel.updateViewState(mapViewModel.viewState.value.copy(currentPoint = currentLocation?.let { LatLng(it.latitude, it.longitude) }))
+        }
+
         return ComposeView(requireContext()).apply {
             setContent {
                 PlaceMapScreen(mapViewModel, ::confirmPlace, ::navigateUp)

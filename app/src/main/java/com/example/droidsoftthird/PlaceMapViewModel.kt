@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.Category
+import com.example.droidsoftthird.model.domain_model.Location
 import com.example.droidsoftthird.model.domain_model.ViewPort
 import com.example.droidsoftthird.model.domain_model.YolpDetailPlace
 import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
@@ -43,7 +44,7 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
 
     fun autoComplete(query: String) {
         launchDataLoad({ useCase.autoComplete(query, viewState.value.viewPort, viewState.value.centerPoint) }) { loadState ->
-            _viewState.value = viewState.value.copy(placesLoadState = loadState)
+            _viewState.value = viewState.value.copy(autoCompleteLoadState = loadState)
         }
     }
 
@@ -76,14 +77,17 @@ data class PlaceMapViewState(
     val selectedType: String = "restaurant",
     val selections: List<String> = listOf("restaurant", "cafe"),
     val centerPoint: LatLng = LatLng(35.681236, 139.767125),
+    val currentPoint: LatLng? = null,
     val radius: Int = 500,
     val viewPort: ViewPort = ViewPort(null, null),
     val placesLoadState: LoadState = LoadState.Initialized,
-    val placeDetailLoadState: LoadState = LoadState.Initialized,
-    val reverseGeocodeLoadState: LoadState = LoadState.Initialized
+    private val placeDetailLoadState: LoadState = LoadState.Initialized,
+    private val autoCompleteLoadState: LoadState = LoadState.Initialized,
+    private val reverseGeocodeLoadState: LoadState = LoadState.Initialized
 ) {
     val places = placesLoadState.getValueOrNull<List<YolpSimplePlace>>()
     val placeDetail = placeDetailLoadState.getValueOrNull<YolpDetailPlace>()
-    val isLoading = placesLoadState is LoadState.Loading || placeDetailLoadState is LoadState.Loading || reverseGeocodeLoadState is LoadState.Loading
-    val error = placesLoadState.getErrorOrNull() ?: placeDetailLoadState.getErrorOrNull() ?: reverseGeocodeLoadState.getErrorOrNull()
+    val autoCompleteItems = autoCompleteLoadState.getValueOrNull<List<YolpSimplePlace>>()
+    val isLoading = placesLoadState is LoadState.Loading || placeDetailLoadState is LoadState.Loading || reverseGeocodeLoadState is LoadState.Loading || autoCompleteLoadState is LoadState.Loading
+    val error = placesLoadState.getErrorOrNull() ?: placeDetailLoadState.getErrorOrNull() ?: reverseGeocodeLoadState.getErrorOrNull() ?: autoCompleteLoadState.getErrorOrNull()
 }
