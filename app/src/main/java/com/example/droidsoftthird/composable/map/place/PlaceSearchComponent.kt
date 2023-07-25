@@ -65,16 +65,18 @@ private fun AutoCompleteList(
 ) {
     LazyColumn(modifier = Modifier.background(color = colorResource(id = R.color.base_100))) {
         viewState.value.autoCompleteItems?.let { list ->
-            items(list.size) {
+            // Sort list by distance
+            val sortedList = list.sortedBy { list -> viewState.value.currentPoint?.let { list.calculateKiloMeter(it) } }
+
+            items(sortedList.size) {
                 Column(Modifier.clickable(onClick = {
                     updateViewState(
                         viewState.value.copy(
                             autoCompleteLoadState = LoadState.Initialized,
-                            currentPoint = LatLng(list[it].location.lat, list[it].location.lng)
                         )
                     )
                     keyboardController?.hide()
-                    fetchPlaceDetail(list[it].id)
+                    fetchPlaceDetail(sortedList[it].id)
                 })) {
                     Row(
                         modifier = Modifier
@@ -84,18 +86,14 @@ private fun AutoCompleteList(
                     ) {
                         Text(
                             text = viewState.value.currentPoint?.let { currentPoint ->
-                                "${
-                                    list[it].calculateKiloMeter(
-                                        currentPoint
-                                    )
-                                } km"
+                                "${sortedList[it].calculateKiloMeter(currentPoint)} km"
                             } ?: "N/A",
                             modifier = Modifier.weight(1f),
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.Gray,
                         )
                         Text(
-                            text = list[it].name,
+                            text = sortedList[it].name,
                             modifier = Modifier.weight(4f),
                             style = MaterialTheme.typography.bodyMedium,
                             maxLines = 1

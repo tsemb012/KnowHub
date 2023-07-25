@@ -49,7 +49,8 @@ fun SearchBox(
                 currentJob.value?.cancel()
                 currentJob.value = scope.launch {
                     delay(800) // wait for 800ms
-                    onAutoComplete(newValue)
+                    if (query.value.isNotBlank()) onAutoComplete(newValue)
+                    else clearSearch()
                 }
             },
             leadingIcon = {

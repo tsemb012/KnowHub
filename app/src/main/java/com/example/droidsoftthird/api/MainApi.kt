@@ -163,9 +163,9 @@ interface MainApi {
 
     @GET("maps/yolp_reverse_geo_coder")
     suspend fun getYolpReverseGeocode(
-        lat: Double,
-        lng: Double,
-    ): String
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double,
+    ): Response<GetYolpReverseGeocodeJson>
 
     @GET("events") //TODO
     suspend fun getEvents(

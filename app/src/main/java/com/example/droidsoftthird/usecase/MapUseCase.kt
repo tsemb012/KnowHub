@@ -3,6 +3,7 @@ package com.example.droidsoftthird.usecase
 import com.example.droidsoftthird.model.domain_model.Category
 import com.example.droidsoftthird.model.domain_model.ViewPort
 import com.example.droidsoftthird.model.domain_model.YolpDetailPlace
+import com.example.droidsoftthird.model.domain_model.YolpReverseGeocode
 import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.example.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.android.gms.maps.model.LatLng
@@ -22,8 +23,8 @@ class MapUseCase  @Inject constructor(private val repository: BaseRepositoryImpl
 
     suspend fun fetchPlaceDetail(placeId: String): YolpDetailPlace? =
         repository.yolpDetailSearch(placeId)
-    suspend fun reverseGeocode(centerPoint: LatLng): String =
-        repository.yolpReverseGeocode(centerPoint.latitude, centerPoint.longitude)
+    suspend fun reverseGeocode(latLng: LatLng): YolpReverseGeocode? =
+        repository.yolpReverseGeocode(latLng.latitude, latLng.longitude)
 
     //suspend fun fetchCurrentLocation():  TODO 現在地を取得するようにする。
 }
