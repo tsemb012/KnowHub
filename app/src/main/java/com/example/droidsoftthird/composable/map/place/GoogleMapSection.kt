@@ -1,5 +1,8 @@
 package com.example.droidsoftthird.composable.map.place
 
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
@@ -13,25 +16,42 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlin.reflect.KFunction1
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GoogleMapScreen(
     viewState: State<PlaceMapViewState>,
     updateViewState: KFunction1<PlaceMapViewState, Unit>,
     fetchPlaceDetail: (placeId: String) -> Unit,
+    bottomSheetState: ModalBottomSheetState,
+    reverseGeocode: (LatLng) -> Unit,
     notifyMapLoaded: () -> Unit,
 ) {
     val tokyo = LatLng(35.681236, 139.767125)
-    val defaultCameraPosition = CameraPosition.fromLatLngZoom(tokyo, 11f)//これを現在地に変更する。
-    val cameraPositionState = rememberCameraPositionState {
-        position = defaultCameraPosition
-    } //TODO 上のレオや０にあげれるか確認する。
+    val currentLocation = viewState.value.currentPoint ?: tokyo
+    val defaultCameraPosition = CameraPosition.fromLatLngZoom(currentLocation, 15f)//これを現在地に変更する。
+    val cameraPositionState = rememberCameraPositionState { position = defaultCameraPosition }
+
+    if (viewState.value.placeDetail != null && bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+            viewState.value.placeDetail?.location?.let { LatLng(it.lat - 0.004, it.lng) } ?: tokyo,
+            15f
+        )
+    } //TODO GeoCodeと統合する。
+
+    if (viewState.value.reverseGeocode != null && bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+            viewState.value.reverseGeocode?.let { LatLng(it.latitude - 0.004, it.longitude) } ?: tokyo,
+            15f
+        )
+    }
+
     GoogleMap(
-        cameraPositionState = cameraPositionState,
+        cameraPositionState = cameraPositionState ,
         modifier = Modifier,
         properties = MapProperties(mapType = MapType.NORMAL),
         uiSettings = MapUiSettings(compassEnabled = false),
         onMapLoaded = { notifyMapLoaded()},
-        onPOIClick = { },
+        onMapLongClick = { latLng -> reverseGeocode(latLng) },
         content = GoogleMapContent(
             cameraPositionState,
             viewState.value,

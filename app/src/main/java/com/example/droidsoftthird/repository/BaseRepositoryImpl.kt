@@ -276,11 +276,11 @@ class BaseRepositoryImpl @Inject constructor(
             placeId = placeId,
         ).body()?.toEntity()
 
-    override suspend fun yolpReverseGeocode(lat: Double, lng: Double): String =
+    override suspend fun yolpReverseGeocode(lat: Double, lng: Double): YolpReverseGeocode? =
         mainApi.getYolpReverseGeocode(
             lat = lat,
             lng = lng,
-        )
+        ).body()?.toEntity()
 
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){

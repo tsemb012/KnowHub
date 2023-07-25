@@ -1,5 +1,6 @@
 package com.example.droidsoftthird
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,7 @@ import com.example.droidsoftthird.model.domain_model.Category
 import com.example.droidsoftthird.model.domain_model.Location
 import com.example.droidsoftthird.model.domain_model.ViewPort
 import com.example.droidsoftthird.model.domain_model.YolpDetailPlace
+import com.example.droidsoftthird.model.domain_model.YolpReverseGeocode
 import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.MapUseCase
@@ -48,8 +50,8 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
         }
     }
 
-    fun reverseGeocode() {
-        launchDataLoad({ useCase.reverseGeocode(viewState.value.centerPoint) }) { loadState ->
+    fun reverseGeocode(LatLng: LatLng) {
+        launchDataLoad({ useCase.reverseGeocode(LatLng) }) { loadState ->
             _viewState.value = viewState.value.copy(reverseGeocodeLoadState = loadState)
         }
     }
@@ -88,6 +90,7 @@ data class PlaceMapViewState(
     val places = placesLoadState.getValueOrNull<List<YolpSimplePlace>>()
     val placeDetail = placeDetailLoadState.getValueOrNull<YolpDetailPlace>()
     val autoCompleteItems = autoCompleteLoadState.getValueOrNull<List<YolpSimplePlace>>()
+    val reverseGeocode = reverseGeocodeLoadState.getValueOrNull<YolpReverseGeocode>()
     val isLoading = placesLoadState is LoadState.Loading || placeDetailLoadState is LoadState.Loading || reverseGeocodeLoadState is LoadState.Loading || autoCompleteLoadState is LoadState.Loading
     val error = placesLoadState.getErrorOrNull() ?: placeDetailLoadState.getErrorOrNull() ?: reverseGeocodeLoadState.getErrorOrNull() ?: autoCompleteLoadState.getErrorOrNull()
 }
