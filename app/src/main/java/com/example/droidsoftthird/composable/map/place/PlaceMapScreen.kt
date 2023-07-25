@@ -41,7 +41,7 @@ fun PlaceMapScreen(
         viewState = viewState,
         updateViewState = updateViewState,
         bottomSheetState = bottomSheetState,
-        onConfirm = { confirmPlace(it) },
+        onConfirm = { editedPlace ->  confirmPlace(editedPlace) },
     ) {
 
         GoogleMapScreen(viewState, updateViewState, fetchPlaceDetail, bottomSheetState, reverseGeocode) { _isMapLoading.value = false }

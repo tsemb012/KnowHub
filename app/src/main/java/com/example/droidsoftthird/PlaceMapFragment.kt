@@ -17,11 +17,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.droidsoftthird.composable.map.place.PlaceMapScreen
 import com.example.droidsoftthird.model.domain_model.EditedPlace
-import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.overlay.Marker
 
 //DONE 図にまとめるOK　→　マップ入力画面UIの情報収集を行うOK　→　UIを確定させるOK　→　データのやりとりをざっくり検討するOK　→　TODOを設置して全体像を掴む　→　
 //TODO ComposableのPreviewを用意する。 →　
@@ -83,11 +80,11 @@ class PlaceMapFragment: Fragment() {
         }
     }
 
-    fun confirmPlace(editedPlaceDetail: EditedPlace?) {
-        if (editedPlaceDetail != null) {
+    private fun confirmPlace(editedPlace: EditedPlace?) {
+        if (editedPlace != null) {
+            scheduleViewModel.postPlace(editedPlace)
             val action = PlaceMapFragmentDirections.actionMapFragmentToScheduleCreateFragment()//null)
             findNavController().navigate(action)
-            scheduleViewModel.postPlace(editedPlaceDetail)
         }
     }
 
