@@ -205,6 +205,9 @@
                 android:id="@+id/action_mapFragment_to_scheduleCreateFragment"
                 app:destination="@id/scheduleCreateFragment" />
         </fragment>
+        <action
+            android:id="@+id/action_global_ScheduleHomeFragment"
+            app:destination="@id/ScheduleHomeFragment" />
     </navigation>
     <fragment
         android:id="@+id/scheduleDetailFragment"

@@ -41,7 +41,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
             binding.progressBar.isVisible = it.isLoading
             if (canInsertGroupIdFromPreviousScreen(it)) initializeGroup()
             if (it.isSubmitted) {
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.action_global_ScheduleHomeFragment)
                 Toast.makeText(requireContext(), "イベントを登録しました。", Toast.LENGTH_SHORT).show()
             }
         }
