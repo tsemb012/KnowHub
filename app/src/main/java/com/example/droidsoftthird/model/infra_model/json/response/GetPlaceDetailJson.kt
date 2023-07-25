@@ -49,18 +49,28 @@ data class GetPlaceDetailJson(
                 htmlAttributions = htmlAttributions,
         )
     }
+}
 
-    fun toEntity(): PlaceDetail = PlaceDetail(
-            placeId = placeId,
+data class GetYolpDetailPlaceJson(
+        val id: String,
+        val name: String,
+        val yomi: String?,
+        val category: String?,
+        val tel: String?,
+        val url: String?,
+        val lat: Double,
+        val lng: Double,
+        val address: String?,
+) {
+
+    fun toEntity(): YolpSinglePlace.DetailPlace = YolpSinglePlace.DetailPlace(
+            id = id,
             name = name,
-            types = types,
-            location = geometry.location,
-            viewPort = geometry.viewport.toEntity(),
-            formattedAddress = formattedAddress,
-            plusCode = plusCode.toEntity(),
-            photos = photos?.map { it.toEntity() },
-            color = color,
+            yomi = yomi,
+            category = category,
+            tel = tel,
             url = url,
-            addressComponents = addressComponents.map { it.toEntity() },
+            location = Location(lat, lng),
+            address = address ?: "",
     )
 }

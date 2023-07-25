@@ -3,6 +3,7 @@ package com.example.droidsoftthird.model.infra_model.json.response
 import com.example.droidsoftthird.model.domain_model.Location
 import com.example.droidsoftthird.model.domain_model.LocationPhoto
 import com.example.droidsoftthird.model.domain_model.Place
+import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
 import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 
@@ -56,5 +57,20 @@ data class GetPlaceJson(
             formattedAddress = formattedAddress,
             plusCode = plusCode.toEntity(),
             photos = photos?.map { it.toEntity() },
+    )
+}
+
+data class GetYolpSimplePlaceJson(
+        val id: String,
+        val name: String,
+        val category: String?,
+        val lat: Double,
+        val lng: Double,
+) {
+    fun toEntity() = YolpSimplePlace(
+            id = id,
+            name = name,
+            category = category,
+            location = Location(lat, lng),
     )
 }

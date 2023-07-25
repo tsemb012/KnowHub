@@ -237,40 +237,49 @@ class BaseRepositoryImpl @Inject constructor(
     override suspend fun unregisterEvent(eventId: String): String = mainApi.putEvent(eventId, RemoveUserFromEventJson(userId)).message
     override suspend fun deleteEvent(eventId: String): String = mainApi.deleteEvent(eventId).message
 
-    override suspend fun searchIndividualPlace(query: String, viewPort: ViewPort): List<Place> =
-        mainApi.getIndividualPlace(
+    override suspend fun yolpTextSearch(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
+        mainApi.getYolpTextSearch(
                 query = query,
-                language = LANGUAGE_JP,
+                centerLat = centerPoint.latitude,
+                centerLng = centerPoint.longitude,
                 northLat = viewPort.northEast?.latitude ?: 0.0,
                 eastLng = viewPort.northEast?.longitude ?: 0.0,
                 southLat = viewPort.southWest?.latitude ?: 0.0,
-                westLng = viewPort.southWest?.longitude ?: 0.0
+                westLng = viewPort.southWest?.longitude ?: 0.0,
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun searchByText(query: String, centerPoint: LatLng, type: String, radius: Int): List<Place> =
-        mainApi.getPlacesByText(
-                query = query,
-                type = type,
-                language = LANGUAGE_JP,
-                region = REGION_JP,
-                centerLat = centerPoint.latitude,
-                centerLng = centerPoint.longitude,
-                radius = radius.toString(),
+    override suspend fun yolpAutoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace> =
+        mainApi.getYolpAutoComplete(
+            query = query,
+            centerLat = centerPoint.latitude,
+            centerLng = centerPoint.longitude,
+            northLat = viewPort.northEast?.latitude ?: 0.0,
+            eastLng = viewPort.northEast?.longitude ?: 0.0,
+            southLat = viewPort.southWest?.latitude ?: 0.0,
+            westLng = viewPort.southWest?.longitude ?: 0.0,
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun searchByPoi(centerPoint: LatLng, type: String, radius: Int): List<Place> =
-        mainApi.getPlacesByPoi(
-                type = type,
-                language = LANGUAGE_JP,
-                centerLat = centerPoint.latitude,
-                centerLng = centerPoint.longitude,
-                radius = radius.toString(),
+    override suspend fun yolpCategorySearch(viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace> =
+        mainApi.getYolpCategorySearch(
+            query = if (category == Category.LIBRARY) "図書館" else "",
+            category = if (category != Category.LIBRARY) category.name.lowercase() else "",
+            centerLat = centerPoint.latitude,
+            centerLng = centerPoint.longitude,
+            northLat = viewPort.northEast?.latitude ?: 0.0,
+            eastLng = viewPort.northEast?.longitude ?: 0.0,
+            southLat = viewPort.southWest?.latitude ?: 0.0,
+            westLng = viewPort.southWest?.longitude ?: 0.0,
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun fetchPlaceDetail(placeId: String): PlaceDetail? =
-        mainApi.getPlaceDetail(
-                placeId = placeId,
-                language = LANGUAGE_JP
+    override suspend fun yolpDetailSearch(placeId: String): YolpSinglePlace.DetailPlace? =
+        mainApi.getYolpDetailSearch(
+            placeId = placeId,
+        ).body()?.toEntity()
+
+    override suspend fun yolpReverseGeocode(lat: Double, lng: Double): YolpSinglePlace.ReverseGeocode? =
+        mainApi.getYolpReverseGeocode(
+            lat = lat,
+            lng = lng,
         ).body()?.toEntity()
 
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
