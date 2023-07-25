@@ -19,7 +19,6 @@ import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.shared.DescriptionItem
 import com.example.droidsoftthird.composable.shared.SharedDescriptions
 import com.example.droidsoftthird.model.domain_model.*
-import com.example.droidsoftthird.model.presentation_model.LoadState
 import kotlinx.coroutines.launch
 import kotlin.reflect.KFunction1
 
@@ -36,8 +35,8 @@ fun PlaceMapBottomModal(
 
     var isOpenable by remember { mutableStateOf(false) } // Initialize isOpenable to false
 
-    LaunchedEffect(viewState.value.placeDetail) { // Whenever placeDetail changes, update isOpenable
-        isOpenable = viewState.value.placeDetail?.toEditedPlace() != null || viewState.value.reverseGeocode != null
+    LaunchedEffect(viewState.value.singlePlace) { // Whenever placeDetail changes, update isOpenable
+        isOpenable = viewState.value.singlePlace != null
         if (isOpenable) {
             scope.launch { bottomSheetState.show() }
         } /*else {
@@ -53,47 +52,61 @@ fun PlaceMapBottomModal(
             var memo by remember { mutableStateOf("") }
 
             //型で分岐させる。
-            if (viewState.value.placeDetail != null) {
-                val descriptionItems = listOf(
-                    DescriptionItem(Icons.Filled.Phone, viewState.value.placeDetail?.tel ?: "", 1),
-                    DescriptionItem(
-                        Icons.Filled.LocationOn,
-                        viewState.value.placeDetail?.formattedAddress ?: "",
-                        2
-                    ),
-                    DescriptionItem(
-                        Icons.Filled.Language,
-                        viewState.value.placeDetail?.url ?: "",
-                        2,
-                        true
-                    ),
-                )
-
-                Column {
-                    SharedDescriptions(
-                        title = viewState.value.placeDetail?.name ?: "",
-                        itemList = descriptionItems
+            when (viewState.value.singlePlace) {
+                is YolpSinglePlace.DetailPlace -> {
+                    val place = viewState.value.singlePlace as YolpSinglePlace.DetailPlace
+                    val descriptionItems = listOf(
+                        DescriptionItem(
+                            Icons.Filled.Phone,
+                            place.tel ?: "",
+                            1
+                        ),
+                        DescriptionItem(
+                            Icons.Filled.LocationOn,
+                            place.address,
+                            2
+                        ),
+                        DescriptionItem(
+                            Icons.Filled.Language,
+                            place.url ?: "",
+                            2,
+                            true
+                        ),
                     )
-                    EditableListItem(
-                        label = stringResource(R.string.map_memo),
-                        value = memo,
-                        onTextChanged = { memo = it })
-                    Row {
-                        Button(onClick = { scope.launch { bottomSheetState.hide() } }) {
-                            Text(text = stringResource(R.string.cancel))
-                        }
-                        Button(onClick = {
-                            onConfirm(
-                                viewState.value.placeDetail?.toEditedPlace()?.copy(memo = memo)
-                            )
-                        }) {
-                            Text(text = stringResource(id = R.string.general_confirm))
+
+                    Column {
+                        SharedDescriptions(
+                            title = place.name ?: "",
+                            itemList = descriptionItems
+                        )
+                        EditableListItem(
+                            label = stringResource(R.string.map_memo),
+                            value = memo,
+                            onTextChanged = { memo = it })
+                        Row {
+                            Button(onClick = { scope.launch { bottomSheetState.hide() } }) {
+                                Text(text = stringResource(R.string.cancel))
+                            }
+                            Button(onClick = {
+                                onConfirm(
+                                    place.toEditedPlace()?.copy(memo = memo)
+                                )
+                            }) {
+                                Text(text = stringResource(id = R.string.general_confirm))
+                            }
                         }
                     }
                 }
-            } else if (viewState.value.reverseGeocode != null) {
-                Toast.makeText(LocalContext.current, "reverseGeocode", Toast.LENGTH_SHORT).show()
-                Text(text = viewState?.value?.reverseGeocode?.address ?: "")
+
+                is YolpSinglePlace.ReverseGeocode -> {
+                    val place = viewState.value.singlePlace as YolpSinglePlace.ReverseGeocode
+                    Toast.makeText(LocalContext.current, "reverseGeocode", Toast.LENGTH_SHORT)
+                        .show()
+                    Text(text = place.address ?: "")
+                }
+
+                else -> {
+                    Text(text = "error")}
             }
         },
         content = content

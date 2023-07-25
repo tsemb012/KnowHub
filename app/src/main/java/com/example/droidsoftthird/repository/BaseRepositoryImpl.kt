@@ -271,12 +271,12 @@ class BaseRepositoryImpl @Inject constructor(
             westLng = viewPort.southWest?.longitude ?: 0.0,
         ).body()?.map { it.toEntity() } ?: listOf()
 
-    override suspend fun yolpDetailSearch(placeId: String): YolpDetailPlace? =
+    override suspend fun yolpDetailSearch(placeId: String): YolpSinglePlace.DetailPlace? =
         mainApi.getYolpDetailSearch(
             placeId = placeId,
         ).body()?.toEntity()
 
-    override suspend fun yolpReverseGeocode(lat: Double, lng: Double): YolpReverseGeocode? =
+    override suspend fun yolpReverseGeocode(lat: Double, lng: Double): YolpSinglePlace.ReverseGeocode? =
         mainApi.getYolpReverseGeocode(
             lat = lat,
             lng = lng,

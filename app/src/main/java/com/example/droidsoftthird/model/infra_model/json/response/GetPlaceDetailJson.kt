@@ -63,7 +63,7 @@ data class GetYolpDetailPlaceJson(
         val address: String?,
 ) {
 
-    fun toEntity(): YolpDetailPlace = YolpDetailPlace(
+    fun toEntity(): YolpSinglePlace.DetailPlace = YolpSinglePlace.DetailPlace(
             id = id,
             name = name,
             yomi = yomi,
@@ -71,6 +71,6 @@ data class GetYolpDetailPlaceJson(
             tel = tel,
             url = url,
             location = Location(lat, lng),
-            formattedAddress = address,
+            address = address ?: "",
     )
 }
