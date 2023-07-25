@@ -36,6 +36,7 @@ fun PlaceMapBottomModal(
     val scope = rememberCoroutineScope()
 
     var isOpenable by remember { mutableStateOf(false) } // Initialize isOpenable to false
+    var singlePlace: YolpSinglePlace? = null
 
     LaunchedEffect(viewState.value.singlePlace) { // Whenever placeDetail changes, update isOpenable
         isOpenable = viewState.value.singlePlace != null
@@ -53,7 +54,8 @@ fun PlaceMapBottomModal(
             Column(modifier = Modifier.padding(16.dp)) {
                 when (viewState.value.singlePlace) {
                     is YolpSinglePlace.DetailPlace -> {
-                        val place = viewState.value.singlePlace as YolpSinglePlace.DetailPlace
+                        singlePlace = viewState.value.singlePlace
+                        val place = singlePlace as YolpSinglePlace.DetailPlace
                         val descriptionItems = listOf(
                             DescriptionItem(
                                 Icons.Filled.Phone,
@@ -79,7 +81,9 @@ fun PlaceMapBottomModal(
                     }
                     is YolpSinglePlace.ReverseGeocode -> {
 
-                        val place = viewState.value.singlePlace as YolpSinglePlace.ReverseGeocode
+                        singlePlace = viewState.value.singlePlace
+
+                        val place = singlePlace as YolpSinglePlace.ReverseGeocode
                         SharedTextField("住所", place.address, false)
                         Divider()
                         SharedTextField("場所名", placeName, true,"場所の名前を入力してください") { placeName = it }
@@ -90,7 +94,47 @@ fun PlaceMapBottomModal(
                 Divider()
                 SharedTextField(stringResource(R.string.map_memo), memo,true, "メモを入力してください") { memo = it }
                 Spacer(modifier = Modifier.height(16.dp))
-                SharedConfirmButtons(scope, bottomSheetState)
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    Button(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .height(40.dp)
+                            .padding(horizontal = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colorResource(id = R.color.gray),
+                            contentColor = Color.DarkGray
+                        ),
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            disabledElevation = 0.dp
+                        ),
+                        onClick = { scope.launch { bottomSheetState.hide() } }) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
+                    Spacer(modifier = Modifier.width(24.dp))
+                    Button(
+                        modifier = Modifier
+                            .width(160.dp)
+                            .height(40.dp)
+                            .padding(horizontal = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colorResource(id = R.color.primary_dark),
+                            contentColor = Color.White
+                        ),
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            disabledElevation = 0.dp
+                        ),
+                        onClick = {
+                            if (singlePlace != null) onConfirm(
+                                singlePlace!!.toEditedPlace(memo, placeName)
+                            )
+                        }) {
+                        Text(text = "場所を追加")
+                    }
+                }
             }
         },
         content = content
@@ -103,48 +147,7 @@ private fun SharedConfirmButtons(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
 ) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Button(
-            modifier = Modifier
-                .wrapContentWidth()
-                .height(40.dp)
-                .padding(horizontal = 8.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = colorResource(id = R.color.gray),
-                contentColor = Color.DarkGray
-            ),
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 0.dp,
-                disabledElevation = 0.dp
-            ),
-            onClick = { scope.launch { bottomSheetState.hide() } }) {
-            Text(text = stringResource(R.string.cancel))
-        }
-        Spacer(modifier = Modifier.width(24.dp))
-        Button(
-            modifier = Modifier
-                .width(160.dp)
-                .height(40.dp)
-                .padding(horizontal = 8.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = colorResource(id = R.color.primary_dark),
-                contentColor = Color.White
-            ),
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 0.dp,
-                disabledElevation = 0.dp
-            ),
-            onClick = {
-                /*onConfirm(
-                                    place.toEditedPlace()?.copy(memo = memo)
-                                )*/
-                //TODO ここで渡す処理をする。
-            }) {
-            Text(text = "場所を追加")
-        }
-    }
+
 }
 
 @Composable

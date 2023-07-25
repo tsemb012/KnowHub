@@ -6,6 +6,8 @@ import kotlinx.android.parcel.Parcelize
 import java.util.UUID
 
 sealed class YolpSinglePlace {
+    abstract fun toEditedPlace(memo: String, placeName: String?): EditedPlace
+
     open val id: String
         get() = when (this) {
             is DetailPlace -> id
@@ -27,44 +29,59 @@ sealed class YolpSinglePlace {
 
     data class DetailPlace(
         override val id: String,
+        override val address: String,
         val name: String,
+        val location: Location,
         val yomi: String?,
         val category: String?,
         val tel: String?,
         val url: String?,
-        val location: Location,
-        override val address: String,
     ) : YolpSinglePlace() {
-        fun toEditedPlace(): EditedPlace? {
+        override fun toEditedPlace(memo: String, placeName: String?): EditedPlace {
             return EditedPlace(
                 placeId = id,
                 name = name,
+                location = location,
                 yomi = yomi,
                 category = category,
+                formattedAddress = address,
                 tel = tel,
                 url = url,
-                location = location,
-                formattedAddress = address,
-                memo = null,
+                memo = memo,
             )
         }
+
     }
 
     data class ReverseGeocode (
         override val address: String,
         override val lat: Double,
         override val lng: Double,
-    ) : YolpSinglePlace()
+    ) : YolpSinglePlace() {
+        override fun toEditedPlace(memo: String, placeName: String?): EditedPlace {
+            return EditedPlace(
+                placeId = id,
+                name = placeName ?: "",
+                location = Location(lat, lng),
+                formattedAddress = address,
+                yomi = "",
+                category = "",
+                tel = "",
+                url = "",
+                memo = memo,
+            )
+        }
+    }
 }
 
 @Parcelize
 data class EditedPlace(
     val placeId: String,
     val name: String,
-    val yomi: String?,
-    val category: String?,
     val location: Location,
     val formattedAddress: String?,
+    val yomi: String?,
+    val category: String?,
     val tel: String?,
     val url: String?,
     val memo: String?,
