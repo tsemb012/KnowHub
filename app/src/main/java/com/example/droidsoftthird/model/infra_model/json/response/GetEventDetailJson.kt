@@ -4,7 +4,6 @@ import com.example.droidsoftthird.model.domain_model.EditedPlace
 import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.EventStatus
 import com.example.droidsoftthird.model.domain_model.Location
-import com.google.android.libraries.places.api.model.PlusCode
 import com.squareup.moshi.Json
 import java.time.Instant
 import java.time.ZoneId
@@ -75,16 +74,14 @@ data class GetEventDetailJson (
                 fun toEntity(): EditedPlace = EditedPlace(
                         placeId = placeId,
                         name = name,
-                        placeType = placeType,
+                        yomi = "",
+                        category = placeType,
                         location = Location(
                                 lat = latitude,
                                 lng = longitude
                         ),
                         formattedAddress = address,
-                        plusCode = PlusCode.builder()
-                                .setGlobalCode(globalCode)
-                                .setCompoundCode(compoundCode)
-                                .build(),
+                        tel = "",
                         url = url,
                         memo = memo
                 )

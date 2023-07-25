@@ -29,7 +29,7 @@ fun MapWithMarker(eventViewModel: ScheduleDetailViewModel, modifier: Modifier = 
                 state = MarkerState(position = LatLng(place.location.lat, place.location.lng)),
                 tag = place.placeId,
                 title = place.name,
-                snippet = place.placeType,
+                snippet = place.category,
             )
         }
     }

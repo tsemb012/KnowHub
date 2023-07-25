@@ -13,17 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.droidsoftthird.composable.shared.DescriptionItem
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.FacilityEnvironment
 import com.example.droidsoftthird.model.domain_model.FrequencyBasis
 import com.example.droidsoftthird.model.domain_model.GroupType
 import com.example.droidsoftthird.model.domain_model.Style
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.composable.shared.ItemDescription
+import com.example.droidsoftthird.composable.shared.SharedDescriptions
 import com.example.droidsoftthird.composable.shared.FundamentalCard
 
 @Composable
@@ -54,11 +53,11 @@ private fun GroupCardContent(group: ApiGroup) {
         Spacer(modifier = Modifier.width(16.dp))
 
         val itemList = listOf(
-            Triple(Icons.Filled.Group, group.availability, 1),
-            Triple(Icons.Filled.LocationOn, group.location, 1),
-            Triple(Icons.Filled.Comment, group.groupIntroduction, 2),
+            DescriptionItem(Icons.Filled.Group, group.availability, 1),
+            DescriptionItem(Icons.Filled.LocationOn, group.location, 1),
+            DescriptionItem(Icons.Filled.Comment, group.groupIntroduction, 2),
         )
-        ItemDescription(group.groupName, itemList)
+        SharedDescriptions(group.groupName, itemList)
     }
 }
 
