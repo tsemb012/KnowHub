@@ -64,11 +64,10 @@ fun GoogleMapContent(
             )
         }
 
-        if (viewState.placeDetail != null) { //TODO GeoCodeと統合させる。
+        if (viewState.singlePlace != null) { //TODO GeoCodeと統合させる。
             Marker(
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
-                state = MarkerState(position = LatLng(viewState.placeDetail.location.lat, viewState.placeDetail.location.lng)),
-                title = viewState.placeDetail.name,
+                state = MarkerState(position = LatLng(viewState.singlePlace.lat, viewState.singlePlace.lng)),
                 onClick = { marker ->
                     fetchPlaceDetail((marker.tag.toString()))
                     true
@@ -76,16 +75,16 @@ fun GoogleMapContent(
             )
         }
 
-        if (viewState.reverseGeocode != null) {
+        /*if (viewState.singlePlace != null) {
             Marker(
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
-                state = MarkerState(position = LatLng(viewState.reverseGeocode.latitude, viewState.reverseGeocode.longitude)),
+                state = MarkerState(position = LatLng(viewState.singlePlace.lat, viewState.singlePlace.lng)),
             )
-        }
+        }*/
 
         if (viewState.places?.isNotEmpty() == true) {
             viewState.places.forEach {
-                if(it.id == viewState.placeDetail?.id) return@forEach
+                if(it.id == viewState.singlePlace?.id) return@forEach
                 Marker(
                     icon = BitmapDescriptorFactory.defaultMarker(
                         BitmapDescriptorFactory.HUE_ORANGE

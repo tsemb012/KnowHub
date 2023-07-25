@@ -1,17 +1,14 @@
 package com.example.droidsoftthird
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.droidsoftthird.model.domain_model.Category
-import com.example.droidsoftthird.model.domain_model.Location
 import com.example.droidsoftthird.model.domain_model.ViewPort
-import com.example.droidsoftthird.model.domain_model.YolpDetailPlace
-import com.example.droidsoftthird.model.domain_model.YolpReverseGeocode
 import com.example.droidsoftthird.model.domain_model.YolpSimplePlace
+import com.example.droidsoftthird.model.domain_model.YolpSinglePlace
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.usecase.MapUseCase
 import com.google.android.gms.maps.model.LatLng
@@ -28,7 +25,7 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
 
     fun fetchPlaceDetail(placeId: String) {
         launchDataLoad({ useCase.fetchPlaceDetail(placeId) }) { loadState ->
-            _viewState.value = viewState.value.copy(placeDetailLoadState = loadState)
+            _viewState.value = viewState.value.copy(singlePlaceLoadState = loadState)
         }
     }
 
@@ -52,7 +49,7 @@ class PlaceMapViewModel @Inject constructor(private val useCase: MapUseCase) : V
 
     fun reverseGeocode(LatLng: LatLng) {
         launchDataLoad({ useCase.reverseGeocode(LatLng) }) { loadState ->
-            _viewState.value = viewState.value.copy(reverseGeocodeLoadState = loadState)
+            _viewState.value = viewState.value.copy(singlePlaceLoadState = loadState)
         }
     }
 
@@ -83,14 +80,13 @@ data class PlaceMapViewState(
     val radius: Int = 500,
     val viewPort: ViewPort = ViewPort(null, null),
     val placesLoadState: LoadState = LoadState.Initialized,
-    private val placeDetailLoadState: LoadState = LoadState.Initialized,
+    private val singlePlaceLoadState: LoadState = LoadState.Initialized,
     private val autoCompleteLoadState: LoadState = LoadState.Initialized,
     private val reverseGeocodeLoadState: LoadState = LoadState.Initialized
 ) {
     val places = placesLoadState.getValueOrNull<List<YolpSimplePlace>>()
-    val placeDetail = placeDetailLoadState.getValueOrNull<YolpDetailPlace>()
+    val singlePlace = singlePlaceLoadState.getValueOrNull<YolpSinglePlace>()
     val autoCompleteItems = autoCompleteLoadState.getValueOrNull<List<YolpSimplePlace>>()
-    val reverseGeocode = reverseGeocodeLoadState.getValueOrNull<YolpReverseGeocode>()
-    val isLoading = placesLoadState is LoadState.Loading || placeDetailLoadState is LoadState.Loading || reverseGeocodeLoadState is LoadState.Loading || autoCompleteLoadState is LoadState.Loading
-    val error = placesLoadState.getErrorOrNull() ?: placeDetailLoadState.getErrorOrNull() ?: reverseGeocodeLoadState.getErrorOrNull() ?: autoCompleteLoadState.getErrorOrNull()
+    val isLoading = placesLoadState is LoadState.Loading || singlePlaceLoadState is LoadState.Loading || reverseGeocodeLoadState is LoadState.Loading || autoCompleteLoadState is LoadState.Loading
+    val error = placesLoadState.getErrorOrNull() ?: singlePlaceLoadState.getErrorOrNull() ?: reverseGeocodeLoadState.getErrorOrNull() ?: autoCompleteLoadState.getErrorOrNull()
 }

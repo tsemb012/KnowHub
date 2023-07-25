@@ -34,6 +34,6 @@ interface RailsApiRepository {
     suspend fun yolpTextSearch(query: String, viewPort: ViewPort, centerPoint: LatLng, ): List<YolpSimplePlace>
     suspend fun yolpAutoComplete(query: String, viewPort: ViewPort, centerPoint: LatLng): List<YolpSimplePlace>
     suspend fun yolpCategorySearch(viewPort: ViewPort, centerPoint: LatLng, category: Category): List<YolpSimplePlace>
-    suspend fun yolpDetailSearch(placeId: String): YolpDetailPlace?
-    suspend fun yolpReverseGeocode(lat: Double, lon: Double): YolpReverseGeocode?
+    suspend fun yolpDetailSearch(placeId: String): YolpSinglePlace.DetailPlace?
+    suspend fun yolpReverseGeocode(lat: Double, lon: Double): YolpSinglePlace.ReverseGeocode?
 }

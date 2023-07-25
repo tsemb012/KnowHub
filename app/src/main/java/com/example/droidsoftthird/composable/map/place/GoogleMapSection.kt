@@ -31,19 +31,19 @@ fun GoogleMapScreen(
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(currentLocation, 15f)//これを現在地に変更する。
     val cameraPositionState = rememberCameraPositionState { position = defaultCameraPosition }
 
-    if (viewState.value.placeDetail != null && bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+    if (viewState.value.singlePlace != null && bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
         cameraPositionState.position = CameraPosition.fromLatLngZoom(
-            viewState.value.placeDetail?.location?.let { LatLng(it.lat - 0.004, it.lng) } ?: tokyo,
-            15f
-        )
-    } //TODO GeoCodeと統合する。
-
-    if (viewState.value.reverseGeocode != null && bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
-        cameraPositionState.position = CameraPosition.fromLatLngZoom(
-            viewState.value.reverseGeocode?.let { LatLng(it.latitude - 0.004, it.longitude) } ?: tokyo,
+            viewState.value.singlePlace?.let { LatLng(it.lat - 0.004, it.lng) } ?: tokyo,
             15f
         )
     }
+
+ /*   if (viewState.value.singlePlace != null && bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+            viewState.value.singlePlace?.let { LatLng(it.lat - 0.004, it.lng) } ?: tokyo,
+            15f
+        )
+    }*/
 
     GoogleMap(
         cameraPositionState = cameraPositionState ,
