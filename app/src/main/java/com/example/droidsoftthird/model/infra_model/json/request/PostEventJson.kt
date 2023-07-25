@@ -19,7 +19,7 @@ data class PostEventJson(
         val groupId: String
 )
 
-data class PostPlaceJson(//TODO わりとちゃんと揃っているので、そのままデータベースを書き換える。
+data class PostPlaceJson(
         @Json(name = "place_id")
         val placeId: String,
         val name: String,
