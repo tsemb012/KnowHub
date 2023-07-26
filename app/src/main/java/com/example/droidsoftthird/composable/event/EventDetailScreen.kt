@@ -31,6 +31,7 @@ fun EventDetailScreen(
 ) {
     val event = eventViewModel.eventDetail
 
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -45,12 +46,27 @@ fun EventDetailScreen(
             )
         },
         content = {
+
+
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colors.background)
                     .padding(16.dp)
             ) {
+
+                if (event.value?.isOnline == true) {
+                    Text("オンラインイベント", style = MaterialTheme.typography.h6)
+                } else {
+                    MapWithMarker(eventViewModel,
+                        Modifier
+                            .height(200.dp)
+                            .fillMaxWidth()
+                    )
+                }
+                //TODO これより上にComponentを作っていくように。
+
                 event.value?.let { eventDetail ->
 
                     if (eventDetail.hostId == eventViewModel.userId) {
@@ -72,11 +88,6 @@ fun EventDetailScreen(
                                     )
                             }
                         )
-                    } else {
-                        MapWithMarker(eventViewModel,
-                            Modifier
-                                .height(200.dp)
-                                .fillMaxWidth())
                     }
 
 
