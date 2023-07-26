@@ -55,33 +55,29 @@ data class GetEventDetailJson (
             )
 
         data class GetEventPlaceJson(
-            val id: String,
             @Json(name = "place_id")
             val placeId: String,
             val name: String,
             val address: String,
             val latitude: Double,
             val longitude: Double,
-            @Json(name = "place_type")
-            val placeType: String,
-            @Json(name = "global_code")
-            val globalCode: String?,
-            @Json(name = "compound_code")
-            val compoundCode: String?,
+            val yomi: String?,
+            val category: String?,
+            val tel : String?,
             val url: String?,
             val memo: String?
     ) {
                 fun toEntity(): EditedPlace = EditedPlace(
                         placeId = placeId,
                         name = name,
-                        yomi = "",
-                        category = placeType,
+                        yomi = yomi,
+                        category = category,
                         location = Location(
                                 lat = latitude,
                                 lng = longitude
                         ),
                         formattedAddress = address,
-                        tel = "",
+                        tel = tel,
                         url = url,
                         memo = memo
                 )
