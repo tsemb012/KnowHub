@@ -1,13 +1,18 @@
 package com.example.droidsoftthird.composable.event
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -17,19 +22,28 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.droidsoftthird.ScheduleDetailViewModel
+import coil.compose.rememberImagePainter
+import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.map.MapWithMarker
+import com.example.droidsoftthird.model.domain_model.EventDetail
+import org.jitsi.meet.sdk.ParticipantInfo
 
 @Composable
 fun EventDetailScreen(
-        eventViewModel: ScheduleDetailViewModel,
-        startVideoChat: () -> Unit,
-        deleteEvent: () -> Unit,
-        onBack: () -> Unit,
+    event: MutableState<EventDetail?>,
+    startVideoChat: () -> Unit,
+    deleteEvent: () -> Unit,
+    onBack: () -> Unit,
 ) {
-    val event = eventViewModel.eventDetail
 
 
     Scaffold(
@@ -46,9 +60,6 @@ fun EventDetailScreen(
             )
         },
         content = {
-
-
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,15 +70,14 @@ fun EventDetailScreen(
                 if (event.value?.isOnline == true) {
                     Text("オンラインイベント", style = MaterialTheme.typography.h6)
                 } else {
-                    MapWithMarker(eventViewModel,
+                    MapWithMarker(event,
                         Modifier
                             .height(200.dp)
                             .fillMaxWidth()
                     )
                 }
-                //TODO これより上にComponentを作っていくように。
 
-                event.value?.let { eventDetail ->
+                /*event.value?.let { eventDetail ->
 
                     if (eventDetail.hostId == eventViewModel.userId) {
                         Button(
@@ -120,12 +130,54 @@ fun EventDetailScreen(
 
                     ListItem(title = "グループ名", content = eventDetail.groupName)
                     ListItem(title = "登録ユーザー数", content = eventDetail.registeredUserIds.size.toString())
-                }
+                }*/
                 Log.d("EventDetailScreen", "$it")
             }
         }
     )
 }
+
+@Composable
+fun ParticipantInfo(participantInfo: ParticipantInfo, onIconClick: () -> Unit) {
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = participantInfo.displayName,
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_access_time_24),
+                contentDescription = "Description for accessibility",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable(onClick = onIconClick)
+            )
+            Text(text = "参加人数")
+        }
+        HorizontalUserIcons(userImages = participantInfo.userImages)
+    }
+}
+
+@Composable
+fun HorizontalUserIcons(userImages: List<String>) {
+    Row(
+        modifier = Modifier.horizontalScroll(rememberScrollState())
+    ) {
+        userImages.forEach { imageUrl ->
+            Image(
+                painter = rememberImagePainter(imageUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .padding(4.dp)
+            )
+        }
+    }
+}
+
 
 @Composable
 fun ListItem(title: String, content: String) {
