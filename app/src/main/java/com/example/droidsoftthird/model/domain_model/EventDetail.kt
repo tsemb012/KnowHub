@@ -24,5 +24,6 @@ data class EventDetail(
     val registrationRatio: String = "${registeredUserIds.size}/${groupMembers.size}"
     val formattedDate: String = startDateTime.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))
     val formattedPeriod = formatTimePeriod(startDateTime, endDateTime, isAmPm = true)
+    val formattedStateTime = formattedDate + " " +startDateTime.hour.toString() + "時" + startDateTime.minute.toString() + "分"
 
 }
