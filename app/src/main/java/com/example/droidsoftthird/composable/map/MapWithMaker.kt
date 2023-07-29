@@ -16,8 +16,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 @Composable
-fun MapWithMarker(event: MutableState<EventDetail?>, modifier: Modifier = Modifier) {
-    val place = event.value?.place
+fun MapWithMarker(event: MutableState<EventDetail>, modifier: Modifier = Modifier) {
+    val place = event.value.place
 
     if (place != null) {
         val eventPosition = CameraPosition.fromLatLngZoom(LatLng(place.location.lat, place.location.lng), 15f)

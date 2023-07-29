@@ -15,20 +15,27 @@ fun SharedTextField(
     title: String,
     text: String,
     isEditable: Boolean,
-    textSize: TextSize = TextSize.MEDIUM,
+    titleTextSize: TextSize = TextSize.MEDIUM,
+    fieldTextSize: TextSize = TextSize.MEDIUM,
     hint: String = "",
     onTextChanged: (String) -> Unit = {}
 ) {
-    val chosenTextStyle = when (textSize) {
+    val titleTextStyle = when (titleTextSize) {
         TextSize.SMALL -> MaterialTheme.typography.body2
         TextSize.MEDIUM -> MaterialTheme.typography.h6
-        TextSize.LARGE -> MaterialTheme.typography.h4
+        TextSize.LARGE -> MaterialTheme.typography.h5
+    }
+
+    val fieldTextStyle = when (fieldTextSize) {
+        TextSize.SMALL -> MaterialTheme.typography.body2
+        TextSize.MEDIUM -> MaterialTheme.typography.h6
+        TextSize.LARGE -> MaterialTheme.typography.h5
     }
 
     Column {
         Text(
             text = title,
-            style = TextStyle(fontWeight = FontWeight.Bold ,fontSize = chosenTextStyle.fontSize,  color = Color.DarkGray),
+            style = TextStyle(fontWeight = FontWeight.Bold ,fontSize = titleTextStyle.fontSize, color = Color.DarkGray),
         )
         TextField(
             value = text,
@@ -40,11 +47,11 @@ fun SharedTextField(
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
             ),
-            textStyle = TextStyle(fontSize = chosenTextStyle.fontSize, color = Color.DarkGray),
+            textStyle = TextStyle(fontSize = fieldTextStyle.fontSize, color = Color.DarkGray),
             placeholder = {
                 Text(
                     text = hint,
-                    style = TextStyle(fontSize = chosenTextStyle.fontSize, color = Color.Gray)
+                    style = TextStyle(fontSize = fieldTextStyle.fontSize, color = Color.Gray)
                 )
             }
         )
