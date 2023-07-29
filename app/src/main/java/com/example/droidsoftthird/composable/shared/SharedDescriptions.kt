@@ -17,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.example.droidsoftthird.R
 
 @Composable
 fun SharedDescriptions(
@@ -80,7 +82,12 @@ fun SharedDescriptions(
 fun ClickableUrlText(url: String) {
     val uriHandler = LocalUriHandler.current
     val annotatedText = buildAnnotatedString {
-        withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+        withStyle(
+            style = SpanStyle(
+                textDecoration = TextDecoration.Underline,
+                color = colorResource(id = R.color.primary_dark)
+            )
+        ) {
             append(url)
             addStringAnnotation(
                 tag = "URL",

@@ -54,8 +54,11 @@ class ScheduleDetailFragment: Fragment() {
                 EventDetailScreen(
                         event = viewModel.eventDetail,
                         isLoading = viewModel.isLoading,
+                        isJoined = viewModel.isJoined,
                         startVideoChat = { startVideoChat() },
                         deleteEvent = { viewModel.deleteEvent() },
+                        joinEvent = { viewModel.joinEvent() },
+                        leaveEvent = { viewModel.leaveEvent() },
                         navigateToGroupDetail = { navigateToGroupDetail() },
                 ) { findNavController().navigateUp() }
             }
