@@ -1,7 +1,6 @@
 package com.example.droidsoftthird.composable.event
 
 import android.util.Log
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -92,76 +91,8 @@ fun EventDetailScreen(
                     )
                 },
                 content = {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colors.background)
-                                .padding(vertical = 16.dp, horizontal = 20.dp)
-                        ) {
-
-                            item {
-                                if (event.value.isOnline == true) {
-                                    Text("オンラインイベント", style = MaterialTheme.typography.h6)
-                                } else {
-                                    MapWithMarker(
-                                        event,
-                                        Modifier
-                                            .height(200.dp)
-                                            .fillMaxWidth()
-                                    )
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    SharedTextLines(
-                                        title = event.value.name,
-                                        text = event.value.comment,
-                                        titleTextSize = TextSize.LARGE,
-                                        descriptionTextSize = TextSize.MEDIUM,
-                                    )
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    Divider()
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    ParticipantInfo2(event.value, { navigateToGroupDetail() }) {}
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    Divider()
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    SharedDescriptions(
-                                        title = "日時",
-                                        itemList = listOf(
-                                            DescriptionItem(text = event.value.formattedDate),
-                                            DescriptionItem(text = event.value.formattedPeriod),
-                                        )
-                                    )
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Divider()
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    val descriptionItems = listOf(
-                                        DescriptionItem(
-                                            Icons.Filled.LocationOn,
-                                            (event.value.place?.name + "\n" + event.value.place?.formattedAddress),
-                                            3
-                                        ),
-                                        DescriptionItem(
-                                            Icons.Filled.Phone,
-                                            event.value.place?.tel ?: "",
-                                            1
-                                        ),
-                                        DescriptionItem(
-                                            Icons.Filled.Language,
-                                            event.value.place?.url ?: "",
-                                            2,
-                                            true
-                                        ),
-                                    )
-                                    SharedDescriptions(
-                                        title = "場所",
-                                        itemList = descriptionItems
-                                    )
-
-
-                                }
-                                Log.d("EventDetailScreen", "$it")
-                            }
-                            item { Spacer(modifier = Modifier.height(100.dp)) }
-                        }
+                    EventDetailContent(event, navigateToGroupDetail)
+                    Log.d("EventDetailScreen", "event.value: ${it}")
                 }
             )
         }
@@ -172,6 +103,87 @@ fun EventDetailScreen(
     }
 }
 
+@Composable
+fun EventDetailContent(event: MutableState<EventDetail>, navigateToGroupDetail: () -> Unit) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colors.background)
+            .padding(vertical = 16.dp, horizontal = 20.dp)
+    ) {
+
+        item {
+            if (event.value.isOnline) {
+                Text("オンラインイベント", style = MaterialTheme.typography.h6)
+            } else {
+                OfflineEventDetails(event, navigateToGroupDetail)
+            }
+        }
+        item { Spacer(modifier = Modifier.height(100.dp)) }
+    }
+}
+
+@Composable
+fun OfflineEventDetails(event: MutableState<EventDetail>, navigateToGroupDetail: () -> Unit) {
+    MapWithMarker(
+        event,
+        Modifier
+            .height(200.dp)
+            .fillMaxWidth()
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    SharedTextLines(
+        title = event.value.name,
+        text = event.value.comment,
+        titleTextSize = TextSize.LARGE,
+        descriptionTextSize = TextSize.MEDIUM,
+    )
+    SpacerAndDivider()
+    ParticipantInfo2(event.value, { navigateToGroupDetail() }) {}
+    SpacerAndDivider()
+    SharedDescriptions(
+        title = "日時",
+        itemList = listOf(
+            DescriptionItem(text = event.value.formattedDate),
+            DescriptionItem(text = event.value.formattedPeriod),
+        )
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    Divider()
+    Spacer(modifier = Modifier.height(16.dp))
+    val descriptionItems = listOf(
+        DescriptionItem(
+            Icons.Filled.LocationOn,
+            (event.value.place?.name + "\n" + event.value.place?.formattedAddress),
+            3
+        ),
+        DescriptionItem(
+            Icons.Filled.Phone,
+            event.value.place?.tel ?: "",
+            1
+        ),
+        DescriptionItem(
+            Icons.Filled.Language,
+            event.value.place?.url ?: "",
+            2,
+            true
+        ),
+    )
+    SharedDescriptions(
+        title = "場所",
+        itemList = descriptionItems
+    )
+}
+
+@Composable
+fun SpacerAndDivider() {
+    Spacer(modifier = Modifier.height(16.dp))
+    Divider()
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+
+// The rest of your code remains unchanged.
 @Composable
 fun ConfirmEventButton(isEditable: Boolean, isJoined: Boolean, joinEvent: () -> Unit, leaveEvent: () -> Unit) {
         if (isJoined) SharedConfirmButton("イベントを抜ける", isEditable, leaveEvent)
