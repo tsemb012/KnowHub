@@ -2,7 +2,6 @@ package com.example.droidsoftthird.composable.profile
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -26,6 +25,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.droidsoftthird.ProfileViewModel
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.shared.SharedTextLines
+import com.example.droidsoftthird.composable.shared.TextSize
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.ItemEvent
 
@@ -37,7 +38,6 @@ fun ProfileScreen(
     onLogOut: () -> Unit,
 ) {
     val userDetail = viewModel.userDetail
-    val residentialArea = userDetail.value.area.prefecture?.name + ", " + userDetail.value.area.city?.name
     val context = LocalContext.current
     val comment = userDetail.value.comment
     val groups = userDetail.value.groups
@@ -54,66 +54,57 @@ fun ProfileScreen(
         floatingActionButtonPosition = FabPosition.End,
         content = { innerPadding ->
             Log.d("ProfileScreen", "userDetail.value.userImage: ${innerPadding}")
+
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
                 item {
-                    Box(modifier = Modifier.size(200.dp)) {
+                    Box (
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
                         AsyncImage(
                             model = ImageRequest.Builder(context)
                                 .data(viewModel.downloadUrl1.value)
                                 .build(),
                             contentDescription = "User Image",
                             modifier = Modifier
-                                .size(200.dp)
-                                .clip(RoundedCornerShape(8.dp)),
+                                .padding(16.dp)
+                                .size(150.dp)
+                                .clip(RoundedCornerShape(100.dp)),
                             contentScale = ContentScale.Crop,
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        elevation = 4.dp,
-                        shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(1.dp, Color.LightGray)
-                    ) {
-                        Text(
-                            text = comment,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            style = MaterialTheme.typography.body1
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    ProfileInfoItem(
-                        title = stringResource(id = R.string.name),
-                        value = userDetail.value.userName ?: "",
-                        icon = Icons.Filled.Person
+                    SharedTextLines(
+                        title =  userDetail.value.userName,
+                        text = userDetail.value.comment,
+                        titleTextSize = TextSize.LARGE,
+                        descriptionTextSize = TextSize.MED_LARGE,
                     )
-                    Divider()
-                    ProfileInfoItem(
+                    ProfileSpacerAndDivider()
+                    SharedTextLines(
                         title = stringResource(id = R.string.gender),
-                        value = userDetail.value.gender ?: "",
-                        icon = Icons.Filled.Wc
+                        text = userDetail.value.getJapanese(userDetail.value.gender),
+                        hasSpace = true
                     )
-                    Divider()
-                    ProfileInfoItem(
-                        title = stringResource(id = R.string.age),
-                        value = userDetail.value.birthday.toString(),
-                        icon = Icons.Filled.Cake
+                    ProfileSpacerAndDivider()
+                    SharedTextLines(
+                        title = stringResource(id = R.string.birthday),
+                        text = userDetail.value.formattedBirthday,
+                        hasSpace = true
                     )
-                    Divider()
-                    ProfileInfoItem(
+                    ProfileSpacerAndDivider()
+                    SharedTextLines(
                         title = stringResource(id = R.string.residential_area),
-                        value = residentialArea,
-                        icon = Icons.Filled.Home
+                        text = userDetail.value.residentialArea,
+                        hasSpace = true
                     )
+                    ProfileSpacerAndDivider()
+                    Text("所属グループ", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6, modifier = Modifier)
 
-                    Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("所属グループ", fontWeight = FontWeight.Bold)
+
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -125,9 +116,9 @@ fun ProfileScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    ProfileSpacerAndDivider()
+                    Text("参加予定のイベント", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6, modifier = Modifier)
 
-                    Text("参加予定のイベント", fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -174,6 +165,13 @@ fun ProfileInfoItem(title: String, value: String, icon: ImageVector) {
             Text(text = value)
         }
     }
+}
+
+@Composable
+fun ProfileSpacerAndDivider() {
+    Spacer(modifier = Modifier.height(16.dp))
+    androidx.compose.material.Divider()
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
