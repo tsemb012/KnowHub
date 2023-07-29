@@ -3,6 +3,7 @@ package com.example.droidsoftthird.composable.shared
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,35 +38,38 @@ fun SharedDescriptions(
             maxLines = 1
         )
 
-        Column(modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp)) {
 
             itemList.forEach { item ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (item.icon != null) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(16.dp)
-                                .align(Alignment.CenterVertically),
-                            tint = Color.Gray
-                        )
-                    } else {
-                        Spacer(modifier = Modifier.width(16.dp))
-                    }
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (item.icon != null) {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .align(Alignment.CenterVertically),
+                                tint = Color.Gray
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.width(16.dp))
+                        }
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
 
-                    if (item.isUrl) { // If the item is a URL, use ClickableText
-                        ClickableUrlText(url = item.text)
-                    } else { // Otherwise, use regular Text
-                        Text(
-                            text = item.text,
-                            style = MaterialTheme.typography.body1,
-                            color = Color.DarkGray,
-                            maxLines = item.maxLines
-                        )
+                        if (item.isUrl) { // If the item is a URL, use ClickableText
+                            ClickableUrlText(url = item.text)
+                        } else { // Otherwise, use regular Text
+                            Text(
+                                text = item.text,
+                                style = MaterialTheme.typography.body1,
+                                color = Color.DarkGray,
+                                maxLines = item.maxLines
+                            )
+                        }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
