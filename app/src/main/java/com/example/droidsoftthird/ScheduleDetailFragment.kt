@@ -55,7 +55,8 @@ class ScheduleDetailFragment: Fragment() {
                         event = viewModel.eventDetail,
                         isLoading = viewModel.isLoading,
                         startVideoChat = { startVideoChat() },
-                        deleteEvent = { viewModel.deleteEvent() }
+                        deleteEvent = { viewModel.deleteEvent() },
+                        navigateToGroupDetail = { navigateToGroupDetail() },
                 ) { findNavController().navigateUp() }
             }
         }
@@ -68,8 +69,15 @@ class ScheduleDetailFragment: Fragment() {
             startActivity(intent)
         }
     }
-}
 
+    private fun navigateToGroupDetail() {
+        viewModel.eventDetail.value?.let {
+            val action = ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToGroupDetailFragment(it.groupId)
+            findNavController().navigate(action)
+        }
+    }
+}
+/*
 @Preview
 @Composable
 fun PreviewScheduleDetailScreen() {
@@ -113,7 +121,7 @@ fun PreviewScheduleDetailScreen() {
             startVideoChat = {},
             deleteEvent = {}
     ) {}
-}
+}*/
 
 /*data class EventDetail(
     val eventId: String,
