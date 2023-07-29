@@ -21,6 +21,8 @@ class ScheduleDetailViewModel @AssistedInject constructor(
 ): ViewModel() {
 
     val eventDetail = mutableStateOf<EventDetail?>(null)
+    val isLoading = mutableStateOf(false)
+    val isJoined = mutableStateOf(false)
     val message = mutableStateOf<String?>(null)
     val userId by lazy { runBlocking { settingUseCase.getUserId() } }
     private val startDateTime get() = eventDetail.value?.startDateTime?.toLocalDateTime()
@@ -30,17 +32,20 @@ class ScheduleDetailViewModel @AssistedInject constructor(
     val isFinished get () = LocalDateTime.now().isAfter(endDateTime)
 
     fun fetchEventDetail() {
-        viewModelScope.launch {
-            kotlin.runCatching { eventUseCase.fetchEventDetail(eventId) }
+        val job = viewModelScope.launch {
+            runCatching { eventUseCase.fetchEventDetail(eventId) }
                 .onSuccess {
                     eventDetail.value = it
-                    Log.d("tsemb012", "$eventDetail")
+                    isLoading.value = false
+                    isJoined.value = it.registeredUserIds.contains(userId)
                 }
                 .onFailure {
                     message.value = it.message
-                    Log.d("tsemb012", "${it.message}")
+                    isLoading.value = false
                 }
         }
+        isLoading.value = true
+        job.start()
     }
 
     fun joinEvent() {
@@ -48,14 +53,15 @@ class ScheduleDetailViewModel @AssistedInject constructor(
             kotlin.runCatching { eventUseCase.joinEvent(eventId) }
                 .onSuccess {
                     message.value = "参加しました"
-                    Log.d("tsemb012", "参加しました")
                     fetchEventDetail()
+                    isLoading.value = false
                 }
                 .onFailure {
                     message.value = it.message
-                    Log.d("tsemb012", "${it.message}")
+                    isLoading.value = false
                 }
         }
+        isLoading.value = true
         job.start()
     }
 
@@ -64,14 +70,15 @@ class ScheduleDetailViewModel @AssistedInject constructor(
                 kotlin.runCatching { eventUseCase.leaveEvent(eventId) }
                     .onSuccess {
                         message.value = "参加を取り消しました"
-                        Log.d("tsemb012", "参加を取り消しました")
                         fetchEventDetail()
+                        isLoading.value = false
                     }
                     .onFailure {
                         message.value = it.message
-                        Log.d("tsemb012", "${it.message}")
+                        isLoading.value = false
                     }
             }
+        isLoading.value = true
         job.start()
     }
 
@@ -80,14 +87,14 @@ class ScheduleDetailViewModel @AssistedInject constructor(
             kotlin.runCatching { eventUseCase.deleteEvent(eventId) }
                 .onSuccess {
                     message.value = "イベントを削除しました"
-                    Log.d("tsemb012", "イベントを削除しました")
-                    //TODO 削除したあとの導線も検討するようにする。
+                    isLoading.value = false
                 }
                 .onFailure {
                     message.value = it.message
-                    Log.d("tsemb012", "${it.message}")
+                    isLoading.value = false
                 }
         }
+        isLoading.value = true
         job.start()
     }
     @AssistedFactory

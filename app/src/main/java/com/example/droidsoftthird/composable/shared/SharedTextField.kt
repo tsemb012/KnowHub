@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.composable.shared
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -13,14 +14,28 @@ import androidx.compose.ui.text.font.FontWeight
 fun SharedTextField(
     title: String,
     text: String,
-    isEditable : Boolean,
+    isEditable: Boolean,
+    titleTextSize: TextSize = TextSize.MEDIUM,
+    fieldTextSize: TextSize = TextSize.MEDIUM,
     hint: String = "",
     onTextChanged: (String) -> Unit = {}
 ) {
+    val titleTextStyle = when (titleTextSize) {
+        TextSize.SMALL -> MaterialTheme.typography.body2
+        TextSize.MEDIUM -> MaterialTheme.typography.h6
+        TextSize.LARGE -> MaterialTheme.typography.h5
+    }
+
+    val fieldTextStyle = when (fieldTextSize) {
+        TextSize.SMALL -> MaterialTheme.typography.body2
+        TextSize.MEDIUM -> MaterialTheme.typography.h6
+        TextSize.LARGE -> MaterialTheme.typography.h5
+    }
+
     Column {
         Text(
             text = title,
-            style = TextStyle(fontWeight = FontWeight.Bold)
+            style = TextStyle(fontWeight = FontWeight.Bold ,fontSize = titleTextStyle.fontSize, color = Color.DarkGray),
         )
         TextField(
             value = text,
@@ -32,13 +47,19 @@ fun SharedTextField(
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
             ),
-            textStyle = TextStyle(color = Color.DarkGray),
+            textStyle = TextStyle(fontSize = fieldTextStyle.fontSize, color = Color.DarkGray),
             placeholder = {
                 Text(
                     text = hint,
-                    style = TextStyle(color = Color.Gray)
+                    style = TextStyle(fontSize = fieldTextStyle.fontSize, color = Color.Gray)
                 )
             }
         )
     }
+}
+
+enum class TextSize {
+    SMALL,
+    MEDIUM,
+    LARGE
 }
