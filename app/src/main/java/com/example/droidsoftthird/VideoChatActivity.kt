@@ -58,7 +58,7 @@ class VideoChatActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     override fun onBackPressed() {
         val builder = MaterialAlertDialogBuilder(this)
-        builder.setMessage("本当にハングアップしてよろしいですか？")
+        builder.setMessage("本当に終了してよろしいですか？")
             .setPositiveButton("はい") { _, _ ->
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(BroadcastIntentHelper.buildHangUpIntent())
                 super.onBackPressed()

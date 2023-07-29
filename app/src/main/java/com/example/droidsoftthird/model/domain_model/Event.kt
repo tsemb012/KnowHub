@@ -1,5 +1,6 @@
 package com.example.droidsoftthird.model.domain_model
 
+import com.example.droidsoftthird.R
 import com.example.droidsoftthird.model.infra_model.json.request.PostEventJson
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -52,7 +53,38 @@ data class ItemEvent(
 
 enum class EventStatus {
         BEFORE_REGISTRATION,
+        BEFORE_REGISTRATION_DURING_EVENT,
         AFTER_REGISTRATION_BEFORE_EVENT,
         AFTER_REGISTRATION_DURING_EVENT,
-        AFTER_EVENT,
+        AFTER_EVENT;
+
+        fun getStatusColor (): Int {
+                return when (this) {
+                        BEFORE_REGISTRATION -> R.color.primary_accent_yellow
+                        BEFORE_REGISTRATION_DURING_EVENT -> R.color.primary_green
+                        AFTER_REGISTRATION_BEFORE_EVENT -> R.color.primary_light
+                        AFTER_REGISTRATION_DURING_EVENT -> R.color.today_color
+                        AFTER_EVENT -> R.color.gray
+                }
+        }
+
+        fun getStatusText (): String {
+                return when (this) {
+                        BEFORE_REGISTRATION -> "募集中"
+                        BEFORE_REGISTRATION_DURING_EVENT -> "開催中"
+                        AFTER_REGISTRATION_BEFORE_EVENT -> "募集終了"
+                        AFTER_REGISTRATION_DURING_EVENT -> "開催中"
+                        AFTER_EVENT -> "終了"
+                }
+        }
+
+        fun getStatusDescription (): String {
+                return when (this) {
+                        BEFORE_REGISTRATION -> "参加者募集中"
+                        BEFORE_REGISTRATION_DURING_EVENT -> "開催中です。\n途中参加可能です。"
+                        AFTER_REGISTRATION_BEFORE_EVENT -> "開始時刻までお待ちください。"
+                        AFTER_REGISTRATION_DURING_EVENT -> "開催中です。\nタップしてチャットを開始してください。"
+                        AFTER_EVENT -> "　イベントは終了しました。"
+                }
+        }
 }
