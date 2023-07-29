@@ -42,6 +42,8 @@ import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.map.MapWithMarker
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
+import com.example.droidsoftthird.composable.shared.DescriptionItem
+import com.example.droidsoftthird.composable.shared.SharedDescriptions
 import com.example.droidsoftthird.composable.shared.SharedTextField
 import com.example.droidsoftthird.composable.shared.SharedTextLines
 import com.example.droidsoftthird.composable.shared.TextSize
@@ -57,7 +59,7 @@ fun EventDetailScreen(
     navigateToGroupDetail: () -> Unit,
     onBack: () -> Unit,
 ) {
-    Box {
+    Box (Modifier.background(color = colorResource(id = R.color.base_100))) {
         if (isLoading.value) CommonLinearProgressIndicator ()
         else {
             val event1 = event.value!!
@@ -108,6 +110,18 @@ fun EventDetailScreen(
                             ParticipantInfo2(event.value, {navigateToGroupDetail () }) {}
                             Spacer(modifier = Modifier.height(16.dp))
                             Divider()
+                            Spacer(modifier = Modifier.height(16.dp))
+                            SharedDescriptions(
+                                title = "日時",
+                                itemList = listOf(
+                                    DescriptionItem(text = event.value.formattedDate),
+                                    DescriptionItem(text = event.value.formattedPeriod),
+                                )
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Divider()
+
+
 
                         }
                         Log.d("EventDetailScreen", "$it")
@@ -142,7 +156,7 @@ fun ParticipantInfo2(eventDetail: EventDetail, onLauncherClick: () -> Unit ,onIc
                 tint = colorResource(id = R.color.primary_dark),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "参加人数 ${participants.size}/${totalMembers.size}", style = MaterialTheme.typography.body1)
+            Text(text = "参加人数 ${eventDetail.registrationRatio}", style = MaterialTheme.typography.body1)
         }
         Spacer(modifier = Modifier.height(12.dp))
         Row {
