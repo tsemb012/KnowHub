@@ -51,10 +51,12 @@ fun EventCardContent(event: ItemEvent) {
     //TODO 日付の文字列をうまく表現する。Creat画面のロジックをアレンジするようにする。
 
     val statusColor = when (event.status) {
-        EventStatus.BEFORE_REGISTRATION -> R.color.primary_accent_yellow to "募集中"
-        EventStatus.AFTER_REGISTRATION_BEFORE_EVENT -> R.color.primary_light to "参加予定"
-        EventStatus.AFTER_REGISTRATION_DURING_EVENT -> R.color.today_color to "開催中"
-        EventStatus.AFTER_EVENT -> R.color.gray to "終了"
+        EventStatus.BEFORE_REGISTRATION -> event.status.getStatusColor() to event.status.getStatusText()
+        EventStatus.BEFORE_REGISTRATION_DURING_EVENT -> event.status.getStatusColor() to event.status.getStatusText()
+        EventStatus.AFTER_REGISTRATION_BEFORE_EVENT -> event.status.getStatusColor() to event.status.getStatusText()
+        EventStatus.AFTER_REGISTRATION_BEFORE_EVENT -> event.status.getStatusColor() to event.status.getStatusText()
+        EventStatus.AFTER_REGISTRATION_DURING_EVENT -> event.status.getStatusColor() to event.status.getStatusText()
+        EventStatus.AFTER_EVENT -> R.color.gray to event.status.getStatusText()
     }
 
     val statusList = listOfNotNull(

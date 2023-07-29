@@ -3,6 +3,7 @@ package com.example.droidsoftthird.composable.event
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -15,9 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -40,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -53,6 +58,7 @@ import com.example.droidsoftthird.composable.shared.SharedDescriptions
 import com.example.droidsoftthird.composable.shared.SharedTextLines
 import com.example.droidsoftthird.composable.shared.TextSize
 import com.example.droidsoftthird.model.domain_model.EventDetail
+import com.example.droidsoftthird.model.domain_model.EventStatus
 import com.example.droidsoftthird.model.domain_model.SimpleUser
 
 @Composable
@@ -91,12 +97,16 @@ fun EventDetailScreen(
                     )
                 },
                 content = {
-                    EventDetailContent(event, navigateToGroupDetail)
+                    EventDetailContent(event, navigateToGroupDetail, startVideoChat)
                     Log.d("EventDetailScreen", "event.value: ${it}")
                 }
             )
         }
-        Column(modifier = Modifier.wrapContentHeight().fillMaxWidth().align(Alignment.BottomCenter).background(color = colorResource(id = R.color.base_100))) {
+        Column(modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter)
+            .background(color = colorResource(id = R.color.base_100))) {
             Divider()
             ConfirmEventButton(!isLoading.value, isJoined.value, joinEvent, leaveEvent)
         }
@@ -104,7 +114,7 @@ fun EventDetailScreen(
 }
 
 @Composable
-fun EventDetailContent(event: MutableState<EventDetail>, navigateToGroupDetail: () -> Unit) {
+fun EventDetailContent(event: MutableState<EventDetail>, navigateToGroupDetail: () -> Unit, startVideoChat: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -114,13 +124,77 @@ fun EventDetailContent(event: MutableState<EventDetail>, navigateToGroupDetail: 
 
         item {
             if (event.value.isOnline) {
-                Text("オンラインイベント", style = MaterialTheme.typography.h6)
+                OnlineEventDetail(event, startVideoChat, navigateToGroupDetail)
             } else {
                 OfflineEventDetails(event, navigateToGroupDetail)
             }
         }
         item { Spacer(modifier = Modifier.height(100.dp)) }
     }
+}
+
+@Composable
+fun OnlineEventDetail(
+    event: MutableState<EventDetail>,
+    startVideoChat: () -> Unit,
+    navigateToGroupDetail: () -> Unit
+) {
+    val status = event.value.status
+    val (enable, color, description) = when (status) {
+        EventStatus.BEFORE_REGISTRATION -> Triple(false, status.getStatusColor(), status.getStatusDescription())
+        EventStatus.BEFORE_REGISTRATION_DURING_EVENT -> Triple(false, status.getStatusColor(), status.getStatusDescription())
+        EventStatus.AFTER_REGISTRATION_BEFORE_EVENT -> Triple(true, status.getStatusColor(), status.getStatusDescription())
+        EventStatus.AFTER_REGISTRATION_DURING_EVENT -> Triple(true, status.getStatusColor(), status.getStatusDescription())
+        EventStatus.AFTER_EVENT -> Triple(false, status.getStatusColor(), status.getStatusDescription())
+    }
+    Card (modifier = Modifier
+        .fillMaxWidth()
+        .clickable(enabled = enable, onClick = { startVideoChat() })
+        .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+    ) {
+        Column {
+            Text(
+                text = description,
+                color = colorResource(id = color),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .wrapContentWidth(Alignment.Start)
+                    .border(1.dp, colorResource(id = color), RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp))
+
+            )
+            Row(Modifier.align(Alignment.CenterHorizontally)) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_videocam_24),
+                    contentDescription = "ビデオチャット",
+                    modifier = Modifier.size(36.dp),
+                    tint = Color.DarkGray
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "オンラインチャット\n${event.value.name}",
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.h5,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Text(
+                text = event.value.formattedDate,
+                color = Color.DarkGray,
+                style = MaterialTheme.typography.h6
+            )
+            Text(
+                text = event.value.formattedPeriod,
+                color = Color.DarkGray,
+                style = MaterialTheme.typography.h6
+            )
+            ParticipantInfo2(eventDetail = event.value, MaterialTheme.typography.h6) { navigateToGroupDetail() }
+        }
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+    Text(text = event.value.comment, color = Color.Gray)
 }
 
 @Composable
@@ -139,7 +213,7 @@ fun OfflineEventDetails(event: MutableState<EventDetail>, navigateToGroupDetail:
         descriptionTextSize = TextSize.MEDIUM,
     )
     SpacerAndDivider()
-    ParticipantInfo2(event.value, { navigateToGroupDetail() }) {}
+    ParticipantInfo2(event.value) { navigateToGroupDetail() }
     SpacerAndDivider()
     SharedDescriptions(
         title = "日時",
@@ -192,7 +266,7 @@ fun ConfirmEventButton(isEditable: Boolean, isJoined: Boolean, joinEvent: () -> 
 
 
 @Composable
-fun ParticipantInfo2(eventDetail: EventDetail, onLauncherClick: () -> Unit ,onIconClick: () -> Unit) {
+fun ParticipantInfo2(eventDetail: EventDetail,  titleStyle: TextStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold), onLauncherClick: () -> Unit,) {
     val participants = eventDetail.eventRegisteredMembers
     val totalMembers = eventDetail.groupMembers
     val groupName = eventDetail.groupName
@@ -203,7 +277,7 @@ fun ParticipantInfo2(eventDetail: EventDetail, onLauncherClick: () -> Unit ,onIc
         ) {
             Text(
                 text = groupName,
-                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+                style = titleStyle
             )
             Spacer(modifier = Modifier.width(4.dp))
             Icon(
