@@ -1,6 +1,8 @@
 package com.example.droidsoftthird.model.domain_model
 
+import com.example.droidsoftthird.utils.converter.formatTimePeriod
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 data class EventDetail(
     val eventId: String,
@@ -19,5 +21,8 @@ data class EventDetail(
     val isOnline: Boolean,
 ) {
     val eventRegisteredMembers: List<SimpleUser> = groupMembers.filter { registeredUserIds.contains(it.userId) }
-    val registrationRatio: String = "${registeredUserIds.size} / ${groupMembers.size}"
+    val registrationRatio: String = "${registeredUserIds.size}/${groupMembers.size}"
+    val formattedDate: String = startDateTime.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))
+    val formattedPeriod = formatTimePeriod(startDateTime, endDateTime, isAmPm = true)
+
 }

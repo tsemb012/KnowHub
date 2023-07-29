@@ -39,26 +39,31 @@ fun SharedDescriptions(
 
         Column(modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
 
-            itemList.forEach { (icon, text, maxLines, isUrl) ->
+            itemList.forEach { item ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(16.dp)
-                            .align(Alignment.CenterVertically),
-                        tint = Color.Gray
-                    )
+                    if (item.icon != null) {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(16.dp)
+                                .align(Alignment.CenterVertically),
+                            tint = Color.Gray
+                        )
+                    } else {
+                        Spacer(modifier = Modifier.width(16.dp))
+                    }
+
                     Spacer(modifier = Modifier.width(4.dp))
 
-                    if (isUrl) { // If the item is a URL, use ClickableText
-                        ClickableUrlText(url = text)
+                    if (item.isUrl) { // If the item is a URL, use ClickableText
+                        ClickableUrlText(url = item.text)
                     } else { // Otherwise, use regular Text
                         Text(
-                            text = text,
+                            text = item.text,
                             style = MaterialTheme.typography.body1,
                             color = Color.DarkGray,
-                            maxLines = maxLines
+                            maxLines = item.maxLines
                         )
                     }
                 }
@@ -94,8 +99,8 @@ fun ClickableUrlText(url: String) {
 }
 
 data class DescriptionItem(
-    val icon: ImageVector,
+    val icon: ImageVector? = null,
     val text: String,
-    val maxLines: Int,
+    val maxLines: Int = 1,
     val isUrl: Boolean = false
 )
