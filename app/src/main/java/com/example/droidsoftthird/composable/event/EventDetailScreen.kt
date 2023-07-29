@@ -2,6 +2,7 @@ package com.example.droidsoftthird.composable.event
 
 import android.util.Log
 import android.widget.Space
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -148,82 +149,94 @@ fun OnlineEventDetail(
         EventStatus.AFTER_REGISTRATION_DURING_EVENT -> Triple(true, status.getStatusColor(), status.getStatusDescription())
         EventStatus.AFTER_EVENT -> Triple(false, status.getStatusColor(), status.getStatusDescription())
     }
-    Card (modifier = Modifier
-        .fillMaxWidth()
-        .clickable(enabled = enable, onClick = { startVideoChat() })
-        .padding(16.dp) // padding added inside the border
-        .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
-    ) {
-        Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)) {
-            Text(
-                text = description,
-                color = colorResource(id = color),
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier
-                    .wrapContentWidth(Alignment.Start)
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(1.dp, colorResource(id = color), RoundedCornerShape(10.dp))
-                    .padding(4.dp)
-            )
-            Spacer(modifier =  Modifier.height(8.dp))
-            Row (verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_videocam_24),
-                    contentDescription = "ビデオチャット",
-                    modifier = Modifier.size(36.dp),
-                    tint = Color.DarkGray
-                )
-                Spacer(modifier = Modifier.width(8.dp))
+    Box(modifier = Modifier.padding(16.dp)) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(enabled = enable, onClick = { startVideoChat() }),
+            elevation = if (enable) 6.dp else 0.dp,
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(1.dp, if (enable) Color.Black else Color.Gray),
+            backgroundColor = if (enable) Color.White else colorResource(id = R.color.base_gray),
+        ) {
+            Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)) {
                 Text(
-                    text = "オンラインチャット\n${event.value.name}",
-                    color = Color.DarkGray,
-                    style = MaterialTheme.typography.h5,
+                    text = description,
+                    color = colorResource(id = color),
+                    style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    modifier = Modifier
+                        .wrapContentWidth(Alignment.Start)
+                        .clip(RoundedCornerShape(10.dp))
+                        .border(1.dp, colorResource(id = color), RoundedCornerShape(10.dp))
+                        .padding(4.dp)
                 )
-            }
-            Spacer(modifier =  Modifier.height(16.dp))
-            Row {
-                Spacer(modifier = Modifier.width(32.dp))
-                Column {
-                    Text(
-                        text = event.value.formattedDate,
-                        color = Color.DarkGray,
-                        style = MaterialTheme.typography.body1
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_videocam_24),
+                        contentDescription = "ビデオチャット",
+                        modifier = Modifier.size(36.dp),
+                        tint = Color.DarkGray
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = event.value.formattedPeriod,
+                        text = "オンラインチャット\n${event.value.name}",
                         color = Color.DarkGray,
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.h5,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Row(
-                        verticalAlignment = Alignment.Bottom
-                    ) {
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row {
+                    Spacer(modifier = Modifier.width(32.dp))
+                    Column {
                         Text(
-                            text = event.value.groupName,
-                            style = MaterialTheme.typography.body1,
-                            color = Color.DarkGray
+                            text = event.value.formattedDate,
+                            color = Color.DarkGray,
+                            style = MaterialTheme.typography.body1
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_launch_24),
-                            contentDescription = "Description for accessibility",
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable(onClick = { navigateToGroupDetail() }),
-                            tint = colorResource(id = R.color.primary_dark),
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = event.value.formattedPeriod,
+                            color = Color.DarkGray,
+                            style = MaterialTheme.typography.body1
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "参加人数 ${event.value.registrationRatio}", style = MaterialTheme.typography.body1, color = Color.DarkGray)
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Row(
+                            verticalAlignment = Alignment.Bottom
+                        ) {
+                            Text(
+                                text = event.value.groupName,
+                                style = MaterialTheme.typography.body1,
+                                color = Color.DarkGray,
+                                modifier = Modifier.fillMaxWidth(0.4f),
+                                maxLines = 1,
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_launch_24),
+                                contentDescription = "Description for accessibility",
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable(onClick = { navigateToGroupDetail() }),
+                                tint = colorResource(id = R.color.primary_dark),
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "参加人数 ${event.value.registrationRatio}",
+                                style = MaterialTheme.typography.body1,
+                                color = Color.DarkGray
+                            )
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalUserIcons(users = event.value.eventRegisteredMembers)
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            HorizontalUserIcons(users = event.value.eventRegisteredMembers)
         }
     }
     Text(text = event.value.comment, color = Color.Gray, style = MaterialTheme.typography.h6, modifier = Modifier.padding(horizontal = 20.dp))
@@ -310,7 +323,9 @@ fun ParticipantInfo2(eventDetail: EventDetail, isOnline: Boolean = false, onLaun
             Text(
                 text = groupName,
                 style = if (isOnline) MaterialTheme.typography.body1 else MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
-                color = Color.DarkGray
+                color = Color.DarkGray,
+                modifier = Modifier.fillMaxWidth(0.4f),
+                maxLines = 1,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Icon(
