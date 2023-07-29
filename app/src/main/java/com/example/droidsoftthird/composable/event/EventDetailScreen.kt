@@ -8,6 +8,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +37,9 @@ import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.map.MapWithMarker
 import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
+import com.example.droidsoftthird.composable.shared.SharedTextField
+import com.example.droidsoftthird.composable.shared.SharedTextLines
+import com.example.droidsoftthird.composable.shared.TextSize
 import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.SimpleUser
 
@@ -47,54 +52,61 @@ fun EventDetailScreen(
     onBack: () -> Unit,
 ) {
     Box {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(text = "イベント詳細", color = Color.Black) },
-                    backgroundColor = Color.Transparent,
-                    contentColor = Color.Black,
-                    elevation = 0.dp,
-                    navigationIcon = {
-                        IconButton(onClick = { onBack() }) {
-                            Icon(
-                                Icons.Filled.ArrowBack,
-                                contentDescription = "戻る",
-                                tint = Color.Black
-                            )
-                        }
-                    }
-                )
-            },
-            content = {
-                Log.d("EventDetailScreen", "it: $it")
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.background)
-                        .padding(16.dp)
-                ) {
-
-                    if (event.value?.isOnline == true) {
-                        Text("オンラインイベント", style = MaterialTheme.typography.h6)
-                    } else {
-                        MapWithMarker(
-                            event,
-                            Modifier
-                                .height(200.dp)
-                                .fillMaxWidth()
-                        )
-
-                        if (event.value != null) {
-                            ParticipantInfo2(event.value!!) {
+        if (isLoading.value) CommonLinearProgressIndicator ()
+        else {
+            val event1 = event.value!!
+            val event = mutableStateOf(event1)
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text(text = "イベント詳細", color = Color.Black) },
+                        backgroundColor = Color.Transparent,
+                        contentColor = Color.Black,
+                        elevation = 0.dp,
+                        navigationIcon = {
+                            IconButton(onClick = { onBack() }) {
+                                Icon(
+                                    Icons.Filled.ArrowBack,
+                                    contentDescription = "戻る",
+                                    tint = Color.Black
+                                )
                             }
                         }
+                    )
+                },
+                content = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colors.background)
+                            .padding(16.dp)
+                    ) {
 
+                        if (event.value.isOnline == true) {
+                            Text("オンラインイベント", style = MaterialTheme.typography.h6)
+                        } else {
+                            MapWithMarker(
+                                event,
+                                Modifier
+                                    .height(200.dp)
+                                    .fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            SharedTextLines(
+                                title = event.value.name,
+                                text = event.value.comment,
+                                titleTextSize = TextSize.LARGE,
+                                descriptionTextSize = TextSize.MEDIUM,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ParticipantInfo2(event.value) {}
+
+                        }
+                        Log.d("EventDetailScreen", "$it")
                     }
-                    Log.d("EventDetailScreen", "$it")
                 }
-            }
-        )
-        if (isLoading.value) CommonLinearProgressIndicator()
+            )
+        }
     }
 }
 
