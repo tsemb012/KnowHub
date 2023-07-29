@@ -26,6 +26,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -108,6 +111,8 @@ fun EventDetailScreen(
                                 descriptionTextSize = TextSize.MEDIUM,
                             )
                             Spacer(modifier = Modifier.height(16.dp))
+                            Divider()
+                            Spacer(modifier = Modifier.height(16.dp))
                             ParticipantInfo2(event.value, {navigateToGroupDetail () }) {}
                             Spacer(modifier = Modifier.height(16.dp))
                             Divider()
@@ -119,8 +124,31 @@ fun EventDetailScreen(
                                     DescriptionItem(text = event.value.formattedPeriod),
                                 )
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
                             Divider()
+                            Spacer(modifier = Modifier.height(16.dp))
+                            val descriptionItems = listOf(
+                                DescriptionItem(
+                                    Icons.Filled.LocationOn,
+                                    (event.value.place?.name + "\n" + event.value.place?.formattedAddress),
+                                    3
+                                ),
+                                DescriptionItem(
+                                    Icons.Filled.Phone,
+                                    event.value.place?.tel ?: "",
+                                    1
+                                ),
+                                DescriptionItem(
+                                    Icons.Filled.Language,
+                                    event.value.place?.url ?: "",
+                                    2,
+                                    true
+                                ),
+                            )
+                            SharedDescriptions(
+                                title = "場所",
+                                itemList = descriptionItems
+                            )
 
 
 
