@@ -1,7 +1,6 @@
 package com.example.droidsoftthird.composable.event
 
 import android.util.Log
-import android.widget.Space
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -67,6 +66,7 @@ import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.EventStatus
 import com.example.droidsoftthird.model.domain_model.SimpleUser
 
+//TODO コード汚すぎるので、後日リファクタリング！
 @Composable
 fun EventDetailScreen(
     event: MutableState<EventDetail?>,
