@@ -342,7 +342,7 @@ private fun FilterHomeContent(
                 .align(Alignment.BottomCenter),
         ) {
             Divider()
-            ConfirmButton(stringResource(id = R.string.group_condition_filter_confirm) ,temporalCondition, onConfirm)
+            ConfirmFilterButton(stringResource(id = R.string.group_condition_filter_confirm) ,temporalCondition, onConfirm)
         }
     }
 }

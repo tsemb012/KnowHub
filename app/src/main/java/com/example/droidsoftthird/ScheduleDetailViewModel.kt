@@ -22,6 +22,7 @@ class ScheduleDetailViewModel @AssistedInject constructor(
 
     val eventDetail = mutableStateOf<EventDetail?>(null)
     val isLoading = mutableStateOf(false)
+    val isJoined = mutableStateOf(false)
     val message = mutableStateOf<String?>(null)
     val userId by lazy { runBlocking { settingUseCase.getUserId() } }
     private val startDateTime get() = eventDetail.value?.startDateTime?.toLocalDateTime()
@@ -36,6 +37,7 @@ class ScheduleDetailViewModel @AssistedInject constructor(
                 .onSuccess {
                     eventDetail.value = it
                     isLoading.value = false
+                    isJoined.value = it.registeredUserIds.contains(userId)
                 }
                 .onFailure {
                     message.value = it.message
