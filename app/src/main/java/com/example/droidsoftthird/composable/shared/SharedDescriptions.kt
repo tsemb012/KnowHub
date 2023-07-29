@@ -3,6 +3,7 @@ package com.example.droidsoftthird.composable.shared
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -16,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.example.droidsoftthird.R
 
 @Composable
 fun SharedDescriptions(
@@ -33,33 +36,42 @@ fun SharedDescriptions(
             text = title,
             style = MaterialTheme.typography.h6,
             color = Color.DarkGray,
+            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
             maxLines = 1
         )
 
-        Column(modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp)) {
 
-            itemList.forEach { (icon, text, maxLines, isUrl) ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(16.dp)
-                            .align(Alignment.CenterVertically),
-                        tint = Color.Gray
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
+            itemList.forEach { item ->
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (item.icon != null) {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .align(Alignment.CenterVertically),
+                                tint = Color.Gray
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.width(16.dp))
+                        }
 
-                    if (isUrl) { // If the item is a URL, use ClickableText
-                        ClickableUrlText(url = text)
-                    } else { // Otherwise, use regular Text
-                        Text(
-                            text = text,
-                            style = MaterialTheme.typography.body1,
-                            color = Color.DarkGray,
-                            maxLines = maxLines
-                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        if (item.isUrl) { // If the item is a URL, use ClickableText
+                            ClickableUrlText(url = item.text)
+                        } else { // Otherwise, use regular Text
+                            Text(
+                                text = item.text,
+                                style = MaterialTheme.typography.body1,
+                                color = Color.DarkGray,
+                                maxLines = item.maxLines
+                            )
+                        }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
@@ -70,7 +82,12 @@ fun SharedDescriptions(
 fun ClickableUrlText(url: String) {
     val uriHandler = LocalUriHandler.current
     val annotatedText = buildAnnotatedString {
-        withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+        withStyle(
+            style = SpanStyle(
+                textDecoration = TextDecoration.Underline,
+                color = colorResource(id = R.color.primary_dark)
+            )
+        ) {
             append(url)
             addStringAnnotation(
                 tag = "URL",
@@ -93,8 +110,8 @@ fun ClickableUrlText(url: String) {
 }
 
 data class DescriptionItem(
-    val icon: ImageVector,
+    val icon: ImageVector? = null,
     val text: String,
-    val maxLines: Int,
+    val maxLines: Int = 1,
     val isUrl: Boolean = false
 )

@@ -6,11 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.composable.event.EventDetailScreen
+import com.example.droidsoftthird.model.domain_model.EventDetail
+import com.example.droidsoftthird.model.domain_model.EventStatus
+import com.example.droidsoftthird.model.domain_model.SimpleUser
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.ZoneId
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,11 +52,15 @@ class ScheduleDetailFragment: Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 EventDetailScreen(
-                        eventViewModel = viewModel,
+                        event = viewModel.eventDetail,
+                        isLoading = viewModel.isLoading,
+                        isJoined = viewModel.isJoined,
                         startVideoChat = { startVideoChat() },
                         deleteEvent = { viewModel.deleteEvent() },
-                        onBack = { findNavController().navigateUp() }
-                )
+                        joinEvent = { viewModel.joinEvent() },
+                        leaveEvent = { viewModel.leaveEvent() },
+                        navigateToGroupDetail = { navigateToGroupDetail() },
+                ) { findNavController().navigateUp() }
             }
         }
     }
@@ -60,6 +72,73 @@ class ScheduleDetailFragment: Fragment() {
             startActivity(intent)
         }
     }
+
+    private fun navigateToGroupDetail() {
+        viewModel.eventDetail.value?.let {
+            val action = ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToGroupDetailFragment(it.groupId)
+            findNavController().navigate(action)
+        }
+    }
 }
+/*
+@Preview
+@Composable
+fun PreviewScheduleDetailScreen() {
+    val event = EventDetail(
+        eventId = "1",
+        hostId = "1",
+        roomId = "1",
+        name = "name",
+        comment = "comment",
+        startDateTime = Date().toInstant().atZone(ZoneId.systemDefault()),
+        endDateTime =  Date().toInstant().atZone(ZoneId.systemDefault()),
+        place = null,
+        groupId = "1",
+        groupName = "groupName",
+        registeredUserIds = listOf("1", "2"),
+        groupMembers = listOf(
+            SimpleUser(
+                userId = "1",
+                userName = "userName",
+                userImage = "",
+            ),
+            SimpleUser(
+                userId = "2",
+                userName = "userName",
+                userImage = "",
 
+                ),
+            SimpleUser(
+                userId = "3",
+                userName = "userName",
+                userImage = "",
+            ),
 
+            ),
+        status = EventStatus.AFTER_REGISTRATION_DURING_EVENT,
+        isOnline = false,
+    )
+    EventDetailScreen(
+            event = mutableStateOf(event),
+            isLoading = mutableStateOf(false),
+            startVideoChat = {},
+            deleteEvent = {}
+    ) {}
+}*/
+
+/*data class EventDetail(
+    val eventId: String,
+    val hostId: String,
+    val roomId: String,
+    val name: String,
+    val comment: String,
+    val startDateTime: ZonedDateTime,
+    val endDateTime: ZonedDateTime,
+    val place: EditedPlace?,
+    val groupId: String,
+    val groupName: String,
+    val registeredUserIds: List<String>,
+    val groupMembers: List<SimpleUser>,
+    val status: EventStatus,
+    val isOnline: Boolean,
+)*/

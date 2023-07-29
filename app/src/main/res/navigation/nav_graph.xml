@@ -219,6 +219,9 @@
         <action
             android:id="@+id/action_scheduleDetailFragment_to_videoChatFragment"
             app:destination="@id/videoChatFragment" />
+        <action
+            android:id="@+id/action_scheduleDetailFragment_to_groupDetailFragment"
+            app:destination="@id/groupDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/videoChatFragment"

@@ -7,7 +7,11 @@
     <color name="primary_accent_yellow">#F8B500</color>
     <color name="primary_accent_yellow_alpha">#64F8B500</color>
     <color name="primary_accent_red">#FF0000</color>
+    <color name="primary_green">#35BF0F</color>
     <color name="base_100">#FEFFFE</color>
+    <color name="base_200">#F7FBFB</color>
+    <color name="base_gray">#F4F3F3</color>
+    <color name="base_yellow">#FFFEFA</color>
     <color name="today_color">#54FF2525</color>
     <color name="primary_accent_blue">#6EACFF</color>
 
@@ -34,5 +38,4 @@
     <color name="primary_white">#F6FFFE</color>
     <color name="primary_blue">#5690C7</color>
     <color name="primary_accent_red_light">#84F44336</color>
-    <color name="primary_green">#35BF0F</color>
 </resources>

@@ -34,7 +34,8 @@ class ApiModule {
     companion object {
         //private const val BASE_URL = "http://192.168.10.104:3000/"
         //private const val BASE_URL = "http://192.168.200.41:3000/"
-        private const val BASE_URL = "http://192.168.36.17:3000/"
+        //private const val BASE_URL = "http://192.168.82.17:3000/"
+        private const val BASE_URL = "http://192.168.200.56:3000/"
         //private const val BASE_URL = "https://dst-cloud-heroku.herokuapp.com/"
         private const val TOKEN_ID_KEY = "token_id_key"
     }
