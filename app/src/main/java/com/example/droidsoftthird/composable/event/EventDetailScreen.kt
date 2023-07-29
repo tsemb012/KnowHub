@@ -184,8 +184,6 @@ fun OnlineEventDetail(
                 )
             }
             Spacer(modifier =  Modifier.height(16.dp))
-            Divider(Modifier.padding(horizontal = 8.dp))
-            Spacer(modifier =  Modifier.height(16.dp))
             Row {
                 Spacer(modifier = Modifier.width(32.dp))
                 Column {
@@ -201,12 +199,31 @@ fun OnlineEventDetail(
                         style = MaterialTheme.typography.body1
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    ParticipantInfo2(
-                        eventDetail = event.value,
-                        isOnline = true,
-                    ) { navigateToGroupDetail() }
+
+                    Row(
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = event.value.groupName,
+                            style = MaterialTheme.typography.body1,
+                            color = Color.DarkGray
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_launch_24),
+                            contentDescription = "Description for accessibility",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable(onClick = { navigateToGroupDetail() }),
+                            tint = colorResource(id = R.color.primary_dark),
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "参加人数 ${event.value.registrationRatio}", style = MaterialTheme.typography.body1, color = Color.DarkGray)
+                    }
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalUserIcons(users = event.value.eventRegisteredMembers)
         }
     }
     Text(text = event.value.comment, color = Color.Gray, style = MaterialTheme.typography.h6, modifier = Modifier.padding(horizontal = 20.dp))
@@ -299,7 +316,43 @@ fun ParticipantInfo2(eventDetail: EventDetail, isOnline: Boolean = false, onLaun
             Icon(
                 painter = painterResource(id = R.drawable.baseline_launch_24),
                 contentDescription = "Description for accessibility",
-                modifier = Modifier.size(if (isOnline) 20.dp else 24.dp)
+                modifier = Modifier
+                    .size(if (isOnline) 20.dp else 24.dp)
+                    .clickable(onClick = onLauncherClick),
+                tint = colorResource(id = R.color.primary_dark),
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "参加人数 ${eventDetail.registrationRatio}", style = MaterialTheme.typography.body1, color = Color.DarkGray)
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Row {
+            if (!isOnline) Spacer(modifier = Modifier.width(16.dp))
+            HorizontalUserIcons(users = participants)
+        }
+    }
+}
+
+@Composable
+fun ParticipantInfo３(eventDetail: EventDetail, isOnline: Boolean = false, onLauncherClick: () -> Unit,) {
+    val participants = eventDetail.eventRegisteredMembers
+    val totalMembers = eventDetail.groupMembers
+    val groupName = eventDetail.groupName
+    //participants.first().userName
+    Column {
+        Row(
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = groupName,
+                style = if (isOnline) MaterialTheme.typography.body1 else MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
+                color = Color.DarkGray
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_launch_24),
+                contentDescription = "Description for accessibility",
+                modifier = Modifier
+                    .size(if (isOnline) 20.dp else 24.dp)
                     .clickable(onClick = onLauncherClick),
                 tint = colorResource(id = R.color.primary_dark),
             )
