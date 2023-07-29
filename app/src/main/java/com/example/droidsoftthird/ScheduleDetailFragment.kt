@@ -53,6 +53,7 @@ class ScheduleDetailFragment: Fragment() {
             setContent {
                 EventDetailScreen(
                         event = viewModel.eventDetail,
+                        isLoading = viewModel.isLoading,
                         startVideoChat = { startVideoChat() },
                         deleteEvent = { viewModel.deleteEvent() }
                 ) { findNavController().navigateUp() }
@@ -108,6 +109,7 @@ fun PreviewScheduleDetailScreen() {
     )
     EventDetailScreen(
             event = mutableStateOf(event),
+            isLoading = mutableStateOf(false),
             startVideoChat = {},
             deleteEvent = {}
     ) {}

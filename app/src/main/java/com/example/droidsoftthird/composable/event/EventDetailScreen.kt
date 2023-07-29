@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -27,66 +27,77 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.map.MapWithMarker
+import com.example.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.SimpleUser
 
 @Composable
 fun EventDetailScreen(
     event: MutableState<EventDetail?>,
+    isLoading: MutableState<Boolean>,
     startVideoChat: () -> Unit,
     deleteEvent: () -> Unit,
     onBack: () -> Unit,
 ) {
-
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "イベント詳細") },
-                backgroundColor = MaterialTheme.colors.primary,
-                contentColor = MaterialTheme.colors.onPrimary,
-                navigationIcon = {
-                    IconButton(onClick = { onBack() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "戻る")
-                    }
-                }
-            )
-        },
-        content = {
-            Log.d("EventDetailScreen", "it: $it")
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colors.background)
-                    .padding(16.dp)
-            ) {
-
-                if (event.value?.isOnline == true) {
-                    Text("オンラインイベント", style = MaterialTheme.typography.h6)
-                } else {
-                    MapWithMarker(event,
-                        Modifier
-                            .height(200.dp)
-                            .fillMaxWidth()
-                    )
-
-                    if (event.value != null) {
-                        ParticipantInfo2(event.value!!) {
+    Box {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(text = "イベント詳細", color = Color.Black) },
+                    backgroundColor = Color.Transparent,
+                    contentColor = Color.Black,
+                    elevation = 0.dp,
+                    navigationIcon = {
+                        IconButton(onClick = { onBack() }) {
+                            Icon(
+                                Icons.Filled.ArrowBack,
+                                contentDescription = "戻る",
+                                tint = Color.Black
+                            )
                         }
                     }
+                )
+            },
+            content = {
+                Log.d("EventDetailScreen", "it: $it")
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.background)
+                        .padding(16.dp)
+                ) {
 
+                    if (event.value?.isOnline == true) {
+                        Text("オンラインイベント", style = MaterialTheme.typography.h6)
+                    } else {
+                        MapWithMarker(
+                            event,
+                            Modifier
+                                .height(200.dp)
+                                .fillMaxWidth()
+                        )
+
+                        if (event.value != null) {
+                            ParticipantInfo2(event.value!!) {
+                            }
+                        }
+
+                    }
+                    Log.d("EventDetailScreen", "$it")
                 }
-                Log.d("EventDetailScreen", "$it")
             }
-        }
-    )
+        )
+        if (isLoading.value) CommonLinearProgressIndicator()
+    }
 }
+
 
 @Composable
 fun ParticipantInfo2(eventDetail: EventDetail, onIconClick: () -> Unit) {
