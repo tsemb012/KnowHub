@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.composable.event
 
 import android.util.Log
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -30,6 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,6 +54,7 @@ fun EventDetailScreen(
     isLoading: MutableState<Boolean>,
     startVideoChat: () -> Unit,
     deleteEvent: () -> Unit,
+    navigateToGroupDetail: () -> Unit,
     onBack: () -> Unit,
 ) {
     Box {
@@ -98,8 +104,10 @@ fun EventDetailScreen(
                                 titleTextSize = TextSize.LARGE,
                                 descriptionTextSize = TextSize.MEDIUM,
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            ParticipantInfo2(event.value) {}
+                            Spacer(modifier = Modifier.height(16.dp))
+                            ParticipantInfo2(event.value, {navigateToGroupDetail () }) {}
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Divider()
 
                         }
                         Log.d("EventDetailScreen", "$it")
@@ -112,28 +120,35 @@ fun EventDetailScreen(
 
 
 @Composable
-fun ParticipantInfo2(eventDetail: EventDetail, onIconClick: () -> Unit) {
+fun ParticipantInfo2(eventDetail: EventDetail, onLauncherClick: () -> Unit ,onIconClick: () -> Unit) {
     val participants = eventDetail.eventRegisteredMembers
     val totalMembers = eventDetail.groupMembers
     val groupName = eventDetail.groupName
     Column {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Bottom
         ) {
             Text(
                 text = groupName,
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
             )
+            Spacer(modifier = Modifier.width(4.dp))
             Icon(
-                painter = painterResource(id = R.drawable.ic_baseline_access_time_24),
+                painter = painterResource(id = R.drawable.baseline_launch_24),
                 contentDescription = "Description for accessibility",
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable(onClick = onIconClick)
+                    .clickable(onClick = onLauncherClick),
+                tint = colorResource(id = R.color.primary_dark),
             )
-            Text(text = "参加人数")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "参加人数 ${participants.size}/${totalMembers.size}", style = MaterialTheme.typography.body1)
         }
-        HorizontalUserIcons(users = participants)
+        Spacer(modifier = Modifier.height(12.dp))
+        Row {
+            Spacer(modifier = Modifier.width(16.dp))
+            HorizontalUserIcons(users = participants)
+        }
     }
 }
 
@@ -148,12 +163,13 @@ fun HorizontalUserIcons(users: List<SimpleUser>) {
                 contentDescription = null,
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(CircleShape)
-                    .padding(4.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
             )
         }
     }
 }
+
 
 
 @Composable
