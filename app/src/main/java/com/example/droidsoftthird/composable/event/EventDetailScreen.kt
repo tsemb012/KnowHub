@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.R
@@ -138,6 +139,7 @@ fun ParticipantInfo2(eventDetail: EventDetail, onLauncherClick: () -> Unit ,onIc
     val participants = eventDetail.eventRegisteredMembers
     val totalMembers = eventDetail.groupMembers
     val groupName = eventDetail.groupName
+    //participants.first().userName
     Column {
         Row(
             verticalAlignment = Alignment.Bottom
@@ -172,14 +174,23 @@ fun HorizontalUserIcons(users: List<SimpleUser>) {
         modifier = Modifier.horizontalScroll(rememberScrollState())
     ) {
         users.forEach { user ->
-            Image(
-                painter = rememberImagePainter(user.userImage),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = rememberImagePainter(user.userImage),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = user.userName,
+                    style = MaterialTheme.typography.caption,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
