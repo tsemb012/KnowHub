@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -26,16 +27,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.map.MapWithMarker
 import com.example.droidsoftthird.model.domain_model.EventDetail
-import org.jitsi.meet.sdk.ParticipantInfo
+import com.example.droidsoftthird.model.domain_model.SimpleUser
 
 @Composable
 fun EventDetailScreen(
@@ -60,6 +59,7 @@ fun EventDetailScreen(
             )
         },
         content = {
+            Log.d("EventDetailScreen", "it: $it")
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -75,62 +75,13 @@ fun EventDetailScreen(
                             .height(200.dp)
                             .fillMaxWidth()
                     )
-                }
 
-                /*event.value?.let { eventDetail ->
-
-                    if (eventDetail.hostId == eventViewModel.userId) {
-                        Button(
-                            onClick = { deleteEvent() },
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        ) { Text("イベントを削除") }
-                    }
-                    if (eventDetail.place == null) {
-                        Button(
-                            enabled = eventViewModel.isVideoChatAvailable,
-                            onClick = { startVideoChat() },
-                            content = {
-                                Text(
-                                    if (eventViewModel.isVideoChatAvailable) "ビデオチャット"
-                                    else if (eventViewModel.isFinished) "ビデオチャットは終了しました"
-                                    else if (eventViewModel.isNotStarted) "開始時間までお待ちください"
-                                    else "ビデオチャットは準備中です"
-                                    )
-                            }
-                        )
-                    }
-
-
-                    if (eventDetail.registeredUserIds.contains(eventViewModel.userId)) {
-                            Button(
-                                onClick = { eventViewModel.leaveEvent() },
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            ) {
-                                Text("イベントから抜ける")
-                            }
-                        } else {
-                            Button(
-                                onClick = { eventViewModel.joinEvent() },
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            ) {
-                                Text("イベントに参加")
-                            }
+                    if (event.value != null) {
+                        ParticipantInfo2(event.value!!) {
                         }
-
-                    ListItem(title = "イベント名", content = eventDetail.name)
-                    ListItem(title = "コメント", content = eventDetail.comment)
-                    ListItem(title = "日付", content = eventDetail.startDateTime.toString())
-                    ListItem(title = "開始時間", content = eventDetail.startDateTime.toString())
-                    ListItem(title = "終了時間", content = eventDetail.endDateTime.toString())
-
-                    eventDetail.place?.let { place ->
-                        ListItem(title = "場所名", content = place.name)
-                        ListItem(title = "住所", content = place.formattedAddress ?: "不明")
                     }
 
-                    ListItem(title = "グループ名", content = eventDetail.groupName)
-                    ListItem(title = "登録ユーザー数", content = eventDetail.registeredUserIds.size.toString())
-                }*/
+                }
                 Log.d("EventDetailScreen", "$it")
             }
         }
@@ -138,13 +89,16 @@ fun EventDetailScreen(
 }
 
 @Composable
-fun ParticipantInfo(participantInfo: ParticipantInfo, onIconClick: () -> Unit) {
+fun ParticipantInfo2(eventDetail: EventDetail, onIconClick: () -> Unit) {
+    val participants = eventDetail.eventRegisteredMembers
+    val totalMembers = eventDetail.groupMembers
+    val groupName = eventDetail.groupName
     Column {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = participantInfo.displayName,
+                text = groupName,
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
             )
             Icon(
@@ -156,18 +110,18 @@ fun ParticipantInfo(participantInfo: ParticipantInfo, onIconClick: () -> Unit) {
             )
             Text(text = "参加人数")
         }
-        HorizontalUserIcons(userImages = participantInfo.userImages)
+        HorizontalUserIcons(users = participants)
     }
 }
 
 @Composable
-fun HorizontalUserIcons(userImages: List<String>) {
+fun HorizontalUserIcons(users: List<SimpleUser>) {
     Row(
         modifier = Modifier.horizontalScroll(rememberScrollState())
     ) {
-        userImages.forEach { imageUrl ->
+        users.forEach { user ->
             Image(
-                painter = rememberImagePainter(imageUrl),
+                painter = rememberImagePainter(user.userImage),
                 contentDescription = null,
                 modifier = Modifier
                     .size(48.dp)

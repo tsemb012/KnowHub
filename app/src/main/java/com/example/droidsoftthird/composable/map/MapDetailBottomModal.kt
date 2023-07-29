@@ -86,13 +86,16 @@ fun PlaceMapBottomModal(
                         val place = singlePlace as YolpSinglePlace.ReverseGeocode
                         SharedTextField("住所", place.address, false)
                         Divider()
-                        SharedTextField("場所名", placeName, true,"場所の名前を入力してください") { placeName = it }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        SharedTextField(title = "場所名", text = placeName, isEditable = true, hint = "場所の名前を入力してください") { placeName = it }
                     }
                     else -> {
                         Text(text = "No place")}
                 }
+                Spacer(modifier = Modifier.height(8.dp))
                 Divider()
-                SharedTextField(stringResource(R.string.map_memo), memo,true, "メモを入力してください") { memo = it }
+                Spacer(modifier = Modifier.height(8.dp))
+                SharedTextField(title = stringResource(R.string.map_memo), text = memo,isEditable = true, hint = "メモを入力してください") { memo = it }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Button(
