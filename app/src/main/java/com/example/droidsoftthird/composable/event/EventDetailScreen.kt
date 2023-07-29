@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.composable.event
 
 import android.util.Log
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -150,20 +151,22 @@ fun OnlineEventDetail(
     Card (modifier = Modifier
         .fillMaxWidth()
         .clickable(enabled = enable, onClick = { startVideoChat() })
+        .padding(16.dp) // padding added inside the border
         .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
     ) {
-        Column {
+        Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)) {
             Text(
                 text = description,
                 color = colorResource(id = color),
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier
-                    .padding(8.dp)
                     .wrapContentWidth(Alignment.Start)
-                    .border(1.dp, colorResource(id = color), RoundedCornerShape(10.dp))
                     .clip(RoundedCornerShape(10.dp))
-
+                    .border(1.dp, colorResource(id = color), RoundedCornerShape(10.dp))
+                    .padding(4.dp)
             )
-            Row(Modifier.align(Alignment.CenterHorizontally)) {
+            Spacer(modifier =  Modifier.height(8.dp))
+            Row (verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_videocam_24),
                     contentDescription = "ビデオチャット",
@@ -180,21 +183,33 @@ fun OnlineEventDetail(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Text(
-                text = event.value.formattedDate,
-                color = Color.DarkGray,
-                style = MaterialTheme.typography.h6
-            )
-            Text(
-                text = event.value.formattedPeriod,
-                color = Color.DarkGray,
-                style = MaterialTheme.typography.h6
-            )
-            ParticipantInfo2(eventDetail = event.value, MaterialTheme.typography.h6) { navigateToGroupDetail() }
+            Spacer(modifier =  Modifier.height(16.dp))
+            Divider(Modifier.padding(horizontal = 8.dp))
+            Spacer(modifier =  Modifier.height(16.dp))
+            Row {
+                Spacer(modifier = Modifier.width(32.dp))
+                Column {
+                    Text(
+                        text = event.value.formattedDate,
+                        color = Color.DarkGray,
+                        style = MaterialTheme.typography.body1
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = event.value.formattedPeriod,
+                        color = Color.DarkGray,
+                        style = MaterialTheme.typography.body1
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ParticipantInfo2(
+                        eventDetail = event.value,
+                        isOnline = true,
+                    ) { navigateToGroupDetail() }
+                }
+            }
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(text = event.value.comment, color = Color.Gray)
+    Text(text = event.value.comment, color = Color.Gray, style = MaterialTheme.typography.h6, modifier = Modifier.padding(horizontal = 20.dp))
 }
 
 @Composable
@@ -266,7 +281,7 @@ fun ConfirmEventButton(isEditable: Boolean, isJoined: Boolean, joinEvent: () -> 
 
 
 @Composable
-fun ParticipantInfo2(eventDetail: EventDetail,  titleStyle: TextStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold), onLauncherClick: () -> Unit,) {
+fun ParticipantInfo2(eventDetail: EventDetail, isOnline: Boolean = false, onLauncherClick: () -> Unit,) {
     val participants = eventDetail.eventRegisteredMembers
     val totalMembers = eventDetail.groupMembers
     val groupName = eventDetail.groupName
@@ -277,23 +292,23 @@ fun ParticipantInfo2(eventDetail: EventDetail,  titleStyle: TextStyle = Material
         ) {
             Text(
                 text = groupName,
-                style = titleStyle
+                style = if (isOnline) MaterialTheme.typography.body1 else MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
+                color = Color.DarkGray
             )
             Spacer(modifier = Modifier.width(4.dp))
             Icon(
                 painter = painterResource(id = R.drawable.baseline_launch_24),
                 contentDescription = "Description for accessibility",
-                modifier = Modifier
-                    .size(24.dp)
+                modifier = Modifier.size(if (isOnline) 20.dp else 24.dp)
                     .clickable(onClick = onLauncherClick),
                 tint = colorResource(id = R.color.primary_dark),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "参加人数 ${eventDetail.registrationRatio}", style = MaterialTheme.typography.body1)
+            Text(text = "参加人数 ${eventDetail.registrationRatio}", style = MaterialTheme.typography.body1, color = Color.DarkGray)
         }
         Spacer(modifier = Modifier.height(12.dp))
         Row {
-            Spacer(modifier = Modifier.width(16.dp))
+            if (!isOnline) Spacer(modifier = Modifier.width(16.dp))
             HorizontalUserIcons(users = participants)
         }
     }
@@ -305,7 +320,8 @@ fun HorizontalUserIcons(users: List<SimpleUser>) {
         modifier = Modifier.horizontalScroll(rememberScrollState())
     ) {
         users.forEach { user ->
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(end = 8.dp)) {  // add space between icons
                 Image(
                     painter = rememberImagePainter(user.userImage),
                     contentDescription = null,
