@@ -33,6 +33,7 @@ fun SharedDescriptions(
             text = title,
             style = MaterialTheme.typography.h6,
             color = Color.DarkGray,
+            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
             maxLines = 1
         )
 
