@@ -17,6 +17,8 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
 
     fun logout() { _loginState.postValue(LoginState.LOGGED_OUT) }
 
+    fun withdraw() { TODO("退会のロジックを記述する。") }
+
     fun clearTokenCache() {
         viewModelScope.launch {
             repository.clearTokenId()
