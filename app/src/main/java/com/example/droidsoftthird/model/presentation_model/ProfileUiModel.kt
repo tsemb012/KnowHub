@@ -12,7 +12,7 @@ data class ProfileUiModel (
     val isSubmitEnabled: Boolean = false,
     val loadState: LoadState = LoadState.Initialized,
 ) {
-    val gender = editedUserDetail.gender.let { it.ifBlank { NO_SETTING } }
+    val gender = editedUserDetail.getJapanese(editedUserDetail.gender)
     val age =
         if (editedUserDetail.birthday == LocalDate.now()) NO_SETTING
         else {
