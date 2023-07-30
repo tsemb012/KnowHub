@@ -172,6 +172,12 @@
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_groupDetailFragment"
+            app:destination="@id/groupDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_scheduleDetailFragment"
+            app:destination="@id/scheduleDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"

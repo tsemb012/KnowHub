@@ -2,8 +2,10 @@ package com.example.droidsoftthird.model.domain_model
 
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.model.infra_model.json.request.PostEventJson
+import com.example.droidsoftthird.utils.converter.formatTimePeriod
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 abstract class Event {
         abstract val hostId: String?
@@ -34,7 +36,7 @@ data class CreateEvent(
         }
 }
 
-data class ItemEvent(
+data class EventItem(
         val eventId: String,
         override val hostId: String? = null,
         override val name: String,
@@ -48,7 +50,10 @@ data class ItemEvent(
         val status: EventStatus,
         val isOnline: Boolean,
 ) :Event() {
-        val registrationRatio = "$eventRegisteredNumber / $groupJoinedNumber"
+        val registrationRatio = "$eventRegisteredNumber/$groupJoinedNumber"
+        val formattedDate: String = period.first.format(DateTimeFormatter.ofPattern("MM月dd日（E）", Locale.JAPAN))
+        val formattedPeriod = formatTimePeriod(period.first, period.second, isAmPm = false)
+        val formattedStateTime = formattedDate + " " +period.first.hour.toString() + "時" + period.first.minute.toString() + "分"
 }
 
 enum class EventStatus {

@@ -21,6 +21,7 @@ import java.time.ZoneId
 import java.util.Date
 import javax.inject.Inject
 
+//TODO EventDetailFragmentにした方が良い。
 @AndroidEntryPoint
 class ScheduleDetailFragment: Fragment() {
 

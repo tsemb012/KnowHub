@@ -1,12 +1,9 @@
 package com.example.droidsoftthird.model.domain_model
 
-import androidx.compose.ui.text.toLowerCase
 import com.example.droidsoftthird.model.infra_model.json.request.PostUserDetailJson
-import com.squareup.moshi.JsonAdapter
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 data class UserDetail (
     val userId: String,
@@ -17,7 +14,7 @@ data class UserDetail (
     val birthday: LocalDate,
     val area: Area,
     val groups: List<ApiGroup>,
-    val events: List<ItemEvent>,
+    val events: List<EventItem>,
 ) {
     enum class Gender { MALE, FEMALE, NO_ANSWER }
     fun toJson() =

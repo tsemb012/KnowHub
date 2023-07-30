@@ -21,7 +21,7 @@ interface RailsApiRepository {
     suspend fun createUser(userDetail: UserDetail): String?
     //suspend fun postNewUser(singup: SignUpJson): User?
     suspend fun createEvent(event: CreateEvent): String?
-    suspend fun fetchEvents(): List<ItemEvent>
+    suspend fun fetchEvents(): List<EventItem>
     suspend fun fetchEventDetail(eventId: String):EventDetail
     suspend fun registerEvent(eventId: String): String?
     suspend fun unregisterEvent(eventId: String): String?
