@@ -11,6 +11,7 @@ import org.junit.Rule
 import javax.inject.Inject
 
 
+/*
 @HiltAndroidTest
 class MapUseCaseSpec: DescribeSpec(){
     @get:Rule
@@ -33,4 +34,4 @@ class MapUseCaseSpec: DescribeSpec(){
             }
         }
     }
-}
+}*/

@@ -776,7 +776,7 @@
 - artifact: com.facebook.fbjni:fbjni-java-only:+
   name: fbjni-java-only
   copyrightHolder: Meta Platforms, Inc.
-  license: 
+  license: The Apache Software License, Version 2.0
   url: https://github.com/facebookincubator/fbjni
 - artifact: com.facebook.fresco:animated-base:+
   name: animated-base
@@ -1061,6 +1061,7 @@
   url: https://github.com/facebook/yoga
 - artifact: com.fasterxml.jackson.core:jackson-core:+
   name: jackson-core
+  copyrightHolder: FasterXML, LLC
   license: Apache-2
   url: https://github.com/FasterXML/jackson-core
 - artifact: com.firebaseui:firebase-ui-auth:+
@@ -1232,6 +1233,7 @@
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
 - artifact: com.google.android.exoplayer:extension-okhttp:+
   name: extension-okhttp
+  copyrightHolder: Google Inc
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
 - artifact: com.google.android.gms:play-services-ads-identifier:+
@@ -1724,7 +1726,7 @@
   url: https://checkerframework.org
 - artifact: org.codehaus.mojo:animal-sniffer-annotations:+
   name: animal-sniffer-annotations
-  license: 	MIT
+  license: The MIT License
 - artifact: org.greenrobot:eventbus:+
   name: eventbus
   license: The Apache Software License, Version 2.0
