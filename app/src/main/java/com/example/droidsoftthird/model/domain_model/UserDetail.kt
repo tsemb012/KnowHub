@@ -33,7 +33,7 @@ data class UserDetail (
         return when(gender) {
             "male" -> "男性"
             "female" -> "女性"
-            else -> "未回答"
+            else -> "無回答"
         }
     }
 

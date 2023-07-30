@@ -92,7 +92,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:hint="自己紹介をしてください。"
+                    android:hint="自己紹介を入力してください。"
                     android:maxLength="100"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/user_name"
@@ -145,7 +145,7 @@
                     <include
                         android:id="@+id/gender_item"
                         layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/gender_no_edit}"
+                        bind:title="@{@string/gender}"
                         bind:drawable="@{@drawable/ic_baseline_wc_24}"
                         bind:text="@{viewModel.uiModel.gender}"
                         android:clickable="true" />
@@ -157,7 +157,7 @@
                     <include
                         android:id="@+id/age_item"
                         layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/age_no_edit}"
+                        bind:title="@{@string/age}"
                         bind:drawable="@{@drawable/baseline_cake_24}"
                         bind:text="@{viewModel.uiModel.age}"
                         android:clickable="true" />
