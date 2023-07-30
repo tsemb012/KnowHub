@@ -178,6 +178,9 @@
         <action
             android:id="@+id/action_profileFragment_to_scheduleDetailFragment"
             app:destination="@id/scheduleDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_licenseFragment"
+            app:destination="@id/licenseFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
@@ -240,4 +243,8 @@
             android:name="eventId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/licenseFragment"
+        android:name="com.example.droidsoftthird.LicenseFragment"
+        android:label="LicenseFragment" />
 </navigation>

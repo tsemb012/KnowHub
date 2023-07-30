@@ -47,6 +47,7 @@ fun ProfileScreen(
     toProfileEdit: () -> Unit,
     toGroupDetail: (String) -> Unit,
     toEventDetail: (String) -> Unit,
+    toLicense: () -> Unit,
     onLogOut: () -> Unit,
     onWithdraw: () -> Unit
 ) {
@@ -56,17 +57,9 @@ fun ProfileScreen(
     val groups = userDetail.value.groups
     val events = userDetail.value.events
 
-    val navController = rememberNavController()
-    NavHost(navController, startDestination = "home") {
-        composable("license") { LicenseScreen() }
-    }
-
     val showSignOutDialog = remember { mutableStateOf(false) }
     val showWithdrawDialog = remember { mutableStateOf(false) }
 
-    fun navigateTo(screen: String) {
-        navController.navigate(screen)
-    }
 
     if (showSignOutDialog.value) {
         AlertDialog(
@@ -229,7 +222,7 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(36.dp))
                     AppendixButton("利用規約") { openUrl(context, termsOfServiceUrl) }
                     AppendixButton("プライバシーポリシー") { openUrl(context, termsOfServiceUrl) }
-                    AppendixButton("ライセンス") { navigateTo("license") }
+                    AppendixButton("ライセンス") { toLicense() }
                     AppendixButton("退会") { showWithdrawDialog.value = true }
                     Divider()
                 }
