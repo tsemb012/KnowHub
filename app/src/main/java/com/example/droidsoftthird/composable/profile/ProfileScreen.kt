@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,6 +32,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.droidsoftthird.ProfileViewModel
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.composable.shared.DescriptionItem
 import com.example.droidsoftthird.composable.shared.SharedConfirmButton
 import com.example.droidsoftthird.composable.shared.SharedDescriptions
@@ -126,107 +128,145 @@ fun ProfileScreen(
     }
 
     Scaffold(
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text("Edit Profile") },
-                icon = { Icon(Icons.Filled.AddCircle, contentDescription = null) },
-                onClick = { toProfileEdit() }
-            )
-        },
-        floatingActionButtonPosition = FabPosition.End,
         content = { innerPadding ->
             Log.d("ProfileScreen", "userDetail.value.userImage: ${innerPadding}")
 
-            LazyColumn(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                item {
-                    Box (
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(context)
-                                .data(viewModel.downloadUrl1.value)
-                                .build(),
-                            contentDescription = "User Image",
+            Box {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Box {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(context)
+                                        .data(viewModel.downloadUrl1.value)
+                                        .build(),
+                                    contentDescription = "User Image",
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .size(150.dp)
+                                        .clip(RoundedCornerShape(100.dp)),
+                                    contentScale = ContentScale.Crop,
+                                )
+                                Button(
+                                    onClick = { toProfileEdit() },
+                                    modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 8.dp),
+                                    border = BorderStroke(
+                                        1.dp,
+                                        colorResource(id = R.color.primary_dark)
+                                    ),
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = colorResource(id = R.color.base_100),
+                                        contentColor = colorResource(id = R.color.primary_dark),
+                                    ),
+                                    elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp),
+                                ) {
+                                    Text("編集")
+                                }
+                            }
+                        }
+                        SharedTextLines(
+                            title = userDetail.value.userName,
+                            text = userDetail.value.comment,
+                            titleTextSize = TextSize.LARGE,
+                            descriptionTextSize = TextSize.MED_LARGE,
+                        )
+                        ProfileSpacerAndDivider()
+                        SharedTextLines(
+                            title = stringResource(id = R.string.gender),
+                            text = userDetail.value.getJapanese(userDetail.value.gender),
+                            hasSpace = true
+                        )
+                        ProfileSpacerAndDivider()
+                        SharedTextLines(
+                            title = stringResource(id = R.string.birthday),
+                            text = userDetail.value.formattedBirthday,
+                            hasSpace = true
+                        )
+                        ProfileSpacerAndDivider()
+                        SharedTextLines(
+                            title = stringResource(id = R.string.residential_area),
+                            text = userDetail.value.residentialArea,
+                            hasSpace = true
+                        )
+                        ProfileSpacerAndDivider()
+                        Text(
+                            "所属グループ",
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.h6,
                             modifier = Modifier
-                                .padding(16.dp)
-                                .size(150.dp)
-                                .clip(RoundedCornerShape(100.dp)),
-                            contentScale = ContentScale.Crop,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                        ) {
+                            groups.forEach { group ->
+                                GroupCard(group = group, toGroupDetail)
+                            }
+                        }
+
+                        ProfileSpacerAndDivider()
+                        Text(
+                            "参加予定のイベント",
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.h6,
+                            modifier = Modifier
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                        ) {
+                            events.forEach { event ->
+                                EventCard(event = event, toEventDetail)
+                            }
+                        }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(36.dp))
+                        SharedConfirmButton(
+                            text = "ログアウト",
+                            onConfirm = { showSignOutDialog.value = true },
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.width(300.dp)
                         )
                     }
-                    SharedTextLines(
-                        title =  userDetail.value.userName,
-                        text = userDetail.value.comment,
-                        titleTextSize = TextSize.LARGE,
-                        descriptionTextSize = TextSize.MED_LARGE,
-                    )
-                    ProfileSpacerAndDivider()
-                    SharedTextLines(
-                        title = stringResource(id = R.string.gender),
-                        text = userDetail.value.getJapanese(userDetail.value.gender),
-                        hasSpace = true
-                    )
-                    ProfileSpacerAndDivider()
-                    SharedTextLines(
-                        title = stringResource(id = R.string.birthday),
-                        text = userDetail.value.formattedBirthday,
-                        hasSpace = true
-                    )
-                    ProfileSpacerAndDivider()
-                    SharedTextLines(
-                        title = stringResource(id = R.string.residential_area),
-                        text = userDetail.value.residentialArea,
-                        hasSpace = true
-                    )
-                    ProfileSpacerAndDivider()
-                    Text("所属グループ", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6, modifier = Modifier)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState())
-                    ) {
-                        groups.forEach { group ->
-                            GroupCard(group = group, toGroupDetail)
-                        }
+
+
+
+                    item {
+                        val context = LocalContext.current
+                        val termsOfServiceUrl =
+                            "https://sites.google.com/view/workandchill-test/%E3%83%9B%E3%83%BC%E3%83%A0?authuser=1"
+                        val privacyPolicyUrl = "https://sites.google.com/view/workandchill-"
+                        Spacer(modifier = Modifier.height(36.dp))
+                        AppendixButton("利用規約") { openUrl(context, termsOfServiceUrl) }
+                        AppendixButton("プライバシーポリシー") { openUrl(context, termsOfServiceUrl) }
+                        AppendixButton("ライセンス") { toLicense() }
+                        AppendixButton("退会") { showWithdrawDialog.value = true }
+                        Divider()
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "開発者 問い合わせ先\nE-mail: workandchillapp@gmail.com",
+                            style = MaterialTheme.typography.h6,
+                            textAlign = TextAlign.Center,
+                            color = Color.Gray,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Divider()
                     }
-
-                    ProfileSpacerAndDivider()
-                    Text("参加予定のイベント", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6, modifier = Modifier)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState())
-                    ) {
-                        events.forEach { event ->
-                            EventCard(event = event, toEventDetail)
-                        }
-                    }
+                    item { Spacer(modifier = Modifier.height(120.dp)) }
                 }
-                item {
-                    Spacer(modifier = Modifier.height(36.dp))
-                    SharedConfirmButton(text = "ログアウト", onConfirm = { showSignOutDialog.value = true  }, horizontalArrangement = Arrangement.Center, modifier = Modifier.width(300.dp))
-                }
-
-
-
-                item {
-                    val context = LocalContext.current
-                    val termsOfServiceUrl = "https://sites.google.com/view/workandchill-test/%E3%83%9B%E3%83%BC%E3%83%A0?authuser=1"
-                    val privacyPolicyUrl = "https://sites.google.com/view/workandchill-"
-                    Spacer(modifier = Modifier.height(36.dp))
-                    AppendixButton("利用規約") { openUrl(context, termsOfServiceUrl) }
-                    AppendixButton("プライバシーポリシー") { openUrl(context, termsOfServiceUrl) }
-                    AppendixButton("ライセンス") { toLicense() }
-                    AppendixButton("退会") { showWithdrawDialog.value = true }
-                    Divider()
-                }
-                item { Spacer(modifier = Modifier.height(70.dp)) }
             }
         }
     )
