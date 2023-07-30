@@ -34,11 +34,17 @@ class ProfileFragment:Fragment() {
                         toProfileEdit = { navController.navigate(R.id.profileEditFragment) },
                         toGroupDetail = { groupId -> navController.navigate(ProfileFragmentDirections.actionProfileFragmentToGroupDetailFragment(groupId)) },
                         toEventDetail = { eventId -> navController.navigate(ProfileFragmentDirections.actionProfileFragmentToScheduleDetailFragment(eventId)) },
+                        toLicense = { navController.navigate(R.id.licenseFragment) },
                         onLogOut =  { activityViewModel.logout() },
                         onWithdraw =  { activityViewModel.withdraw() },
                     )
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchUserDetail()
     }
 }

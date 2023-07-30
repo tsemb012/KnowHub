@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.scheduleCreateFragment,
                 R.id.mapFragment,
                 R.id.scheduleDetailFragment,
-                -> View.GONE
+                R.id.licenseFragment -> View.GONE
                 else -> View.VISIBLE
             }
         }

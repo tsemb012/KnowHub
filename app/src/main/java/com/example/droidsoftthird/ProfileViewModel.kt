@@ -21,9 +21,7 @@ class ProfileViewModel @Inject constructor(private val useCase: ProfileUseCase):
     val userDetail: MutableState<UserDetail> = _userDetail
     val downloadUrl1: MutableState<String> = mutableStateOf("")
 
-    init { fetchUserDetail() }
-
-    private fun fetchUserDetail() {
+    fun fetchUserDetail() {
         viewModelScope.launch {
             
             try {
