@@ -12,6 +12,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +30,7 @@ import coil.request.ImageRequest
 import com.example.droidsoftthird.ProfileViewModel
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.shared.DescriptionItem
+import com.example.droidsoftthird.composable.shared.SharedConfirmButton
 import com.example.droidsoftthird.composable.shared.SharedDescriptions
 import com.example.droidsoftthird.composable.shared.SharedTextLines
 import com.example.droidsoftthird.composable.shared.TextSize
@@ -47,6 +51,39 @@ fun ProfileScreen(
     val comment = userDetail.value.comment
     val groups = userDetail.value.groups
     val events = userDetail.value.events
+    val showDialog = remember { mutableStateOf(false) }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text("本当にログアウトしますか？") },
+            confirmButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colorResource(id = R.color.primary_dark),
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        onLogOut()
+                        showDialog.value = false
+                    }
+                ) {
+                    Text("はい")
+                }
+            },
+            dismissButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Gray,
+                        contentColor = Color.White
+                    ),
+                    onClick = { showDialog.value = false }
+                ) {
+                    Text("いいえ")
+                }
+            }
+        )
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -120,7 +157,6 @@ fun ProfileScreen(
 
                     ProfileSpacerAndDivider()
                     Text("参加予定のイベント", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6, modifier = Modifier)
-
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -133,8 +169,11 @@ fun ProfileScreen(
                     }
                 }
                 item {
-                    SignOutButton(onLogOut = onLogOut)
+                    Spacer(modifier = Modifier.height(36.dp))
+                    SharedConfirmButton(text = "ログアウト", onConfirm = { showDialog.value = true  }, horizontalArrangement = Arrangement.Center, modifier = Modifier.width(300.dp))
                 }
+                item {  }
+                item { Spacer(modifier = Modifier.height(60.dp)) }
             }
         }
     )
@@ -143,7 +182,7 @@ fun ProfileScreen(
 @Composable
 fun SignOutButton (onLogOut: () -> Unit) {
     Button(
-        onClick = { onLogOut() },
+        onClick = {  },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
@@ -176,7 +215,6 @@ fun ProfileSpacerAndDivider() {
     Spacer(modifier = Modifier.height(8.dp))
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GroupCard(group: ApiGroup, toGroupDetail: (String) -> Unit, ) {
     
