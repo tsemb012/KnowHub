@@ -48,7 +48,7 @@ data class UserDetail (
             return when {
                 prefecture != null && city != null -> "$prefecture, $city"
                 prefecture != null -> prefecture
-                else -> "オンライン"
+                else -> "非公開"
             }
         }
 

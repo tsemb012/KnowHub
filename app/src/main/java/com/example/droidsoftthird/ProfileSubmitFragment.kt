@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
 import com.example.droidsoftthird.dialogs.AreaDialogFragment
 import com.example.droidsoftthird.dialogs.BirthdayDialogFragment
+import com.example.droidsoftthird.model.domain_model.Area
 import com.example.droidsoftthird.model.domain_model.UserDetail
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.wada811.databinding.dataBinding
@@ -95,8 +96,10 @@ abstract class ProfileSubmitFragment : Fragment(R.layout.fragment_profile_edit) 
 
     private fun showAreaDialog() =
         AreaDialogFragment(
-            onExceptionListener = {},
-            onConfirmListener = { viewModel.postArea(it) }
+            onExceptionListener = { viewModel.postArea(Area(null, null)) },
+            onConfirmListener = { viewModel.postArea(it) },
+            titleInt = R.string.residential_area,
+            isPrivateTop = true
         ).show(childFragmentManager, "area")
 
     private fun registerImagePickerLauncher() =
