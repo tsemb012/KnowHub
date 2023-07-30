@@ -331,8 +331,8 @@ fun SpacerAndDivider() {
 // The rest of your code remains unchanged.
 @Composable
 fun ConfirmEventButton(isEditable: Boolean, isJoined: Boolean, joinEvent: () -> Unit, leaveEvent: () -> Unit) {
-        if (isJoined) SharedConfirmButton("イベントを抜ける", isEditable, leaveEvent)
-        else SharedConfirmButton("イベントに参加", isEditable, joinEvent)
+        if (isJoined) SharedConfirmButton(text = "イベントを抜ける", isEditable = isEditable, onConfirm = leaveEvent)
+        else SharedConfirmButton(text = "イベントに参加", isEditable = isEditable, onConfirm = joinEvent)
     }
 
 

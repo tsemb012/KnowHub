@@ -16,6 +16,8 @@ import androidx.navigation.ui.navigateUp
 import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -72,9 +74,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        AuthUI.getInstance().signOut(this)
-        finish()
-        startActivity(Intent(this, MainActivity::class.java))
+        AuthUI.getInstance().signOut(this).addOnCompleteListener {
+            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
