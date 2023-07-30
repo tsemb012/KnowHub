@@ -1326,11 +1326,6 @@
   copyrightHolder: Google Inc
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
-- artifact: com.google.android.libraries.places:places:+
-  name: places
-  copyrightHolder: Google Inc
-  license: Google Maps Platform Terms of Service
-  licenseUrl: https://cloud.google.com/maps-platform/terms/
 - artifact: com.google.android.material:material:+
   name: material
   copyrightHolder: Google Inc
@@ -1694,6 +1689,7 @@
   url: https://github.com/ReactiveX/RxJava
 - artifact: javax.inject:javax.inject:+
   name: javax.inject
+  copyrightHolder: javax.inject Contributors
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://code.google.com/p/atinject/
@@ -1711,24 +1707,30 @@
   name: commons-lang3
   copyrightHolder: Google Inc
   url: http://commons.apache.org/proper/commons-lang/
+  license: The Apache Software License, Version 2.0
 - artifact: org.brotli:dec:+
   name: dec
+  copyrightHolder: dec Contributors
   license: MIT
 - artifact: org.checkerframework:checker-compat-qual:+
   name: checker-compat-qual
+  copyrightHolder: checker-compat-qual Contributors
   license: GNU General Public License, version 2 (GPL2), with the classpath exception
   licenseUrl: http://www.gnu.org/software/classpath/license.html
   url: https://checkerframework.org
 - artifact: org.checkerframework:checker-qual:+
   name: checker-qual
+  copyrightHolder: checker-qual Contributors
   license: The MIT License
   licenseUrl: http://opensource.org/licenses/MIT
   url: https://checkerframework.org
 - artifact: org.codehaus.mojo:animal-sniffer-annotations:+
   name: animal-sniffer-annotations
+  copyrightHolder: codehaus.org.
   license: The MIT License
 - artifact: org.greenrobot:eventbus:+
   name: eventbus
+  copyrightHolder: greenrobot
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://greenrobot.org/eventbus/
@@ -1806,19 +1808,23 @@
   url: https://github.com/JetBrains/java-annotations
 - artifact: org.jitsi.react:jitsi-meet-sdk:+
   name: jitsi-meet-sdk
+  copyrightHolder: jitsi
   license: The Apache Software License, Version 2.0
 - artifact: org.jitsi:webrtc:+
   name: webrtc
+  copyrightHolder: jitsi
   license: The Apache License, Version 2.0
   licenseUrl: LICENSE-APACHE
   url: https://github.com/jitsi/webrtc-android-builds
 - artifact: org.osmdroid:osmdroid-android:+
   name: osmdroid-android
+  copyrightHolder: osmdroid contributors
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0
   url: https://github.com/osmdroid/osmdroid
 - artifact: org.reactivestreams:reactive-streams:+
   name: reactive-streams
+  copyrightHolder: Reactive Streams
   license: CC0
   licenseUrl: http://creativecommons.org/publicdomain/zero/1.0/
   url: http://www.reactive-streams.org/
