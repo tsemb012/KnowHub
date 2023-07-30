@@ -50,12 +50,15 @@
             <TextView
                 android:id="@+id/item_profile_edit_text"
                 android:hint="アイテムテキスト"
-                app:text ="@{text}"
+                app:text="@{text}"
                 style="@style/group_detail_bar_input"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"/>
+<!--
+                android:textColor="@{onClickListener == null ? @color/colorGray : @color/colorDefault}" />
+-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

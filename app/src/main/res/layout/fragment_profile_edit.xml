@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ProfileEditFragment"
-        android:background="@color/primary_light">
+        android:background="@color/base_100">
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -45,33 +45,36 @@
                 android:layout_height="match_parent">
 
 
+
+
                 <ImageView
                     android:id="@+id/user_image_btn"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:clickable="true"
-                    android:layout_width="0dp"
-                    android:layout_height="247dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
+                    android:layout_margin="18dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:scaleX="1"
                     android:scaleY="1"
+                    android:src="@drawable/ic_baseline_image_24"
+                    android:background="@drawable/circle_shape"
+                    android:clipToOutline="true"
+                    app:imageURI="@{viewModel.uiModel.temporalUserImage}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:imageURI="@{viewModel.uiModel.temporalUserImage}"
-                    android:src="@drawable/ic_baseline_image_24"
                     />
-
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/user_image_btn"
+                    android:maxLength="15"
                     android:hint="@string/user_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -93,7 +96,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:hint="@string/group_introduction"
+                    android:hint="自己紹介をしてください。"
+                    android:maxLength="100"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/user_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -115,7 +119,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="?android:attr/listDivider"
                     app:layout_constraintTop_toBottomOf="@+id/group_intro" />
 
                 <LinearLayout
@@ -127,35 +130,45 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider_intro"
-                    android:background="@color/primary_light">
-
-                    <include
-                        android:id="@+id/gender_item"
-                        layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/gender}"
-                        bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.uiModel.gender}"
-                        android:clickable="true" />
-
-                    <include
-                        android:id="@+id/age_item"
-                        layout="@layout/include_item_profile_edit"
-                        bind:title="@{@string/age}"
-                        bind:drawable="@{@drawable/ic_baseline_date_range_24}"
-                        bind:text="@{viewModel.uiModel.age}"
-                        android:clickable="true" />
-                        <!--TODO Drawableを変更する-->
-                        <!--TODO 渡すテキストがあっているかを確認する。-->
+                    android:background="@color/base_100">
 
                     <include
                         android:id="@+id/area_item"
                         layout="@layout/include_item_profile_edit"
                         bind:title="@{@string/residential_area}"
-                        bind:drawable="@{@drawable/ic_baseline_date_range_24}"
+                        bind:drawable="@{@drawable/ic_baseline_location_on_24}"
                         bind:text="@{viewModel.uiModel.area}"
                         android:clickable="true" />
+                    <!--TODO Drawableを変更する-->
+                    <!--TODO AreaのBindを設定する。-->
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <include
+                        android:id="@+id/gender_item"
+                        layout="@layout/include_item_profile_edit"
+                        bind:title="@{@string/gender_no_edit}"
+                        bind:drawable="@{@drawable/ic_baseline_wc_24}"
+                        bind:text="@{viewModel.uiModel.gender}"
+                        android:clickable="false" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <include
+                        android:id="@+id/age_item"
+                        layout="@layout/include_item_profile_edit"
+                        bind:title="@{@string/age_no_edit}"
+                        bind:drawable="@{@drawable/baseline_cake_24}"
+                        bind:text="@{viewModel.uiModel.age}"
+                        android:clickable="false" />
                         <!--TODO Drawableを変更する-->
-                        <!--TODO AreaのBindを設定する。-->
+                        <!--TODO 渡すテキストがあっているかを確認する。-->
+
+
 
                 </LinearLayout>
 
