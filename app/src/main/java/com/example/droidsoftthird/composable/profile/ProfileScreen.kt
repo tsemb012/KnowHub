@@ -18,13 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.droidsoftthird.ProfileViewModel
@@ -36,6 +38,7 @@ import com.example.droidsoftthird.composable.shared.SharedTextLines
 import com.example.droidsoftthird.composable.shared.TextSize
 import com.example.droidsoftthird.model.domain_model.ApiGroup
 import com.example.droidsoftthird.model.domain_model.EventItem
+import com.example.droidsoftthird.utils.webview.openUrl
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -45,17 +48,29 @@ fun ProfileScreen(
     toGroupDetail: (String) -> Unit,
     toEventDetail: (String) -> Unit,
     onLogOut: () -> Unit,
+    onWithdraw: () -> Unit
 ) {
     val userDetail = viewModel.userDetail
     val context = LocalContext.current
     val comment = userDetail.value.comment
     val groups = userDetail.value.groups
     val events = userDetail.value.events
-    val showDialog = remember { mutableStateOf(false) }
 
-    if (showDialog.value) {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = "home") {
+        composable("license") { LicenseScreen() }
+    }
+
+    val showSignOutDialog = remember { mutableStateOf(false) }
+    val showWithdrawDialog = remember { mutableStateOf(false) }
+
+    fun navigateTo(screen: String) {
+        navController.navigate(screen)
+    }
+
+    if (showSignOutDialog.value) {
         AlertDialog(
-            onDismissRequest = { showDialog.value = false },
+            onDismissRequest = { showSignOutDialog.value = false },
             title = { Text("本当にログアウトしますか？") },
             confirmButton = {
                 Button(
@@ -65,7 +80,7 @@ fun ProfileScreen(
                     ),
                     onClick = {
                         onLogOut()
-                        showDialog.value = false
+                        showSignOutDialog.value = false
                     }
                 ) {
                     Text("はい")
@@ -77,7 +92,39 @@ fun ProfileScreen(
                         backgroundColor = Color.Gray,
                         contentColor = Color.White
                     ),
-                    onClick = { showDialog.value = false }
+                    onClick = { showSignOutDialog.value = false }
+                ) {
+                    Text("いいえ")
+                }
+            }
+        )
+    }
+
+    if (showWithdrawDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showWithdrawDialog.value = false },
+            title = { Text("本当に退会しますか？") },
+            confirmButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colorResource(id = R.color.primary_dark),
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        onWithdraw()
+                        showWithdrawDialog.value = false
+                    }
+                ) {
+                    Text("はい")
+                }
+            },
+            dismissButton = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Gray,
+                        contentColor = Color.White
+                    ),
+                    onClick = { showWithdrawDialog.value = false }
                 ) {
                     Text("いいえ")
                 }
@@ -170,43 +217,58 @@ fun ProfileScreen(
                 }
                 item {
                     Spacer(modifier = Modifier.height(36.dp))
-                    SharedConfirmButton(text = "ログアウト", onConfirm = { showDialog.value = true  }, horizontalArrangement = Arrangement.Center, modifier = Modifier.width(300.dp))
+                    SharedConfirmButton(text = "ログアウト", onConfirm = { showSignOutDialog.value = true  }, horizontalArrangement = Arrangement.Center, modifier = Modifier.width(300.dp))
                 }
-                item {  }
-                item { Spacer(modifier = Modifier.height(60.dp)) }
+
+
+
+                item {
+                    val context = LocalContext.current
+                    val termsOfServiceUrl = "https://sites.google.com/view/workandchill-test/%E3%83%9B%E3%83%BC%E3%83%A0?authuser=1"
+                    val privacyPolicyUrl = "https://sites.google.com/view/workandchill-"
+                    Spacer(modifier = Modifier.height(36.dp))
+                    AppendixButton("利用規約") { openUrl(context, termsOfServiceUrl) }
+                    AppendixButton("プライバシーポリシー") { openUrl(context, termsOfServiceUrl) }
+                    AppendixButton("ライセンス") { navigateTo("license") }
+                    AppendixButton("退会") { showWithdrawDialog.value = true }
+                    Divider()
+                }
+                item { Spacer(modifier = Modifier.height(70.dp)) }
             }
         }
     )
+
+
 }
 
+
 @Composable
-fun SignOutButton (onLogOut: () -> Unit) {
+private fun AppendixButton(text: String, onClick: () -> Unit) {
+    Divider()
     Button(
-        onClick = {  },
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        contentPadding = PaddingValues(0.dp),
+        elevation = ButtonDefaults.elevation(0.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+            .wrapContentHeight()
     ) {
-        Text(text = "Sign Out")
-    }
-}
-
-@Composable
-fun ProfileInfoItem(title: String, value: String, icon: ImageVector) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Icon(icon, contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Text(text = title, fontWeight = FontWeight.Bold)
-            Text(text = value)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                color = Color.Gray,
+                style = MaterialTheme.typography.h5,
+            )
         }
     }
 }
+
 
 @Composable
 fun ProfileSpacerAndDivider() {
@@ -266,4 +328,5 @@ private fun SharedBoxCard(
         }
     }
 }
+
 

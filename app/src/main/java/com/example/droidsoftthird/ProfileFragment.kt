@@ -34,7 +34,9 @@ class ProfileFragment:Fragment() {
                         toProfileEdit = { navController.navigate(R.id.profileEditFragment) },
                         toGroupDetail = { groupId -> navController.navigate(ProfileFragmentDirections.actionProfileFragmentToGroupDetailFragment(groupId)) },
                         toEventDetail = { eventId -> navController.navigate(ProfileFragmentDirections.actionProfileFragmentToScheduleDetailFragment(eventId)) },
-                    ) { activityViewModel.logout() }
+                        onLogOut =  { activityViewModel.logout() },
+                        onWithdraw =  { activityViewModel.withdraw() },
+                    )
                 }
             }
         }
