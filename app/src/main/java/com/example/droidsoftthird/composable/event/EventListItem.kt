@@ -27,12 +27,12 @@ import com.example.droidsoftthird.composable.shared.DescriptionItem
 import com.example.droidsoftthird.composable.shared.FundamentalCard
 import com.example.droidsoftthird.composable.shared.ItemStatus
 import com.example.droidsoftthird.model.domain_model.EventStatus
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 import com.example.droidsoftthird.utils.converter.formatTimePeriod
 import java.time.ZonedDateTime
 
 @Composable
-fun EventListItem(event: ItemEvent, navigateToDetail: (String) -> Unit) {
+fun EventListItem(event: EventItem, navigateToDetail: (String) -> Unit) {
     FundamentalCard(
         onClick = { navigateToDetail(event.eventId) },
         content = { EventCardContent(event) }
@@ -40,7 +40,7 @@ fun EventListItem(event: ItemEvent, navigateToDetail: (String) -> Unit) {
 }
 
 @Composable
-fun EventCardContent(event: ItemEvent) {
+fun EventCardContent(event: EventItem) {
 
     val descriptionList: List<DescriptionItem> = listOf(
         DescriptionItem(Icons.Filled.Group, event.groupName ?: "", 1, false),
@@ -85,7 +85,7 @@ fun EventCardContent(event: ItemEvent) {
 @Preview
 @Composable
 fun EventListItemPreview() {
-    val event = ItemEvent(
+    val event = EventItem(
         eventId = "1",
         name = "イベント名",
         groupName = "グループ名",

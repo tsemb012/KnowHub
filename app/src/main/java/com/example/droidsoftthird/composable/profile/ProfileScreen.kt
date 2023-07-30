@@ -2,6 +2,7 @@ package com.example.droidsoftthird.composable.profile
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -25,16 +26,20 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.droidsoftthird.ProfileViewModel
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.shared.DescriptionItem
+import com.example.droidsoftthird.composable.shared.SharedDescriptions
 import com.example.droidsoftthird.composable.shared.SharedTextLines
 import com.example.droidsoftthird.composable.shared.TextSize
 import com.example.droidsoftthird.model.domain_model.ApiGroup
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     toProfileEdit: () -> Unit,
+    toGroupDetail: (String) -> Unit,
+    toEventDetail: (String) -> Unit,
     onLogOut: () -> Unit,
 ) {
     val userDetail = viewModel.userDetail
@@ -102,9 +107,6 @@ fun ProfileScreen(
                     )
                     ProfileSpacerAndDivider()
                     Text("所属グループ", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6, modifier = Modifier)
-
-
-
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -112,7 +114,7 @@ fun ProfileScreen(
                             .horizontalScroll(rememberScrollState())
                     ) {
                         groups.forEach { group ->
-                            GroupCard(group = group)
+                            GroupCard(group = group, toGroupDetail)
                         }
                     }
 
@@ -126,7 +128,7 @@ fun ProfileScreen(
                             .horizontalScroll(rememberScrollState())
                     ) {
                         events.forEach { event ->
-                            EventCard(event = event)
+                            EventCard(event = event, toEventDetail)
                         }
                     }
                 }
@@ -170,49 +172,60 @@ fun ProfileInfoItem(title: String, value: String, icon: ImageVector) {
 @Composable
 fun ProfileSpacerAndDivider() {
     Spacer(modifier = Modifier.height(16.dp))
-    androidx.compose.material.Divider()
+    Divider()
     Spacer(modifier = Modifier.height(8.dp))
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Divider() {
-    Divider(
-        modifier = Modifier.padding(vertical = 4.dp)
+fun GroupCard(group: ApiGroup, toGroupDetail: (String) -> Unit, ) {
+    
+    val title = group.groupName
+    val itemList = listOf(
+        DescriptionItem(Icons.Filled.Group, group.availability, 1),
+        DescriptionItem(Icons.Filled.LocationOn, group.location, 1),
+        DescriptionItem(Icons.Filled.Comment, group.groupIntroduction, 2),
     )
+    SharedBoxCard(title, itemList) { group.groupId?.let { toGroupDetail(it) } }
 }
 
 @Composable
-fun GroupCard(group: ApiGroup) {
+fun EventCard(event: EventItem, toEventDetail: (String) -> Unit,) {
+    val title = event.name
+    val itemList = listOf(
+        DescriptionItem(Icons.Filled.CalendarToday, event.formattedDate, 1),
+        DescriptionItem(Icons.Filled.AvTimer, event.formattedPeriod, 1),
+        DescriptionItem(Icons.Filled.LocationOn, event.placeName ?: "", 1),
+        DescriptionItem(Icons.Filled.Group, event.groupName ?: "", 1),
+    )
+    SharedBoxCard(title, itemList) { toEventDetail(event.eventId) }
+}
+
+@Composable
+@OptIn(ExperimentalMaterialApi::class)
+private fun SharedBoxCard(
+    title: String,
+    itemList: List<DescriptionItem>,
+    navigateTo: () -> Unit?,
+    ) {
     Card(
         modifier = Modifier
-            .padding(8.dp)
-            .width(150.dp),
+            .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
+            .width(220.dp)
+            .height(175.dp),
+        backgroundColor = Color.White,
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
+        border = BorderStroke(1.dp, Color.LightGray),
+        elevation = 4.dp,
+        onClick = { navigateTo() }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = group.groupName, fontWeight = FontWeight.Bold)
-            Text(text = group.groupIntroduction)
-            Text(text = stringResource(group.groupType.displayNameId))
+
+        Box(modifier = Modifier.padding(8.dp)) {
+            SharedDescriptions(
+                title = title,
+                itemList = itemList,
+            )
         }
     }
 }
 
-@Composable
-fun EventCard(event: ItemEvent) {
-    Card(
-        modifier = Modifier
-            .padding(8.dp)
-            .width(150.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = event.name, fontWeight = FontWeight.Bold)
-            Text(text = event.groupName ?: "")
-            Text(text = event.placeName ?: "")
-            Text(text = "${event.period.first.toLocalDate()}")
-            Text(text = "${event.period.first.hour} - ${event.period.second.hour}")
-        }
-    }
-}

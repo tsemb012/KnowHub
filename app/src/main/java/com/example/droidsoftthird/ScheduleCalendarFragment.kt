@@ -27,7 +27,7 @@ import com.example.droidsoftthird.databinding.CalendarDayBinding
 import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.example.droidsoftthird.extentions_depreciated.daysOfWeekFromLocale
 import com.example.droidsoftthird.extentions_depreciated.setTextColorRes
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import com.example.droidsoftthird.model.presentation_model.NotifyType
 import com.example.droidsoftthird.model.presentation_model.eventDates
@@ -124,7 +124,7 @@ class ScheduleCalendarFragment: Fragment(R.layout.fragment_schedule_calendar) {
     private fun EventListContent(
         selectedDate: String,
         isLoading: Boolean,
-        events: List<ItemEvent>?,
+        events: List<EventItem>?,
         navigate: (String) -> Unit,
     ) {
         LazyColumn(

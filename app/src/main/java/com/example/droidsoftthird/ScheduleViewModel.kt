@@ -3,7 +3,7 @@ package com.example.droidsoftthird
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import com.example.droidsoftthird.model.presentation_model.ScheduleUiModel
 import com.example.droidsoftthird.usecase.EventUseCase
@@ -20,7 +20,7 @@ open class ScheduleViewModel(
 
     private val _scheduleLoadState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     private val _selectedDate: MutableLiveData<LocalDate> by lazy { MutableLiveData(LocalDate.now()) }
-    private val _selectedEvents: MutableLiveData<List<ItemEvent>> by lazy { MutableLiveData(emptyList())}
+    private val _selectedEvents: MutableLiveData<List<EventItem>> by lazy { MutableLiveData(emptyList())}
     private val _simpleGroupsLoadState: MutableLiveData<LoadState> by lazy { MutableLiveData(LoadState.Initialized) }
     private val _selectedGroup: MutableLiveData<String> by lazy { MutableLiveData("") }
     private var _isGroupFixed: MutableLiveData<Boolean> = MutableLiveData(false)

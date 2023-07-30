@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
 import com.example.droidsoftthird.extentions_depreciated.gs
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 
-class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAdapter<ItemEvent, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
+class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAdapter<EventItem, ScheduleEventsAdapter.ViewHolder>(ScheduleEventDiffCallback()) {
     //TODO Hiltで関数をインジェクトする。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.from(parent)
 
@@ -24,7 +24,7 @@ class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAd
                 return ViewHolder(binding)
             }
         }
-        fun bind(item: ItemEvent, onSelectEvent: (String) -> Unit) {
+        fun bind(item: EventItem, onSelectEvent: (String) -> Unit) {
             with(binding){
                 scheduleEventItem.setOnClickListener { onSelectEvent(item.eventId) }
                 eventDayOfWeek.text = item.period.first.dayOfWeek.toString().substring(0,3)
@@ -38,12 +38,12 @@ class ScheduleEventsAdapter(private val onSelectEvent: (String) -> Unit): ListAd
     }
 }
 
-class ScheduleEventDiffCallback : DiffUtil.ItemCallback<ItemEvent>() {
+class ScheduleEventDiffCallback : DiffUtil.ItemCallback<EventItem>() {
 
-    override fun areItemsTheSame(oldItem: ItemEvent, newItem: ItemEvent): Boolean {
+    override fun areItemsTheSame(oldItem: EventItem, newItem: EventItem): Boolean {
         return oldItem.toString() == newItem.toString()
     }
-    override fun areContentsTheSame(oldItem: ItemEvent, newItem: ItemEvent): Boolean {
+    override fun areContentsTheSame(oldItem: EventItem, newItem: EventItem): Boolean {
         return oldItem == newItem
     }
 }
