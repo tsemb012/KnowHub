@@ -25,14 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.droidsoftthird.ProfileViewModel
 import com.example.droidsoftthird.R
-import com.example.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.composable.shared.DescriptionItem
 import com.example.droidsoftthird.composable.shared.SharedConfirmButton
 import com.example.droidsoftthird.composable.shared.SharedDescriptions
@@ -244,12 +240,11 @@ fun ProfileScreen(
 
                     item {
                         val context = LocalContext.current
-                        val termsOfServiceUrl =
-                            "https://sites.google.com/view/workandchill-test/%E3%83%9B%E3%83%BC%E3%83%A0?authuser=1"
-                        val privacyPolicyUrl = "https://sites.google.com/view/workandchill-"
+                        val termsOfUseUrl = "https://sites.google.com/view/workandchillapp-termofuse/%E3%83%9B%E3%83%BC%E3%83%A0"
+                        val privacyPolicyUrl = "https://sites.google.com/view/workandchillapp-privacypolicy/%E3%83%9B%E3%83%BC%E3%83%A0"
                         Spacer(modifier = Modifier.height(36.dp))
-                        AppendixButton("利用規約") { openUrl(context, termsOfServiceUrl) }
-                        AppendixButton("プライバシーポリシー") { openUrl(context, termsOfServiceUrl) }
+                        AppendixButton("利用規約") { openUrl(context, termsOfUseUrl) }
+                        AppendixButton("プライバシーポリシー") { openUrl(context, privacyPolicyUrl) }
                         AppendixButton("ライセンス") { toLicense() }
                         AppendixButton("退会") { showWithdrawDialog.value = true }
                         Divider()
