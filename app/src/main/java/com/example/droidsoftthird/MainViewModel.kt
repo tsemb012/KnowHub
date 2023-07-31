@@ -13,15 +13,23 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
     val loginState: LiveData<LoginState>
         get() = _loginState
 
-    enum class LoginState { LOGGED_IN, LOGGED_OUT }
+    enum class LoginState { LOGGED_IN, LOGGED_OUT, ON_WITHDRAW, DURING_WITHDRAW }
 
     fun logout() { _loginState.postValue(LoginState.LOGGED_OUT) }
 
-    fun withdraw() { TODO("退会のロジックを記述する。") }
+    fun withdraw() { _loginState.postValue(LoginState.ON_WITHDRAW) }
 
     fun clearTokenCache() {
         viewModelScope.launch {
             repository.clearTokenId()
+        }
+    }
+
+    fun deleteUser() {
+        viewModelScope.launch {
+            runCatching { repository.deleteUser() }
+                .onSuccess { _loginState.postValue(LoginState.DURING_WITHDRAW) }
+                .onFailure { throw IllegalStateException("ユーザー削除に失敗しました。") }
         }
     }
 }
