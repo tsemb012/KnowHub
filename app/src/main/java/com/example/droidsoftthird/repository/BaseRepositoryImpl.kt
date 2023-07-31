@@ -282,6 +282,8 @@ class BaseRepositoryImpl @Inject constructor(
             lng = lng,
         ).body()?.toEntity()
 
+    override suspend fun deleteUser(): String = mainApi.deleteUser(userId).message
+
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->

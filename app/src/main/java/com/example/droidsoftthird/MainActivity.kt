@@ -16,8 +16,6 @@ import androidx.navigation.ui.navigateUp
 import com.example.droidsoftthird.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -63,6 +61,12 @@ class MainActivity : AppCompatActivity() {
                     clearCache()
                     signOut()
                 }
+                MainViewModel.LoginState.ON_WITHDRAW -> {
+                    deleteUser()
+                }
+                MainViewModel.LoginState.DURING_WITHDRAW -> {
+                    deleteUserFromFireAuth()
+                }
                 else -> {
                 }
             }
@@ -80,6 +84,24 @@ class MainActivity : AppCompatActivity() {
             finish()
             startActivity(Intent(this, MainActivity::class.java))
         }
+    }
+
+    private fun deleteUser() {
+        viewModel.deleteUser()
+    }
+
+    private fun deleteUserFromFireAuth() {
+        AuthUI.getInstance()
+            .delete(this)  // FirebaseUI Authでログイン中のユーザーを削除します。
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    clearCache()
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    throw IllegalStateException("ユーザー削除に失敗しました。")
+                }
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {
