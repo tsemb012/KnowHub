@@ -200,5 +200,6 @@
     <string name="event_comment">コメント</string>
     <string name="event_register">イベントを登録</string>
     <string name="birthday">生年月日</string>
+    <string name="login">ログイン</string>
 
 </resources>
