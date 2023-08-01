@@ -37,4 +37,5 @@ interface RailsApiRepository {
     suspend fun yolpDetailSearch(placeId: String): YolpSinglePlace.DetailPlace?
     suspend fun yolpReverseGeocode(lat: Double, lon: Double): YolpSinglePlace.ReverseGeocode?
     suspend fun deleteUser(): String?
+    suspend fun checkUserRegistered(): Boolean
 }

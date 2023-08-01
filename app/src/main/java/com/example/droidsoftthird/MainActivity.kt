@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -53,24 +52,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.loginState.observe(this, Observer { loginState ->
+        viewModel.loginState.observe(this) { loginState ->
             when (loginState) {
-                MainViewModel.LoginState.LOGGED_IN -> {
-                }
+                MainViewModel.LoginState.LOGGED_IN -> Unit
                 MainViewModel.LoginState.LOGGED_OUT -> {
                     clearCache()
                     signOut()
                 }
-                MainViewModel.LoginState.ON_WITHDRAW -> {
-                    deleteUser()
-                }
-                MainViewModel.LoginState.DURING_WITHDRAW -> {
-                    deleteUserFromFireAuth()
-                }
-                else -> {
-                }
+                MainViewModel.LoginState.ON_WITHDRAW -> { deleteUser() }
+                MainViewModel.LoginState.DURING_WITHDRAW -> { deleteUserFromFireAuth() }
+                MainViewModel.LoginState.BEFORE_PROFILING -> { navController.navigate(R.id.profileCreateFragment) }
+                else -> {}
             }
-        })
+        }
     }
 
     private fun clearCache() {

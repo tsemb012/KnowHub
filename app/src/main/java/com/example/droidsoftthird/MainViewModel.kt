@@ -13,7 +13,7 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
     val loginState: LiveData<LoginState>
         get() = _loginState
 
-    enum class LoginState { LOGGED_IN, LOGGED_OUT, ON_WITHDRAW, DURING_WITHDRAW }
+    enum class LoginState { LOGGED_IN, LOGGED_OUT, ON_WITHDRAW, DURING_WITHDRAW, BEFORE_PROFILING }
 
     fun logout() { _loginState.postValue(LoginState.LOGGED_OUT) }
 
@@ -30,6 +30,19 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
             runCatching { repository.deleteUser() }
                 .onSuccess { _loginState.postValue(LoginState.DURING_WITHDRAW) }
                 .onFailure { throw IllegalStateException("ユーザー削除に失敗しました。") }
+        }
+    }
+
+    fun checkLoginState() {
+        viewModelScope.launch {
+            runCatching { repository.checkUserRegistered() }
+                .onSuccess {
+                    when (it) {
+                        true -> _loginState.postValue(LoginState.LOGGED_IN)
+                        false -> _loginState.postValue(LoginState.BEFORE_PROFILING)
+                    }
+                }
+                .onFailure { }
         }
     }
 }
