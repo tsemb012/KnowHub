@@ -134,23 +134,7 @@ fun OrSignUp(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Surface {
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    text = stringResource(id = R.string.or),
-                    style = MaterialTheme.typography.subtitle2,
-                    modifier = Modifier.paddingFromBaseline(top = 25.dp)
-                )
-            }
-        }
-        OutlinedButton(
-            onClick = onSignedUp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 24.dp)
-        ) {
-            Text(text = stringResource(id = R.string.sign_up))
-        }
+
     }
 }
 

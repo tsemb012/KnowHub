@@ -12,15 +12,17 @@ import com.example.droidsoftthird.model.domain_model.Prefecture
 class AreaDialogFragment(
         private val onExceptionListener: (String) -> Unit,
         private val onConfirmListener: (Area) -> Unit,
+        private val titleInt : Int = R.string.activity_area,
+        private val isPrivateTop : Boolean = false
 ):DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        buildPrefectureDialog(prefectures = resources.getStringArray(R.array.online_and_prefectures))
+        buildPrefectureDialog(prefectures = resources.getStringArray(if (isPrivateTop) R.array.private_and_prefectures else R.array.online_and_prefectures))
 
     private fun buildPrefectureDialog(prefectures: Array<String>):AlertDialog {
         var selectedPrefectureCode = 0
         return AlertDialog.Builder(requireContext())
-            .setTitle(R.string.activity_area)
+            .setTitle(titleInt)
             .setSingleChoiceItems(prefectures,
                 0) { _, selectedPrefecture -> selectedPrefectureCode = selectedPrefecture }
             .setIcon(R.drawable.ic_baseline_location_on_24)

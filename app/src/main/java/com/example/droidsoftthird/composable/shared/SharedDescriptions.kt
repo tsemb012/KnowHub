@@ -29,13 +29,15 @@ import com.example.droidsoftthird.R
 fun SharedDescriptions(
     title: String,
     itemList: List<DescriptionItem>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.DarkGray,
+    iconColor: Color = Color.Gray
 ) {
     Column(modifier = modifier) {
         Text(
             text = title,
             style = MaterialTheme.typography.h6,
-            color = Color.DarkGray,
+            color = textColor,
             fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
             maxLines = 1
         )
@@ -52,7 +54,7 @@ fun SharedDescriptions(
                                 modifier = Modifier
                                     .size(16.dp)
                                     .align(Alignment.CenterVertically),
-                                tint = Color.Gray
+                                tint = iconColor
                             )
                         } else {
                             Spacer(modifier = Modifier.width(16.dp))
@@ -66,7 +68,7 @@ fun SharedDescriptions(
                             Text(
                                 text = item.text,
                                 style = MaterialTheme.typography.body1,
-                                color = Color.DarkGray,
+                                color = textColor,
                                 maxLines = item.maxLines
                             )
                         }

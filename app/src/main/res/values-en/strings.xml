@@ -55,10 +55,12 @@
     <string name="group_added">グループを追加しました。</string>
     <string name="nickname">ニックネーム</string>
     <string name="gender">性別</string>
+    <string name="gender_no_edit">性別(編集不可)</string>
     <string name="male">男性</string>
     <string name="female">女性</string>
     <string name="gender_private">非公開</string>
     <string name="age">年齢</string>
+    <string name="age_no_edit">年齢(編集不可)</string>
     <string name="residential_area">居住地域</string>
     <string name="edit_a_comment">コメントを入力してください。</string>
     <string name="profile_add">プロフィールを追加しました。</string>
@@ -197,5 +199,7 @@
     <string name="event_name">イベント名</string>
     <string name="event_comment">コメント</string>
     <string name="event_register">イベントを登録</string>
+    <string name="birthday">生年月日</string>
+    <string name="login">ログイン</string>
 
 </resources>

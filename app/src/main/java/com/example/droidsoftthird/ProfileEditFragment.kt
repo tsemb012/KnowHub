@@ -3,6 +3,7 @@ package com.example.droidsoftthird
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.model.presentation_model.LoadState
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +38,9 @@ class ProfileEditFragment :ProfileSubmitFragment() {
 
     private fun disableItems() {
         binding.ageItem.itemProfileEdit.isEnabled = false
+        binding.ageItem.itemProfileEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.dark_gray))
         binding.genderItem.itemProfileEdit.isEnabled = false
+        binding.genderItem.itemProfileEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.dark_gray))
     }
 
     override fun setupSubmitListeners() = binding.submitProfileBtn.setOnClickListener { editViewModel.submitEditedUserProfile() }

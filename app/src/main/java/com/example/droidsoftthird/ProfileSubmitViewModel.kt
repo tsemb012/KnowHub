@@ -71,7 +71,7 @@ open class ProfileSubmitViewModel (private val useCase: ProfileUseCase): ViewMod
                         }
                     }
                 }
-                .onSuccess { loadState.value = LoadState.Loaded(it!!) }
+                .onSuccess { loadState.value = it?.let { LoadState.Loaded(it) } }
                 .onFailure { loadState.value = LoadState.Error(it) }
             }
         loadState.value = LoadState.Loading(job)

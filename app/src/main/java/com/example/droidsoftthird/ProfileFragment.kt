@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.composable.profile.ProfileScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,9 +32,19 @@ class ProfileFragment:Fragment() {
                     ProfileScreen(
                         viewModel = viewModel,
                         toProfileEdit = { navController.navigate(R.id.profileEditFragment) },
-                    ) { activityViewModel.logout() }
+                        toGroupDetail = { groupId -> navController.navigate(ProfileFragmentDirections.actionProfileFragmentToGroupDetailFragment(groupId)) },
+                        toEventDetail = { eventId -> navController.navigate(ProfileFragmentDirections.actionProfileFragmentToScheduleDetailFragment(eventId)) },
+                        toLicense = { navController.navigate(R.id.licenseFragment) },
+                        onLogOut =  { activityViewModel.logout() },
+                        onWithdraw =  { activityViewModel.withdraw() },
+                    )
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchUserDetail()
     }
 }

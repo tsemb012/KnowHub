@@ -1,17 +1,17 @@
 package com.example.droidsoftthird.ui.entrance.composable
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.R
@@ -28,19 +28,48 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
     var showBranding by remember { mutableStateOf(true) }
 
     Surface(modifier = Modifier.supportWideScreen()) {
-        Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
-            Spacer(modifier = Modifier.weight(1f, fill = showBranding).animateContentSize())
-            AnimatedVisibility(showBranding, Modifier.fillMaxWidth()) { Branding() }
-            Spacer(modifier = Modifier.weight(1f, fill = showBranding).animateContentSize())
+        Box(Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(id = R.drawable.welcome_screen), // ここに画像リソースを指定
+                contentDescription = null, // アクセシビリティのための説明文
+                alignment = Alignment.TopCenter, // 画像を中央に配置
+                modifier = Modifier.fillMaxSize(), // 画像が全体に広がるようにする
+                contentScale = ContentScale.Fit// 必要に応じて画像をクロップまたは他の方法で調整
+            )
+
+
             SignInCreateAccount(
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
+                    .align(Alignment.BottomCenter)
             )
         }
     }
 }
+
+ /*           Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .weight(1f, fill = showBranding)
+                        .animateContentSize()
+                )
+                AnimatedVisibility(showBranding, Modifier.fillMaxWidth()) { Branding() }
+                Spacer(
+                    modifier = Modifier
+                        .weight(1f, fill = showBranding)
+                        .animateContentSize()
+                )
+
+            }
+        }
+    }*/
+
 
 @Composable
 private fun Branding(modifier: Modifier = Modifier) {
@@ -51,14 +80,6 @@ private fun Branding(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(horizontal = 76.dp)
-        )
-        Text(
-            text = "課題：勉強アプリ",//stringResource(id = R.string.default_web_client_id),
-            style = MaterialTheme.typography.subtitle1,//TODO ここでアプリのタイトルを入れ込む。
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 24.dp)
-                .fillMaxWidth()
         )
     }
 }
@@ -86,30 +107,31 @@ private fun SignInCreateAccount(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) { //下の階層にアルファを伝えている。
-            Text(
-                text = "サインイン or サインアップ",//stringResource(id = R.string.),//TODO 日本語に変換する。
-                style = MaterialTheme.typography.subtitle2,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 64.dp, bottom = 12.dp)
-            )
-        }
-        val onSubmit = { onEvent(WelcomeEvent.SignIn) }
+
         Button(
-            onClick = onSubmit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 28.dp, bottom = 3.dp)
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = colorResource(id = R.color.primary_dark)
+            ),
+            shape = RoundedCornerShape(8.dp),
+            onClick = { onEvent(WelcomeEvent.SignUp) },
+            modifier = modifier
+                .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
         ) {
-            Text(
-                text = "サインイン",//stringResource(id = R.string.default_web_client_id),//TODO 日本語に変換する。
-                style = MaterialTheme.typography.subtitle2
-            )
+            Text(stringResource(id = R.string.sign_up), color = Color.White, style = MaterialTheme.typography.h5)
         }
-        OrSignUp(
-            onSignedUp = { onEvent(WelcomeEvent.SignUp) },
-            modifier = Modifier.fillMaxWidth()
-        )
+
+        Button(
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.LightGray
+            ),
+            shape = RoundedCornerShape(8.dp),
+            onClick = { onEvent(WelcomeEvent.SignIn) },
+            modifier = modifier
+                .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
+        ) {
+            Text(stringResource(id = R.string.login), color = Color.DarkGray, style = MaterialTheme.typography.h5)
+        }
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 

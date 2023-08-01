@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.scheduleCreateFragment,
                 R.id.mapFragment,
                 R.id.scheduleDetailFragment,
+                R.id.licenseFragment,
+                R.id.profileEditFragment
                 -> View.GONE
                 else -> View.VISIBLE
             }
@@ -58,6 +60,12 @@ class MainActivity : AppCompatActivity() {
                 MainViewModel.LoginState.LOGGED_OUT -> {
                     clearCache()
                     signOut()
+                }
+                MainViewModel.LoginState.ON_WITHDRAW -> {
+                    deleteUser()
+                }
+                MainViewModel.LoginState.DURING_WITHDRAW -> {
+                    deleteUserFromFireAuth()
                 }
                 else -> {
                 }
@@ -72,9 +80,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        AuthUI.getInstance().signOut(this)
-        finish()
-        startActivity(Intent(this, MainActivity::class.java))
+        AuthUI.getInstance().signOut(this).addOnCompleteListener {
+            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
+    private fun deleteUser() {
+        viewModel.deleteUser()
+    }
+
+    private fun deleteUserFromFireAuth() {
+        AuthUI.getInstance()
+            .delete(this)  // FirebaseUI Authでログイン中のユーザーを削除します。
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    clearCache()
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    throw IllegalStateException("ユーザー削除に失敗しました。")
+                }
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -7,6 +7,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-parcelize'
+    id "com.cookpad.android.plugin.license-tools" version "1.2.8"
 }
 
 android {

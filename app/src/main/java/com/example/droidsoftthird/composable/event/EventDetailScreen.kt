@@ -1,7 +1,6 @@
 package com.example.droidsoftthird.composable.event
 
 import android.util.Log
-import android.widget.Space
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +22,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -39,6 +41,7 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,6 +66,7 @@ import com.example.droidsoftthird.model.domain_model.EventDetail
 import com.example.droidsoftthird.model.domain_model.EventStatus
 import com.example.droidsoftthird.model.domain_model.SimpleUser
 
+//TODO コード汚すぎるので、後日リファクタリング！
 @Composable
 fun EventDetailScreen(
     event: MutableState<EventDetail?>,
@@ -149,16 +153,38 @@ fun OnlineEventDetail(
         EventStatus.AFTER_REGISTRATION_DURING_EVENT -> Triple(true, status.getStatusColor(), status.getStatusDescription())
         EventStatus.AFTER_EVENT -> Triple(false, status.getStatusColor(), status.getStatusDescription())
     }
+
+    val showDialogState = remember { mutableStateOf(false) }
+    if (showDialogState.value) {
+        AlertDialog(
+            onDismissRequest = { showDialogState.value = false },
+            text = { Text("イベントの開始時間までお待ちください。\n開始時刻: ${event.value.formattedStateTime}", style = MaterialTheme.typography.body1) },
+            confirmButton = { },
+            dismissButton = {
+                Button(
+                    onClick = { showDialogState.value = false },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colorResource(id = R.color.primary_dark),
+                        contentColor = colorResource(id = R.color.base_100)
+                    )
+                ) { Text("OK") } },
+        )
+    }
+
+    val isShowDialog = status == EventStatus.AFTER_REGISTRATION_BEFORE_EVENT
+    val onClick = if (isShowDialog) { { showDialogState.value = true  } }  else { startVideoChat }
+
     Box(modifier = Modifier.padding(16.dp)) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(enabled = enable, onClick = { startVideoChat() }),
+                .clickable(enabled = enable, onClick = onClick),
             elevation = if (enable) 6.dp else 0.dp,
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(1.dp, if (enable) Color.Black else Color.Gray),
             backgroundColor = if (enable) Color.White else colorResource(id = R.color.base_gray),
         ) {
+
             Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)) {
                 Text(
                     text = description,
@@ -305,8 +331,8 @@ fun SpacerAndDivider() {
 // The rest of your code remains unchanged.
 @Composable
 fun ConfirmEventButton(isEditable: Boolean, isJoined: Boolean, joinEvent: () -> Unit, leaveEvent: () -> Unit) {
-        if (isJoined) SharedConfirmButton("イベントを抜ける", isEditable, leaveEvent)
-        else SharedConfirmButton("イベントに参加", isEditable, joinEvent)
+        if (isJoined) SharedConfirmButton(text = "イベントを抜ける", isEditable = isEditable, onConfirm = leaveEvent)
+        else SharedConfirmButton(text = "イベントに参加", isEditable = isEditable, onConfirm = joinEvent)
     }
 
 

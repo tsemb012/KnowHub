@@ -40,6 +40,11 @@ interface MainApi {
             @Body user: PostUserDetailJson
     ): MessageResponse
 
+    @DELETE("users/{id}")
+    suspend fun deleteUser(
+        @Path("id") userId: String
+    ): MessageResponse
+
     fun postNewUser(@Body request: PostSignUpJson.Request): Response<UserJson>
 
     @POST("users")

@@ -1,7 +1,7 @@
 package com.example.droidsoftthird.model.infra_model.json.response
 
 import com.example.droidsoftthird.model.domain_model.EventStatus
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 import com.squareup.moshi.Json
 import java.time.Instant
 import java.time.ZoneId
@@ -33,8 +33,8 @@ data class GetItemEventJson (
         @Json(name = "is_online")
         val isOnline: Boolean,
 ) {
-    fun toEntity(): ItemEvent {
-        return ItemEvent(
+    fun toEntity(): EventItem {
+        return EventItem(
                     eventId = eventId,
                     hostId = hostId,
                     name = name,
