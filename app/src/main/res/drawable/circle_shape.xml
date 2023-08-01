@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid android:color="#ffffff" /> <!-- ここにあなたが望む背景色を設定します。 -->
+    <corners android:radius="10dp" /> <!-- ここでは半径を設定しますが、あなたが必要とする大きさに合わせて調整します。 -->
+</shape>

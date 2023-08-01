@@ -9,7 +9,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.ScheduleListViewModel
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 
 
 @Composable
@@ -21,7 +21,7 @@ fun EventListScreen(viewModel: ScheduleListViewModel, onSelectEvent: (String) ->
 }
 
 @Composable
-fun EventList(events: List<ItemEvent>, onSelectEvent: (String) -> Unit) {
+fun EventList(events: List<EventItem>, onSelectEvent: (String) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -31,7 +31,7 @@ fun EventList(events: List<ItemEvent>, onSelectEvent: (String) -> Unit) {
 }
 
 @Composable
-fun EventCard(event: ItemEvent, onSelectEvent: (String) -> Unit) {
+fun EventCard(event: EventItem, onSelectEvent: (String) -> Unit) {
     Card(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 8.dp)

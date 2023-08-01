@@ -23,11 +23,13 @@ import com.example.droidsoftthird.R
 fun SharedConfirmButton(
     text: String,
     isEditable: Boolean = true,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.End,
+    modifier: Modifier = Modifier.wrapContentWidth(),
     onConfirm: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End
+        horizontalArrangement = horizontalArrangement
     ) {
         Button(
             colors = ButtonDefaults.buttonColors(
@@ -36,9 +38,8 @@ fun SharedConfirmButton(
             enabled = isEditable,
             shape = RoundedCornerShape(8.dp),
             onClick = { onConfirm() },
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(end = 24.dp, top = 8.dp, bottom = 12.dp)
+            modifier = modifier
+                .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
         ) {
             Text(text, color = Color.White, style = MaterialTheme.typography.h6)
         }

@@ -1,7 +1,7 @@
 package com.example.droidsoftthird.model.presentation_model
 
 import androidx.lifecycle.LiveData
-import com.example.droidsoftthird.model.domain_model.ItemEvent
+import com.example.droidsoftthird.model.domain_model.EventItem
 import com.example.droidsoftthird.model.domain_model.SimpleGroup
 import java.lang.IllegalStateException
 import java.time.LocalDate
@@ -10,10 +10,10 @@ data class ScheduleUiModel (
     val isLoading: Boolean = false,
     val error : Throwable? = null,
     val notifyType: NotifyType = NotifyType.NONE,
-    val allEvents: List<ItemEvent> = emptyList(),
-    val groupFilteredEvents: List<ItemEvent> = emptyList(),
+    val allEvents: List<EventItem> = emptyList(),
+    val groupFilteredEvents: List<EventItem> = emptyList(),
     val selectedDate: LocalDate = LocalDate.now(),
-    val selectedEvents: List<ItemEvent> = emptyList(),
+    val selectedEvents: List<EventItem> = emptyList(),
     val simpleGroups: List<SimpleGroup> = emptyList(),
     val selectedSimpleGroup: SimpleGroup? = simpleGroups.firstOrNull(),
     val isGroupFixed: Boolean = false,
@@ -23,7 +23,7 @@ data class ScheduleUiModel (
             current: ScheduleUiModel,
             schedulesLoadState: LoadState,
             selectedDate:LocalDate,
-            selectedEvents: List<ItemEvent>,
+            selectedEvents: List<EventItem>,
             simpleGroupsLoadState: LoadState,
             selectedGroupId: String,
             isGroupFixed: Boolean,

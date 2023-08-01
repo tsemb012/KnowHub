@@ -23,13 +23,15 @@ fun SharedTextField(
     val titleTextStyle = when (titleTextSize) {
         TextSize.SMALL -> MaterialTheme.typography.body2
         TextSize.MEDIUM -> MaterialTheme.typography.h6
-        TextSize.LARGE -> MaterialTheme.typography.h5
+        TextSize.MED_LARGE -> MaterialTheme.typography.h5
+        TextSize.LARGE -> MaterialTheme.typography.h4
     }
 
     val fieldTextStyle = when (fieldTextSize) {
         TextSize.SMALL -> MaterialTheme.typography.body2
         TextSize.MEDIUM -> MaterialTheme.typography.h6
-        TextSize.LARGE -> MaterialTheme.typography.h5
+        TextSize.MED_LARGE -> MaterialTheme.typography.h5
+        TextSize.LARGE -> MaterialTheme.typography.h4
     }
 
     Column {
@@ -61,5 +63,6 @@ fun SharedTextField(
 enum class TextSize {
     SMALL,
     MEDIUM,
+    MED_LARGE,
     LARGE
 }
