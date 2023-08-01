@@ -36,6 +36,8 @@ class ProfileEditFragment :ProfileSubmitFragment() {
         }
     }
 
+    override fun navigateTo() = Unit
+
     private fun disableItems() {
         binding.ageItem.itemProfileEdit.isEnabled = false
         binding.ageItem.itemProfileEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.dark_gray))

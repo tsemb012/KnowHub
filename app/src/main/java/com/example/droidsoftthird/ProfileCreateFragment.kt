@@ -12,6 +12,7 @@ class ProfileCreateFragment : ProfileSubmitFragment() {
 
     override fun setupSubmitListeners() = binding.submitProfileBtn.setOnClickListener {
         createViewModel.submitNewUserProfile()
-        findNavController().navigate(R.id.action_profileCreateFragment_to_homeFragment)
     }
+
+    override fun navigateTo() = findNavController().navigate(R.id.action_profileCreateFragment_to_homeFragment)
 }
