@@ -46,7 +46,7 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
                 contentScale = ContentScale.Fit// 必要に応じて画像をクロップまたは他の方法で調整
             )
 
-            /*val fontName = GoogleFont("Noto Sans Vithkuqi")
+            val fontName = GoogleFont("Noto Sans Vithkuqi")
             val fontProvider = GoogleFont.Provider(
                 providerAuthority = "com.google.android.gms.fonts",
                 providerPackage = "com.google.android.gms",
@@ -55,21 +55,22 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
 
             val fontFamily = FontFamily(
                 Font(googleFont = fontName, fontProvider = fontProvider)
-            )*/
+            )
 
+            val baseColor = colorResource(id = R.color.base_100)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(
-                                Color.White.copy(alpha = 0.1f), // 開始色
-                                Color.White.copy(alpha = 0.1f),
-                                Color.White.copy(alpha = 0.4f),
-                                // 中間色
-                                Color.White,
-                                Color.White,
-                                Color.White // 終了色
+                                baseColor.copy(alpha = 0.3f), // 開始色
+                                baseColor.copy(alpha = 0.2f),
+                                baseColor.copy(alpha = 0.2f),
+                                baseColor.copy(alpha = 0.5f),
+                                baseColor,
+                                baseColor,
+                                baseColor // 終了色
                             ),
                             //stops = listOf(0.0f, 0.5f, 1.0f), // 各色の位置
                             startY = 0.0f,
@@ -86,33 +87,23 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .background(
-                                color = colorResource(id = R.color.white),
-                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                            )
-                    )
-
                     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "KnowHub", color = Color.Gray, style = MaterialTheme.typography.h2, fontWeight = FontWeight.Normal) //fontFamily = fontFamily)
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "KnowHub", color = Color.Gray, style = MaterialTheme.typography.h2, fontWeight = FontWeight.Normal, fontFamily = fontFamily)
+                        Spacer(modifier = Modifier.height(4.dp))
                         val primaryDark = colorResource(id = R.color.primary_dark)
                         val accentYellow = colorResource(id = R.color.primary_accent_yellow)
                         Canvas(modifier = Modifier
-                            .width(280.dp)
-                            .height(8.dp)) {
+                            .width(300.dp)
+                            .height(10.dp)) {
                             drawLine(
                                 color = primaryDark,
                                 start = Offset.Zero,
-                                end = Offset(size.width / 2, 0f),
+                                end = Offset(size.width * 0.57f, 0f),
                                 strokeWidth = size.height
                             )
                             drawLine(
                                 color = accentYellow,
-                                start = Offset(size.width / 2, 0f),
+                                start = Offset(size.width * 0.57f, 0f),
                                 end = Offset(size.width, 0f),
                                 strokeWidth = size.height
                             )
@@ -124,7 +115,7 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
                     onEvent = onEvent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 16.dp)
                         .align(Alignment.CenterHorizontally)
                 )
             }
@@ -196,24 +187,26 @@ private fun SignInCreateAccount(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = colorResource(id = R.color.primary_dark)
             ),
+            elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp, disabledElevation = 0.dp),
             shape = RoundedCornerShape(8.dp),
             onClick = { onEvent(WelcomeEvent.SignUp) },
             modifier = modifier
-                .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
+                .padding(start = 36.dp, end = 36.dp, top = 8.dp, bottom = 4.dp)
         ) {
-            Text(stringResource(id = R.string.sign_up), color = Color.White, style = MaterialTheme.typography.h5)
+            Text(stringResource(id = R.string.sign_up), color = Color.White, style = MaterialTheme.typography.h6, fontWeight = FontWeight.SemiBold)
         }
 
         Button(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.LightGray
             ),
+            elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp, disabledElevation = 0.dp),
             shape = RoundedCornerShape(8.dp),
             onClick = { onEvent(WelcomeEvent.SignIn) },
             modifier = modifier
-                .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
+                .padding(start = 36.dp, end = 36.dp, top = 4.dp, bottom = 8.dp)
         ) {
-            Text(stringResource(id = R.string.login), color = Color.DarkGray, style = MaterialTheme.typography.h5)
+            Text(stringResource(id = R.string.login), color = Color.DarkGray, style = MaterialTheme.typography.h6, fontWeight = FontWeight.SemiBold)
         }
         Spacer(modifier = Modifier.height(32.dp))
     }
