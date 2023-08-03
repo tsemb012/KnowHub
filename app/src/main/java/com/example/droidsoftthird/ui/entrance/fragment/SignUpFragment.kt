@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.ui.entrance.Screen
-import com.example.droidsoftthird.ui.entrance.composable.SignUp
+import com.example.droidsoftthird.ui.entrance.composable.SignUpScreen
 import com.example.droidsoftthird.ui.entrance.composable.SignUpEvent
 import com.example.droidsoftthird.ui.entrance.navigate
 import com.example.droidsoftthird.vm.entrance.SignUpViewModel
@@ -46,7 +46,7 @@ class SignUpFragment: Fragment() {
 
             setContent {
                 MaterialTheme {
-                    SignUp(
+                    SignUpScreen(
                         onNavigationEvent = { event ->
                             when (event) {
                                 is SignUpEvent.SignUp -> {
