@@ -16,7 +16,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
@@ -124,57 +123,6 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
     }
 }
 
- /*           Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .weight(1f, fill = showBranding)
-                        .animateContentSize()
-                )
-                AnimatedVisibility(showBranding, Modifier.fillMaxWidth()) { Branding() }
-                Spacer(
-                    modifier = Modifier
-                        .weight(1f, fill = showBranding)
-                        .animateContentSize()
-                )
-
-            }
-        }
-    }*/
-
-
-@Composable
-private fun Branding(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.wrapContentHeight(align = Alignment.CenterVertically)
-    ) {
-        Logo(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(horizontal = 76.dp)
-        )
-    }
-}
-
-@Composable
-private fun Logo(
-    modifier: Modifier = Modifier,
-    lightTheme: Boolean = MaterialTheme.colors.isLight
-) {
-    val assetId = if (lightTheme) {
-        R.drawable.ic_baseline_group_24//TODO 書き換える。
-    } else {
-        R.drawable.ic_baseline_group_24
-    }
-    Image(
-        painter = painterResource(id = assetId),
-        modifier = modifier,
-        contentDescription = null
-    )
-}
 
 @Composable
 private fun SignInCreateAccount(
