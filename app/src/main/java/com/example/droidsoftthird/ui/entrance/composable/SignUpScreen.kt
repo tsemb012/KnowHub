@@ -29,7 +29,7 @@ sealed class SignUpEvent {
 }
 
 @Composable
-fun SignUp(onNavigationEvent: (SignUpEvent) -> Unit) {
+fun SignUpScreen(onNavigationEvent: (SignUpEvent) -> Unit) {
     Scaffold(
         topBar = {
             SignInSignUpTopAppBar(
@@ -107,6 +107,6 @@ fun SignUpContent(
 @Composable
 fun SignUpPreview() {
     MaterialTheme {
-        SignUp {}
+        SignUpScreen {}
     }
 }
