@@ -13,10 +13,10 @@ import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.R
 
 @Composable
-fun InstructionPage(title: String, instruction: String, drawable: Int) {
+fun InstructionPage(title: String/*, instruction: String, drawable: Int*/) {
     Column {
         Text(text = title)
-        Text(text = instruction)
+        /*Text(text = instruction)
         Image(
             painter = painterResource(id = drawable),
             contentDescription = null,
@@ -24,6 +24,6 @@ fun InstructionPage(title: String, instruction: String, drawable: Int) {
                 .fillMaxWidth()
                 .height(200.dp),
             contentScale = ContentScale.Crop
-        )
+        )*/
     }
 }
