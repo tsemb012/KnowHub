@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -67,7 +70,7 @@ class SignUpFragment: Fragment() {
             setContent {
                 MaterialTheme {
 
-                    Box {
+                    Box( modifier = Modifier.background(colorResource(id = R.color.base_100)).fillMaxSize())  {
                         val pagerState = rememberPagerState { 5 }
                         HorizontalPager(state = pagerState) { page ->
                             when (page) {
@@ -96,7 +99,9 @@ class SignUpFragment: Fragment() {
                                 )
                             }
                         }
-                        Row(horizontalArrangement = Arrangement.Center,  modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()) {
+                        Row(horizontalArrangement = Arrangement.Center,  modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()) {
                             repeat(5) { page ->
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Surface(

@@ -28,6 +28,7 @@ import com.example.droidsoftthird.ui.entrance.state.PasswordState
 import com.example.droidsoftthird.utils.compose.supportWideScreen
 import kotlinx.coroutines.launch
 
+//TODO コード汚すぎて吐きそう。時間ないので、後でリファクタ。
 class SignInScreen { //TODO 永続のチェックボックスを追加する。
 }
 
@@ -60,46 +61,13 @@ fun SignInScreen(onNavigationEvent: (SignInEvent) -> Unit) {
         content = { contentPadding ->
 
 
-            val fontName = GoogleFont("Noto Sans Vithkuqi")
-            val fontProvider = GoogleFont.Provider(
-                providerAuthority = "com.google.android.gms.fonts",
-                providerPackage = "com.google.android.gms",
-                certificates = R.array.com_google_android_gms_fonts_certs
-            )
-
-            val fontFamily = FontFamily(
-                Font(googleFont = fontName, fontProvider = fontProvider)
-            )
-
             Column (
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(64.dp))
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "KnowHub", color = Color.Gray, style = MaterialTheme.typography.h2, fontWeight = FontWeight.Normal, fontFamily = fontFamily)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    val primaryDark = colorResource(id = R.color.primary_dark)
-                    val accentYellow = colorResource(id = R.color.primary_accent_yellow)
-                    Canvas(modifier = Modifier
-                        .width(300.dp)
-                        .height(10.dp)) {
-                        drawLine(
-                            color = primaryDark,
-                            start = Offset.Zero,
-                            end = Offset(size.width * 0.57f, 0f),
-                            strokeWidth = size.height
-                        )
-                        drawLine(
-                            color = accentYellow,
-                            start = Offset(size.width * 0.57f, 0f),
-                            end = Offset(size.width, 0f),
-                            strokeWidth = size.height
-                        )
-                    }
-                }
-
+                BrandLogo()
                 SignInSignUpScreen(//TODO ここに置いてあるのはなぜ？
                     modifier = Modifier.supportWideScreen(),
                     contentPadding = contentPadding,
