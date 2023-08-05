@@ -85,31 +85,8 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "KnowHub", color = Color.Gray, style = MaterialTheme.typography.h2, fontWeight = FontWeight.Normal, fontFamily = fontFamily)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        val primaryDark = colorResource(id = R.color.primary_dark)
-                        val accentYellow = colorResource(id = R.color.primary_accent_yellow)
-                        Canvas(modifier = Modifier
-                            .width(300.dp)
-                            .height(10.dp)) {
-                            drawLine(
-                                color = primaryDark,
-                                start = Offset.Zero,
-                                end = Offset(size.width * 0.57f, 0f),
-                                strokeWidth = size.height
-                            )
-                            drawLine(
-                                color = accentYellow,
-                                start = Offset(size.width * 0.57f, 0f),
-                                end = Offset(size.width, 0f),
-                                strokeWidth = size.height
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(32.dp))
-                    }
-
+                BrandLogo()
+                Spacer(modifier = Modifier.height(32.dp))
                 SignInCreateAccount(
                     onEvent = onEvent,
                     modifier = Modifier

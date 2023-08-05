@@ -136,7 +136,7 @@
     <string name="or">または</string>
     <string name="forgot_password">FORGOT PASSWORD?</string>
     <string name="user_continue">CONTINUE</string>
-    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="create_account">アカウント作成</string>
     <string name="terms_and_conditions">By continuing, you agree to our Terms of Service. We’ll
         handle your data according to our Privacy Policy.</string>
     <string name="feature_not_available">Feature not available</string>
@@ -204,5 +204,7 @@
     <string name="event_register">イベントを登録</string>
     <string name="birthday">生年月日</string>
     <string name="login">ログイン</string>
+    <string name="new_password">新しいパスワード</string>
+    <string name="confirm_new_password">新しいパスワード(確認)</string>
 
 </resources>
