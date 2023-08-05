@@ -66,7 +66,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
     private fun FragmentScheduleCreateBinding.setupGroupDialog() {
         includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("グループを選択してください。")
+                .setTitle("コミュニティを選択してください。")
                 .setItems(viewModel?.groupArray?: arrayOf()) { _, which ->
                     viewModel?.postSelectedGroup(which)
                 }

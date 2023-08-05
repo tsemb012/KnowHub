@@ -58,7 +58,7 @@ class ScheduleCreateViewModel @Inject constructor(
             runCatching { groupUseCase.fetchJoinedGroups() }
                 .onSuccess {
                     if (it.isNotEmpty()) _groupsLoadState.value = LoadState.Loaded(it)
-                    else _groupsLoadState.value = LoadState.Error(Throwable("グループに参加してください。"))
+                    else _groupsLoadState.value = LoadState.Error(Throwable("コミュニティに参加してください。"))
                 }
                 .onFailure { _groupsLoadState.value = LoadState.Error(it) }
         }

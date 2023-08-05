@@ -193,7 +193,7 @@ fun ProfileScreen(
                         )
                         ProfileSpacerAndDivider()
                         Text(
-                            "所属グループ",
+                            "所属コミュニティ",
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.h6,
                             modifier = Modifier

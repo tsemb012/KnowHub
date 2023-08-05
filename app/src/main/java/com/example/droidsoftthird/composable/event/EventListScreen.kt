@@ -49,7 +49,7 @@ fun EventCard(event: EventItem, onSelectEvent: (String) -> Unit) {
                 ListItem(title = "日付", content = event.period.first.dayOfMonth.toString())
                 ListItem(title = "コメント", content = event.comment)
                 ListItem(title = "期間", content = event.period.toString())
-                ListItem(title = "グループ名", content = event.groupName ?: "なし")
+                ListItem(title = "コミュニティ名", content = event.groupName ?: "なし")
                 ListItem(title = "場所名", content = event.placeName ?: "なし")
             } //TODO ここにグループ参加と不参加のロジックを入れるようにする。
         }
