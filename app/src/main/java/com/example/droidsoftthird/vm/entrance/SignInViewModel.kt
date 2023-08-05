@@ -26,7 +26,7 @@ class SignInViewModel @Inject constructor (private val repository: BaseRepositor
             }.onSuccess {
                 when (it) {
                     is Result.Success -> saveTokenId(it.data)
-                    is Result.Failure -> _error.value = it.exception.message ?: "ログインに失敗しました。"
+                    is Result.Failure -> _error.value = "ログインに失敗しました。"
                 }
             }.onFailure {
                 _error.value = it.message ?: "Unknown error"

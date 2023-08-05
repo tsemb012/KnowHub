@@ -127,8 +127,8 @@
     <string name="schedule_create_time_end">終了時刻</string>
 
     <!-- ログイン画面 -->
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="email">メールアドレス</string>
+    <string name="password">パスワード</string>
     <string name="confirm_password">Confirm password</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_guest">SIGN IN AS GUEST</string>
