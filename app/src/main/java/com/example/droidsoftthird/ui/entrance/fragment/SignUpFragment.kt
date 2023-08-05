@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.entrance.InstructionPage
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.composable.entrance.SignUpScreen
 import com.example.droidsoftthird.composable.entrance.SignUpEvent
@@ -116,20 +117,4 @@ class SignUpFragment: Fragment() {
             }
         }
     }
-}
-
-@Composable
-fun Indicator(currentPage: Int, pageCount: Int) {
-
-}
-
-@Composable
-fun InstructionPage(instruction: String) {
-    Text(text = instruction)
-}
-
-@Preview
-@Composable
-fun PreviewInstructionPage() {
-    InstructionPage("Instruction 1")
 }
