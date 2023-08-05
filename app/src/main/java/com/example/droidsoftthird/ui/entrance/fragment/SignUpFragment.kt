@@ -33,8 +33,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.ui.entrance.Screen
-import com.example.droidsoftthird.ui.entrance.composable.SignUpScreen
-import com.example.droidsoftthird.ui.entrance.composable.SignUpEvent
+import com.example.droidsoftthird.composable.entrance.SignUpScreen
+import com.example.droidsoftthird.composable.entrance.SignUpEvent
 import com.example.droidsoftthird.ui.entrance.navigate
 import com.example.droidsoftthird.vm.entrance.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint

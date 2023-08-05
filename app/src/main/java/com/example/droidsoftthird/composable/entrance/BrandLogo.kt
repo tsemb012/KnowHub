@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.ui.entrance.composable
+package com.example.droidsoftthird.composable.entrance
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
