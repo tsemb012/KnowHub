@@ -1,6 +1,7 @@
 package com.example.droidsoftthird.ui.entrance.composable
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,7 +13,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -66,7 +69,15 @@ fun SignInScreen(onNavigationEvent: (SignInEvent) -> Unit) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(64.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.full_logo_transparent_no_buffer), // ここに画像リソースを指定
+                    contentDescription = null, // アクセシビリティのための説明文
+                    alignment = Alignment.TopCenter, // 画像を中央に配置
+                    modifier = Modifier.fillMaxWidth().height(200.dp), // 画像のサイズを指定
+                    contentScale = ContentScale.Fit // 必要に応じて画像をクロップまたは他の方法で調整
+                )
+
                 BrandLogo()
                 SignInSignUpScreen(//TODO ここに置いてあるのはなぜ？
                     modifier = Modifier.supportWideScreen(),

@@ -1,8 +1,10 @@
 package com.example.droidsoftthird.ui.entrance.composable
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,11 +15,14 @@ import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -77,9 +82,17 @@ fun SignUpContent(
         val confirmationPasswordFocusRequest = remember { FocusRequester() }
         val emailState = remember { EmailState() }
 
+        Image(
+            painter = painterResource(id = R.drawable.full_logo_transparent_no_buffer), // ここに画像リソースを指定
+            contentDescription = null, // アクセシビリティのための説明文
+            alignment = Alignment.TopCenter, // 画像を中央に配置
+            modifier = Modifier.fillMaxWidth().height(200.dp), // 画像のサイズを指定
+            contentScale = ContentScale.Fit // 必要に応じて画像をクロップまたは他の方法で調整
+        )
+
         BrandLogo()
 
-        Spacer(modifier = Modifier.height(64.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Email(emailState, onImeAction = { passwordFocusRequest.requestFocus() })
 
@@ -102,7 +115,7 @@ fun SignUpContent(
             modifier = Modifier.focusRequester(confirmationPasswordFocusRequest)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         /*CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
@@ -111,41 +124,45 @@ fun SignUpContent(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))*/
-        val context = LocalContext.current
-        val termsOfUseUrl = "https://sites.google.com/view/workandchillapp-termofuse/%E3%83%9B%E3%83%BC%E3%83%A0"
-        val privacyPolicyUrl = "https://sites.google.com/view/workandchillapp-privacypolicy/%E3%83%9B%E3%83%BC%E3%83%A0"
-        Button(
-            onClick = { openUrl(context, termsOfUseUrl) },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            contentPadding = PaddingValues(0.dp),
-            elevation = ButtonDefaults.elevation(0.dp),
-            modifier = Modifier.wrapContentHeight()
-        ) {
-            Text(
-                text = "Term Of Use",
-                color = Color.Gray,
-                style = MaterialTheme.typography.caption,
-            )
-        }
+        Row (modifier = Modifier.fillMaxWidth()) {
+            val context = LocalContext.current
+            val termsOfUseUrl =
+                "https://sites.google.com/view/workandchillapp-termofuse/%E3%83%9B%E3%83%BC%E3%83%A0"
+            val privacyPolicyUrl =
+                "https://sites.google.com/view/workandchillapp-privacypolicy/%E3%83%9B%E3%83%BC%E3%83%A0"
+            Button(
+                onClick = { openUrl(context, termsOfUseUrl) },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+                contentPadding = PaddingValues(0.dp),
+                elevation = ButtonDefaults.elevation(0.dp),
+                modifier = Modifier.weight(1f).wrapContentHeight()
+            ) {
+                Text(
+                    text = "Term Of Use",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.caption,
+                )
+            }
 
-        Button(
-            onClick = { openUrl(context, privacyPolicyUrl) },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            contentPadding = PaddingValues(0.dp),
-            elevation = ButtonDefaults.elevation(0.dp),
-            modifier = Modifier.wrapContentHeight()
-        ) {
-            Text(
-                text = "Privacy Policy",
-                color = Color.Gray,
-                style = MaterialTheme.typography.caption,
-            )
+            Button(
+                onClick = { openUrl(context, privacyPolicyUrl) },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+                contentPadding = PaddingValues(0.dp),
+                elevation = ButtonDefaults.elevation(0.dp),
+                modifier = Modifier.weight(1f).wrapContentHeight()
+            ) {
+                Text(
+                    text = "Privacy Policy",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.caption,
+                )
+            }
         }
         /*AppendixButton("Term Of Use",  MaterialTheme.typography.body1) { openUrl(context, termsOfUseUrl) }
         AppendixButton("Privacy Policy",  MaterialTheme.typography.body1) { openUrl(context, privacyPolicyUrl) }
         Divider()
 */
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         SharedConfirmButton(
             text = stringResource(id = R.string.create_account),
