@@ -1,9 +1,7 @@
-package com.example.droidsoftthird.ui.entrance.composable
+package com.example.droidsoftthird.composable.entrance
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -11,16 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.googlefonts.Font
-import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.R
@@ -29,7 +21,6 @@ import com.example.droidsoftthird.ui.entrance.state.EmailState
 import com.example.droidsoftthird.ui.entrance.state.EmailStateSaver
 import com.example.droidsoftthird.ui.entrance.state.PasswordState
 import com.example.droidsoftthird.utils.compose.supportWideScreen
-import kotlinx.coroutines.launch
 
 //TODO コード汚すぎて吐きそう。時間ないので、後でリファクタ。
 class SignInScreen { //TODO 永続のチェックボックスを追加する。

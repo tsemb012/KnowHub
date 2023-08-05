@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.vm.entrance.SignInViewModel
-import com.example.droidsoftthird.ui.entrance.composable.SignInScreen
-import com.example.droidsoftthird.ui.entrance.composable.SignInEvent
+import com.example.droidsoftthird.composable.entrance.SignInScreen
+import com.example.droidsoftthird.composable.entrance.SignInEvent
 import com.example.droidsoftthird.ui.entrance.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
