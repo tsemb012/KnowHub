@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -17,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,6 +42,13 @@ fun Email(
         onValueChange = {
             emailState.text = it
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = colorResource(id = R.color.primary_dark),
+            focusedLabelColor = colorResource(id = R.color.primary_dark),
+            cursorColor = colorResource(id = R.color.primary_dark),
+            leadingIconColor = colorResource(id = R.color.primary_dark),
+            placeholderColor = colorResource(id = R.color.primary_dark),
+        ),
         label = {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
@@ -83,11 +92,9 @@ fun SignInSignUpScreen(
         contentPadding = contentPadding
     ) {
         item {
-            Spacer(modifier = Modifier.height(44.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
             ) {
                 content()
             }
@@ -111,7 +118,7 @@ fun SignInSignUpTopAppBar(topAppBarText: String, onBackPressed: () -> Unit) {
         navigationIcon = {
             IconButton(onClick = onBackPressed) {
                 Icon(
-                    imageVector = Icons.Filled.ChevronLeft,
+                    imageVector = Icons.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.back)
                 )
             }
@@ -153,6 +160,11 @@ fun Password(
             passwordState.text = it
             passwordState.enableShowErrors()
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = colorResource(id = R.color.primary_dark),
+            focusedLabelColor = colorResource(id = R.color.primary_dark),
+            cursorColor = colorResource(id = R.color.primary_dark),
+        ),
         modifier = modifier
             .fillMaxWidth()
             .onFocusChanged { focusState ->

@@ -1,6 +1,8 @@
 package com.example.droidsoftthird.ui.entrance.composable
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -8,10 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.R
+import com.example.droidsoftthird.composable.shared.SharedConfirmButton
 import com.example.droidsoftthird.ui.entrance.state.EmailState
 import com.example.droidsoftthird.ui.entrance.state.EmailStateSaver
 import com.example.droidsoftthird.ui.entrance.state.PasswordState
@@ -30,7 +40,7 @@ sealed class SignInEvent {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SignIn(onNavigationEvent: (SignInEvent) -> Unit) {
+fun SignInScreen(onNavigationEvent: (SignInEvent) -> Unit) {
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()//ComposableでCoroutineを扱うときの定番のスコープ
@@ -42,37 +52,83 @@ fun SignIn(onNavigationEvent: (SignInEvent) -> Unit) {
     Scaffold(
         topBar = {
             SignInSignUpTopAppBar(
-                topAppBarText = stringResource(id = R.string.sign_in),
+                topAppBarText = "",
                 onBackPressed = { onNavigationEvent(SignInEvent.NavigateBack) }
             )
         },
+        backgroundColor = colorResource(id = R.color.base_100),
         content = { contentPadding ->
-            SignInSignUpScreen(//TODO ここに置いてあるのはなぜ？
-                modifier = Modifier.supportWideScreen(),
-                contentPadding = contentPadding,
+
+
+            val fontName = GoogleFont("Noto Sans Vithkuqi")
+            val fontProvider = GoogleFont.Provider(
+                providerAuthority = "com.google.android.gms.fonts",
+                providerPackage = "com.google.android.gms",
+                certificates = R.array.com_google_android_gms_fonts_certs
+            )
+
+            val fontFamily = FontFamily(
+                Font(googleFont = fontName, fontProvider = fontProvider)
+            )
+
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    SignInContent(
-                        onSignInSubmitted = { email, password ->
-                            onNavigationEvent(SignInEvent.SignIn(email, password))
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    TextButton(
-                        onClick = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = snackbarErrorText,
-                                    actionLabel = snackbarActionLabel
-                                )
+                Spacer(modifier = Modifier.height(64.dp))
+                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "KnowHub", color = Color.Gray, style = MaterialTheme.typography.h2, fontWeight = FontWeight.Normal, fontFamily = fontFamily)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    val primaryDark = colorResource(id = R.color.primary_dark)
+                    val accentYellow = colorResource(id = R.color.primary_accent_yellow)
+                    Canvas(modifier = Modifier
+                        .width(300.dp)
+                        .height(10.dp)) {
+                        drawLine(
+                            color = primaryDark,
+                            start = Offset.Zero,
+                            end = Offset(size.width * 0.57f, 0f),
+                            strokeWidth = size.height
+                        )
+                        drawLine(
+                            color = accentYellow,
+                            start = Offset(size.width * 0.57f, 0f),
+                            end = Offset(size.width, 0f),
+                            strokeWidth = size.height
+                        )
+                    }
+                }
+
+                SignInSignUpScreen(//TODO ここに置いてあるのはなぜ？
+                    modifier = Modifier.supportWideScreen(),
+                    contentPadding = contentPadding,
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        SignInContent(
+                            onSignInSubmitted = { email, password ->
+                                onNavigationEvent(SignInEvent.SignIn(email, password))
                             }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = stringResource(id = R.string.forgot_password))
+                        )
+                        /*Spacer(modifier = Modifier.height(16.dp))
+                        TextButton(
+                            onClick = {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = snackbarErrorText,
+                                        actionLabel = snackbarActionLabel
+                                    )
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(text = stringResource(id = R.string.forgot_password))
+                        }*/
                     }
                 }
             }
+
+
         }
     )
 
@@ -94,6 +150,9 @@ fun SignInContent(//TODO passwordConfirmationも増やさないとけいない�
         val emailState by rememberSaveable(stateSaver = EmailStateSaver) {
             mutableStateOf(EmailState())
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Email(emailState, onImeAction = { focusRequester.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -111,18 +170,15 @@ fun SignInContent(//TODO passwordConfirmationも増やさないとけいない�
             modifier = Modifier.focusRequester(focusRequester),
             onImeAction = { onSubmit() }
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { onSubmit() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            enabled = emailState.isValid && passwordState.isValid
-        ) {
-            Text(
-                text = stringResource(id = R.string.sign_in)
-            )
-        }
+        Spacer(modifier = Modifier.height(32.dp))
+
+        SharedConfirmButton(
+            text = stringResource(id = R.string.login),
+            onConfirm = onSubmit,
+            isEditable = emailState.isValid && passwordState.isValid,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -167,7 +223,7 @@ fun ErrorSnackbar(
 @Composable
 fun SignInPreview() {
     MaterialTheme {
-        SignIn {}
+        SignInScreen {}
     }
 }
 
