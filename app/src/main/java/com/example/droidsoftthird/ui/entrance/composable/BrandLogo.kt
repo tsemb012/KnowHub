@@ -1,6 +1,8 @@
 package com.example.droidsoftthird.ui.entrance.composable
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.droidsoftthird.R
 
@@ -63,5 +66,13 @@ fun BrandLogo() {
                 strokeWidth = size.height
             )
         }
+    }
+}
+
+@Preview(backgroundColor = 0xFFFFFFFF)
+@Composable
+fun BrandLogoPreview() {
+    Box(modifier = Modifier.fillMaxWidth().background(color = colorResource(id = R.color.base_100)), contentAlignment = Alignment.Center) {
+        BrandLogo()
     }
 }
