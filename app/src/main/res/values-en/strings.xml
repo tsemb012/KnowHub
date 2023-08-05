@@ -15,10 +15,10 @@
     <string name="tab_1st">オススメ</string>
     <string name="tab_2nd">スケジュール</string>
     <string name="tab_3rd">マップ</string>
-    <string name="group_name">グループ名</string>
-    <string name="group_introduction">グループ概要(やること、目標など)</string>
+    <string name="group_name">コミュニティ名</string>
+    <string name="group_introduction">コミュニティ概要(やること、目標など)</string>
     <string name="group_detail">詳細情報</string>
-    <string name="group_type">グループタイプ</string>
+    <string name="group_type">コミュニティタイプ</string>
     <string name="no_set">未設定</string>
     <string name="activity_area">活動地域</string>
     <string name="facility_environment">利用施設/環境</string>
@@ -51,8 +51,8 @@
     <string name="progress_uploading">Uploading..</string>
     <string name="upload_success">アップロード完了</string>
     <string name="upload_fail">アップロード失敗</string>
-    <string name="group_add">グループの追加</string>
-    <string name="group_added">グループを追加しました。</string>
+    <string name="group_add">コミュニティの追加</string>
+    <string name="group_added">コミュニティを追加しました。</string>
     <string name="nickname">ニックネーム</string>
     <string name="gender">性別</string>
     <string name="gender_no_edit">性別(編集不可)</string>
@@ -68,8 +68,8 @@
     <string name="newest_first_order">New</string>
     <string name="schedule">スケジュール</string>
     <string name="map">マップ</string>
-    <string name="input_a_group_name">グループ名を記入してください。</string>
-    <string name="input_group_introduction">グループの紹介文を記入してください。</string>
+    <string name="input_a_group_name">コミュニティ名を記入してください。</string>
+    <string name="input_group_introduction">コミュニティの紹介文を記入してください。</string>
     <string name="register">登録</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -82,7 +82,7 @@
     <string name="type_a_message">メッセージを入力してください。</string>
     <string name="send_picture">画像を送信</string>
     <string name="send_file">ファイルを送信</string>
-    <string name="group_info">グループ情報</string>
+    <string name="group_info">コミュニティ情報</string>
     <string name="audio_permission_not_available">録音機能を使用するため、アクセス権限が求められています。</string>
     <string name="permisson_is_required">ファイルへのアクセス権限が求められています。</string>
     <string name="audio_permission_granted">オーディオへのアクセスが許可されました。録音を開始します。</string>
@@ -96,13 +96,13 @@
     <string name="name">名前</string>
     <string name="self_introduction">自己紹介</string>
     <string name="please_attach_background_image">背景画像を添付しましょう</string>
-    <string name="group_register">グループを登録</string>
+    <string name="group_register">コミュニティを登録</string>
     <string name="JoinIn">参加</string>
     <string name="confrimation">確認</string>
-    <string name="confrimation_join_group">このグループに参加しますか？</string>
-    <string name="confrimation_leave_group">本当にグループから抜けますか？</string>
+    <string name="confrimation_join_group">このコミュニティに参加しますか？</string>
+    <string name="confrimation_leave_group">本当にコミュニティから抜けますか？</string>
     <string name="input_profile">プロフィール入力</string>
-    <string name="group">グループ</string>
+    <string name="group">コミュニティ</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
     <string name="schedule_calendar">Calendar</string>
@@ -176,7 +176,7 @@
     <string name="group_condition_filter">Filter</string>
     <string name="select_area">Please Select Activity Area</string>
     <string name="select_group">Select Group</string>
-    <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
+    <string name="show_group_asscociated_events">コミュニティに紐づいたイベントを表示します。</string>
     <string name="no_groups_found">There are no available groups that I can participate.</string>
     <string name="individual_task">別々: 個々の課題</string>
     <string name="shared_goal">一緒: 共通の目標</string>
@@ -184,9 +184,9 @@
     <string name="quiet_focus">静かに集中</string>
     <string name="fun_chat">楽しくワイワイ</string>
     <string name="availability">Availability %s</string>
-    <string name="group_condition_filter_confirm">グループを検索</string>
-    <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
-    <string name="group_intro">グループ紹介</string>
+    <string name="group_condition_filter_confirm">コミュニティを検索</string>
+    <string name="join_or_create_group">コミュニティに参加、あるいはコミュニティを作成してください。</string>
+    <string name="group_intro">コミュニティ紹介</string>
     <string name="leave_group">Leave this group</string>
     <string name="sunday">SUN</string>
     <string name="monday">MON</string>
