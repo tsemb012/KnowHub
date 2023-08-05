@@ -1,12 +1,15 @@
 package com.example.droidsoftthird.composable.entrance
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -15,7 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
@@ -38,6 +43,15 @@ fun BrandLogo() {
     )
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Image(
+            painter = painterResource(id = R.drawable.full_logo_transparent_no_buffer), // ここに画像リソースを指定
+            contentDescription = null, // アクセシビリティのための説明文
+            alignment = Alignment.TopCenter, // 画像を中央に配置
+            modifier = Modifier.width(200.dp).height(200.dp), // 画像が全体に広がるようにする
+            contentScale = ContentScale.Fit// 必要に応じて画像をクロップまたは他の方法で調整
+        )
+
         Text(
             text = "KnowHub",
             color = Color.Gray,

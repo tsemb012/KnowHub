@@ -31,51 +31,8 @@ sealed class WelcomeEvent {
 
 @Composable
 fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
-    var showBranding by remember { mutableStateOf(true) }
-
     Surface(modifier = Modifier.supportWideScreen()) {
         Box(Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(id = R.drawable.app_welcome), // ここに画像リソースを指定
-                contentDescription = null, // アクセシビリティのための説明文
-                alignment = Alignment.TopCenter, // 画像を中央に配置
-                modifier = Modifier.fillMaxSize(), // 画像が全体に広がるようにする
-                contentScale = ContentScale.Fit// 必要に応じて画像をクロップまたは他の方法で調整
-            )
-
-            val fontName = GoogleFont("Noto Sans Vithkuqi")
-            val fontProvider = GoogleFont.Provider(
-                providerAuthority = "com.google.android.gms.fonts",
-                providerPackage = "com.google.android.gms",
-                certificates = R.array.com_google_android_gms_fonts_certs
-            )
-
-            val fontFamily = FontFamily(
-                Font(googleFont = fontName, fontProvider = fontProvider)
-            )
-
-            val baseColor = colorResource(id = R.color.base_100)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                baseColor.copy(alpha = 0.3f), // 開始色
-                                baseColor.copy(alpha = 0.2f),
-                                baseColor.copy(alpha = 0.2f),
-                                baseColor.copy(alpha = 0.5f),
-                                baseColor,
-                                baseColor,
-                                baseColor // 終了色
-                            ),
-                            //stops = listOf(0.0f, 0.5f, 1.0f), // 各色の位置
-                            startY = 0.0f,
-                            endY = Float.POSITIVE_INFINITY
-                        )
-                    )
-            )
-
 
             Column (
                 modifier = Modifier
@@ -84,7 +41,7 @@ fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BrandLogo()
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(120.dp))
                 SignInCreateAccount(
                     onEvent = onEvent,
                     modifier = Modifier

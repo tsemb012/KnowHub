@@ -60,15 +60,6 @@ fun SignInScreen(onNavigationEvent: (SignInEvent) -> Unit) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.full_logo_transparent_no_buffer), // ここに画像リソースを指定
-                    contentDescription = null, // アクセシビリティのための説明文
-                    alignment = Alignment.TopCenter, // 画像を中央に配置
-                    modifier = Modifier.fillMaxWidth().height(200.dp), // 画像のサイズを指定
-                    contentScale = ContentScale.Fit // 必要に応じて画像をクロップまたは他の方法で調整
-                )
-
                 BrandLogo()
                 SignInSignUpScreen(//TODO ここに置いてあるのはなぜ？
                     modifier = Modifier.supportWideScreen(),
