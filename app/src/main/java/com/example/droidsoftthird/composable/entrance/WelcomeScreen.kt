@@ -32,8 +32,8 @@ sealed class WelcomeEvent {
 @Composable
 fun WelcomeScreen(onEvent: (WelcomeEvent) -> Unit) {
     Surface(modifier = Modifier.supportWideScreen()) {
-        Box(Modifier.fillMaxSize()) {
-
+        Box(
+            Modifier.fillMaxSize().background(color = colorResource(id = R.color.base_300))) {
             Column (
                 modifier = Modifier
                     .align(Alignment.BottomCenter)

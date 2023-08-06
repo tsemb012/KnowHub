@@ -51,7 +51,7 @@ fun SignInScreen(onNavigationEvent: (SignInEvent) -> Unit) {
                 onBackPressed = { onNavigationEvent(SignInEvent.NavigateBack) }
             )
         },
-        backgroundColor = colorResource(id = R.color.base_100),
+        backgroundColor = colorResource(id = R.color.base_300),
         content = { contentPadding ->
 
 
