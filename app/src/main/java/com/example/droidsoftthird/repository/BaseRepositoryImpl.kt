@@ -284,7 +284,7 @@ class BaseRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUser(): String = mainApi.deleteUser(userId).message
 
-    override suspend fun checkUserRegistered(): Boolean = mainApi.checkUserRegistered(userId).body() ?: false
+    override suspend fun checkUserRegistered(): Boolean? = mainApi.checkUserRegistered(userId).body()
 
     override suspend fun updateAuthProfile(authProfileUpdates:UserProfileChangeRequest): Result<Int> {
         return withContext(Dispatchers.IO){

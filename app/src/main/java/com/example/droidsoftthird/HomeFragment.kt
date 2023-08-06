@@ -31,8 +31,9 @@ class HomeFragment : Fragment() {
         super.onResume()
         if (FirebaseAuth.getInstance().currentUser == null) {
             backToWelcome()
+        } else {
+            activityViewModel.checkLoginState()
         }
-        activityViewModel.checkLoginState()
     }
 
     override fun onCreateView(
