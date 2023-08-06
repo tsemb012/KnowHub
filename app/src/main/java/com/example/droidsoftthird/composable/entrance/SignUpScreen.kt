@@ -38,7 +38,6 @@ import com.example.droidsoftthird.ui.entrance.state.ConfirmPasswordState
 import com.example.droidsoftthird.ui.entrance.state.EmailState
 import com.example.droidsoftthird.ui.entrance.state.PasswordState
 import com.example.droidsoftthird.utils.compose.supportWideScreen
-import com.example.droidsoftthird.utils.system.hideKeyboard
 import com.example.droidsoftthird.utils.webview.openUrl
 
 sealed class SignUpEvent {

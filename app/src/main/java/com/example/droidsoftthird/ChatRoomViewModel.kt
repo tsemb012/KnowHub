@@ -21,6 +21,8 @@ class ChatRoomViewModel @AssistedInject constructor(
     @Assisted private val groupId:String
 ) : ViewModel() {
 
+    private val chatId = (if (BuildConfig.DEBUG) "debug" else "release") + "_" + groupId
+
     val authUser = FirebaseAuth.getInstance().currentUser
 
     private val _chatGroup = MutableLiveData<ChatGroup>()
@@ -60,7 +62,7 @@ class ChatRoomViewModel @AssistedInject constructor(
         }
 
         viewModelScope.launch {
-            repository.getChatEvents(groupId).collect{
+            repository.getChatEvents(chatId).collect{
                 val messageList = ArrayList<FireMessage>()
                 for(doc in it){
                     val message = when(doc.get("messageType")){
@@ -127,7 +129,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                 Date()) as FireMessage
         editMessage.postValue("")
         viewModelScope.launch {
-            val result:Result<Int> = repository.createMessage(message,groupId)
+            val result:Result<Int> = repository.createMessage(message,chatId)
             /*when(result){
               is Result.Success ->  //TODO アップロード成功時の処理を記述する。
               else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
@@ -150,7 +152,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                     storageImageRef,
                                     Date()
                                 ) as FireMessage
-                            val result: Result<Int> = repository.createMessage(message,groupId)
+                            val result: Result<Int> = repository.createMessage(message,chatId)
                             when(result){
                               is Result.Success ->  _notifier.value = !(notifier.value ?: false)
                               else -> Unit//TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
@@ -179,7 +181,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 fileUri.lastPathSegment.toString(),
                                 fileDownloadUrl,
                                 Date()) as FireMessage
-                        val result:Result<Int> = repository.createMessage(message,groupId)
+                        val result:Result<Int> = repository.createMessage(message,chatId)
                         /*when(result){
                           is Result.Success ->  //TODO アップロード成功時の処理を記述する。
                           else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
@@ -210,7 +212,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 null,
                                 null,
                                 Date()) as FireMessage
-                        val result:Result<Int> = repository.createMessage(message,groupId)
+                        val result:Result<Int> = repository.createMessage(message,chatId)
                         /*when(result){
                           is Result.Success ->  //TODO アップロード成功時の処理を記述する。
                           else //TODO アップロード失敗時、CoroutineScopeを終わらせてスコープの外でまとめて表示処理する。
