@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.composable.entrance.InstructionPage
+import com.example.droidsoftthird.composable.entrance.InstructionPage1
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.composable.entrance.SignUpScreen
 import com.example.droidsoftthird.composable.entrance.SignUpEvent
@@ -72,14 +73,15 @@ class SignUpFragment: Fragment() {
                 MaterialTheme {
 
                     Box( modifier = Modifier.background(colorResource(id = R.color.base_100)).fillMaxSize())  {
-                        val pagerState = rememberPagerState { 5 }
+                        val pagerState = rememberPagerState { 6 }
                         HorizontalPager(state = pagerState) { page ->
                             when (page) {
-                                0 -> InstructionPage("Instruction 1")
-                                1 -> InstructionPage("Instruction 2")
-                                2 -> InstructionPage("Instruction 3")
-                                3 -> InstructionPage("Instruction 4")
-                                4 -> SignUpScreen(
+                                0 -> InstructionPage(R.drawable.instruction1)
+                                1 -> InstructionPage(R.drawable.instruction2)
+                                2 -> InstructionPage(R.drawable.instruction3)
+                                3 -> InstructionPage(R.drawable.instruction4)
+                                4 -> InstructionPage(R.drawable.instruction5)
+                                5 -> SignUpScreen(
                                     onNavigationEvent = { event ->
                                         when (event) {
                                             is SignUpEvent.SignUp -> {
