@@ -101,6 +101,11 @@
                     android:background="@drawable/radius_rectangular_prime_base_yellow"
                     />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
                 <include
                     android:id="@+id/include_activity_area"
                     layout="@layout/include_item_group_detail"
