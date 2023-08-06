@@ -24,8 +24,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DroidSoftThird"
-        android:usesCleartextTraffic="true">
-        <!--TODO 本番ではここを削除。https接続にする。-->
+        >
+        <!--
+        android:usesCleartextTraffic="true" これをつけると、http通信ができるようになる
+        -->
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
