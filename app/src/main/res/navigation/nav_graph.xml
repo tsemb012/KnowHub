@@ -16,11 +16,11 @@
 
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.example.droidsoftthird.MainActivity"
+        android:name="com.tsemb.droidsoftthird.MainActivity"
         android:label="MainActivity" />
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.droidsoftthird.ui.entrance.fragment.WelcomeFragment"
+        android:name="com.tsemb.droidsoftthird.ui.entrance.fragment.WelcomeFragment"
         android:label="Welcome">
         <action
             android:id="@+id/action_welcomeFragment_to_signInFragment"
@@ -31,17 +31,17 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.droidsoftthird.ui.entrance.fragment.SignInFragment"
+        android:name="com.tsemb.droidsoftthird.ui.entrance.fragment.SignInFragment"
         android:label="Sign in">
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.droidsoftthird.ui.entrance.fragment.SignUpFragment"
+        android:name="com.tsemb.droidsoftthird.ui.entrance.fragment.SignUpFragment"
         android:label="Sign in">
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.droidsoftthird.HomeFragment"
+        android:name="com.tsemb.droidsoftthird.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_addGroupFragment"
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/addGroupFragment"
-        android:name="com.example.droidsoftthird.GroupAddFragment"
+        android:name="com.tsemb.droidsoftthird.GroupAddFragment"
         android:label="AddGroupFragment" >
         <action
             android:id="@+id/action_addGroupFragment_to_homeFragment"
@@ -82,7 +82,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
-        android:name="com.example.droidsoftthird.GroupDetailFragment"
+        android:name="com.tsemb.droidsoftthird.GroupDetailFragment"
         android:label="fragment_group_detail"
         tools:layout="@layout/fragment_group_detail" >
         <argument
@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/recommendGroupsFragment"
-        android:name="com.example.droidsoftthird.RecommendGroupsFragment"
+        android:name="com.tsemb.droidsoftthird.RecommendGroupsFragment"
         android:label="RecommendPagerFragment" >
         <action
             android:id="@+id/action_recommendGroupsFragment_to_groupDetailFragment"
@@ -107,7 +107,7 @@
 
     <fragment
         android:id="@+id/myPageFragment"
-        android:name="com.example.droidsoftthird.MyPageFragment"
+        android:name="com.tsemb.droidsoftthird.MyPageFragment"
         android:label="MyPageFragment" >
         <action
             android:id="@+id/action_myPageFragment_to_chatRoomFragment"
@@ -121,7 +121,7 @@
 
     <fragment
         android:id="@+id/ScheduleHomeFragment"
-        android:name="com.example.droidsoftthird.ScheduleHomeFragment"
+        android:name="com.tsemb.droidsoftthird.ScheduleHomeFragment"
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule_home" >
         <argument
@@ -148,7 +148,7 @@
 
     <fragment
         android:id="@+id/chatRoomFragment"
-        android:name="com.example.droidsoftthird.ChatRoomFragment"
+        android:name="com.tsemb.droidsoftthird.ChatRoomFragment"
         android:label="ChatRoomFragment" >
         <action
             android:id="@+id/action_chatRoomFragment_to_scheduleHomeFragment"
@@ -176,7 +176,7 @@
     <action android:id="@+id/action_global_chatRoomFragment" app:destination="@id/chatRoomFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.droidsoftthird.ProfileFragment"
+        android:name="com.tsemb.droidsoftthird.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
@@ -193,12 +193,12 @@
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
-        android:name="com.example.droidsoftthird.ProfileEditFragment"
+        android:name="com.tsemb.droidsoftthird.ProfileEditFragment"
         android:label="ProfileEditFragment" />
 
     <fragment
         android:id="@+id/profileCreateFragment"
-        android:name="com.example.droidsoftthird.ProfileCreateFragment"
+        android:name="com.tsemb.droidsoftthird.ProfileCreateFragment"
         android:label="ProfileCreateFragment">
         <action
             android:id="@+id/action_profileCreateFragment_to_homeFragment"
@@ -209,7 +209,7 @@
         app:startDestination="@id/scheduleCreateFragment">
         <fragment
             android:id="@+id/scheduleCreateFragment"
-            android:name="com.example.droidsoftthird.ScheduleCreateFragment"
+            android:name="com.tsemb.droidsoftthird.ScheduleCreateFragment"
             android:label="ScheduleCreateFragment">
             <action
                 android:id="@+id/action_scheduleCreateFragment_to_mapFragment"
@@ -217,7 +217,7 @@
         </fragment>
         <fragment
             android:id="@+id/mapFragment"
-            android:name="com.example.droidsoftthird.PlaceMapFragment"
+            android:name="com.tsemb.droidsoftthird.PlaceMapFragment"
             android:label="MapFragment">
             <action
                 android:id="@+id/action_mapFragment_to_scheduleCreateFragment"
@@ -229,7 +229,7 @@
     </navigation>
     <fragment
         android:id="@+id/scheduleDetailFragment"
-        android:name="com.example.droidsoftthird.ScheduleDetailFragment"
+        android:name="com.tsemb.droidsoftthird.ScheduleDetailFragment"
         android:label="ScheduleDetailFragment" >
         <argument
             android:name="eventId"
@@ -243,7 +243,7 @@
     </fragment>
     <fragment
         android:id="@+id/videoChatFragment"
-        android:name="com.example.droidsoftthird.VideoChatActivity"
+        android:name="com.tsemb.droidsoftthird.VideoChatActivity"
         android:label="VideoChatFragment" >
         <action
             android:id="@+id/action_videoChatFragment_to_scheduleDetailFragment"
@@ -254,6 +254,6 @@
     </fragment>
     <fragment
         android:id="@+id/licenseFragment"
-        android:name="com.example.droidsoftthird.LicenseFragment"
+        android:name="com.tsemb.droidsoftthird.LicenseFragment"
         android:label="LicenseFragment" />
 </navigation>

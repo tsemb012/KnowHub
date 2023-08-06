@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.ChatRoomViewModel" />
+            type="com.tsemb.droidsoftthird.ChatRoomViewModel" />
 
         <variable
             name="groupId"
@@ -108,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/base_100"
-                tools:context=".ChatRoomFragment">
+                tools:context="com.tsemb.droidsoftthird.ChatRoomFragment">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/message_recycler"

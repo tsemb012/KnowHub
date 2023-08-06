@@ -8,13 +8,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.GroupDetailViewModel" />
+            type="com.tsemb.droidsoftthird.GroupDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".GroupDetailFragment">
+        tools:context="com.tsemb.droidsoftthird.GroupDetailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"

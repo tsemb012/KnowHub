@@ -1,15 +1,12 @@
 package com.example.droidsoftthird
 
-import com.example.droidsoftthird.model.domain_model.ViewPort
-import com.example.droidsoftthird.repository.BaseRepositoryImpl
+import com.tsemb.droidsoftthird.model.domain_model.ViewPort
+import com.tsemb.droidsoftthird.repository.BaseRepositoryImpl
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import junit.framework.TestCase
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
