@@ -55,7 +55,8 @@ import dagger.hilt.android.AndroidEntryPoint
 //TODO 公式にuiStateのベストプラクティスみたいなのがあるので、それに合わせていく。
 
 @AndroidEntryPoint
-class PlaceMapFragment: Fragment() {
+class
+PlaceMapFragment: Fragment() {
 
     private val mapViewModel: PlaceMapViewModel by viewModels()
     private val scheduleViewModel:ScheduleCreateViewModel by navGraphViewModels(R.id.schedule_graph)
