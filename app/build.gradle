@@ -27,15 +27,23 @@ android {
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.0-demo"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
     buildTypes {
+
+        debug {
+            debuggable true
+        }
+
+
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
