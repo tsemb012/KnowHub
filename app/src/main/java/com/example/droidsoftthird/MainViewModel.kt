@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(private val repository: BaseRepositoryIm
                     when (it) {
                         true -> _loginState.postValue(LoginState.LOGGED_IN)
                         false -> _loginState.postValue(LoginState.BEFORE_PROFILING)
+                        else -> Unit
                     }
                 }
                 .onFailure { }
