@@ -64,7 +64,7 @@
                         android:layout_height="35dp"
                         android:gravity="center_vertical"
                         android:contentDescription="Select group"
-                        android:text="コミュニティから検索"
+                        android:text="絞り込み"
                         android:textColor="@color/primary_dark"
                         android:ellipsize="end"
                         android:maxLines="1"
