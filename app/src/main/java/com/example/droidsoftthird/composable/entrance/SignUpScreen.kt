@@ -14,12 +14,14 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +38,7 @@ import com.example.droidsoftthird.ui.entrance.state.ConfirmPasswordState
 import com.example.droidsoftthird.ui.entrance.state.EmailState
 import com.example.droidsoftthird.ui.entrance.state.PasswordState
 import com.example.droidsoftthird.utils.compose.supportWideScreen
+import com.example.droidsoftthird.utils.system.hideKeyboard
 import com.example.droidsoftthird.utils.webview.openUrl
 
 sealed class SignUpEvent {
@@ -72,6 +75,7 @@ fun SignUpScreen(onNavigationEvent: (SignUpEvent) -> Unit) {
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignUpContent(
     onSignUpSubmitted: (email: String, password: String) -> Unit,
@@ -80,6 +84,8 @@ fun SignUpContent(
         val passwordFocusRequest = remember { FocusRequester() }
         val confirmationPasswordFocusRequest = remember { FocusRequester() }
         val emailState = remember { EmailState() }
+        val keyboardController = LocalSoftwareKeyboardController.current
+
 
         BrandLogoSmall()
 
@@ -102,7 +108,7 @@ fun SignUpContent(
         Password(
             label = stringResource(id = R.string.confirm_new_password),
             passwordState = confirmPasswordState,
-            onImeAction = { onSignUpSubmitted(emailState.text, passwordState.text) },
+            onImeAction = { keyboardController?.hide() },
             modifier = Modifier.focusRequester(confirmationPasswordFocusRequest)
         )
 

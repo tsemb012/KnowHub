@@ -6,10 +6,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -102,6 +104,7 @@ fun SignInScreen(onNavigationEvent: (SignInEvent) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignInContent(//TODO passwordConfirmationも増やさないとけいないかも
     onSignInSubmitted: (email: String, password: String) -> Unit,
@@ -111,6 +114,7 @@ fun SignInContent(//TODO passwordConfirmationも増やさないとけいない�
         val emailState by rememberSaveable(stateSaver = EmailStateSaver) {
             mutableStateOf(EmailState())
         }
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -129,7 +133,7 @@ fun SignInContent(//TODO passwordConfirmationも増やさないとけいない�
             label = stringResource(id = R.string.password),
             passwordState = passwordState,
             modifier = Modifier.focusRequester(focusRequester),
-            onImeAction = { onSubmit() }
+            onImeAction = { keyboardController?.hide() },
         )
         Spacer(modifier = Modifier.height(32.dp))
 
