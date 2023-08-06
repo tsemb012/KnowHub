@@ -14,6 +14,11 @@ interface MainApi {
             @Query("user_id") userId: String,//TODO ここをpathに書き換える必要がある。
     ) : Response<Any>
 
+    @GET("users/{user_id}/check_is_user_registered")
+    suspend fun checkUserRegistered(
+            @Path("user_id") userId: String
+    ): Response<Boolean>
+
     @GET("users/{user_id}") //TODO
     suspend fun fetchUser(
             @Path("user_id") userId: String

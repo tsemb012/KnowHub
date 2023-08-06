@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.example.droidsoftthird.dialogs.*
@@ -42,8 +43,13 @@ GroupAddFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
         })
         viewModel.navigationToHome.observe(viewLifecycleOwner, EventObserver {
+
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.homeFragment, true)
+                .build()
             findNavController().navigate(
-                GroupAddFragmentDirections.actionAddGroupFragmentToHomeFragment()
+                GroupAddFragmentDirections.actionAddGroupFragmentToHomeFragment(),
+                navOptions
             )
         })
 

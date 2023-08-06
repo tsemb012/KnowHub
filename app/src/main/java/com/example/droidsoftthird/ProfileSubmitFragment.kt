@@ -42,7 +42,10 @@ abstract class ProfileSubmitFragment : Fragment(R.layout.fragment_profile_edit) 
         viewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             when (uiModel.loadState) {
                 is LoadState.Loading -> binding.progressBar.visibility = View.VISIBLE
-                is LoadState.Loaded<*> -> binding.progressBar.visibility = View.GONE
+                is LoadState.Loaded<*> -> {
+                    binding.progressBar.visibility = View.GONE
+                    navigateTo()
+                }
                 is LoadState.Error -> {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(
@@ -65,6 +68,8 @@ abstract class ProfileSubmitFragment : Fragment(R.layout.fragment_profile_edit) 
         }
         setupSubmitListeners()
     }
+
+    abstract fun navigateTo()
 
     abstract fun setupSubmitListeners()
 

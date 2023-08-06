@@ -26,9 +26,9 @@ private fun isPasswordValid(password: String): Boolean {
 
 @Suppress("UNUSED_PARAMETER")
 private fun passwordValidationError(password: String): String {
-    return "Invalid password"
+    return "無効なパスワード"
 }
 
 private fun passwordConfirmationError(): String {
-    return "Passwords don't match"
+    return "パスワードが一致しません。"
 }

@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -83,8 +84,20 @@ class GroupDetailFragment : Fragment() {
 
         viewModel.navigateToMyPage.observe(viewLifecycleOwner, Observer { groupId ->
             groupId?.let {
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(
+                        when (viewModel.navigateToMyPage.value ) {
+                            "fromMyPage" -> R.id.myPageFragment
+                            "fromHome" -> R.id.homeFragment
+                            else -> R.id.myPageFragment
+                        },
+                        true
+                    )  // popUpToInclusiveをtrueに設定して、groupDetailFragmentまでのバックスタックをクリアします
+                    .build()
+
                 this.findNavController().navigate(
-                    GroupDetailFragmentDirections.actionGroupDetailFragmentToMyPageFragment()
+                    GroupDetailFragmentDirections.actionGroupDetailFragmentToMyPageFragment(),
+                    navOptions
                 )
                 viewModel.onMyPageNavigated()
             }

@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -192,7 +193,7 @@ fun ProfileScreen(
                         )
                         ProfileSpacerAndDivider()
                         Text(
-                            "所属グループ",
+                            "所属コミュニティ",
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.h6,
                             modifier = Modifier
@@ -271,7 +272,7 @@ fun ProfileScreen(
 
 
 @Composable
-private fun AppendixButton(text: String, onClick: () -> Unit) {
+fun AppendixButton(text: String, textSize: TextStyle = MaterialTheme.typography.h5, onClick: () -> Unit) {
     Divider()
     Button(
         onClick = onClick,
@@ -291,7 +292,7 @@ private fun AppendixButton(text: String, onClick: () -> Unit) {
             Text(
                 text = text,
                 color = Color.Gray,
-                style = MaterialTheme.typography.h5,
+                style = textSize,
             )
         }
     }

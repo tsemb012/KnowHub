@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.databinding.FragmentHomeBinding
 import com.example.droidsoftthird.ui.entrance.Screen
@@ -19,6 +20,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
         if (FirebaseAuth.getInstance().currentUser == null) {
             backToWelcome()
         }
+        activityViewModel.checkLoginState()
     }
 
     override fun onCreateView(

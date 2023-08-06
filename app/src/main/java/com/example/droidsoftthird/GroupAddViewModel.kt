@@ -128,7 +128,7 @@ class GroupAddViewModel @Inject constructor(private val useCase: GroupUseCase): 
                             )
                             runCatching { useCase.createGroup(group) }
                                 .onSuccess { onHomeClicked() }
-                                .onFailure { _errorMessage.postValue("グループの保存に失敗しました。") }
+                                .onFailure { _errorMessage.postValue("コミュニティの保存に失敗しました。") }
                         }
                         is Result.Failure -> { _errorMessage.postValue("画像の保存に失敗しました。") }
                     }
