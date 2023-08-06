@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.MyPageViewModel" />
+            type="com.tsemb.droidsoftthird.MyPageViewModel" />
     </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout

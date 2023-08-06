@@ -8,11 +8,11 @@
 
         <variable
             name="message"
-            type="com.example.droidsoftthird.model.domain_model.fire_model.FireMessage" />
+            type="com.tsemb.droidsoftthird.model.domain_model.fire_model.FireMessage" />
 
         <variable
             name="clickListener"
-            type="com.example.droidsoftthird.MessageClickListener" />
+            type="com.tsemb.droidsoftthird.MessageClickListener" />
 
         <variable
             name="position"

@@ -8,14 +8,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.droidsoftthird.ProfileSubmitViewModel" />
+            type="com.tsemb.droidsoftthird.ProfileSubmitViewModel" />
     </data>
     <!--TODO ViewBindingの中身が問題なくうごかくか確認する。-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ProfileEditFragment"
+        tools:context="com.tsemb.droidsoftthird.ProfileEditFragment"
         android:background="@color/base_100">
 
         <ProgressBar
