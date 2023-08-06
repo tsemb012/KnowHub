@@ -11,7 +11,7 @@ class EmailState : TextFieldState(validator = ::isEmailValid, errorFor = ::email
  * Returns an error to be displayed or null if no error was found
  */
 private fun emailValidationError(email: String): String {
-    return "Invalid email: $email"
+    return "無効なメールアドレス: $email"
 }
 
 private fun isEmailValid(email: String): Boolean {

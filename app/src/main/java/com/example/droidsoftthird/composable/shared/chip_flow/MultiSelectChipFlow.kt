@@ -33,7 +33,6 @@ fun <T> MultiSelectChipFlow(
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.Top,
     ) {
         items.forEach { item ->
             val isSelected = rememberSelectedItems.value.contains(item)

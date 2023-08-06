@@ -124,8 +124,8 @@ class GroupDetailViewModel @AssistedInject constructor(
             runCatching {
                 groupUseCase.userJoinGroup(groupId)
             }.onSuccess {
-                _message.value = "グループに参加しました"
-                _navigateToMyPage.value = " "
+                _message.value = "コミュニティに参加しました"
+                _navigateToMyPage.value = "fromHome"
             }.onFailure {
                 _message.value = it.message
             }
@@ -137,8 +137,8 @@ class GroupDetailViewModel @AssistedInject constructor(
             runCatching {
                 groupUseCase.userLeaveGroup(groupId)
             }.onSuccess {
-                _message.value = "グループを抜けました"
-                _navigateToMyPage.value = " "
+                _message.value = "コミュニティを抜けました"
+                _navigateToMyPage.value = "fromMyPage"
             }.onFailure {
                 _message.value = it.message
             }

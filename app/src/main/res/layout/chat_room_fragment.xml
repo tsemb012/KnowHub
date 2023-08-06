@@ -69,7 +69,7 @@
                         app:layout_constraintTop_toBottomOf="@id/chat_title_toolbar"
                         android:onClick="@{() -> viewModel.onGroupDetailClicked()}"
                         app:layout_collapseMode="parallax"
-                        android:text="グループ詳細"
+                        android:text="コミュニティ詳細"
                         app:icon="@drawable/ic_baseline_group_24"
                         android:backgroundTint="@color/base_100"
                         android:textColor="@color/primary_dark"

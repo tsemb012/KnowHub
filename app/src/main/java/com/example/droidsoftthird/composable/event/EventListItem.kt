@@ -88,7 +88,7 @@ fun EventListItemPreview() {
     val event = EventItem(
         eventId = "1",
         name = "イベント名",
-        groupName = "グループ名",
+        groupName = "コミュニティ名",
         comment = "コメント",
         groupId = "1",
         eventRegisteredNumber = 1,

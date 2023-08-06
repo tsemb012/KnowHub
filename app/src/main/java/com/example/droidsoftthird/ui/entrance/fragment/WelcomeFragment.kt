@@ -25,10 +25,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.droidsoftthird.ui.entrance.Screen
 import com.example.droidsoftthird.vm.entrance.WelcomeViewModel
-import com.example.droidsoftthird.ui.entrance.composable.WelcomeEvent
-import com.example.droidsoftthird.ui.entrance.composable.WelcomeScreen
+import com.example.droidsoftthird.composable.entrance.WelcomeEvent
+import com.example.droidsoftthird.composable.entrance.WelcomeScreen
 import com.example.droidsoftthird.ui.entrance.navigate
-import com.example.droidsoftthird.vm.entrance.Event
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -5,6 +5,15 @@
     android:id="@+id/nav"
     app:startDestination="@id/welcomeFragment">
 
+    <action android:id="@+id/action_global_to_myPageFragment"
+        app:destination="@id/myPageFragment"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/action_global_to_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popUpToInclusive="true" />
+
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.droidsoftthird.MainActivity"

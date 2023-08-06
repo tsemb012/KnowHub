@@ -12,8 +12,8 @@
     <string name="tab_1st">オススメ</string>
     <string name="tab_2nd">スケジュール</string>
     <string name="tab_3rd">マップ</string>
-    <string name="group_name">グループ名</string>
-    <string name="group_introduction">グループの説明文を入力(500字以内)\n\n 例) 毎週水曜日に図書館に集まって、それぞれの勉強や作業をしましょう。</string>
+    <string name="group_name">コミュニティ名</string>
+    <string name="group_introduction">コミュニティの説明文を入力(500字以内)\n\n 例) 毎週水曜日に図書館に集まって、それぞれの勉強や作業をしましょう。</string>
     <string name="group_detail">詳細情報</string>
     <string name="group_type">取り組み対象</string>
     <string name="no_set">指定なし</string>
@@ -52,8 +52,8 @@
     <string name="progress_uploading">Uploading..</string>
     <string name="upload_success">アップロード完了</string>
     <string name="upload_fail">アップロード失敗</string>
-    <string name="group_add">グループの追加</string>
-    <string name="group_added">グループを追加しました。</string>
+    <string name="group_add">コミュニティの追加</string>
+    <string name="group_added">コミュニティを追加しました。</string>
     <string name="nickname">ニックネーム</string>
     <string name="gender">性別</string>
     <string name="gender_no_edit">性別(編集不可)</string>
@@ -69,8 +69,8 @@
     <string name="newest_first_order">新着順</string>
     <string name="schedule">スケジュール</string>
     <string name="map">マップ</string>
-    <string name="input_a_group_name">グループ名を入力(20字以内)</string>
-    <string name="input_group_introduction">グループの紹介文を記入してください。</string>
+    <string name="input_a_group_name">コミュニティ名を入力(20字以内)</string>
+    <string name="input_group_introduction">コミュニティの紹介文を記入してください。</string>
     <string name="register">登録</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -83,7 +83,7 @@
     <string name="type_a_message">メッセージを入力してください。</string>
     <string name="send_picture">画像を送信</string>
     <string name="send_file">ファイルを送信</string>
-    <string name="group_info">グループ情報</string>
+    <string name="group_info">コミュニティ情報</string>
     <string name="audio_permission_not_available">録音機能を使用するため、アクセス権限が求められています。</string>
     <string name="permisson_is_required">ファイルへのアクセス権限が求められています。</string>
     <string name="audio_permission_granted">オーディオへのアクセスが許可されました。録音を開始します。</string>
@@ -97,13 +97,13 @@
     <string name="name">名前</string>
     <string name="self_introduction">自己紹介</string>
     <string name="please_attach_background_image">背景画像を添付しましょう</string>
-    <string name="group_register">グループを登録</string>
+    <string name="group_register">コミュニティを登録</string>
     <string name="JoinIn">参加</string>
     <string name="confrimation">確認</string>
-    <string name="confrimation_join_group">このグループに参加しますか？</string>
-    <string name="confrimation_leave_group">本当にグループから抜けますか？</string>
+    <string name="confrimation_join_group">このコミュニティに参加しますか？</string>
+    <string name="confrimation_leave_group">本当にコミュニティから抜けますか？</string>
     <string name="input_profile">プロフィール入力</string>
-    <string name="group">グループ</string>
+    <string name="group">コミュニティ</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
     <string name="schedule_calendar">カレンダー</string>
@@ -121,14 +121,14 @@
     <string name="schedule_create_date">日付</string>
     <string name="schedule_create_time">時間</string>
     <string name="schedule_create_location">場所</string>
-    <string name="schedule_create_group">グループ</string>
+    <string name="schedule_create_group">コミュニティ</string>
     <string name="schedule_create_date_hint">イベントの日付を入力してください</string>
     <string name="schedule_create_time_start">開始時刻</string>
     <string name="schedule_create_time_end">終了時刻</string>
 
     <!-- ログイン画面 -->
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="email">メールアドレス</string>
+    <string name="password">パスワード</string>
     <string name="confirm_password">Confirm password</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_guest">SIGN IN AS GUEST</string>
@@ -136,7 +136,7 @@
     <string name="or">または</string>
     <string name="forgot_password">FORGOT PASSWORD?</string>
     <string name="user_continue">CONTINUE</string>
-    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="create_account">アカウント作成</string>
     <string name="terms_and_conditions">By continuing, you agree to our Terms of Service. We’ll
         handle your data according to our Privacy Policy.</string>
     <string name="feature_not_available">Feature not available</string>
@@ -177,9 +177,9 @@
     <string name="clear_filter">クリア</string>
     <string name="group_condition_filter">絞り込み</string>
     <string name="select_area">活動地域を選択してください</string>
-    <string name="select_group">グループから検索</string>
-    <string name="show_group_asscociated_events">グループに紐づいたイベントを表示します。</string>
-    <string name="no_groups_found">参加可能なグループがありません。</string>
+    <string name="select_group">絞り込み</string>
+    <string name="show_group_asscociated_events">コミュニティに紐づいたイベントを表示します。</string>
+    <string name="no_groups_found">参加可能なコミュニティがありません。</string>
     <string name="individual_task">別々: 個々の課題</string>
     <string name="shared_goal">一緒: 共通の目標</string>
     <string name="irregularly">不定期</string>
@@ -187,10 +187,10 @@
     <string name="quiet_focus">静かに集中</string>
     <string name="fun_chat">楽しくワイワイ</string>
     <string name="availability">%s 人</string>
-    <string name="group_condition_filter_confirm">グループを検索</string>
-    <string name="join_or_create_group">グループに参加、あるいはグループを作成してください。</string>
-    <string name="group_intro">グループ紹介</string>
-    <string name="leave_group">グループを抜ける</string>
+    <string name="group_condition_filter_confirm">コミュニティを検索</string>
+    <string name="join_or_create_group">コミュニティに参加、あるいはコミュニティを作成してください。</string>
+    <string name="group_intro">コミュニティ紹介</string>
+    <string name="leave_group">コミュニティを抜ける</string>
     <string name="sunday">日</string>
     <string name="monday">月</string>
     <string name="tuesday">火</string>
@@ -204,5 +204,7 @@
     <string name="event_register">イベントを登録</string>
     <string name="birthday">生年月日</string>
     <string name="login">ログイン</string>
+    <string name="new_password">新しいパスワード</string>
+    <string name="confirm_new_password">新しいパスワード(確認)</string>
 
 </resources>

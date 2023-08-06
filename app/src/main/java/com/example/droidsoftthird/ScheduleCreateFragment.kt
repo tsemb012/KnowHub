@@ -7,7 +7,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.example.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
 import com.google.android.material.datepicker.CalendarConstraints
@@ -41,8 +43,14 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
             binding.progressBar.isVisible = it.isLoading
             if (canInsertGroupIdFromPreviousScreen(it)) initializeGroup()
             if (it.isSubmitted) {
-                findNavController().navigate(R.id.action_global_ScheduleHomeFragment)
                 Toast.makeText(requireContext(), "イベントを登録しました。", Toast.LENGTH_SHORT).show()
+                if (isNavigatedFromChatGroup == true) findNavController().popBackStack()
+                else {
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.ScheduleHomeFragment, true)  // popUpToInclusiveをtrueに設定して、groupDetailFragmentまでのバックスタックをクリアします
+                        .build()
+                    findNavController().navigate(R.id.ScheduleHomeFragment, null, navOptions)
+                }
             }
         }
     }
@@ -66,7 +74,7 @@ class ScheduleCreateFragment:Fragment(R.layout.fragment_schedule_create) {
     private fun FragmentScheduleCreateBinding.setupGroupDialog() {
         includeScheduleCreateGroup.itemScheduleCreate.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("グループを選択してください。")
+                .setTitle("コミュニティを選択してください。")
                 .setItems(viewModel?.groupArray?: arrayOf()) { _, which ->
                     viewModel?.postSelectedGroup(which)
                 }
