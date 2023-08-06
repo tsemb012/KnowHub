@@ -3,7 +3,7 @@ package com.tsemb.droidsoftthird
 
 
 import android.app.Application
-import com.example.droidsoftthird.BuildConfig.MAPS_API_KEY
+import com.tsemb.droidsoftthird.BuildConfig.MAPS_API_KEY
 import com.google.android.libraries.places.api.Places
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.hilt.android.HiltAndroidApp

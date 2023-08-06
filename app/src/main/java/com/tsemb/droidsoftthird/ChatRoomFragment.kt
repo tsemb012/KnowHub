@@ -26,8 +26,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.droidsoftthird.ChatRoomFragmentArgs
-import com.example.droidsoftthird.ChatRoomFragmentDirections
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.databinding.ChatRoomFragmentBinding
 import com.tsemb.droidsoftthird.utils.UpdateRecycleItemEvent

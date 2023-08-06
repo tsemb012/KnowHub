@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.HomeFragmentDirections
 import com.tsemb.droidsoftthird.composable.map.OSMBottomSheetScreen
 import dagger.hilt.android.AndroidEntryPoint
 import org.osmdroid.config.Configuration
