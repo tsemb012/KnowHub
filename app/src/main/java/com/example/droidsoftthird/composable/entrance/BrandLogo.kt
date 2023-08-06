@@ -55,7 +55,7 @@ fun BrandLogo() {
         Text(
             text = "KnowHub",
             color = Color.Gray,
-            style = MaterialTheme.typography.h2,
+            style = MaterialTheme.typography.h3,
             fontWeight = FontWeight.Normal,
             fontFamily = fontFamily
         )
@@ -64,8 +64,62 @@ fun BrandLogo() {
         val accentYellow = colorResource(id = R.color.primary_accent_yellow)
         Canvas(
             modifier = Modifier
-                .width(300.dp)
+                .width(250.dp)
                 .height(10.dp)
+        ) {
+            drawLine(
+                color = primaryDark,
+                start = Offset.Zero,
+                end = Offset(size.width * 0.57f, 0f),
+                strokeWidth = size.height
+            )
+            drawLine(
+                color = accentYellow,
+                start = Offset(size.width * 0.57f, 0f),
+                end = Offset(size.width, 0f),
+                strokeWidth = size.height
+            )
+        }
+    }
+}
+
+@Composable
+fun BrandLogoSmall() {
+    val fontName = GoogleFont("Noto Sans Vithkuqi")
+    val fontProvider = GoogleFont.Provider(
+        providerAuthority = "com.google.android.gms.fonts",
+        providerPackage = "com.google.android.gms",
+        certificates = R.array.com_google_android_gms_fonts_certs
+    )
+
+    val fontFamily = FontFamily(
+        Font(googleFont = fontName, fontProvider = fontProvider)
+    )
+
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Image(
+            painter = painterResource(id = R.drawable.full_logo_transparent_no_buffer), // ここに画像リソースを指定
+            contentDescription = null, // アクセシビリティのための説明文
+            alignment = Alignment.TopCenter, // 画像を中央に配置
+            modifier = Modifier.width(100.dp).height(100.dp), // 画像が全体に広がるようにする
+            contentScale = ContentScale.Fit// 必要に応じて画像をクロップまたは他の方法で調整
+        )
+
+        Text(
+            text = "KnowHub",
+            color = Color.Gray,
+            style = MaterialTheme.typography.h5,
+            fontWeight = FontWeight.Normal,
+            fontFamily = fontFamily
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        val primaryDark = colorResource(id = R.color.primary_dark)
+        val accentYellow = colorResource(id = R.color.primary_accent_yellow)
+        Canvas(
+            modifier = Modifier
+                .width(120.dp)
+                .height(5.dp)
         ) {
             drawLine(
                 color = primaryDark,

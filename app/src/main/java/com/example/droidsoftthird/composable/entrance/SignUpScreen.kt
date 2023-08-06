@@ -20,6 +20,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -53,6 +54,7 @@ fun SignUpScreen(onNavigationEvent: (SignUpEvent) -> Unit) {
                 onBackPressed = { onNavigationEvent(SignUpEvent.NavigateBack) }
             )
         },
+        backgroundColor = colorResource(id = R.color.base_300),
         content = { contentPadding ->
             SignInSignUpScreen(
                 contentPadding = contentPadding,
@@ -79,7 +81,7 @@ fun SignUpContent(
         val confirmationPasswordFocusRequest = remember { FocusRequester() }
         val emailState = remember { EmailState() }
 
-        BrandLogo()
+        BrandLogoSmall()
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -124,7 +126,9 @@ fun SignUpContent(
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 contentPadding = PaddingValues(0.dp),
                 elevation = ButtonDefaults.elevation(0.dp),
-                modifier = Modifier.weight(1f).wrapContentHeight()
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight()
             ) {
                 Text(
                     text = "Term Of Use",
@@ -138,7 +142,9 @@ fun SignUpContent(
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 contentPadding = PaddingValues(0.dp),
                 elevation = ButtonDefaults.elevation(0.dp),
-                modifier = Modifier.weight(1f).wrapContentHeight()
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight()
             ) {
                 Text(
                     text = "Privacy Policy",

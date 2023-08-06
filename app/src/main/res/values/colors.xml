@@ -10,6 +10,7 @@
     <color name="primary_green">#35BF0F</color>
     <color name="base_100">#FDFFFD</color>
     <color name="base_200">#F7FBFB</color>
+    <color name="base_300">#FBFFFB</color>
     <color name="base_gray">#F4F3F3</color>
     <color name="base_yellow">#FFFEFA</color>
     <color name="today_color">#54FF2525</color>
