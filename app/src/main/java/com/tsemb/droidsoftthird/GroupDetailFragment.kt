@@ -15,8 +15,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.example.droidsoftthird.GroupDetailFragmentArgs
-import com.example.droidsoftthird.GroupDetailFragmentDirections
 import com.example.droidsoftthird.R
 import com.example.droidsoftthird.databinding.FragmentGroupDetailBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout

@@ -20,7 +20,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.R
-import com.example.droidsoftthird.ScheduleHomeFragmentDirections
 import com.tsemb.droidsoftthird.composable.event.EventListItem
 import com.tsemb.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.tsemb.droidsoftthird.composable.shared.EmptyMessage

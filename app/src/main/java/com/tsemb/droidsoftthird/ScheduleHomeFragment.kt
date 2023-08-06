@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.droidsoftthird.R
-import com.example.droidsoftthird.ScheduleHomeFragmentDirections
 import com.tsemb.droidsoftthird.composable.group.content.CommonAddButton
 import com.example.droidsoftthird.databinding.FragmentScheduleHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView

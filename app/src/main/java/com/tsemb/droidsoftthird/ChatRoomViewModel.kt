@@ -2,7 +2,6 @@ package com.tsemb.droidsoftthird
 
 import android.net.Uri
 import androidx.lifecycle.*
-import com.example.droidsoftthird.BuildConfig
 import com.tsemb.droidsoftthird.model.domain_model.ChatGroup
 import com.tsemb.droidsoftthird.repository.MessageRepository
 import com.tsemb.droidsoftthird.usecase.GroupUseCase

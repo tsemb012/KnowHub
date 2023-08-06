@@ -9,7 +9,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.ScheduleHomeFragmentDirections
 import com.tsemb.droidsoftthird.composable.event.EventListScreen
 import dagger.hilt.android.AndroidEntryPoint
 

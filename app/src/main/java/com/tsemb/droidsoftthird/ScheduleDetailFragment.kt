@@ -9,8 +9,6 @@ import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.ScheduleDetailFragmentArgs
-import com.example.droidsoftthird.ScheduleDetailFragmentDirections
 import com.tsemb.droidsoftthird.composable.event.EventDetailScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
