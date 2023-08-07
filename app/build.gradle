@@ -26,7 +26,7 @@ android {
         applicationId "com.tsemb.droidsoftthird"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 2
+        versionCode 3
         versionName "1.0.1-demo"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -45,7 +45,7 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug
         }
     }
 
