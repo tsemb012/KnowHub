@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.IconLabelItem
 import com.tsemb.droidsoftthird.composable.group.screen.FilterContentDestination
 import com.tsemb.droidsoftthird.composable.shared.chip_flow.MultiSelectChipFlow

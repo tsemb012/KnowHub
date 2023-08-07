@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.model.domain_model.Area
 import com.tsemb.droidsoftthird.model.domain_model.City
 import com.tsemb.droidsoftthird.model.domain_model.Prefecture

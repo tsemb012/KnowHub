@@ -31,7 +31,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.entrance.InstructionPage
 import com.tsemb.droidsoftthird.ui.entrance.Screen
 import com.tsemb.droidsoftthird.composable.entrance.SignUpScreen

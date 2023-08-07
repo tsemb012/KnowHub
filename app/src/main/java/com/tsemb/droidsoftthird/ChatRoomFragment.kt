@@ -26,8 +26,8 @@ import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.ChatRoomFragmentBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.ChatRoomFragmentBinding
 import com.tsemb.droidsoftthird.utils.UpdateRecycleItemEvent
 import com.tsemb.droidsoftthird.utils.showSnackbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior

@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tsemb.droidsoftthird.PlaceMapViewModel
-import com.example.droidsoftthird.composable.PlaceMapBottomModal
+import com.tsemb.droidsoftthird.composable.map.PlaceMapBottomModal
 import com.tsemb.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.tsemb.droidsoftthird.composable.shared.SharedBackButton
 import com.tsemb.droidsoftthird.model.domain_model.EditedPlace

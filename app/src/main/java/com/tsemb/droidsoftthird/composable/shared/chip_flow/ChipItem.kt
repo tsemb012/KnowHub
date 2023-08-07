@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

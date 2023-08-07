@@ -1,6 +1,6 @@
 package com.tsemb.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.model.infra_model.json.request.PostGroupJson
 import kotlin.math.pow
 

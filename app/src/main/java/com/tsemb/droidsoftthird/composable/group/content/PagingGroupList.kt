@@ -27,7 +27,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.shared.EmptyMessage
 import com.tsemb.droidsoftthird.composable.shared.FundamentalSheet
 import com.tsemb.droidsoftthird.model.domain_model.ApiGroup

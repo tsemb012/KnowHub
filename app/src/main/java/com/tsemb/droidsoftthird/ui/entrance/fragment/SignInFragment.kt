@@ -9,7 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.ui.entrance.Screen
 import com.tsemb.droidsoftthird.vm.entrance.SignInViewModel
 import com.tsemb.droidsoftthird.composable.entrance.SignInScreen

@@ -53,7 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.map.MapWithMarker
 import com.tsemb.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.tsemb.droidsoftthird.composable.shared.DescriptionItem

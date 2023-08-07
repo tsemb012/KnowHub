@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.ListItemScheduleEventBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.ListItemScheduleEventBinding
 import com.tsemb.droidsoftthird.extentions_depreciated.gs
 import com.tsemb.droidsoftthird.model.domain_model.EventItem
 

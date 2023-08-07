@@ -1,6 +1,6 @@
 package com.tsemb.droidsoftthird.model.domain_model
 
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.model.infra_model.json.request.PostEventJson
 import com.tsemb.droidsoftthird.utils.converter.formatTimePeriod
 import java.time.ZonedDateTime

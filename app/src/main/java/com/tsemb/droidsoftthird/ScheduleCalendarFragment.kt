@@ -19,13 +19,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.event.EventListItem
 import com.tsemb.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.tsemb.droidsoftthird.composable.shared.EmptyMessage
 import com.tsemb.droidsoftthird.composable.shared.FundamentalSheet
-import com.example.droidsoftthird.databinding.CalendarDayBinding
-import com.example.droidsoftthird.databinding.FragmentScheduleCalendarBinding
+import com.tsemb.droidsoftthird.databinding.CalendarDayBinding
+import com.tsemb.droidsoftthird.databinding.FragmentScheduleCalendarBinding
 import com.tsemb.droidsoftthird.extentions_depreciated.daysOfWeekFromLocale
 import com.tsemb.droidsoftthird.extentions_depreciated.setTextColorRes
 import com.tsemb.droidsoftthird.model.domain_model.EventItem

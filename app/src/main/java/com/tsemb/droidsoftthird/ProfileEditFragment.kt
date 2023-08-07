@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.model.presentation_model.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 

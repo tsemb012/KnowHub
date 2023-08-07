@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.tsemb.droidsoftthird.GroupLocationsFragment
 import com.tsemb.droidsoftthird.GroupLocationsViewModel
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.group.content.CommonAddButton
 import com.tsemb.droidsoftthird.composable.group.content.PagingGroupList
 import com.tsemb.droidsoftthird.model.domain_model.AreaCategory
