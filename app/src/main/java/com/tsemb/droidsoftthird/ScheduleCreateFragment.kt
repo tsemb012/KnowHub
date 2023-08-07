@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.FragmentScheduleCreateBinding
+import com.tsemb.droidsoftthird.databinding.FragmentScheduleCreateBinding
 import com.tsemb.droidsoftthird.model.presentation_model.ScheduleCreateUiModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward

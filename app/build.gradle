@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.droidsoftthird"
+        applicationId "com.tsemb.droidsoftthird"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1

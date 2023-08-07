@@ -14,9 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.FacilityEnvironmentDialogFragment
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.FragmentGroupAddBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.FragmentGroupAddBinding
 import com.tsemb.droidsoftthird.dialogs.AgeRangeDialogFragment
 import com.tsemb.droidsoftthird.dialogs.AreaDialogFragment
 import com.tsemb.droidsoftthird.dialogs.GroupTypeDialogFragment

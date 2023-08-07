@@ -2,7 +2,7 @@ package com.tsemb.droidsoftthird.ui.entrance
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import java.security.InvalidParameterException
 
 enum class Screen { Welcome, SignUp, SignIn, Home, CreateProfile }

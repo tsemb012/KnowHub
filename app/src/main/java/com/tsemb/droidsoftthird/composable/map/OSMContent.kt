@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.example.droidsoftthird.*
+import com.tsemb.droidsoftthird.*
 import com.tsemb.droidsoftthird.model.domain_model.AreaCategory
 import com.tsemb.droidsoftthird.model.domain_model.GroupCountByArea
 import com.tsemb.droidsoftthird.model.presentation_model.GroupLocationsUiModel

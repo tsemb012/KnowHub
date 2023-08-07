@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.RecommendGroupsViewModel
 import com.tsemb.droidsoftthird.composable.group.content.CommonAddButton
 import com.tsemb.droidsoftthird.composable.group.content.PagingGroupList

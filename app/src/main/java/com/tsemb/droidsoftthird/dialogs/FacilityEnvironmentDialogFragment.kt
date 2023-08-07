@@ -1,4 +1,4 @@
-package com.example.droidsoftthird
+package com.tsemb.droidsoftthird
 
 import android.app.AlertDialog
 import android.app.Dialog

@@ -2,7 +2,7 @@ package com.tsemb.droidsoftthird
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

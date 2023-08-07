@@ -10,7 +10,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.tsemb.droidsoftthird.GroupAddViewModel
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.google.android.material.slider.Slider
 import kotlin.math.roundToInt
 

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tsemb.droidsoftthird.ProfileViewModel
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.shared.DescriptionItem
 import com.tsemb.droidsoftthird.composable.shared.SharedConfirmButton
 import com.tsemb.droidsoftthird.composable.shared.SharedDescriptions

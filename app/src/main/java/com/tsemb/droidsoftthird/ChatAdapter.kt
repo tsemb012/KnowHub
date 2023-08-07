@@ -32,9 +32,9 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.ChatAdapter.Companion.messageList
-import com.example.droidsoftthird.databinding.*
+import com.tsemb.droidsoftthird.databinding.*
 import com.tsemb.droidsoftthird.utils.AuthUtil
 import com.tsemb.droidsoftthird.model.domain_model.fire_model.FileMessage
 import com.tsemb.droidsoftthird.model.domain_model.fire_model.FireMessage

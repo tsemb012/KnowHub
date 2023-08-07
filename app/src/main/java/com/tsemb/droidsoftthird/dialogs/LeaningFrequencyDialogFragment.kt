@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.tsemb.droidsoftthird.GroupAddViewModel
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.model.domain_model.FrequencyBasis
 
 class LeaningFrequencyDialogFragment:DialogFragment() {

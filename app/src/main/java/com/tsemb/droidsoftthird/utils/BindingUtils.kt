@@ -9,7 +9,7 @@ import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.google.android.material.slider.Slider
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope

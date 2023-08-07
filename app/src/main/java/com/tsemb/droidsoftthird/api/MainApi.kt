@@ -1,8 +1,8 @@
 package com.tsemb.droidsoftthird.api
 
 import com.tsemb.droidsoftthird.model.infra_model.json.UserJson
-import com.example.droidsoftthird.model.infra_model.json.request.*
-import com.example.droidsoftthird.model.infra_model.json.response.*
+import com.tsemb.droidsoftthird.model.infra_model.json.request.*
+import com.tsemb.droidsoftthird.model.infra_model.json.response.*
 import com.tsemb.droidsoftthird.model.infra_model.json.request.GetSimpleGroupJson
 import com.tsemb.droidsoftthird.model.infra_model.json.request.PostEventJson
 import com.tsemb.droidsoftthird.model.infra_model.json.request.PostGroupJson

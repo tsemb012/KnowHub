@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 
 @Composable
 fun FundamentalSheet(content: @Composable () -> Unit, isLoading: Boolean, error: Throwable?) {

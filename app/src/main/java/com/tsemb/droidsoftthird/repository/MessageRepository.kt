@@ -1,7 +1,7 @@
 package com.tsemb.droidsoftthird.repository
 
 import android.net.Uri
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.Result
 import com.tsemb.droidsoftthird.model.domain_model.fire_model.FireMessage
 import com.google.firebase.auth.FirebaseAuth

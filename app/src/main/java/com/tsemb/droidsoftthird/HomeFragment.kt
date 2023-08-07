@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.FragmentHomeBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.FragmentHomeBinding
 import com.tsemb.droidsoftthird.ui.entrance.Screen
 import com.tsemb.droidsoftthird.ui.entrance.navigate
 import com.google.android.material.tabs.TabLayoutMediator

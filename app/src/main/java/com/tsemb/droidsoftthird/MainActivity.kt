@@ -12,8 +12,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.ActivityMainBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
 

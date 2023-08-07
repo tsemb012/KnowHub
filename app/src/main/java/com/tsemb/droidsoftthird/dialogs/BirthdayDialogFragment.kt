@@ -7,7 +7,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDate
 import java.util.Calendar
 import android.widget.NumberPicker
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 
 class BirthdayDialogFragment(private val onPositiveClickListener: (LocalDate) -> Unit) : DialogFragment() {
 

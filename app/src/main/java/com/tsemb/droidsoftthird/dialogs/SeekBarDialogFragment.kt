@@ -5,8 +5,8 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.DialogSeekBarBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.DialogSeekBarBinding
 import kotlin.math.roundToInt
 
 class SeekBarDialogFragment(

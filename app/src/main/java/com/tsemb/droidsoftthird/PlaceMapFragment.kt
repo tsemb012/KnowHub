@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.map.place.PlaceMapScreen
 import com.tsemb.droidsoftthird.model.domain_model.EditedPlace
 import com.google.android.gms.maps.model.LatLng

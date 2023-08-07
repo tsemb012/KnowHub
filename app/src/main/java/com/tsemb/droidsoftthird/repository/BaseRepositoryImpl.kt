@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.droidsoftthird.*
+import com.tsemb.droidsoftthird.*
 import com.tsemb.droidsoftthird.api.MainApi
 import com.tsemb.droidsoftthird.model.domain_model.fire_model.FireGroup
 import com.tsemb.droidsoftthird.model.domain_model.fire_model.RawScheduleEvent

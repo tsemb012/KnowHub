@@ -1,4 +1,4 @@
-package com.example.droidsoftthird.composable
+package com.tsemb.droidsoftthird.composable.map
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,11 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tsemb.droidsoftthird.PlaceMapViewState
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.shared.DescriptionItem
 import com.tsemb.droidsoftthird.composable.shared.SharedDescriptions
 import com.tsemb.droidsoftthird.composable.shared.SharedTextField
-import com.example.droidsoftthird.model.domain_model.*
 import com.tsemb.droidsoftthird.model.domain_model.EditedPlace
 import com.tsemb.droidsoftthird.model.domain_model.YolpSinglePlace
 import kotlinx.coroutines.CoroutineScope

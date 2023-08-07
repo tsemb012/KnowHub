@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.example.droidsoftthird.R
-import com.example.droidsoftthird.databinding.FragmentProfileEditBinding
+import com.tsemb.droidsoftthird.R
+import com.tsemb.droidsoftthird.databinding.FragmentProfileEditBinding
 import com.tsemb.droidsoftthird.dialogs.AreaDialogFragment
 import com.tsemb.droidsoftthird.dialogs.BirthdayDialogFragment
 import com.tsemb.droidsoftthird.model.domain_model.Area

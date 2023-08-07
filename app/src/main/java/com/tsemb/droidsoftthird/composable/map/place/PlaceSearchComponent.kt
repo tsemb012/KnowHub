@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.tsemb.droidsoftthird.PlaceMapViewState
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.ChipGroup
 import com.tsemb.droidsoftthird.composable.SearchBox
 import com.tsemb.droidsoftthird.model.domain_model.Category

@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.droidsoftthird.R
+import com.tsemb.droidsoftthird.R
 import com.tsemb.droidsoftthird.composable.shared.SharedConfirmButton
 import com.tsemb.droidsoftthird.ui.entrance.state.ConfirmPasswordState
 import com.tsemb.droidsoftthird.ui.entrance.state.EmailState
