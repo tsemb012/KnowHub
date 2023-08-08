@@ -37,7 +37,11 @@ interface MainApi {
     @GET("users/{user_id}/check_is_user_registered")
     suspend fun checkUserRegistered(
             @Path("user_id") userId: String
-    ): Response<Boolean>
+    ):GetUserRegisteredJson
+
+    data class GetUserRegisteredJson(
+            val registered: Boolean
+    )
 
     @GET("users/{user_id}") //TODO
     suspend fun fetchUser(
