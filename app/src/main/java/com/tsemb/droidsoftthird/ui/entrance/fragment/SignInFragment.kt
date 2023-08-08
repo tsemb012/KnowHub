@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -43,17 +45,24 @@ class SignInFragment: Fragment() {
             )
             setContent {
                 val isLoading by viewModel.isLoading.observeAsState(initial = false)
+                if (isLoading) CommonLinearProgressIndicator()
                 MaterialTheme {
-                    SignInScreen(
-                        onNavigationEvent = { event ->
-                            when(event) {
-                                is SignInEvent.SignIn -> { viewModel.signIn(event.email, event.password) }
-                                //SignInEvent.SignUp -> { viewModel.TODO("") } //TODO パスワードを忘れた時の導線を作っておく。
-                                SignInEvent.NavigateBack -> { activity?.onBackPressedDispatcher?.onBackPressed() }
+                    Box {
+                        SignInScreen(
+                            onNavigationEvent = { event ->
+                                when (event) {
+                                    is SignInEvent.SignIn -> {
+                                        viewModel.signIn(event.email, event.password)
+                                    }
+                                    //SignInEvent.SignUp -> { viewModel.TODO("") } //TODO パスワードを忘れた時の導線を作っておく。
+                                    SignInEvent.NavigateBack -> {
+                                        activity?.onBackPressedDispatcher?.onBackPressed()
+                                    }
+                                }
                             }
-                        }
-                    )
-                    if (isLoading) CommonLinearProgressIndicator()
+                        )
+                        if (isLoading) CommonLinearProgressIndicator()
+                    }
                 }
             }
         }
