@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +16,7 @@ import com.tsemb.droidsoftthird.ui.entrance.Screen
 import com.tsemb.droidsoftthird.vm.entrance.SignInViewModel
 import com.tsemb.droidsoftthird.composable.entrance.SignInScreen
 import com.tsemb.droidsoftthird.composable.entrance.SignInEvent
+import com.tsemb.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.tsemb.droidsoftthird.ui.entrance.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +42,7 @@ class SignInFragment: Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             setContent {
+                val isLoading by viewModel.isLoading.observeAsState(initial = false)
                 MaterialTheme {
                     SignInScreen(
                         onNavigationEvent = { event ->
@@ -49,6 +53,7 @@ class SignInFragment: Fragment() {
                             }
                         }
                     )
+                    if (isLoading) CommonLinearProgressIndicator()
                 }
             }
         }
