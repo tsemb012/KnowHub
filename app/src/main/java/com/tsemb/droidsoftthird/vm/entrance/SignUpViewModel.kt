@@ -16,12 +16,18 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
     val navigateTo: LiveData<Event<Screen>>
         get() = _navigateTo
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String>
         get() = _error
 
     fun signUp(email: String, password: String) {
-        viewModelScope.launch {
+        if (isLoading.value == true) return
+
+        val job = viewModelScope.launch {
             kotlin.runCatching {
                 repository.signUpAndFetchToken(email, password)
             }.onSuccess {
@@ -32,12 +38,17 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
                     is Result.Failure -> {
                         _error.value = it.exception.message ?: "Error"
                         _navigateTo.value = Event(Screen.Welcome)
+                        _isLoading.value = false
                     }
                 }
             }.onFailure {
-                _error.value = it.message ?: "Unknown error"
+                _error.value = it.message ?: "サインアップに失敗しました。"
+                _navigateTo.value = Event(Screen.Welcome)
+                _isLoading.value = false
             }
         }
+        _isLoading.value = true
+        job.start()
     }
 
     private fun signUpByTokenId(tokenId: String) {
@@ -50,6 +61,7 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
                 //TODO ログアウト
                 _error.value = it.message ?: "Error"
                 _navigateTo.value = Event(Screen.Welcome)
+                _isLoading.value = false
             }
         }
     }
@@ -60,15 +72,13 @@ class SignUpViewModel @Inject constructor (private val repository: BaseRepositor
                 repository.saveTokenId(tokenId)
             }.onSuccess {
                 _navigateTo.value = Event(Screen.CreateProfile)//TODO プロフィールページに行くか。画面遷移を検討する。
+                _isLoading.value = false
             }.onFailure {
                 //TODO ログアウト
                 _error.value = it.message ?: "Error"
                 _navigateTo.value = Event(Screen.Welcome)
+                _isLoading.value = false
             }
         }
-    }
-
-    fun signIn() {
-        _navigateTo.value = Event(Screen.SignIn)
     }
 }

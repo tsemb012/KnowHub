@@ -23,6 +23,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +38,7 @@ import com.tsemb.droidsoftthird.composable.entrance.InstructionPage
 import com.tsemb.droidsoftthird.ui.entrance.Screen
 import com.tsemb.droidsoftthird.composable.entrance.SignUpScreen
 import com.tsemb.droidsoftthird.composable.entrance.SignUpEvent
+import com.tsemb.droidsoftthird.composable.shared.CommonLinearProgressIndicator
 import com.tsemb.droidsoftthird.composable.shared.SharedConfirmButton
 import com.tsemb.droidsoftthird.ui.entrance.navigate
 import com.tsemb.droidsoftthird.vm.entrance.SignUpViewModel
@@ -62,6 +65,7 @@ class SignUpFragment: Fragment() {
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
 
+
         return ComposeView(requireContext()).apply {
             id = R.id.signUpFragment
 
@@ -71,7 +75,9 @@ class SignUpFragment: Fragment() {
             )
 
             setContent {
+                val isLoading by viewModel.isLoading.observeAsState(initial = false)
                 MaterialTheme {
+
 
                     Box( modifier = Modifier
                         .background(colorResource(id = R.color.base_100))
@@ -91,9 +97,9 @@ class SignUpFragment: Fragment() {
                                                 viewModel.signUp(event.email, event.password)
                                             }
 
-                                            SignUpEvent.SignIn -> {
+                                            /*SignUpEvent.SignIn -> {
                                                 viewModel.signIn() //TODO サインインに移動するボタンを作成する。
-                                            }
+                                            }*/
 
                                             SignUpEvent.NavigateBack -> {
                                                 activity?.onBackPressedDispatcher?.onBackPressed()
@@ -101,7 +107,8 @@ class SignUpFragment: Fragment() {
 
                                             else -> {}
                                         }
-                                    }
+                                    },
+                                    isLoading = isLoading
                                 )
                             }
                         }
@@ -133,6 +140,7 @@ class SignUpFragment: Fragment() {
 
                             }
                         }
+                        if (isLoading) CommonLinearProgressIndicator(modifier = Modifier.align(Alignment.TopCenter))
                     }
                 }
             }
