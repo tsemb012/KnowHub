@@ -16,11 +16,15 @@ class SignInViewModel @Inject constructor (private val repository: BaseRepositor
     val navigateTo: LiveData<Event<Screen>>
         get() = _navigateTo
     private val _error = MutableLiveData<String>()
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
     val error: LiveData<String>
         get() = _error
 
     fun signIn(email: String, password: String) {
-        viewModelScope.launch {
+        val job = viewModelScope.launch {
             kotlin.runCatching {
                 repository.singIn(email, password)
             }.onSuccess {
@@ -29,25 +33,25 @@ class SignInViewModel @Inject constructor (private val repository: BaseRepositor
                     is Result.Failure -> _error.value = "ログインに失敗しました。"
                 }
             }.onFailure {
-                _error.value = it.message ?: "Unknown error"
+                _error.value = it.message ?: "ログインに失敗しました"
+                _isLoading.value = false
             }
         }
+        _isLoading.value = true
+        job.start()
     }
 
     private fun saveTokenId(tokenId: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 repository.saveTokenId(tokenId)
+            }.onSuccess {
+                _isLoading.value = false
                 _navigateTo.value = Event(Screen.Home)
             }.onFailure {
-                //TODO ログアウト
                 _error.value = it.message ?: "Error"
                 _navigateTo.value = Event(Screen.Welcome)
             }
         }
-    }
-
-    fun signUp() {
-        _navigateTo.value = Event(Screen.SignUp)
     }
 }
