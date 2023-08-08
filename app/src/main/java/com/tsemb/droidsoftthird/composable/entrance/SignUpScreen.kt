@@ -44,7 +44,10 @@ sealed class SignUpEvent {
 }
 
 @Composable
-fun SignUpScreen(onNavigationEvent: (SignUpEvent) -> Unit) {
+fun SignUpScreen(
+    onNavigationEvent: (SignUpEvent) -> Unit,
+    isLoading: Boolean = false,
+) {
     Scaffold(
         topBar = {
             SignInSignUpTopAppBar(
@@ -62,7 +65,8 @@ fun SignUpScreen(onNavigationEvent: (SignUpEvent) -> Unit) {
                     SignUpContent(
                         onSignUpSubmitted = { email, password ->
                             onNavigationEvent(SignUpEvent.SignUp(email, password))
-                        }
+                        },
+                        isLoading = isLoading
                     )
                 }
             }
@@ -74,6 +78,7 @@ fun SignUpScreen(onNavigationEvent: (SignUpEvent) -> Unit) {
 @Composable
 fun SignUpContent(
     onSignUpSubmitted: (email: String, password: String) -> Unit,
+    isLoading: Boolean = false,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         val passwordFocusRequest = remember { FocusRequester() }
@@ -162,7 +167,7 @@ fun SignUpContent(
 
         SharedConfirmButton(
             text = stringResource(id = R.string.create_account),
-            isEditable = emailState.isValid && passwordState.isValid && confirmPasswordState.isValid,
+            isEditable = emailState.isValid && passwordState.isValid && confirmPasswordState.isValid && !isLoading,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -205,6 +210,5 @@ fun LinkedText() {
 @Composable
 fun SignUpPreview() {
     MaterialTheme {
-        SignUpScreen {}
     }
 }
