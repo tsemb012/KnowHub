@@ -251,7 +251,7 @@ fun ProfileScreen(
                         Divider()
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "開発者 問い合わせ先\nE-mail: workandchillapp@gmail.com",
+                            text = "開発者 問い合わせ先\nE-mail: tsemb012@gmail.com",
                             style = MaterialTheme.typography.h6,
                             textAlign = TextAlign.Center,
                             color = Color.Gray,
