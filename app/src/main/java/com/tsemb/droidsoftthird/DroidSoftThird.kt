@@ -16,7 +16,6 @@ class DroidSoftThird: Application() {
         super.onCreate()
         Timber.plant(DebugTree())
         AndroidThreeTen.init(this)//APIレベル23のデバイスでもjava.timeパッケージの機能を利用できるようにする
-        Places.initialize(applicationContext, MAPS_API_KEY)
     }
 }
 
