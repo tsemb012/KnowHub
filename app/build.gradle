@@ -26,8 +26,8 @@ android {
         applicationId "com.tsemb.droidsoftthird"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 4
-        versionName "1.0-rc"
+        versionCode 5
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
