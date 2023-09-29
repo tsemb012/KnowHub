@@ -26,7 +26,7 @@ import kotlin.coroutines.suspendCoroutine
 class MessageRepository  @Inject constructor(){
     private val fireStore = FirebaseFirestore.getInstance()
     private val fireStorageRef = FirebaseStorage.getInstance().reference
-    private val firebaseUid = FirebaseAuth.getInstance().currentUser.uid
+    private val firebaseUid = FirebaseAuth.getInstance().currentUser?.uid
 
     suspend fun uploadPhoto(uri: Uri): Result<StorageReference> {
 

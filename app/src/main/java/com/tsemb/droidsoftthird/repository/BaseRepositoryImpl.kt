@@ -117,8 +117,8 @@ class BaseRepositoryImpl @Inject constructor(
                             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                                 .addOnCompleteListener { signInTask ->
                                     if (signInTask.isSuccessful && signInTask.result != null) {
-                                        FirebaseAuth.getInstance().currentUser.getIdToken(true)
-                                            .addOnCompleteListener { idTokenTask ->
+                                        FirebaseAuth.getInstance().currentUser?.getIdToken(true)
+                                            ?.addOnCompleteListener { idTokenTask ->
                                                 if (idTokenTask.isSuccessful && idTokenTask.result?.token != null) {
                                                     continuation.resume(Result.Success(idTokenTask.result?.token!!))
                                                 } else {
@@ -142,8 +142,8 @@ class BaseRepositoryImpl @Inject constructor(
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { signInTask ->
                         if (signInTask.isSuccessful && signInTask.result != null) {
-                            FirebaseAuth.getInstance().currentUser.getIdToken(true)
-                                .addOnCompleteListener { idTokenTask ->
+                            FirebaseAuth.getInstance().currentUser?.getIdToken(true)
+                                ?.addOnCompleteListener { idTokenTask ->
                                     if (idTokenTask.isSuccessful && idTokenTask.result?.token != null) {
                                         continuation.resume(Result.Success(idTokenTask.result?.token!!))
                                     } else {
@@ -303,15 +303,15 @@ class BaseRepositoryImpl @Inject constructor(
         return withContext(Dispatchers.IO){
             suspendCoroutine { continuation ->
                 Firebase.auth.currentUser
-                    .updateProfile(authProfileUpdates)
-                    .addOnSuccessListener {
+                    ?.updateProfile(authProfileUpdates)
+                    ?.addOnSuccessListener {
                         try {
                             continuation.resume(Result.Success(R.string.upload_success))
                         } catch (e: Exception) {
                             continuation.resume(Result.Failure(e))
                         }
                     }
-                    .addOnFailureListener {
+                    ?.addOnFailureListener {
                         continuation.resume(Result.Failure(it))
                     }
             }
