@@ -8,6 +8,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-parcelize'
     id "com.cookpad.android.plugin.license-tools" version "1.2.8"
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -140,9 +141,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
     implementation 'com.google.firebase:firebase-storage-ktx'
-    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     //-----Viewpager2の依存関係
     implementation "androidx.viewpager2:viewpager2:1.0.0"
