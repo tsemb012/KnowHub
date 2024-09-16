@@ -7,7 +7,6 @@
 - **イベント管理**: 勉強会やイベントを計画し、カレンダーで日程を確認できます。
 - **ビデオチャット**: オンラインで簡単に勉強会を開催できます。
 - **オフラインイベントの場所指定**: 最適な勉強会の場所を検索してメンバーに共有できます。
-こちらは、英語版です：
 
 **KnowHub** is the perfect app for connecting with like-minded people who are passionate about learning. It provides a platform to share learning goals and grow together.
 
@@ -16,6 +15,13 @@
 - **Event Management**: Plan study sessions and events, and check the schedule with the calendar.
 - **Video Chat**: Host study sessions online with seamless video chat.
 - **Location Sharing for Offline Events**: Find and share the best locations for in-person study sessions with your community.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/51543aa6-6168-4581-b926-56c7ad59cd54" alt="image1" width="200"/>
+  <img src="https://github.com/user-attachments/assets/b4bd3628-ce8c-4b31-863d-80109a72fc20" alt="image2" width="200"/>
+  <img src="https://github.com/user-attachments/assets/f8f08969-734b-4a28-8b88-151c3a22115a" alt="image3" width="200"/>
+  <img src="https://github.com/user-attachments/assets/51d43818-5c04-4755-8127-336fb34cc5d0" alt="image4" width="200"/>
+</p>
 
 
 ## 機能概要 / Feature Overview
