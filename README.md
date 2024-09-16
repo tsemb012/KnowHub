@@ -24,6 +24,28 @@
   <img src="https://github.com/user-attachments/assets/51d43818-5c04-4755-8127-336fb34cc5d0" alt="image4" width="200"/>
 </p>
 
+### 現状 / Current Situation
+- 集客やマーケティングの難航、また収益化の見込みが立たないため、現在このアプリのメンテナンス・不具合修正および新規機能の開発は停止しております。アプリに関するご意見や、運営・マーケティングにご協力頂けるは、こちらまでお問い合わせください。 tsukasa0171015@gmail.com
+
+- Due to challenges in attracting users and marketing, as well as the lack of prospects for monetization, maintenance and new feature development for this app have been halted. If you have any feedback about the app or are interested in helping with its operation or marketing, please contact us at: tsukasa0171015@gmail.com
+
+### その他スクリーンショット / Other Screenshot
+
+スクリーンショット1 | スクリーンショット2 | スクリーンショット3 | スクリーンショット4 | スクリーンショット5 | スクリーンショット6
+:--: | :--: | :--: | :--: | :--: | :--:
+<img src="https://github.com/user-attachments/assets/05066d36-713a-48e8-ba75-1f2b6001b8be" width="100"> | <img src="https://github.com/user-attachments/assets/c68fae41-8a32-4a0b-8e46-271e7fc1cfc7" width="100"> | <img src="https://github.com/user-attachments/assets/74d549a8-5e9f-446d-ba6a-1f71177c2626" width="100"> | <img src="https://github.com/user-attachments/assets/4fab18c5-ec64-42b0-aef1-8159ebf3ebce" width="100"> | <img src="https://github.com/user-attachments/assets/f0e56497-511f-4967-b1a8-5020215ee739" width="100"> | <img src="https://github.com/user-attachments/assets/8c2a07ff-2bcb-44e0-bc84-12b307e43cbe" width="100">
+
+スクリーンショット7 | スクリーンショット8 | スクリーンショット9 | スクリーンショット10 | スクリーンショット11 | スクリーンショット12
+:--: | :--: | :--: | :--: | :--: | :--:
+<img src="https://github.com/user-attachments/assets/58fb512e-6670-4e64-9ce5-a7ab89e6ac4a" width="100"> | <img src="https://github.com/user-attachments/assets/6de8f01e-7e36-49f6-be7e-fef1d71ed066" width="100"> | <img src="https://github.com/user-attachments/assets/e58c9adb-dfd1-43ed-b60e-75c0dbef9409" width="100"> | <img src="https://github.com/user-attachments/assets/63057992-6433-4667-8f08-bfa832ae568f" width="100"> | <img src="https://github.com/user-attachments/assets/ea06ba34-a007-4d4d-ac66-ddc24be0c26f" width="100"> | <img src="https://github.com/user-attachments/assets/872ed3cc-88aa-452e-b04a-e1c94564dd54" width="100">
+
+スクリーンショット13 | スクリーンショット14 | スクリーンショット15 | スクリーンショット16 | スクリーンショット17 | スクリーンショット18
+:--: | :--: | :--: | :--: | :--: | :--:
+<img src="https://github.com/user-attachments/assets/2a8c756f-0c10-47aa-ac89-09f080def04c" width="100"> | <img src="https://github.com/user-attachments/assets/068b8334-8a42-47d4-94b9-42215f7065d3" width="100"> | <img src="https://github.com/user-attachments/assets/9520ab81-6c87-43bf-a260-abaf68040b43" width="100"> | <img src="https://github.com/user-attachments/assets/b74f454f-4366-49e6-b8b0-96b0cc185897" width="100"> | <img src="https://github.com/user-attachments/assets/5d7985a2-0783-46aa-b0a4-496ba3feb421" width="100"> | <img src="https://github.com/user-attachments/assets/6e2f9782-0b88-4930-b2ed-9d7af2d4cb8c" width="100">
+
+スクリーンショット19 | スクリーンショット20 | スクリーンショット21
+:--: | :--: | :--:
+<img src="https://github.com/user-attachments/assets/ef218e51-fcb4-48e3-a64f-c4344bca6b68" width="100"> | <img src="https://github.com/user-attachments/assets/ddd734fb-6cdd-4126-8163-8ba7d215c904" width="100"> | <img src="https://github.com/user-attachments/assets/f3ea7c73-5351-4f04-9e13-95356e781038" width="100">
 
 ## 機能概要 / Feature Overview
 
@@ -89,11 +111,6 @@
 ## Urls
 [Design](https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird(SNS-App)?type=design&node-id=0-1&mode=design&t=iVVIM7f1doa86laQ-0)  
 [Google Play Store](https://play.google.com/store/apps/details?id=com.tsemb.droidsoftthird)
-
-## 現状 / Current Status
-- 集客やマーケティングの難航、また収益化の見込みが立たないため、現在このアプリのメンテナンスおよび新規機能の開発は停止しております。アプリに関するご意見や、運営・マーケティングにご協力頂けるは、こちらまでお問い合わせください。 tsukasa0171015@gmail.com
-
-- Due to challenges in attracting users and marketing, as well as the lack of prospects for monetization, maintenance and new feature development for this app have been halted. If you have any feedback about the app or are interested in helping with its operation or marketing, please contact us at: tsukasa0171015@gmail.com
 
 ## Prohibited Activities
 
