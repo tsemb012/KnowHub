@@ -85,3 +85,7 @@
 - 設計 / Design
 - コーディング / Coding
 - デザイン / Design
+
+## Urls
+[Design](https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird(SNS-App)?type=design&node-id=0-1&mode=design&t=iVVIM7f1doa86laQ-0)  
+[Google Play Store](https://play.google.com/store/apps/details?id=com.tsemb.droidsoftthird)
