@@ -96,6 +96,7 @@
     - ストレージ: FirebaseStorage / Storage: Firebase Storage
     - 認証: FirebaseAuth, JWT認証 / Authentication: Firebase Auth, JWT Authentication
     - 通信: Retrofit, Moshi, OkHttp / Network: Retrofit, Moshi, OkHttp
+    - デザイン: Material3 / Animation ※ まあまあヌルヌル動きます。
     - その他: Navigation, DataStore, Paging3, JitsiMeetSDK, GoogleMap, OpenStreetMap / Others: Navigation, DataStore, Paging 3, JitsiMeet SDK, Google Map, OpenStreetMap
 - **サーバーサイド / Server-Side**
     - 言語: Ruby / Language: Ruby
