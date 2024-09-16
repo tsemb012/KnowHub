@@ -1,4 +1,5 @@
 # KnowHub
+![image](https://github.com/user-attachments/assets/80b9b129-bc54-4279-840c-d95e9d050c77)
 
 **KnowHub**は、勉強・学習に熱心な仲間とつながるためのアプリです。学習目標を共有し、一緒に成長できるプラットフォームを提供します。
 
