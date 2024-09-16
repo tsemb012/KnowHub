@@ -31,19 +31,19 @@
 
 ### その他スクリーンショット / Other Screenshot
 
-スクリーンショット1 | スクリーンショット2 | スクリーンショット3 | スクリーンショット4 | スクリーンショット5 | スクリーンショット6
-:--: | :--: | :--: | :--: | :--: | :--:
-<img src="https://github.com/user-attachments/assets/05066d36-713a-48e8-ba75-1f2b6001b8be" width="100"> | <img src="https://github.com/user-attachments/assets/c68fae41-8a32-4a0b-8e46-271e7fc1cfc7" width="100"> | <img src="https://github.com/user-attachments/assets/74d549a8-5e9f-446d-ba6a-1f71177c2626" width="100"> | <img src="https://github.com/user-attachments/assets/4fab18c5-ec64-42b0-aef1-8159ebf3ebce" width="100"> | <img src="https://github.com/user-attachments/assets/f0e56497-511f-4967-b1a8-5020215ee739" width="100"> | <img src="https://github.com/user-attachments/assets/8c2a07ff-2bcb-44e0-bc84-12b307e43cbe" width="100">
+イベント詳細(ビデオチャット) | ビデオチャット中 | ビデオチャット待機室 | テキストチャット | イベント作成
+:--: | :--: | :--: | :--: | :--:
+<img src="https://github.com/user-attachments/assets/05066d36-713a-48e8-ba75-1f2b6001b8be" width="100"> | <img src="https://github.com/user-attachments/assets/c68fae41-8a32-4a0b-8e46-271e7fc1cfc7" width="100"> | <img src="https://github.com/user-attachments/assets/74d549a8-5e9f-446d-ba6a-1f71177c2626" width="100"> | <img src="https://github.com/user-attachments/assets/f0e56497-511f-4967-b1a8-5020215ee739" width="100"> | <img src="https://github.com/user-attachments/assets/8c2a07ff-2bcb-44e0-bc84-12b307e43cbe" width="100">
 
-スクリーンショット7 | スクリーンショット8 | スクリーンショット9 | スクリーンショット10 | スクリーンショット11 | スクリーンショット12
+プロフィール | イベント詳細(オフライン)１ | イベント詳細(オフライン)２ | イベント詳細(ビデオチャット-開催中) | イベントカレンダー | 参加可能なコミュニティ一覧
 :--: | :--: | :--: | :--: | :--: | :--:
 <img src="https://github.com/user-attachments/assets/58fb512e-6670-4e64-9ce5-a7ab89e6ac4a" width="100"> | <img src="https://github.com/user-attachments/assets/6de8f01e-7e36-49f6-be7e-fef1d71ed066" width="100"> | <img src="https://github.com/user-attachments/assets/e58c9adb-dfd1-43ed-b60e-75c0dbef9409" width="100"> | <img src="https://github.com/user-attachments/assets/63057992-6433-4667-8f08-bfa832ae568f" width="100"> | <img src="https://github.com/user-attachments/assets/ea06ba34-a007-4d4d-ac66-ddc24be0c26f" width="100"> | <img src="https://github.com/user-attachments/assets/872ed3cc-88aa-452e-b04a-e1c94564dd54" width="100">
 
-スクリーンショット13 | スクリーンショット14 | スクリーンショット15 | スクリーンショット16 | スクリーンショット17 | スクリーンショット18
-:--: | :--: | :--: | :--: | :--: | :--:
-<img src="https://github.com/user-attachments/assets/2a8c756f-0c10-47aa-ac89-09f080def04c" width="100"> | <img src="https://github.com/user-attachments/assets/068b8334-8a42-47d4-94b9-42215f7065d3" width="100"> | <img src="https://github.com/user-attachments/assets/9520ab81-6c87-43bf-a260-abaf68040b43" width="100"> | <img src="https://github.com/user-attachments/assets/b74f454f-4366-49e6-b8b0-96b0cc185897" width="100"> | <img src="https://github.com/user-attachments/assets/5d7985a2-0783-46aa-b0a4-496ba3feb421" width="100"> | <img src="https://github.com/user-attachments/assets/6e2f9782-0b88-4930-b2ed-9d7af2d4cb8c" width="100">
+その他 | 集合場所設定(自由作成) | 集合場所設定(YOLPから取得) | Map検索結果 | 位置情報の予測
+:--: | :--: | :--: | :--: | :--:
+<img src="https://github.com/user-attachments/assets/2a8c756f-0c10-47aa-ac89-09f080def04c" width="100"> | <img src="https://github.com/user-attachments/assets/9520ab81-6c87-43bf-a260-abaf68040b43" width="100"> | <img src="https://github.com/user-attachments/assets/b74f454f-4366-49e6-b8b0-96b0cc185897" width="100"> | <img src="https://github.com/user-attachments/assets/5d7985a2-0783-46aa-b0a4-496ba3feb421" width="100"> | <img src="https://github.com/user-attachments/assets/6e2f9782-0b88-4930-b2ed-9d7af2d4cb8c" width="100">
 
-スクリーンショット19 | スクリーンショット20 | スクリーンショット21
+参加可能グループ一覧(地図表示) | 参加可能グループフィルタリング | イベント選択(グループフィルター)
 :--: | :--: | :--:
 <img src="https://github.com/user-attachments/assets/ef218e51-fcb4-48e3-a64f-c4344bca6b68" width="100"> | <img src="https://github.com/user-attachments/assets/ddd734fb-6cdd-4126-8163-8ba7d215c904" width="100"> | <img src="https://github.com/user-attachments/assets/f3ea7c73-5351-4f04-9e13-95356e781038" width="100">
 
