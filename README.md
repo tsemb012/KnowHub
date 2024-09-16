@@ -89,3 +89,32 @@
 ## Urls
 [Design](https://www.figma.com/file/eqLAiFS1EeBbuWVD6Dvy8k/DroidThird(SNS-App)?type=design&node-id=0-1&mode=design&t=iVVIM7f1doa86laQ-0)  
 [Google Play Store](https://play.google.com/store/apps/details?id=com.tsemb.droidsoftthird)
+
+## 現状 / Current Status
+- 集客やマーケティングの難航、また収益化の見込みが立たないため、現在このアプリのメンテナンスおよび新規機能の開発は停止しております。アプリに関するご意見や、運営・マーケティングにご協力頂けるは、こちらまでお問い合わせください。 tsukasa0171015@gmail.com
+
+- Due to challenges in attracting users and marketing, as well as the lack of prospects for monetization, maintenance and new feature development for this app have been halted. If you have any feedback about the app or are interested in helping with its operation or marketing, please contact us at: tsukasa0171015@gmail.com
+
+## Prohibited Activities
+
+The use of the code and content from this repository is prohibited for the following purposes or methods:
+
+1. **No Commercial Use**  
+   The code from this repository may not be used for any commercial purposes. Unauthorized use in commercial projects is strictly prohibited.
+
+2. **No Redistribution**  
+   Redistribution of the code or any part of it to other projects or third parties without permission is strictly prohibited.
+
+3. **No Modification or Derivative Works**  
+   Modifying the code or creating derivative works from this repository without prior written consent from the repository owner is prohibited. If modification or derivative works are required, written approval must be obtained beforehand.
+
+4. **No Unauthorized Use**  
+   The code may not be used for illegal activities, misleading purposes, or any actions that may cause harm to others.
+
+5. **No Violation of Privacy**  
+   The code may not be used to collect personal information or infringe on the privacy of others in any way.
+
+## Disclaimer
+
+This code is provided "as-is" with no warranties of any kind. The author is not liable for any damages arising from the use of the code.
+
