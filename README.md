@@ -24,11 +24,6 @@
   <img src="https://github.com/user-attachments/assets/51d43818-5c04-4755-8127-336fb34cc5d0" alt="image4" width="200"/>
 </p>
 
-### 現状 / Current Situation
-- 集客やマーケティングの難航、また収益化の見込みが立たないため、現在このアプリのメンテナンス・不具合修正および新規機能の開発は停止しております。アプリに関するご意見や、運営・マーケティングにご協力頂けるは、こちらまでお問い合わせください。 tsukasa0171015@gmail.com
-
-- Due to challenges in attracting users and marketing, as well as the lack of prospects for monetization, maintenance and new feature development for this app have been halted. If you have any feedback about the app or are interested in helping with its operation or marketing, please contact us at: tsukasa0171015@gmail.com
-
 ### その他スクリーンショット / Other Screenshot
 
 参加可能なコミュニティ一覧 | 参加可能グループ一覧(地図表示) | 参加可能グループフィルタリング | イベント選択(グループフィルター) | テキストチャット
